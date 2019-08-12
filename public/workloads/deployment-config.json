@@ -1,0 +1,21 @@
+{
+  "apiVersion": "apps.openshift.io/v1",
+  "kind": "DeploymentConfig",
+  "metadata": { "name": "example", "namespace": "daocloudcsp" },
+  "spec": {
+    "selector": { "app": "hello-openshift" },
+    "replicas": 3,
+    "template": {
+      "metadata": { "labels": { "app": "hello-openshift" } },
+      "spec": {
+        "containers": [
+          {
+            "name": "hello-openshift",
+            "image": "openshift/hello-openshift",
+            "ports": [{ "containerPort": 8080 }]
+          }
+        ]
+      }
+    }
+  }
+}

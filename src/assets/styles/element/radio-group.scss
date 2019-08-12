@@ -1,0 +1,23 @@
+.el-radio-group {
+  .el-radio-button {
+    .el-radio-button__inner {
+      min-width: 100px;
+      padding: 9px 13px;
+      font-size: 12px;
+    }
+
+    &:first-child:last-child {
+      .el-radio-button__inner {
+        border-radius: 2px;
+      }
+    }
+
+    &:first-child .el-radio-button__inner {
+      border-radius: 2px 0 0 2px;
+    }
+
+    &:last-child .el-radio-button__inner {
+      border-radius: 0 2px 2px 0;
+    }
+  }
+}

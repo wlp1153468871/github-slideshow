@@ -1,0 +1,202 @@
+@import "~daoColor";
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  .layout-content {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    overflow: auto;
+    background: $white-dark-lighter;
+    & > .dao-status-bar {
+      right: 0;
+      left: 200px;
+      z-index: 200;
+      flex: 0 0 auto;
+      background-color: $white;
+    }
+    & > .dao-table-container,
+    .node-list-container {
+      flex: 1 1 auto;
+      margin: 20px 40px;
+    }
+    & > .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: auto;
+      min-height: 100%;
+
+      & > .content {
+        position: relative;
+        flex: 1 0 auto;
+        // flex-grow: 1;
+        // flex-shrink: 0;
+        overflow: auto;
+      }
+    }
+  }
+}
+
+.layout-content-header {
+  $header-line-height: 42px;
+  padding: 9px 20px;
+  // height: $header-line-height;
+  // line-height: $header-line-height;
+  font-size: 16px;
+  line-height: 24px;
+  background-color: #fff;
+  // box-shadow: inset 0 -1px 0 0 #ccd1d9;
+  box-shadow: inset 0 -1px 0 0 #e4e7ed;
+
+  &.state-header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+
+  // .header-content-title {
+  //   display: flex;
+  //   justify-content: space-between;
+  // }
+
+  .header-content-logo {
+    float: left;
+    margin-right: 12px;
+  }
+
+  .header-btn-group {
+    float: right;
+    display: flex;
+    .dao-btn + .dao-dropdown {
+      margin-left: 10px;
+    }
+  }
+
+  .header-content-status {
+    @include clearfix;
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 20px;
+
+    .content-item {
+      float: left;
+      display: block;
+      margin-right: 8px;
+
+       > span {
+        float: left;
+      }
+      .label {
+        color: #9ba3af;
+      }
+      .value {
+        margin-left: 5px;
+      }
+      svg.icon {
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+}
+
+.dao-header-tab-nav {
+  & > .dao-tab__header {
+    padding: 0;
+    background-color: $white;
+    border-color: #e4e7ed;
+
+    .dao-tab-nav {
+      padding: 0 20px;
+    }
+
+    .dao-tab-nav-item {
+      height: 36px;
+      padding-right: 0;
+      padding-left: 0;
+      margin-bottom: 0;
+      color: $black-light;
+      background-color: $white;
+      border: none;
+      border-left: none;
+      &.first-child {
+        padding-left: 0;
+      }
+      &:not(:first-child) {
+        margin-left: 20px;
+      }
+      &.active {
+        color: #3890ff;
+        color: #3890ff;
+        border-top: none;
+        border-bottom: 2px solid #3890ff;
+      }
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  &.nav-between {
+    $nav-between-padding: 25px;
+
+    .dao-tab__header {
+      display: flex;
+      justify-content: space-between;
+      flex-basis: 100%;
+      padding: 0 $nav-between-padding;
+
+      .dao-tab-nav:first-child,
+      .dao-tab-nav:last-child {
+        padding: 0;
+      }
+    }
+    .dao-tab__body {
+      padding: 0 $nav-between-padding;
+    }
+  }
+}
+
+.dao-setting-warning {
+  padding: 10px 16px;
+  color: #9ba3af;
+  background-color: #fffaef;
+  .tip-icon {
+    width: 14px;
+    height: 14px;
+    color: #f7b32b;
+  }
+}
+
+.dao-setting-patch {
+  padding: 15px 20px;
+  margin: 10px 0 0;
+  background-color: $white-light;
+  border-radius: 4px;
+}
+
+.fixed-bottom-panels {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+}
+
+// sticky-footer
+.sticky-footer-container {
+  display: flex;
+  flex-direction: column;
+  .nearby-sticky-footer {
+    flex: 1 0 auto;
+  }
+  .sticky-footer {
+    flex: 0;
+  }
+}

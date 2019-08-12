@@ -1,0 +1,207 @@
+@import "~daoColor";
+
+.checkout-module {
+  position: relative;
+  padding-top: 80px;
+  margin-bottom: 100px;
+  background-color: #f1f3f6;
+
+  .daox-setting-layout {
+    .dao-setting-layout {
+      .dao-setting-section {
+        & ~ .dao-setting-section {
+          background: unset;
+          border-top: 1px solid #e4e7ed;
+        }
+      }
+    }
+  }
+
+  .top-bar {
+    position: fixed;
+    top: 64px;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 42px;
+    margin-bottom: 40px;
+    font-size: 16px;
+    background-color: $white;
+    border-bottom: 1px solid $white-dark;
+
+    .go-back {
+      color: #000;
+      cursor: pointer;
+      svg {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+      }
+    }
+    .steps {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+    }
+  }
+
+  .processor {
+    margin: auto;
+    .processorBox {
+      li {
+        float: left;
+        width: 33.333%;
+        list-style: none;
+      }
+      .step_inner {
+        width: 100px;
+        margin: 0 auto;
+        margin: 0 25px;
+        text-align: center;
+        .icon_step {
+          z-index: 2;
+          display: inline-block;
+          width: 22px;
+          height: 22px;
+          color: $white;
+          font-size: 12px;
+          line-height: 22px;
+          text-align: center;
+          vertical-align: middle;
+          background-color: #a4a4a4;
+          border-radius: 50%;
+          svg {
+            width: 12px;
+            height: 12px;
+
+            fill: $white;
+          }
+        }
+        .active {
+          background-color: $blue;
+        }
+        .icon_step_select {
+          background-color: $white;
+          border: 1px solid #cccfd9;
+          svg {
+            fill: #cccfd9;
+          }
+        }
+        .title {
+          margin-left: 5px;
+          font-size: 16px;
+          vertical-align: middle;
+        }
+      }
+      .second-step {
+        position: relative;
+        text-align: center;
+        &:after,
+        &:before {
+          content: "";
+          position: absolute;
+          top: .7em;
+          width: 48px;
+          height: 1px;
+          background-color: #cccfd9;
+        }
+        &:before {
+          left: -50px;
+        }
+        &:after {
+          right: -50px;
+        }
+      }
+    }
+  }
+
+  .header-title {
+    margin-left: 30px;
+    .service-name {
+      display: inline-block;
+      padding-left: 15px;
+      margin-left: 15px;
+      vertical-align: middle;
+      border-left: 1px solid #ccd1d9;
+    }
+  }
+
+  fieldset {
+    border: none;
+  }
+
+  .footer-des {
+    display: inline-block;
+    align-items: center;
+    flex: 1;
+    margin-left: 50px;
+    span.des-name {
+      margin: auto 10px;
+    }
+    span.des-content {
+      margin-right: 5px;
+      color: #3890ff;
+    }
+  }
+  .checkout-select {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .dao-setting-label {
+      min-width: 50px;
+    }
+    .dao-select-switch {
+      width: 80px;
+    }
+    .dao-setting-item {
+      margin-top: 0;
+    }
+    .price {
+      position: absolute;
+      left: 15px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      line-height: 25px;
+      .dao-setting-content {
+        width: 150px;
+        min-width: 100px;
+        .number {
+          color: $blue;
+          font-size: 26px;
+          line-height: 30px;
+        }
+        .price-unit {
+          font-size: 14px;
+        }
+      }
+    }
+    .dao-select,
+    .dao-select-rel {
+      width: 80px;
+    }
+    .step-btns {
+      position: absolute;
+      right: 15px;
+    }
+  }
+  .dao-setting-layout-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    color: #99a1ad;
+    .placeholder {
+      color: #3b424d;
+    }
+  }
+}

@@ -1,0 +1,44 @@
+@import '~daoColor';
+
+.dao-table {
+  td.cell-operations {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .icon-remove {
+      color: $red;
+    }
+
+    .icon-edit {
+      color: $blue;
+    }
+  }
+}
+
+.envs-table {
+  width: 100%;
+  text-align: left;
+  table-layout: fixed;
+
+  thead {
+    color: #99a1ad;
+
+    th {
+      font-weight: normal;
+      line-height: 24px;
+      border-bottom: 1px solid #d8d8d8;
+    }
+  }
+
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

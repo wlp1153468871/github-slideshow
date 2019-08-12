@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+  <defs>
+    <style>
+      .a {
+        opacity: 0.5;
+      }
+    </style>
+  </defs>
+  <title>配额字段</title>
+  <g>
+    <path class="a" d="M18,3V0H15V1H3V0H0V3H1V15H0v3H3V17H15v1h3V15H17V3ZM1,1H2V2H1ZM1,17V16H2v1Zm14-1H3V15H2V3H3V2H15V3h1V15H15Zm2,1H16V16h1ZM16,2V1h1V2Z"/>
+    <polygon points="13 5 5 5 5 7 8 7 8 14 10 14 10 7 13 7 13 5"/>
+  </g>
+</svg>

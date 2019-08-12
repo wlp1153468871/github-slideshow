@@ -1,0 +1,11 @@
+@import '~daoColor';
+
+.dao-btn.mini.red {
+  color: $red;
+}
+
+.dao-btn.mini.red.active,
+.dao-btn.mini.red:active,
+.dao-btn.mini.red:hover {
+  background-color: rgba(241, 72, 63, 0.15);
+}

@@ -1,0 +1,129 @@
+@import "~daoColor";
+
+.dashboard {
+  padding: 20px;
+
+  .row {
+    & + .row {
+      margin-top: 20px;
+    }
+  }
+
+  .panel {
+    height: 280px;
+    background: #fff;
+    box-shadow: 0 0 4px 0 #e4e4e4;
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      padding: 15px 16px;
+      border-bottom: 1px solid #efefef;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 14px;
+        color: $blue;
+      }
+
+      .panel-name {
+        color: rgba(0, 0, 0, .7);
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
+
+    .panel-content {
+      overflow: auto;
+      height: calc(100% - 55px);
+      padding: 14px 26px;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        table-layout: fixed;
+
+        tr {
+          th,
+          td {
+            &:not(:first-child) {
+              text-align: center;
+            }
+          }
+        }
+
+        th {
+          padding: 4px 24px;
+          color: #9ba3af;
+          font-size: 14px;
+          line-height: 24px;
+          text-align: left;
+        }
+
+        td {
+          padding: 10px 24px;
+          color: rgba(0, 0, 0, .7);
+          line-height: 24px;
+
+          &.count {
+            color: #1890ff;
+          }
+        }
+
+        tbody {
+          tr {
+            &:hover {
+              background: #f2f9ff;
+            }
+
+            td {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+
+      .resource-table {
+        th,
+        td {
+          &:not(:first-child) {
+            overflow: hidden;
+            padding: 4px 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+
+  .empty-data {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    color: rgba(0, 0, 0, .45);
+    line-height: 22px;
+    text-align: center;
+    transform: translateY(-70%);
+
+    img {
+      width: 222px;
+      margin-bottom: 24px;
+    }
+
+    .empty-title {
+      font-size: 20px;
+    }
+
+    .empty-content {
+      margin-top: 24px;
+      color: rgba(0, 0, 0, .25);
+      font-size: 16px;
+    }
+  }
+}

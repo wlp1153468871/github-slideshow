@@ -1,0 +1,27 @@
+.module-manage-service {
+  .service-new-logo {
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 7px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% auto;
+  }
+
+  .service-snapshot {
+    .img-snapshot {
+      overflow: hidden;
+      width: 160px;
+      height: 100px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+    & > .operation {
+      float: right;
+      margin-top: 0!important;
+      transform: translateY(-5px);
+    }
+  }
+}

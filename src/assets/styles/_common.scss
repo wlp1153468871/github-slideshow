@@ -1,0 +1,317 @@
+@import '~daoColor';
+
+* {
+  outline: none;
+}
+
+html {
+  overflow-x: auto !important;
+  min-width: 960px !important;
+  height: 100%;
+}
+
+body {
+  // 解决 tooltip、popover append to body 后小于 1280 时候错位问题
+  position: relative;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Neue Haas Grotesk Text Pro',
+    'Arial Nova', 'Segoe UI', 'Helvetica Neue', '.PingFang SC', 'PingFang SC',
+    'Microsoft YaHei', 'Microsoft JhengHei', 'Source Han Sans SC',
+    'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
+    'Source Han Sans TC', 'Noto Sans CJK TC', 'Hiragino Sans GB', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-size: 14px;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+// 生成一堆 margin 和 padding 的 class。
+// 形如 .mt-md .mb-xs .p-none，分为 (m|p)(t|r|b|l)?-(none|xs|sm|md|lg) 这样子的样式规格
+// 定义边距变量
+$help-box-blanks: (
+  '.m': 'margin',
+  '.p': 'padding',
+);
+// 循环，是 margin 还是 padding
+@each $help-box-blank-class, $help-box-blank in $help-box-blanks {
+  // 定义尺寸变量
+  $help-box-sizes: (
+    '-none': 0,
+    '-xs': 5px,
+    '-sm': 10px,
+    '-md': 15px,
+    '-lg': 20px,
+  );
+  // 循环尺寸
+  @each $help-box-size-class, $help-box-size in $help-box-sizes {
+    // 定义方向变量
+    $help-box-directions: (
+      't': '-top',
+      'r': '-right',
+      'b': '-bottom',
+      'l': '-left',
+    );
+    #{$help-box-blank-class}#{$help-box-size-class} {
+      #{$help-box-blank}: $help-box-size !important;
+    }
+    // 循环方向 上、右、下、左
+    @each $help-box-direction-class, $help-box-direction in $help-box-directions
+    {
+      #{$help-box-blank-class}#{$help-box-direction-class}#{$help-box-size-class} {
+        #{$help-box-blank}#{$help-box-direction}: $help-box-size !important;
+      }
+    }
+  }
+}
+
+a {
+  color: $blue;
+  text-decoration: none;
+  cursor: pointer !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.with-sidebar {
+  margin-left: 20px;
+}
+
+a.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.text-danger {
+  color: #f1483f !important;
+}
+
+.text-success {
+  color: #22c36a !important;
+}
+
+.text-info {
+  color: #4c9bff !important;
+}
+
+.text-gray {
+  color: #9ba3af;
+}
+
+.text-undefined {
+  color: #ccd1d9;
+}
+
+.rotating {
+  animation: rotate 1.1s infinite linear;
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}
+
+.tooltip-icon {
+  color: $blue;
+}
+
+.dao-table-fixed,
+.dao-table.row.fixed {
+  table-layout: fixed;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.opterator {
+  cursor: pointer;
+}
+
+.error-message {
+  $error-color: generate-color($red, -3);
+  padding: 6px 10px;
+  color: $red;
+  text-align: left;
+  background-color: $error-color;
+  box-shadow: inset 0 -1px 0 0 #f0c2c0, inset 0 1px 0 0 #f0c2c0;
+}
+
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.table-toolbar {
+  margin-bottom: 15px;
+  overflow: hidden;
+
+  .table-toolbar-left {
+    float: left;
+    display: flex;
+    align-items: center;
+
+    .create {
+      margin-left: 10px;
+    }
+  }
+
+  .table-toolbar-right {
+    float: right;
+    display: flex;
+    align-items: right;
+  }
+}
+
+// common
+.sub-setting-layout {
+  border: 1px solid #e6e9ef;
+  border-radius: 4px;
+  padding: 10px;
+  background: #fbfcfc;
+
+  .sub-setting-section {
+    display: flex;
+    margin-bottom: 10px;
+
+    .sub-setting-item {
+      .top-label {
+        color: #9ba3af;
+        font-size: 13px;
+        text-align: left;
+        line-height: 14px;
+        margin-bottom: 5px;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// 全局nav-menu
+.dao-nav-menu {
+  position: relative;
+  width: 200px;
+  background: rgb(55, 59, 65);
+
+  &.collapsed {
+    width: 64px;
+    transition: 0.3s;
+
+    .el-icon-d-arrow-left {
+      transform: rotate(-180deg);
+      transition: 0.4s;
+    }
+
+    .el-cascader__label {
+      white-space: unset;
+    }
+  }
+
+  .menus {
+    position: absolute;
+    top: 0;
+    bottom: 40px;
+    width: 100%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  .side-bar-menu {
+    &.el-menu {
+      border: 0;
+    }
+
+    .el-menu-item {
+      &.is-active {
+        .icon {
+          color: $blue;
+        }
+      }
+    }
+
+    .icon {
+      vertical-align: middle;
+      margin-right: 5px;
+      width: 24px;
+      height: 18px;
+      text-align: center;
+      font-size: 18px;
+      color: #909399;
+    }
+  }
+
+  .collapse-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 40px;
+    width: 100%;
+    border-top: 1px solid #2d3034;
+    color: #9ba3af;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #373b41;
+  }
+}
+
+.secret-value {
+  span {
+    vertical-align: middle;
+    transform: translateY(-2px);
+    display: inline-block;
+    width: 200px;
+    padding: 5px;
+    height: 26px;
+    line-height: 1;
+    background-color: #f5f7fa;
+    color: #9ba3af;
+    border: 1px solid #e4e7ed;
+    border-radius: 2px;
+    cursor: not-allowed;
+  }
+}
+
+.hover-row {
+  .dropdown-trigger {
+    color: #9ba3af;
+    fill: #9ba3af;
+  }
+}
+
+.dropdown-trigger {
+  color: $grey-light;
+  fill: $grey-light;
+
+  &:hover {
+    color: #3890ff;
+    fill: #3890ff;
+  }
+}

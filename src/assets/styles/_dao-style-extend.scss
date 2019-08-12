@@ -1,0 +1,66 @@
+.dao-dialog-container .dao-setting-layout {
+  border-radius: 0;
+}
+
+.dao-btn.dao-icon.btn-sm {
+  padding-right: 5px;
+  padding-left: 5px;
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+.dao-table.slat {
+  th,
+  td {
+    $class-slug: ceil !default;
+    &.operation {
+      min-width: 100px;
+      max-width: 100px;
+    }
+
+    @for $i from 1 through 4 {
+      &.#{$class-slug}-#{$i} {
+        flex: $i;
+      }
+    }
+  }
+}
+
+.dao-table-view-container {
+  .dao-table-view-left-bar {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 10px;
+  }
+
+  .dao-table-view-scrolldiv {
+    background-color: #fff;
+  }
+}
+
+// reset dao-panel-body
+.dao-panel-body {
+  padding: 20px;
+}
+
+.dao-dialog-body,
+.dao-tab-item {
+  & > .daox-setting-layout {
+    & > .dao-setting-layout {
+      border: none;
+    }
+  }
+}
+
+// extends dao-select
+.dao-select {
+  &.select-full-width {
+    width: 100%;
+  }
+}
+
+.dao-dialog-backdrop{
+  z-index: 2000;
+}

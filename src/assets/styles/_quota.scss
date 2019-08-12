@@ -1,0 +1,31 @@
+@import "~daoColor";
+
+.quota-content {
+  border: 1px solid $white-dark;
+  border-radius: 5px;
+
+  .quota-progress-item {
+    color: $black-light;
+    .quota-progress {
+      display: inline-block;
+      width: 120px;
+      margin: 0 8px;
+    }
+  }
+
+  .used-quota,
+  .apply-quota {
+    padding: 12px 20px;
+    margin: 0;
+    p {
+      margin: 0 0 15px;
+    }
+  }
+
+  .used-quota {
+    background-color: $white-light;
+    border-bottom: 1px solid $white-dark;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+}

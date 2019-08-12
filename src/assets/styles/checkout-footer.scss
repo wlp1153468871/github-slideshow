@@ -1,0 +1,44 @@
+.checkout-select {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  .dao-setting-label {
+    min-width: 50px;
+  }
+  .dao-select-switch {
+    width: 80px;
+  }
+  .dao-setting-item {
+    margin-top: 0;
+  }
+  .price {
+    position: absolute;
+    left: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    line-height: 25px;
+    .dao-setting-content {
+      width: 150px;
+      min-width: 100px;
+      .number {
+        color: $blue;
+        font-size: 26px;
+        line-height: 30px;
+      }
+      .price-unit {
+        font-size: 14px;
+      }
+    }
+  }
+  .dao-select,
+  .dao-select-rel {
+    width: 80px;
+  }
+  .step-btns {
+    position: absolute;
+    right: 15px;
+  }
+}

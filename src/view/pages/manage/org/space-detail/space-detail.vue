@@ -1,0 +1,63 @@
+<template>
+  <div>
+    <div class="layout-content-header bg-white">
+      <breadcrumb
+        :links="[
+          { text: '租户列表', route: { name: 'manage.org.list' } },
+          { text: org.name, route: { name: 'manage.org.detail' } },
+          { text: space.name }
+      ]">
+      </breadcrumb>
+    </div>
+
+    <el-tabs v-model="activeTab">
+      <el-tab-pane
+        :label="SIDE_BAR.USER"
+        :name="SIDE_BAR.USER">
+        <user-panel
+          :space-id="spaceId"
+          :org-id="orgId">
+        </user-panel>
+      </el-tab-pane>
+
+      <el-tab-pane
+        :label="SIDE_BAR.SERVICE"
+        :name="SIDE_BAR.SERVICE"
+        lazy>
+        <service-panel
+          :space-id="spaceId"
+          :org-id="orgId">
+        </service-panel>
+      </el-tab-pane>
+
+      <el-tab-pane :label="SIDE_BAR.QUOTA" :name="SIDE_BAR.QUOTA">
+        <quota-panel
+          ref="qutoaPanel"
+          :org-id="orgId"
+          :space-id="spaceId"
+          :quota-usages="space.quota_usages">
+        </quota-panel>
+      </el-tab-pane>
+
+      <el-tab-pane :label="SIDE_BAR.QUOTA_REQUEST" :name="SIDE_BAR.QUOTA_REQUEST">
+        <quota-request-panel
+          @update-quota="refreshSpaceQuotaGroups"
+          :space-id="spaceId">
+        </quota-request-panel>
+      </el-tab-pane>
+
+      <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
+        <overview-panel
+          :org-id="orgId"
+          :space="space"
+          :space-id="spaceId"
+          @save="updateSpace">
+        </overview-panel>
+      </el-tab-pane>
+    </el-tabs>
+
+  </div>
+</template>
+
+<script src="./space-detail.js">
+</script>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+	<style type="text/css">
+		.st0{fill:#919DB5;}
+		.st1{opacity:0.7;fill:#FFFFFF;enable-background:new    ;}
+		.st2{opacity:0.3;fill:#FFFFFF;enable-background:new    ;}
+		.st3{fill:#FFFFFF;}
+		</style>
+	<title>runtime</title>
+	<rect class="st0" width="50" height="50"/>
+	<g>
+		<polygon class="st1" points="24.7,27.7 15.6,23.2 12,25 24.7,31.4 37.4,25 33.7,23.2  "/>
+		<polygon class="st2" points="24.7,34.7 15.8,30.3 12,32.2 24.7,38.5 37.4,32.2 33.5,30.3  "/>
+		<path class="st3" d="M24.7,11.5l12.7,6.3l-12.7,6.3L12,17.9L24.7,11.5"/>
+	</g>
+</svg>

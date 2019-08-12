@@ -1,0 +1,90 @@
+<template>
+  <div>
+    <i class='layer'></i>
+    <i class='layer'></i>
+    <i class='layer'></i>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'LoadingStack',
+};
+</script>
+
+<style lang="scss" scoped>
+$duration: 1.8s;
+$dimension: 3em;
+
+/**
+ * Create the loop delay with
+ * the extra keyframes
+ */
+@keyframes moveup {
+  0%,
+  60%,
+  100% {
+    transform: rotateX(50deg)
+    rotateY(0deg)
+    rotateZ(45deg)
+    translateZ(0);
+  }
+  25% {
+    transform: rotateX(50deg)
+    rotateY(0deg)
+    rotateZ(45deg)
+    translateZ(1em);
+  }
+}
+
+@keyframes movedown {
+  0%,
+  60%,
+  100% {
+    transform: rotateX(50deg)
+    rotateY(0deg)
+    rotateZ(45deg)
+    translateZ(0);
+  }
+  25% {
+    transform: rotateX(50deg)
+    rotateY(0deg)
+    rotateZ(45deg)
+    translateZ(-1em);
+  }
+}
+
+/**
+ * Square layer styles
+ */
+.layer {
+  position: absolute;
+  display: block;
+  width: $dimension;
+  height: $dimension;
+  box-shadow: 3px 3px 2px rgba(0,0,0,.2);
+  transform: rotateX(50deg)
+  rotateY(0deg)
+  rotateZ(45deg);
+  &:nth-of-type(1) {
+    margin-top: $dimension/2;
+    background: #534a47;
+    animation: movedown $duration cubic-bezier(.39, .575, .565, 1) $duration/2 infinite normal;
+    &:before {
+      content: "";
+      position: absolute;
+      width: 85%;
+      height: 85%;
+      background: #37332f;
+    }
+  }
+  &:nth-of-type(2) {
+    margin-top: $dimension/4;
+    background: #5a96bc;
+  }
+  &:nth-of-type(3) {
+    background: rgba(255,255,255,.6);
+    animation: moveup $duration cubic-bezier(.39, .575, .565, 1) infinite normal;
+  }
+}
+</style>

@@ -1,0 +1,12 @@
+//sweetalert btn restyle
+@import "~daoColor";
+
+
+
+.swal-button--confirm {
+  background-color: $blue;
+}
+
+.swal-button--danger {
+  background-color: $red;
+}

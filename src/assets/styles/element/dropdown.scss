@@ -1,0 +1,13 @@
+@import '~daoColor';
+
+.el-dropdown-menu__item:not(.is-disabled):hover,
+.el-dropdown-menu__item:focus {
+  &.dropdown-item-error {
+    color: $red;
+
+    &:hover {
+      background: #fef0f0;
+      color: $red;
+    }
+  }
+}

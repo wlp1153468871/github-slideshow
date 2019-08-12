@@ -1,0 +1,58 @@
+// Text overflow
+// -------------------------
+// Requires inline-block or block for proper styling
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// CSS image replacement
+// -------------------------
+// Source: https://github.com/h5bp/html5-boilerplate/commit/aa0396eae757
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+// for icon spin
+.icon-spin {
+  animation: icon-spin 2s infinite linear;
+}
+
+.icon-pulse {
+  animation: icon-spin 1s infinite steps(8);
+}
+
+@keyframes icon-spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.text-muted {
+  color: #757575;
+}
+
+.small {
+  font-size: 91%;
+}
+
+.word-break {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+.word-break-all {
+  word-break: break-all;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}

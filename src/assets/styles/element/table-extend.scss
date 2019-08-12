@@ -1,0 +1,38 @@
+.el-table {
+  border: 1px solid #e4e7ed;
+  color: #595f69;
+  fill: #595f69;
+  &::before {
+    content: none;
+  }
+  th {
+    padding: 5px;
+    color: #595f69;
+    font-weight: 600;
+    font-size: 14px;
+    background-color: #f6f7f8;
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      border-right: 1px solid #d5dbe3;
+      right: 0;
+      height: 58.82353%;
+      top: 20.58824%;
+    }
+  }
+  td {
+    padding: 5px;
+    border-bottom: 1px solid #f1f3f6;
+  }
+  .el-table__body {
+    tbody {
+      tr {
+        &:last-child {
+          td {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+}

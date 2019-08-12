@@ -1,0 +1,120 @@
+import saveRefreshTime from '@/core/utils/refresh-time';
+import Vue from 'vue';
+import store from '@/core/store';
+import axios from 'axios';
+import { get as getValue } from 'lodash';
+import AuthService from '@/core/services/auth.service';
+import Noty from 'noty';
+import api from './';
+
+const notyErrorOption = {
+  killer: true,
+  timeout: 2000,
+  progressBar: true,
+  layout: 'topCenter',
+  type: 'error',
+};
+
+function notifyErrorResponse(response, defaultMessage) {
+  const msg =
+    getValue(response, 'data.error_info') || getValue(response, 'data');
+  new Noty({
+    ...notyErrorOption,
+    text: msg || defaultMessage,
+  }).show();
+}
+
+const refreshToken = (params, cb) => {
+  if (store.state.auth.isRefreshing) {
+    const chained = store.state.auth.refreshingCall.then(cb);
+    store.commit('setRefreshingCall', chained);
+    return chained;
+  }
+
+  store.commit('setRefreshingState', true);
+
+  const refreshingCall = axios
+    .get('/v1/auth_token', { params })
+    .then(({ data: { token } }) => {
+      store.commit('saveToken', token);
+      store.commit('setRefreshingState', false);
+      store.commit('setRefreshingCall', undefined);
+      return Promise.resolve(true);
+    })
+    .then(cb);
+
+  store.commit('setRefreshingCall', refreshingCall);
+  return refreshingCall;
+};
+
+const toLogin = () => {
+  notifyErrorResponse({}, '登录过期，请重新登录');
+  store.dispatch('clearCache').then(router => {
+    router.push({
+      name: 'login',
+      query: {
+        redirect: router.currentRoute.fullPath,
+      },
+    });
+    // window.location.reload();
+  });
+};
+
+/**
+ * auth service handle global authorization
+ */
+export default {
+  request(config) {
+    if (!config.headers.Authorization && AuthService.getToken()) {
+      config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
+    }
+    saveRefreshTime();
+    return config;
+  },
+
+  // global ajax success handler
+  response(res) {
+    if (/^20\d/.test(res.status)) {
+      return res.data;
+    }
+    return res;
+  },
+
+  // global ajax error handler
+  responseError(error) {
+    const { response = {} } = error;
+
+    if (response.status === 502) {
+      notifyErrorResponse({}, '后端出问题了, 请联系管理员');
+    } else if (response.status === 401) {
+      const nowTime = new Date();
+      const refreshTime = new Date(Date.parse(Vue.ls.get('refreshTime')));
+      // 在用户操作的活跃期内
+      if (refreshTime && nowTime <= refreshTime) {
+        return refreshToken(
+          {
+            refresh_token: Vue.ls.get('refresh_token'),
+          },
+          () => {
+            error.config.headers.Authorization = `Bearer ${store.state.token}`;
+            error.config.baseURL = undefined;
+            return api.request(error.config);
+          },
+        ).catch(() => {
+          toLogin();
+        });
+      }
+      toLogin();
+    } else if (response.status === 403) {
+      if (getValue(response, 'headers.Authorization')) {
+        notifyErrorResponse({}, '权限不足');
+      } else {
+        notifyErrorResponse(response);
+      }
+    } else {
+      notifyErrorResponse(response);
+    }
+
+    return Promise.reject(response);
+  },
+};

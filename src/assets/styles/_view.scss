@@ -1,0 +1,107 @@
+@import "~daoColor";
+// 注：这个文件的代码都是从原项目抄过来的
+// 各个详情页的header部分
+$dao-view-margin-h: 20px;
+$dao-view-margin-v: 15px;
+
+// 这是详情页的内容部分
+.dao-view-main {
+  // 此处将 dao-view-wrap --> dao-view-mian
+  display: flex;
+  margin: $dao-view-margin-v $dao-view-margin-h 0 $dao-view-margin-h;
+  .dao-view-sidebar {
+    flex: 0 0 auto;
+    // padding: 4px;
+    width: 200px;
+    .dao-list-group {
+      margin-top: 0;
+      .dao-tooltip {
+        text-shadow: none;
+      }
+    }
+    // 让小徽章偏右
+    .dao-numeric-badge {
+      position: absolute;
+      top: 11px;
+      right: 25px;
+    }
+  }
+  .dao-view-content {
+    // padding: 4px;
+    flex: 1 1 auto;
+    width: 0;
+    & > .dao-setting-layout:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.dao-view-wrap {
+  margin: 0;
+  background-color: #f5f7fa;
+
+  .dao-view-content,
+  .dao-view-sidebar {
+    padding: 0;
+  }
+
+  .dao-view-content {
+    .dao-setting-layout,
+    .dap-setting-section {
+      border-radius: 0;
+    }
+  }
+
+  .dao-view-sidebar {
+    .dao-list-item {
+      border-right: 0;
+      border-left: 0;
+      border-radius: 0;
+
+      &.active {
+        background-color: #fff;
+        &::before {
+          border-left-color: #3890ff;
+        }
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        height: 100%;
+        border-left: 3px solid #f5f7fa;
+      }
+
+      .icon-prepend {
+        left: 2px;
+      }
+
+      &.drag-drop-list-item {
+        padding: 0 26px;
+
+        &::before {
+          content: none;
+        }
+
+        .icon {
+          svg {
+            columns: $grey-dark;
+            fill: $grey-dark;
+          }
+        }
+
+        &.active {
+          .icon {
+            display: none;
+          }
+        }
+
+        &:hover {
+          .icon {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}

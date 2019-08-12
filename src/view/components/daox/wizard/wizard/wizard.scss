@@ -1,0 +1,121 @@
+@import '~daoColor';
+@import './wizard-footer';
+@import './wizard-header';
+
+.daox-wizard {
+  $cursor-disabled: not-allowed !default;
+  $nav-link-padding: 10px 15px !default;
+
+  .wizard-navigation {
+    .wizard-nav {
+      height: 42px;
+      line-height: 42px;
+      width: 100%;
+      background: white;
+      box-shadow: inset 0 -1px 0 0 #E4E7ED;
+      display: flex;
+      justify-content: center;
+
+      .wizard-nav-pills {
+        margin-bottom: 0;
+        padding-left: 0; // Override default ul/ol
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        box-shadow: inset 0 -1px 0 0 #E4E7ED;
+      }
+
+      .wizard-nav-left,
+      .wizard-nav-right {
+        display: flex;
+        flex: 1;
+      }
+    }
+
+    .step-content {
+      background-color: #fff;
+      .step-tab {
+        $tab-width: 20px;
+        // line-height: $tab-width;
+        // width: 92px;
+        position: relative;
+        color: #9ba3af;
+        vertical-align: middle;
+
+        .step-icon {
+          width: $tab-width;
+          height: $tab-width;
+          line-height: $tab-width;
+          // color: #ffffff;
+          border-radius: 50%;
+          // background-color: $blue;
+          display: inline-block;
+          text-align: center;
+          border: 1px solid #9ba3af;
+          box-sizing: content-box;
+          margin-right: 5px;
+        }
+
+        .step-title {
+          // margin-left: 6px;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: $tab-width;
+          display: inline-block;
+        }
+
+      }
+
+      &.checked {
+        .step-icon {
+          color: #ffffff;
+          background-color: $blue;
+          border: 1px solid $blue;
+        }
+        .step-title {
+          color: #3d444f;
+        }
+      }
+
+      &:last-child {
+        &::after {
+          display: none;
+        }
+      }
+
+      &::after {
+        content: ' ';
+        border-bottom: 1px solid #ccd1d9;
+        display: inline-block;
+        width: 48px;
+        vertical-align: middle;
+        margin: 0 10px;
+      }
+    }
+
+    .wizard-tab-content {
+      min-height: 100px;
+      padding: 30px 20px 10px;
+      margin-bottom: 200px;
+    }
+
+    .wizard-card-footer {
+      padding: 0 20px;
+      .wizard-footer-left {
+        float: left;
+      }
+      .wizard-footer-right {
+        float: right;
+      }
+    }
+  }
+
+  .wizard-card-footer {
+    .wizard-footer-left {
+      float: left;
+    }
+    .wizard-footer-right {
+      float: right;
+    }
+  }
+}
