@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+set -x
+set -e
 
-sed -i "s#VUE_APP_API_URL#${VUE_APP_API_URL}#g" /etc/nginx/conf.d/default.conf
+absolute_path="/etc/nginx/nginx.conf"
 
-nginx -g 'daemon off;'
+sed -i "s#VUE_APP_API_URL#${VUE_APP_API_URL-dsp-controller:8000}#g" ${absolute_path}

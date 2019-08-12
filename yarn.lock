@@ -610,14 +610,12 @@
 "@casl/ability@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-3.0.2.tgz#787e581382836c2da998b9a61ecd334c548b049f"
-  integrity sha512-XBs+ESP9nzeuER1gOVrag/iOXlBXjKd9I80qzzFBC0i4Olsnw4WiDadMoSbulfMNtw6jti640DBN9bPvg9mq9g==
   dependencies:
     sift "^7.0.1"
 
 "@casl/vue@^0.5.1":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@casl/vue/-/vue-0.5.1.tgz#3b9fe9aeba0ba2b45578c91021877f31a288bda4"
-  integrity sha512-a3ZAYoQEr5dnPFQsDnivlC5UBYWKZD0XPvDohzJVCCjztRZIEOFOd/Ns502yTqe9sIJPq38f5nGsZ+YIIVWcIg==
 
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
@@ -649,7 +647,6 @@
 "@types/js-base64@^2.3.1":
   version "2.3.1"
   resolved "https://registry.npm.taobao.org/@types/js-base64/download/@types/js-base64-2.3.1.tgz#c39f14f129408a3d96a1105a650d8b2b6eeb4168"
-  integrity sha1-w58U8SlAij2WoRBaZQ2LK27rQWg=
 
 "@types/lodash@^4.14.120":
   version "4.14.121"
@@ -1884,7 +1881,6 @@ codemirror@^5.41.0:
 codemirror@^5.47.0:
   version "5.47.0"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.47.0.tgz#c13a521ae5660d3acc655af252f4955065293789"
-  integrity sha512-kV49Fr+NGFHFc/Imsx6g180hSlkGhuHxTSDDmDHOuyln0MQYFLixDY4+bFkBVeCEiepYfDimAF/e++9jPJk4QA==
 
 collection-visit@^1.0.0:
   version "1.0.0"
@@ -2838,9 +2834,9 @@ electron-to-chromium@^1.3.113:
   version "1.3.113"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.113.tgz#b1ccf619df7295aea17bc6951dc689632629e4a9"
 
-element-ui@^2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.5.4.tgz#1e051032026a144bc18f7920f0be927977541cb8"
+element-ui@^2.9.1:
+  version "2.11.1"
+  resolved "https://registry.npm.taobao.org/element-ui/download/element-ui-2.11.1.tgz?cache=0&sync_timestamp=1564126738326&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felement-ui%2Fdownload%2Felement-ui-2.11.1.tgz#2b67f9eee3eda2e6884873c1c589cbe30d9a9d60"
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"
@@ -3348,7 +3344,6 @@ file-loader@^3.0.1:
 file-saver@^2.0.2:
   version "2.0.2"
   resolved "https://registry.npm.taobao.org/file-saver/download/file-saver-2.0.2.tgz#06d6e728a9ea2df2cce2f8d9e84dfcdc338ec17a"
-  integrity sha1-BtbnKKnqLfLM4vjZ6E383DOOwXo=
 
 filesize@^3.6.1:
   version "3.6.1"
@@ -4364,7 +4359,6 @@ joi@^14.3.0:
 js-base64@^2.1.8, js-base64@^2.1.9, js-base64@^2.5.1:
   version "2.5.1"
   resolved "https://registry.npm.taobao.org/js-base64/download/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
-  integrity sha1-Hvo57yxfeYC7F4St5KivLeMpESE=
 
 js-levenshtein@^1.1.3:
   version "1.1.6"
@@ -5123,7 +5117,6 @@ mute-stream@0.0.7:
 nan@^2.13.2:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
-  integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
 
 nan@^2.9.2:
   version "2.12.1"
@@ -5265,7 +5258,6 @@ node-releases@^1.1.8:
 node-sass@^4.12.0:
   version "4.12.0"
   resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-4.12.0.tgz#0914f531932380114a30cc5fa4fa63233a25f017"
-  integrity sha512-A1Iv4oN+Iel6EPv77/HddXErL2a+gZ4uBeZUy+a8O35CFYTXhgA8MgLCWBtwpGZdCvTvQ9d+bQxX/QC36GDPpQ==
   dependencies:
     async-foreach "^0.1.3"
     chalk "^1.1.1"
@@ -5337,6 +5329,10 @@ noty@^3.1.0:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/noty/-/noty-3.1.4.tgz#f9eaac9df7883921b270ec6f2869e9aeedd8071b"
 
+noty@^3.2.0-beta:
+  version "3.2.0-beta"
+  resolved "https://registry.npm.taobao.org/noty/download/noty-3.2.0-beta.tgz#cd1117277a1b83c9b08dfc78f968c6c5960d3cfa"
+
 npm-bundled@^1.0.1:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
@@ -5366,7 +5362,6 @@ npm-run-path@^2.0.0:
 nprogress@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
-  integrity sha1-y480xTIT2JVyP8urkH6UIq28r7E=
 
 nth-check@^1.0.2, nth-check@~1.0.1:
   version "1.0.2"
@@ -6835,7 +6830,6 @@ showdown@^1.9.0:
 sift@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/sift/-/sift-7.0.1.tgz#47d62c50b159d316f1372f8b53f9c10cd21a4b08"
-  integrity sha512-oqD7PMJ+uO6jV9EQCl0LrRw1OwsiPsiFQR5AR30heR+4Dl7jBBbDLnNvWiak20tzZlSE1H7RB30SX/1j/YYT7g==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
@@ -6909,7 +6903,6 @@ sockjs@0.3.19:
 sortablejs@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.9.0.tgz#2d1e74ae6bac2cb4ad0622908f340848969eb88d"
-  integrity sha512-Ot6bYJ6PoqPmpsqQYXjn1+RKrY2NWQvQt/o4jfd/UYwVWndyO5EPO8YHbnm5HIykf8ENsm4JUrdAvolPT86yYA==
 
 source-list-map@^2.0.0:
   version "2.0.1"
@@ -7735,7 +7728,6 @@ vary@~1.1.2:
 vee-validate@^2.2.7:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-2.2.8.tgz#fa0af21bf7deb8eaaf1c043d917a22f8bd7be43f"
-  integrity sha512-wVFsNLBuKUdo3O6XR4fFv9oXgAuVhEGgvHhg//hsOVoJO7/KgV+hXKJluhRSnCj/1TtRtlQorUl7YPO+2rDNyg==
 
 vendors@^1.0.0:
   version "1.0.2"
@@ -7780,7 +7772,6 @@ vue-eslint-parser@^2.0.3:
 vue-form-wizard@^0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/vue-form-wizard/-/vue-form-wizard-0.8.4.tgz#ddf864c9709b7ba2a6323f59e5d6d17536b7800e"
-  integrity sha512-/Zk1+B7bz7qHFJ16mwu021lpPXWf/9Tlr2mTNG3J7M0Hdy3rgA802lWsbKYySns0B0qtsD8BYGjQ2Wyxgg+4uw==
 
 vue-formly@^2.5.8:
   version "2.5.8"
@@ -7806,12 +7797,10 @@ vue-loader@^15.6.2:
 vue-ls@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/vue-ls/-/vue-ls-3.2.1.tgz#25d1c75b3a51c17018129de607b44bb120a3385a"
-  integrity sha512-JoZDpSu0qV5AM50vspEzOut2lcm8R0tr5WG99jMHh14qFXkUes3ZdmDMG/p8iSQVQpg0pd/svGwM9Nd7OI2oaw==
 
 vue-router@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.6.tgz#2e4f0f9cbb0b96d0205ab2690cfe588935136ac3"
-  integrity sha512-Ox0ciFLswtSGRTHYhGvx2L44sVbTPNS+uD2kRISuo8B39Y79rOo0Kw0hzupTmiVtftQYCZl87mwldhh2L9Aquw==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
@@ -7834,7 +7823,6 @@ vue-template-es2015-compiler@^1.9.0:
 vue-upload-component@^2.8.20:
   version "2.8.20"
   resolved "https://registry.yarnpkg.com/vue-upload-component/-/vue-upload-component-2.8.20.tgz#60824d3f20f3216dca90d8c86a5c980851b04ea0"
-  integrity sha512-zrnJvULu4rnZe36Ib2/AZrI/h/mmNbUJZ+acZD652PyumzbvjCOQeYHe00sGifTdYjzzS66CwhTT+ubZ2D0Aow==
 
 vue@^2.2.6, vue@^2.6.5:
   version "2.6.7"
@@ -7843,7 +7831,6 @@ vue@^2.2.6, vue@^2.6.5:
 vuedraggable@^2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/vuedraggable/-/vuedraggable-2.21.0.tgz#30c485ed737a9a6a73ea8f21cc8e1ed59aaddc92"
-  integrity sha512-UDp0epjaZikuInoJA9rlEIJaSTQThabq0R9x7TqBdl0qGVFKKzo6glP6ubfzWBmV4iRIfbSOs2DV06s3B5h5tA==
   dependencies:
     sortablejs "^1.9.0"
 

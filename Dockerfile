@@ -26,9 +26,16 @@ RUN npm run build
 # production stage
 # ================
 FROM nginx:1.13 as production-stage
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY startup.sh startup.sh
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-EXPOSE 80
 
-CMD ["bash", "startup.sh"]
+USER root
+
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx
+COPY ./startup.sh /usr/share
+
+RUN chmod a+x /usr/share/startup.sh && chown nginx /etc/nginx
+
+EXPOSE 80docke
+
+USER nginx
+CMD /usr/share/startup.sh && nginx -g 'daemon off;'
