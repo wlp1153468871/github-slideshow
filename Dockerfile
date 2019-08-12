@@ -35,7 +35,7 @@ COPY ./startup.sh /usr/share
 
 RUN chmod a+x /usr/share/startup.sh && chown nginx /etc/nginx
 
-EXPOSE 80docke
+EXPOSE 80
 
 USER nginx
 CMD /usr/share/startup.sh && nginx -g 'daemon off;'
