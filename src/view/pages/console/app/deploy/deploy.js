@@ -72,7 +72,11 @@ export default {
 
       this.instanceError = {};
       this.loadings.purchasing = true;
-      return ApplicationService.createInstance(this.space.id, this.zone.id, instance)
+      return ApplicationService.createInstance(
+        this.space.id,
+        this.zone.id,
+        instance,
+      )
         .then(res => {
           this.instance = res;
         })
@@ -89,6 +93,7 @@ export default {
     parseAppParams() {
       const {
         deployMode = 'image',
+        deploymentKind,
         repository = '',
         name = '',
         version = '',
@@ -100,6 +105,7 @@ export default {
         livenessProbe = {},
         readinessProbe = {},
         port,
+        exposeKind,
         envs,
         configFiles,
         cmd,
@@ -123,11 +129,16 @@ export default {
         params.push({ id: 'deployfile', value: deployfile });
       }
 
+      params.push({ id: 'deploymentKind', value: deploymentKind });
+
       // 租户 / 项目组
       // 地域与环境
 
       // 名称/版本
-      params.push({ id: 'name', value: name }, { id: 'version', value: version });
+      params.push(
+        { id: 'name', value: name },
+        { id: 'version', value: version },
+      );
 
       // 规格
       params.push({ id: 'plan', value: this.parsePlanParams() });
@@ -158,9 +169,15 @@ export default {
 
       // 负载均衡: 创建访问域名, 访问域名, 端口;
       params.push({ id: 'containerport', value: Number(port) });
+
       const { autoRoute } = this.form;
       if (autoRoute) {
-        params.push({ id: 'router', value: this.parseDeploymentParams() });
+        params.push({ id: 'exposeKind', value: exposeKind });
+        if (exposeKind === 'Route') {
+          params.push({ id: 'router', value: this.parseDeploymentParams() });
+        } else if (exposeKind === 'Ingress') {
+          params.push({ id: 'ingress', value: this.parseIngress() });
+        }
       }
 
       // 存储卷
@@ -168,7 +185,10 @@ export default {
 
       // 环境配置: 环境变量, 应用完整 Config Map
       const parsedEnvs = envs.filter(x => x.name !== '');
-      params.push({ id: 'envs', value: parsedEnvs }, { id: 'configFiles', value: configFiles });
+      params.push(
+        { id: 'envs', value: parsedEnvs },
+        { id: 'configFiles', value: configFiles },
+      );
 
       // 挂载 Config Map
 
@@ -180,9 +200,49 @@ export default {
 
       return params;
     },
+
+    parseIngress() {
+      const {
+        name, hostname, version, port, path,
+      } = this.form;
+      const namespace = this.space.short_name;
+      const inrouter = find(this.zone.router_config, { key: INROUTER_KEY });
+      const inrouterDomain = getValue(inrouter, 'domain');
+      const domain = inrouterDomain ? `.${inrouterDomain}` : '';
+
+      return {
+        kind: 'Ingress',
+        apiVersion: 'extensions/v1beta1',
+        metadata: {
+          name,
+          namespace,
+        },
+        spec: {
+          rules: [
+            {
+              host: `${hostname}${domain}`,
+              http: {
+                paths: [
+                  {
+                    path,
+                    backend: {
+                      serviceName: this.genServiceName(name, version),
+                      servicePort: Number(port),
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      };
+    },
+
     /* eslint-enable function-paren-newline */
     parseDeploymentParams() {
-      const { name, hostname, version } = this.form;
+      const {
+        name, hostname, version, path,
+      } = this.form;
       const namespace = this.space.short_name;
       const inrouter = find(this.zone.router_config, { key: INROUTER_KEY });
       const inrouterDomain = getValue(inrouter, 'domain');
@@ -195,6 +255,7 @@ export default {
         release_type: DEPLOYMENT_TYPE.DEFAULT,
         backend: {
           name: this.genServiceName(name, version),
+          path,
         },
         router_label,
       };

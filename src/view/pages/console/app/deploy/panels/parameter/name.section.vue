@@ -70,10 +70,9 @@
       </template>
       <template #content>
         <dao-select
-          v-model="deployResource"
-          @change="changeChargingType">
+          v-model="_deploymentKind">
           <dao-option
-            v-for="option in deployResources"
+            v-for="option in deploymentKinds"
             :key="option.label"
             :value="option.value"
             :label="option.label">
@@ -99,6 +98,7 @@ export default {
     space: { type: Object, default: () => ({}) },
     repository: { type: String, default: 'demo/app:0.0.1' },
     deployMode: { type: String, default: '' },
+    deploymentKind: { type: String },
   },
 
   data() {
@@ -108,10 +108,9 @@ export default {
         version: '',
       },
       recommendNames: [],
-      deployResource: null,
-      deployResources: [
+      deploymentKinds: [
         { label: 'Deployment', value: 'Deployment' },
-        { label: 'Deployment Config', value: 'Deployment Config' },
+        { label: 'Deployment Config', value: 'DeploymentConfig' },
       ],
     };
   },
@@ -138,13 +137,23 @@ export default {
         this.$emit('update:version', version);
       },
     },
+
+    _deploymentKind: {
+      get() {
+        return this.deploymentKind;
+      },
+      set(kind) {
+        this.$emit('update:deploymentKind', kind);
+      },
+    },
   },
 
   methods: {
     checkIsDuplicateName() {
       if (this.veeErrors.has('name')) return;
 
-      this.getRecommendedName(this._name).then(res => { // eslint-disable-line
+      this.getRecommendedName(this._name).then(res => {
+        // eslint-disable-line
         if (res.is_existed) {
           this._name = first(res.recommend_names); // eslint-disable-line
           this.recommendNames = res.recommend_names;
