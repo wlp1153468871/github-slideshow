@@ -5,8 +5,10 @@ export default {
 
   props: {
     data: { type: Array, default: () => [] },
-    filterMethod: { type: Function, default: () => {} },
+    filterMethod: { type: Function },
     loading: { type: Boolean, default: false },
+    small: { type: Boolean, default: false },
+    showRefresh: { type: Boolean, default: true },
   },
 
   data() {
@@ -20,11 +22,12 @@ export default {
   computed: {
     dataFilteredByKey() {
       const filterKey = this.filterKey.toLowerCase();
+      if (!this.filterMethod) return this.data;
       return this.data.filter(row => this.filterMethod(row, filterKey));
     },
 
     paginaData() {
-      return chunk(this.dataFilteredByKey, this.pageSize);
+      return chunk(this.dataFilteredByKey, this.small ? 5 : this.pageSize);
     },
 
     dataInCurrentPage() {

@@ -50,7 +50,7 @@
               <template slot-scope="{ row: pvc }">
                 <el-table-name-cell
                   :resource="pvc"
-                  routerName="resource.persistent-volume-claim">
+                  routerName="resource.persistentvolumeclaims.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>

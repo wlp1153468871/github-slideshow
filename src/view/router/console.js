@@ -62,6 +62,8 @@ import RouteList from '@/view/pages/console/resource/route/list/route-list.vue';
 import RouteDetail from '@/view/pages/console/resource/route/detail/route-detail.vue';
 import ServiceList from '@/view/pages/console/resource/service/list/service.vue';
 import ServiceDetail from '@/view/pages/console/resource/service/detail/service.vue';
+import IngressList from '@/view/pages/console/resource/ingress/list/ingress-list';
+import IngressDetail from '@/view/pages/console/resource/ingress/detail/ingress-detail';
 
 export default {
   path: '/console',
@@ -125,116 +127,130 @@ export default {
      */
     {
       path: 'resource/deployments',
-      name: 'resource.deployments',
+      name: 'resource.deployments.list',
       component: Deployments,
     },
     {
-      path: 'resource/deployment/:name',
-      name: 'resource.deployment',
+      path: 'resource/deployments/:name',
+      name: 'resource.deployments.detail',
       component: Deployment,
       meta: {
-        activeMenu: 'resource.deployments',
+        activeMenu: 'resource.deployments.list',
       },
     },
     {
-      path: 'resource/deployment-config/:name',
-      name: 'resource.deployment-config',
+      path: 'resource/deploymentconfigs/:name',
+      name: 'resource.deploymentconfigs.list',
       component: DeploymentConfig,
       meta: {
-        activeMenu: 'resource.deployments',
+        activeMenu: 'resource.deployments.list',
       },
     },
     {
-      path: 'resource/stateful-sets',
-      name: 'resource.stateful-sets',
+      path: 'resource/statefulsets',
+      name: 'resource.statefulsets.list',
       component: StatefulSetList,
     },
     {
-      path: 'resource/stateful-set/:name',
-      name: 'resource.stateful-set',
+      path: 'resource/statefulsets/:name',
+      name: 'resource.statefulsets.detail',
       component: StatefulSetDetail,
       meta: {
-        activeMenu: 'resource.stateful-sets',
+        activeMenu: 'resource.statefulsets.list',
       },
     },
     {
       path: 'resource/pods',
-      name: 'resource.pods',
+      name: 'resource.pods.list',
       component: Pods,
     },
     {
-      path: 'resource/pod/:name',
-      name: 'resource.pod',
+      path: 'resource/pods/:name',
+      name: 'resource.pods.detail',
       component: Pod,
       meta: {
-        activeMenu: 'resource.pods',
+        activeMenu: 'resource.pods.list',
       },
     },
     {
       path: 'resource/services',
-      name: 'resource.services',
+      name: 'resource.services.list',
       component: ServiceList,
     },
     {
-      path: 'resource/service/:name',
-      name: 'resource.service',
+      path: 'resource/services/:name',
+      name: 'resource.services.detail',
       component: ServiceDetail,
       meta: {
-        activeMenu: 'resource.services',
+        activeMenu: 'resource.services.list',
       },
     },
     {
       path: 'resource/routes',
-      name: 'resource.routes',
+      name: 'resource.routes.list',
       component: RouteList,
     },
     {
-      path: 'resource/route/:name',
-      name: 'resource.route',
+      path: 'resource/routes/:name',
+      name: 'resource.routes.detail',
       component: RouteDetail,
       meta: {
-        activeMenu: 'resource.routes',
+        activeMenu: 'resource.routes.list',
+      },
+    },
+    {
+      path: 'resource/ingresses',
+      name: 'resource.ingresses.list',
+      component: IngressList,
+    },
+    {
+      path: 'resource/ingresses/:name',
+      name: 'resource.ingresses.detail',
+      component: IngressDetail,
+      meta: {
+        activeMenu: 'resource.ingresses.list',
       },
     },
     {
       path: 'resource/persistent-volume-claims',
-      name: 'resource.persistent-volume-claims',
+      name: 'resource.persistentvolumeclaims.list',
       component: VolumeList,
     },
     {
-      path: 'resource/persistent-volume-claim/:name',
-      name: 'resource.persistent-volume-claim',
+      path: 'resource/persistentvolumeclaims/:name',
+      name: 'resource.persistentvolumeclaims.detail',
       component: VolumeDetail,
       meta: {
-        activeMenu: 'resource.persistent-volume-claims',
+        activeMenu: 'resource.persistentvolumeclaims.list',
       },
     },
     {
       path: 'resource/secrets',
-      name: 'resource.secrets',
+      name: 'resource.secrets.list',
       component: SecretList,
     },
     {
-      path: 'resource/secret/:name',
-      name: 'resource.secret',
+      path: 'resource/secrets/:name',
+      name: 'resource.secrets.detail',
       component: SecretDetail,
       meta: {
-        activeMenu: 'resource.secrets',
+        activeMenu: 'resource.secrets.list',
       },
     },
     {
-      path: 'resource/config-maps',
-      name: 'resource.config-maps',
+      path: 'resource/configmaps',
+      name: 'resource.configmaps.list',
       component: ConfigMapList,
     },
     {
-      path: 'resource/config-map/:name',
-      name: 'resource.config-map',
+      path: 'resource/configmaps/:name',
+      name: 'resource.configmaps.detail',
       component: ConfigMapDetail,
       meta: {
-        activeMenu: 'resource.config-maps',
+        activeMenu: 'resource.configmaps.list',
       },
     },
+
     {
       path: 'approval',
       name: 'console.approval.list',

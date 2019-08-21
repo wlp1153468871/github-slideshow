@@ -51,7 +51,7 @@ export default {
       return {
         ...RESOURCE.CONFIG_MAP,
         links: [
-          { text: 'ConfigMaps', route: { name: 'resource.config-maps' } },
+          { text: 'ConfigMaps', route: { name: 'resource.configmaps.list' } },
           { text: this.configMapName },
         ],
       };

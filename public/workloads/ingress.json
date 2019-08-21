@@ -1,0 +1,26 @@
+{
+  "kind": "Ingress",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "example",
+    "namespace": "default"
+  },
+  "spec": {
+    "rules": [
+      {
+        "host": "*.inapps.ocp.dsp.local",
+        "http": {
+          "paths": [
+            {
+              "path": "/",
+              "backend": {
+                "serviceName": "test",
+                "servicePort": 80
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

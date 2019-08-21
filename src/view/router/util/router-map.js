@@ -40,7 +40,7 @@ export default function getRoutePath(resource) {
 
   if (resourceType === RESOURCE_TYPE.CONFIG_MAP) {
     return {
-      name: 'resource.config-maps',
+      name: 'resource.configmaps.list',
     };
   }
 
@@ -53,19 +53,19 @@ export default function getRoutePath(resource) {
 
   if (resourceType === RESOURCE_TYPE.DEPLOYMENT) {
     return {
-      name: 'resource.deployments',
+      name: 'resource.deployments.list',
     };
   }
 
   if (resourceType === RESOURCE_TYPE.DEPLOYMENT_CONFIG) {
     return {
-      name: 'resource.deployments',
+      name: 'resource.deployments.list',
     };
   }
 
   if (resourceType === RESOURCE_TYPE.POD) {
     return {
-      name: 'resource.pods',
+      name: 'resource.pods.list',
     };
   }
 
@@ -78,31 +78,31 @@ export default function getRoutePath(resource) {
 
   if (resourceType === RESOURCE_TYPE.ROUTE) {
     return {
-      name: 'resource.routes',
+      name: 'resource.routes.list',
     };
   }
 
   if (resourceType === RESOURCE_TYPE.SECRET) {
     return {
-      name: 'resource.secrets',
+      name: 'resource.secrets.list',
     };
   }
 
   if (resourceType === RESOURCE_TYPE.SERVICE) {
     return {
-      name: 'resource.services',
+      name: 'resource.services.list',
     };
   }
 
   if (resourceType === RESOURCE_TYPE.STATEFUL_SET) {
     return {
-      name: 'resource.stateful-sets',
+      name: 'resource.statefulsets.list',
     };
   }
 
   if (resourceType === RESOURCE_TYPE.VOLUME) {
     return {
-      name: 'resource.persistent-volume-claims',
+      name: 'resource.persistentvolumeclaims.list',
     };
   }
 

@@ -38,7 +38,7 @@ export default {
           other: {
             onClick: service => {
               this.$router.push({
-                name: 'resource.service',
+                name: 'resource.services.detail',
                 params: {
                   name: service.metadata.name,
                 },

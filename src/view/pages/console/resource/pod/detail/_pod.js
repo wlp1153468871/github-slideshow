@@ -37,7 +37,7 @@ export default {
       resource: {
         ...RESOURCE.POD,
         links: [
-          { text: RESOURCE.POD.name, route: { name: 'resource.pods' } },
+          { text: RESOURCE.POD.name, route: { name: 'resource.pods.list' } },
           { text: podName },
         ],
       },
@@ -126,7 +126,7 @@ export default {
       const { podName } = this;
       PodService.delete({ podName }).then(() => {
         this.$noty.success(`删除Pod ${this.podName} 成功`);
-        this.$router.push({ name: 'resource.pods' });
+        this.$router.push({ name: 'resource.pods.list' });
       });
     },
 

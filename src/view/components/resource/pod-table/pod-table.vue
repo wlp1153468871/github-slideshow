@@ -55,7 +55,7 @@
         sortable
         label="名称">
         <template slot-scope="{ row: pod }">
-          <router-link :to="{ name: 'resource.pod', params: { name: pod.metadata.name } }">
+          <router-link :to="{ name: 'resource.pods.detail', params: { name: pod.metadata.name } }">
             {{pod.metadata.name}}
           </router-link>
           <span v-if="isDebugPod(pod)">

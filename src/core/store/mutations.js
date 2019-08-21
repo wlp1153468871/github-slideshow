@@ -20,10 +20,23 @@ import OrgService from '@/core/services/org.service';
 import SpaceService from '@/core/services/space.service';
 import SystemService from '@/core/services/system.service';
 import ZoneService from '@/core/services/zone.service';
+import APIResourceService from '@/core/services/api-resource.service';
 import CategoryUtil from '@/core/utils/category-util';
 import getRoutePath from '@/view/router/util/router-map';
-import { find, isEmpty, first, groupBy, get as getValue } from 'lodash';
-import { mergeDefaultHelpUrls } from '@/core/constants/resource';
+import {
+  find,
+  isEmpty,
+  first,
+  groupBy,
+  get as getValue,
+  uniqBy,
+  flatten,
+  intersectionWith,
+} from 'lodash';
+import {
+  DEFAULT_RESOURCE,
+  mergeDefaultHelpUrls,
+} from '@/core/constants/resource';
 import * as types from './mutation-types';
 
 export const state = {
@@ -61,6 +74,7 @@ export const state = {
     isRefreshing: false,
     refreshingCall: null,
   },
+  apiResource: null,
 };
 
 /* eslint-disable no-shadow */
@@ -306,7 +320,7 @@ export const actions = {
     });
   },
 
-  loadZones({ commit, state }) {
+  loadZones({ dispatch, commit, state }) {
     return ZoneService.getOrgZones(state.org.id).then(zones => {
       commit(types.LOAD_ZONE_SUCCESS, { zones });
 
@@ -324,6 +338,8 @@ export const actions = {
       }
 
       commit(types.SWITCH_ZONE, { zone });
+
+      dispatch('loadAPIResource');
     });
   },
 
@@ -353,8 +369,33 @@ export const actions = {
   switchZone({ dispatch, commit }, { zone }) {
     commit(types.SWITCH_ZONE, { zone });
     ZoneService.setLocalZone(zone);
+
     dispatch('getUserInfo').then(() => {
       dispatch('initPortal');
+    });
+  },
+
+  loadAPIResource({ commit, state }) {
+    APIResourceService.list(state.zone).then(resources => {
+      const simplifiedResourceList = uniqBy(
+        flatten(resources.map(resourceList => resourceList.resources)),
+        'kind',
+      );
+
+      const filteredResourceList = intersectionWith(
+        simplifiedResourceList,
+        DEFAULT_RESOURCE,
+        (x, y) => {
+          return x.kind === y;
+        },
+      );
+
+      const resourceMap = {};
+      filteredResourceList.forEach(resource => {
+        resourceMap[resource.kind] = resource;
+      });
+
+      commit(types.LOAD_API_RESOURCE, resourceMap);
     });
   },
 };
@@ -491,6 +532,10 @@ export const mutations = {
 
   [types.SET_SGM_SSO](state, sso) {
     state.sgmSso = sso;
+  },
+
+  [types.LOAD_API_RESOURCE](state, resourceMap) {
+    state.apiResource = resourceMap;
   },
 };
 /* eslint-enable no-shadow */

@@ -212,7 +212,6 @@
 import { mapState } from 'vuex';
 import { get as getValue } from 'lodash';
 import Volumes from '@/view/components/resource/volumes/volumes';
-// import DeploymentResourceService from '@/core/services/deployment.resource.service';
 import HPAMixin from '@/view/mixins/hpa';
 
 export default {

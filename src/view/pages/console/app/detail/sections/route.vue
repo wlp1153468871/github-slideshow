@@ -36,7 +36,7 @@ export default {
         other: {
           onClick: route => {
             this.$router.push({
-              name: 'resource.route',
+              name: 'resource.routes.detail',
               params: {
                 name: route.metadata.name,
               },

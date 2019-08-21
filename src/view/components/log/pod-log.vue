@@ -326,7 +326,7 @@ export default {
       const { logView } = this.$refs;
       if (!logView) return;
       const text = logView.textContent;
-      const filename = `${getValue(this, 'pod.metadata.name', 'ruyiyun')}.log`;
+      const filename = `${getValue(this, 'pod.metadata.name', 'dsp')}.log`;
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       saveAs(blob, filename);
     },

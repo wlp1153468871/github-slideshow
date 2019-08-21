@@ -1,6 +1,6 @@
 <template>
   <dao-setting-layout>
-    <template slot="layout-title">名称</template>
+    <template slot="layout-title">基础配置</template>
     <dao-setting-section>
       <template slot="label">
         <span>应用名</span>
@@ -62,6 +62,25 @@
         </template>
       </dao-setting-item>
     </dao-setting-section>
+
+    <dao-setting-section>
+      <template #label>
+        <span>资源对象</span>
+        <label-tip text="作为部署应用的资源对象"></label-tip>
+      </template>
+      <template #content>
+        <dao-select
+          v-model="deployResource"
+          @change="changeChargingType">
+          <dao-option
+            v-for="option in deployResources"
+            :key="option.label"
+            :value="option.value"
+            :label="option.label">
+          </dao-option>
+        </dao-select>
+      </template>
+    </dao-setting-section>
   </dao-setting-layout>
 </template>
 
@@ -89,6 +108,11 @@ export default {
         version: '',
       },
       recommendNames: [],
+      deployResource: null,
+      deployResources: [
+        { label: 'Deployment', value: 'Deployment' },
+        { label: 'Deployment Config', value: 'Deployment Config' },
+      ],
     };
   },
 

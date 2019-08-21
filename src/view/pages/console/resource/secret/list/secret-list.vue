@@ -33,7 +33,7 @@
               <template slot-scope="{ row: secret }">
                 <el-table-name-cell
                   :resource="secret"
-                  routerName="resource.secret">
+                  routerName="resource.secrets.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>

@@ -1,4 +1,4 @@
-function setDocumentTitle(title = '如意云') {
+function setDocumentTitle(title = 'DaoCloud Service Platform') {
   document.title = title;
 }
 

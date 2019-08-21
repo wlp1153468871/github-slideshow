@@ -1,6 +1,6 @@
 {
-  "name": "ruyiyun-fe",
-  "version": "1.0.0",
+  "name": "dsp-ui",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -12,6 +12,8 @@
     "@casl/vue": "^0.5.1",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "browserslist": "^4.6.6",
+    "caniuse-lite": "^1.0.30000989",
     "codemirror": "^5.47.0",
     "convert-units": "^2.3.4",
     "d3": "^5.9.1",

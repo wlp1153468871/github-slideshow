@@ -51,7 +51,7 @@ export default {
       return {
         ...RESOURCE.SECRET,
         links: [
-          { text: 'Secret', route: { name: 'resource.secrets' } },
+          { text: 'Secret', route: { name: 'resource.secrets.list' } },
           { text: this.secretName },
         ],
       };

@@ -189,7 +189,7 @@ export default {
         links: [
           {
             text: RESOURCE.DEPLOYMENT_CONFIG.name,
-            route: { name: 'resource.deployments' },
+            route: { name: 'resource.deployments.list' },
           },
           { text: name },
         ],

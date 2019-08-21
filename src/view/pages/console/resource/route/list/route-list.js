@@ -108,7 +108,7 @@ export default {
 
     gotoDetail(volume) {
       this.$router.push({
-        name: 'resource.route',
+        name: 'resource.routes.detail',
         params: {
           name: volume.metadata.name,
         },

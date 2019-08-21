@@ -29,7 +29,7 @@
         </tbody>
       </table>
     </div>
-    <p v-if="!annotations" class="mar-bottom-xl">
+    <p v-if="!annotations" class="mar-bottom-xl text-muted">
       There are no annotations on this resource.
     </p>
   </div>
@@ -40,7 +40,7 @@ export default {
   name: 'Annotations',
 
   props: {
-    annotations: { type: Object, default: () => ({}) },
+    annotations: { type: Object },
   },
 
   data() {

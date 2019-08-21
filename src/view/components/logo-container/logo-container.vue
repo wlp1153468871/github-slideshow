@@ -9,11 +9,11 @@
       <img
         v-if="inverse"
         class="logo"
-        src="~@/assets/images/logo-sgm.png"
+        src="~@/assets/images/logo.png"
         alt="logo"/>
       <img
         v-else
-        src="~@/assets/images/logo-sgm-white.png"
+        src="~@/assets/images/logo-white.png"
         class="logo"
         alt="logo"/>
     </template>
@@ -58,7 +58,7 @@ export default {
     max-width: 100%;
     max-height: 100%;
     display: block;
-    padding: 10px 0;
+    padding: 16px 0;
   }
 }
 </style>

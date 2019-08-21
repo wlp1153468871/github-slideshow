@@ -247,7 +247,12 @@ a.disabled {
     }
 
     .el-menu-item {
+      height: 50px;
+      line-height: 50px;
+
       &.is-active {
+        background-color: rgb(44, 47, 52) !important;
+
         .icon {
           color: $blue;
         }

@@ -1,4 +1,4 @@
-# ruyiyun_ui
+# dsp-ui
 
 ## Project setup
 ### Compiles and hot-reloads for development

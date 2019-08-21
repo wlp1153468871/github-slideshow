@@ -56,12 +56,12 @@ export default {
             onClick: resource => {
               if (resource.kind === 'Deployment') {
                 this.$router.push({
-                  name: 'resource.deployment',
+                  name: 'resource.deployments.detail',
                   params: { name: resource.metadata.name },
                 });
               } else if (resource.kind === 'DeploymentConfig') {
                 this.$router.push({
-                  name: 'resource.deployment-config',
+                  name: 'resource.deploymentconfigs.list',
                   params: { name: resource.metadata.name },
                 });
               }

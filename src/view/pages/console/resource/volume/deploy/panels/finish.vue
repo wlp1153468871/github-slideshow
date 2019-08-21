@@ -77,7 +77,7 @@ export default {
   methods: {
     gotoDetail() {
       this.$router.push({
-        name: 'resource.persistent-volume-claim',
+        name: 'resource.persistentvolumeclaims.detail',
         params: {
           name: this.volume.name,
         },

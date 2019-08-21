@@ -24,7 +24,7 @@
         <template slot-scope="{ row: pvc}">
           <router-link
             :to="{
-                    name: 'resource.persistent-volume-claim',
+                    name: 'resource.persistentvolumeclaims.detail',
                     params: { name: pvc.metadata.name }
                   }">
             {{ pvc.metadata.name }}
@@ -138,7 +138,7 @@ export default {
   methods: {
     gotoDetail(volume) {
       this.$router.push({
-        name: 'resource.persistent-volume-claim',
+        name: 'resource.persistentvolumeclaims.detail',
         params: {
           name: volume.metadata.name,
         },

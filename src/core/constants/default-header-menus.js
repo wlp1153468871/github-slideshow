@@ -39,10 +39,10 @@ export default function getDefaultMenus() {
                 'Deployment为Pod 和 Replication Controller 提供声明式的更新。你只需要在 Deployment 中描述您想要的目标状态是什么，Deployment controller 就会帮您将 Pod 和 RC 的实际状态改变到您的目标状态。Deployment controller 就会帮您将 Pod 和 RC 的实际状态改变到您的目标状态。',
               help_url: Vue.filter('help_url')('deployment-config'),
               route: {
-                name: 'resource.deployments',
+                name: 'resource.deployments.list',
               },
               deployRoute: {
-                name: 'resource.deployments',
+                name: 'resource.deployments.list',
                 query: {
                   dcCreate: true,
                 },
@@ -63,10 +63,10 @@ export default function getDefaultMenus() {
                 'Deployment为Pod和Replica Set（升级版的 Replication Controller）提供声明式的更新。你只需要在 Deployment 中描述您想要的目标状态是什么，Deployment controller 就会帮您将 Pod 和 ReplicaSet 的实际状态改变到您的目标状态。Deployment controller 就会帮您将 Pod 和ReplicaSet 的实际状态改变到您的目标状态。',
               help_url: Vue.filter('help_url')('deployment'),
               route: {
-                name: 'resource.deployments',
+                name: 'resource.deployments.list',
               },
               deployRoute: {
-                name: 'resource.deployments',
+                name: 'resource.deployments.list',
                 query: {
                   create: true,
                 },
@@ -87,10 +87,10 @@ export default function getDefaultMenus() {
                 'Service 资源对象通常被用来定义一组 Pod 的访问策略，在集群内部暴露 Pod 或者其他服务供其他方面进行访问。',
               help_url: Vue.filter('help_url')('service'),
               route: {
-                name: 'resource.services',
+                name: 'resource.services.list',
               },
               deployRoute: {
-                name: 'resource.services',
+                name: 'resource.services.list',
                 query: {
                   create: true,
                 },
@@ -111,7 +111,7 @@ export default function getDefaultMenus() {
                 'Route 资源对象通常被用来将应用或者服务通过域名的方式暴露给集群外部的用户进行访问。',
               help_url: Vue.filter('help_url')('route'),
               route: {
-                name: 'resource.routes',
+                name: 'resource.routes.list',
               },
               deployRoute: {
                 name: 'deploy.route',
@@ -137,7 +137,7 @@ export default function getDefaultMenus() {
               createMessage:
                 '您可以通过页面引导定义 ConfigMap 的各项参数，并完成新的 ConfigMap 资源对象的创建。',
               route: {
-                name: 'resource.config-maps',
+                name: 'resource.configmaps.list',
               },
               deployRoute: {
                 name: 'deploy.config-map',
@@ -158,7 +158,7 @@ export default function getDefaultMenus() {
                 'Secret 提供了一种保存敏感信息的机制。这些敏感信息通常包括密码、dockercfg 文件、私有证书、环境变量等。应用可以通过环境变量或者卷挂载的方式引用 Secret。',
               help_url: Vue.filter('help_url')('secret'),
               route: {
-                name: 'resource.secrets',
+                name: 'resource.secrets.list',
               },
               deployRoute: {
                 name: 'deploy.secret',
@@ -187,7 +187,7 @@ export default function getDefaultMenus() {
                 'PersistentVolumeClaim 是用来挂载持久化的磁盘。PersistentVolumes 是用户在不知道特定云环境的细节的情况下，实现持久化存储的一种方式。',
               help_url: Vue.filter('help_url')('pvc'),
               route: {
-                name: 'resource.persistent-volume-claims',
+                name: 'resource.persistentvolumeclaims.list',
               },
               deployRoute: {
                 name: 'deploy.volume',

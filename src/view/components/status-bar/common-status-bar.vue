@@ -104,7 +104,7 @@ export default {
       max-width: 100%;
       max-height: 100%;
       display: block;
-      padding: 10px 0;
+      padding: 16px 0;
     }
   }
 

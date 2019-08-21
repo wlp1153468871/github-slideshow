@@ -35,7 +35,7 @@ export default function getDetailPath(instance) {
 
   if (resourceType === RESOURCE_TYPE.CONFIG_MAP) {
     return {
-      name: 'resource.config-map',
+      name: 'resource.configmaps.detail',
       params: { name },
     };
   }
@@ -49,21 +49,21 @@ export default function getDetailPath(instance) {
 
   if (resourceType === RESOURCE_TYPE.DEPLOYMENT) {
     return {
-      name: 'resource.deployment',
+      name: 'resource.deployments.detail',
       params: { name },
     };
   }
 
   if (resourceType === RESOURCE_TYPE.DEPLOYMENT_CONFIG) {
     return {
-      name: 'resource.deployment-config',
+      name: 'resource.deploymentconfigs.list',
       params: { name },
     };
   }
 
   if (resourceType === RESOURCE_TYPE.POD) {
     return {
-      name: 'resource.pod',
+      name: 'resource.pods.detail',
       params: { name },
     };
   }
@@ -77,35 +77,35 @@ export default function getDetailPath(instance) {
 
   if (resourceType === RESOURCE_TYPE.ROUTE) {
     return {
-      name: 'resource.route',
+      name: 'resource.routes.detail',
       params: { name },
     };
   }
 
   if (resourceType === RESOURCE_TYPE.SECRET) {
     return {
-      name: 'resource.secret',
+      name: 'resource.secrets.detail',
       params: { name },
     };
   }
 
   if (resourceType === RESOURCE_TYPE.SERVICE) {
     return {
-      name: 'resource.service',
+      name: 'resource.services.detail',
       params: { name },
     };
   }
 
   if (resourceType === RESOURCE_TYPE.STATEFUL_SET) {
     return {
-      name: 'resource.stateful-set',
+      name: 'resource.statefulsets.detail',
       params: { name },
     };
   }
 
   if (resourceType === RESOURCE_TYPE.VOLUME) {
     return {
-      name: 'resource.persistent-volume-claim',
+      name: 'resource.persistentvolumeclaims.detail',
       params: { name },
     };
   }

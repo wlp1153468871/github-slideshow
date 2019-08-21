@@ -62,7 +62,7 @@ Vue.use(JsYaml);
 
 // local storage 配置
 Vue.use(clone(VueStorage), {
-  namespace: 'ruYiCloud_', // sorage 前缀
+  namespace: 'dsp_', // sorage 前缀
   name: 'ls', // 注入vue中的别名，this.$ls
   storage: 'local',
   events: ['name'],

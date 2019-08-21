@@ -26,7 +26,7 @@
             <span class="text">保存</span>
           </button>
         </div>
-        <div slot="content-helper">将 "如意云" 替换成 "我的如意云"</div>
+        <div slot="content-helper">将 "DSP" 替换成 "我的DSP"</div>
       </dao-setting-section>
     </dao-setting-layout>
 
@@ -34,7 +34,7 @@
       <div slot="layout-title">
         产品图标
       </div>
-      <div slot="layout-title-helper">您可以通过修改 LOGO 自由定制 如意云 产品外观</div>
+      <div slot="layout-title-helper">您可以通过修改 LOGO 自由定制 DSP 产品外观</div>
       <dao-setting-section>
         <div slot="label">登录页图标</div>
         <div slot="content">

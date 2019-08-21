@@ -31,7 +31,7 @@ export default {
         links: [
           {
             text: RESOURCE.PERSISTENT_VOLUME_CLAIM.name,
-            route: { name: 'resource.persistent-volume-claims' },
+            route: { name: 'resource.persistentvolumeclaims.list' },
           },
           { text: name },
         ],
@@ -131,7 +131,7 @@ export default {
       this.$noty.success(`正在删除 PVC ${name} `);
       VolumeService.delete(this.space.id, this.zone.id, name).then(() => {
         this.$router.push({
-          name: 'resource.persistent-volume-claims',
+          name: 'resource.persistentvolumeclaims.list',
         });
         this.$noty.success(`删除 PVC ${name} 成功`);
         this.isDeleting = false;

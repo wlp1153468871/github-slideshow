@@ -45,7 +45,7 @@
               <template slot-scope="{ row: service }">
                 <el-table-name-cell
                   :resource="service"
-                  routerName="resource.service">
+                  routerName="resource.services.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>

@@ -163,7 +163,7 @@ export default {
         links: [
           {
             text: 'Stateful Set',
-            route: { name: 'resource.stateful-sets' },
+            route: { name: 'resource.statefulsets.list' },
           },
           { text: name },
         ],

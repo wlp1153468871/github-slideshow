@@ -36,7 +36,7 @@ export default {
     },
 
     title() {
-      return this.theme.productName || '如意云';
+      return this.theme.productName || 'DaoCloud Service Platform';
     },
   },
 

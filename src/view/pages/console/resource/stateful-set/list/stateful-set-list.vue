@@ -48,7 +48,7 @@
               <template slot-scope="{ row: statefulSet }">
                 <el-table-name-cell
                   :resource="statefulSet"
-                  routerName="resource.stateful-set">
+                  routerName="resource.statefulsets.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>

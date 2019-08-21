@@ -81,7 +81,7 @@ export default {
   methods: {
     gotoDetail() {
       this.$router.push({
-        name: 'resource.route',
+        name: 'resource.routes.detail',
         params: {
           name: this.route.name,
         },

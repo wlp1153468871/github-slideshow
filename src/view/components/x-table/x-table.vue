@@ -4,7 +4,7 @@
       <div class="table-toolbar-left">
         <slot name="operation"></slot>
       </div>
-      <div class="table-toolbar-right">
+      <div class="table-toolbar-right" v-if="filterMethod">
         <div>
           <dao-input
             search
@@ -12,6 +12,7 @@
             placeholder="请输入搜索内容">
           </dao-input>
           <button
+            v-if="showRefresh"
             class="dao-btn"
             style="margin-left: 10px;"
             @click="$emit('refresh')">
@@ -32,10 +33,11 @@
 
     <el-pagination
       background
+      :small="small"
       :page-sizes="[10,30,50]"
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
-      layout="sizes, prev, pager, next"
+      :layout="small ? `prev, pager, next` : 'sizes, prev, pager, next'"
       :total="totalPages">
     </el-pagination>
   </div>

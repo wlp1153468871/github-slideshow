@@ -20,7 +20,7 @@
             <span>
               <router-link
                 :to="{
-                name: 'resource.secret',
+                name: 'resource.secrets.detail',
                 params: { name: volume.secret.secretName }
               }">
                 {{volume.secret.secretName}}
@@ -45,7 +45,7 @@
           <dd>
             <router-link
               :to="{
-                     name: 'resource.persistent-volume-claim',
+                     name: 'resource.persistentvolumeclaims.detail',
                      params: { name: volume.persistentVolumeClaim.claimName },
                    }">
               {{volume.persistentVolumeClaim.claimName}}
@@ -117,7 +117,7 @@
           <dd>
             <router-link
               :to="{
-                    name: 'resource.config-map',
+                    name: 'resource.configmaps.detail',
                     params: { name: volume.configMap.name },
                   }">
               {{volume.configMap.name}}

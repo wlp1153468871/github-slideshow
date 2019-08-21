@@ -4,7 +4,7 @@
     <dao-setting-section>
       <div slot="label">
         <span>创建访问域名</span>
-        <label-tip text="为应用创建一个访问域名, 可用于版本灰度发布。创建成功后将生成一个和应用同名的 Route"></label-tip>
+        <label-tip text="为应用创建一个访问域名, 可用于版本灰度发布。创建成功后将生成一个和应用同名的 Route 或者 Ingress"></label-tip>
       </div>
       <div slot="content">
         <dao-switch
@@ -12,6 +12,25 @@
           v-model="autoRoute">
         </dao-switch>
       </div>
+    </dao-setting-section>
+
+    <dao-setting-section v-if="autoRoute">
+      <template #label>
+        <span>资源对象</span>
+        <label-tip text="提供负载均衡的资源对象"></label-tip>
+      </template>
+      <template #content>
+        <dao-select
+          v-model="routeResource"
+          @change="changeChargingType">
+          <dao-option
+            v-for="option in routeResources"
+            :key="option.label"
+            :value="option.value"
+            :label="option.label">
+          </dao-option>
+        </dao-select>
+      </template>
     </dao-setting-section>
 
     <dao-setting-section v-if="autoRoute">
@@ -63,6 +82,16 @@ export default {
     hostname: { type: String, default: '' },
     port: { type: String, default: '80' },
     domain: { type: String, default: '' },
+  },
+
+  data() {
+    return {
+      routeResource: null,
+      routeResources: [
+        { label: 'Route', value: 'Route' },
+        { label: 'Ingress', value: 'Ingress' },
+      ],
+    };
   },
 
   computed: {

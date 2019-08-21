@@ -78,6 +78,10 @@
           </route-panel>
         </el-tab-pane>
 
+        <el-tab-pane :label="TABS.INGRESS" :name="TABS.INGRESS">
+          INGRESS
+        </el-tab-pane>
+
         <!-- 容器组 -->
         <el-tab-pane :label="TABS.POD" :name="TABS.POD">
           <pod-table

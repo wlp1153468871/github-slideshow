@@ -38,7 +38,7 @@ export default {
         links: [
           {
             text: RESOURCE.ROUTE.name,
-            route: { name: 'resource.routes' },
+            route: { name: 'resource.routes.list' },
           },
           { text: name },
         ],
@@ -141,7 +141,7 @@ export default {
       RouteService.delete(this.space.id, this.zone.id, name).then(() => {
         this.$noty.success(`删除 Route ${name} 成功`);
         this.$router.push({
-          name: 'resource.routes',
+          name: 'resource.routes.list',
         });
       });
     },

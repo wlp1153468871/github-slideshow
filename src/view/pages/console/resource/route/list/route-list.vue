@@ -48,7 +48,7 @@
               <template slot-scope="{ row: route }">
                 <el-table-name-cell
                   :resource="route"
-                  routerName="resource.route">
+                  routerName="resource.routes.detail">
                 </el-table-name-cell>
                 <route-warnings
                   :key="route.metadata.name"
@@ -90,7 +90,7 @@
                 <template v-else>
                   <router-link
                     v-if="hasServiceBeenDeleted(route.spec.to.name)"
-                    :to="{ name: 'resource.service', params: { name: route.spec.to.name } }">
+                    :to="{ name: 'resource.services.detail', params: { name: route.spec.to.name } }">
                     {{ route.spec.to.name }}
                   </router-link>
                   <template v-else>

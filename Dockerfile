@@ -1,7 +1,7 @@
 # ===========
 # build stage
 # ===========
-FROM node:lts-alpine as build-stage
+FROM harbor.dsp.local/dsp-system/rhel8-nodejs-10:1-31 as build-stage
 
 # make the 'app' folder the current working directory
 WORKDIR /app
@@ -9,6 +9,8 @@ WORKDIR /app
 # copy both 'package.json' and 'package-lock.json' (if available)
 COPY .npmrc ./
 COPY package*.json ./
+
+USER root
 
 # install project dependencies
 RUN npm ci
@@ -25,7 +27,8 @@ RUN npm run build
 # ================
 # production stage
 # ================
-FROM nginx:1.13 as production-stage
+FROM harbor.dsp.local/dsp-system/rhel8-nginx-114:1-40 as production-stage
+MAINTAINER zhenghao.zhu@daocloud.io
 
 USER root
 
@@ -35,6 +38,7 @@ COPY ./startup.sh /usr/share
 
 RUN chmod a+x /usr/share/startup.sh && chown nginx /etc/nginx
 
-EXPOSE 80
+EXPOSE 8443
+
 USER nginx
 CMD /usr/share/startup.sh && nginx -g 'daemon off;'

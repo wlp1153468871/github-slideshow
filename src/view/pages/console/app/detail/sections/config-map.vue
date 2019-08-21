@@ -41,7 +41,7 @@ export default {
           other: {
             onClick: configMap => {
               this.$router.push({
-                name: 'resource.config-map',
+                name: 'resource.configmaps.detail',
                 params: {
                   name: configMap.metadata.name,
                 },

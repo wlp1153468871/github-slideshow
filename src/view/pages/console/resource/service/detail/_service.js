@@ -206,7 +206,7 @@ export default {
       const { serviceName } = this;
       ServiceResourceService.delete({ name: serviceName }).then(() => {
         this.$noty.success(`删除Service ${this.podName} 成功`);
-        this.$router.push({ name: 'resource.services' });
+        this.$router.push({ name: 'resource.services.list' });
       });
     },
 

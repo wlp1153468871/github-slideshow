@@ -30,7 +30,7 @@
           <td>
             <router-link
               :to="{
-                name: 'resource.route',
+                name: 'resource.routes.detail',
                 params: { name: routes[routeName].metadata.name }
                }">
               {{ routes[routeName].metadata.name }}

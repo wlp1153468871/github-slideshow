@@ -24,6 +24,8 @@ import './icon_goto.svg';
 import './icon_hourglass-half.svg';
 import './icon_hourglass-o.svg';
 import './icon_image-logo.svg';
+import './icon_ingress.svg';
+import './icon_ingress-logo.svg';
 import './icon_monitor-logo.svg';
 import './icon_monitor.svg';
 import './icon_pod-logo.svg';

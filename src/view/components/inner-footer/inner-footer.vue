@@ -4,7 +4,7 @@
       {{ theme.productName }}
     </span>
     <span v-else class="app-name">
-      <b>如意云</b>平台
+      <b>DaoCloud Service Platform</b>
     </span>
   </div>
 </template>

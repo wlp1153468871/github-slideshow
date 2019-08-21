@@ -32,7 +32,7 @@
               <template slot-scope="{ row: configMap }">
                 <el-table-name-cell
                   :resource="configMap"
-                  routerName="resource.config-map">
+                  routerName="resource.configmaps.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>

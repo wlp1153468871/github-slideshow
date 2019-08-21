@@ -41,7 +41,7 @@ export default {
           other: {
             onClick: secret => {
               this.$router.push({
-                name: 'resource.secret',
+                name: 'resource.secrets.detail',
                 params: {
                   name: secret.metadata.name,
                 },

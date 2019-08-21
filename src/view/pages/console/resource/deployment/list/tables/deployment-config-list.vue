@@ -42,7 +42,7 @@
         <template slot-scope="{ row: dc }">
           <el-table-name-cell
             :resource="dc"
-            routerName="resource.deployment-config">
+            routerName="resource.deploymentconfigs.detail">
           </el-table-name-cell>
         </template>
       </el-table-column>

@@ -29,6 +29,7 @@ const TABS = {
   DEPLOYMENT: 'Deployment',
   SERVICE: 'Service',
   ROUTE: 'Route',
+  INGRESS: 'Ingress',
   POD: 'Pod',
   CONFIGMAP: 'Config Map',
   VOLUME: 'PVC',
