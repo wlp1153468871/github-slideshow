@@ -5,7 +5,6 @@ import ConfigMapService from '@/core/services/config-map.service';
 import isApprove from '@/core/utils/is-approve';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 
-import { RESOURCE } from '@/core/constants/resource';
 import ErrorInfo from '@/view/mixins/error-info';
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
@@ -44,12 +43,16 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'apiResource']),
 
     resource() {
       return {
-        ...RESOURCE.CONFIG_MAP,
-        links: [{ text: 'ConfigMap' }],
+        ...this.apiResource.ConfigMap,
+        links: [
+          {
+            text: this.apiResource.ConfigMap.kind,
+          },
+        ],
       };
     },
   },

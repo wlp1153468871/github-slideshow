@@ -189,7 +189,6 @@ export default {
         this.ws.onclose = () => {
           this.loading = false;
           this.autoScrollActive = false;
-          // console.log('disconnected', ev);
           this.state = 'empty';
           this.emptyStateMessage =
             'The logs are no longer available or could not be loaded.';
@@ -209,7 +208,7 @@ export default {
           }
         };
       } catch (e) {
-        // console.log(`WebSocket 建立失败：${e.message}`);
+        console.log(`WebSocket 建立失败：${e.message}`);
       }
     },
 

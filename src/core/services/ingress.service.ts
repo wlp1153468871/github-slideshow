@@ -1,4 +1,5 @@
 import api, { APIService } from './api';
+import store from '@/core/store';
 
 class IngressService {
   api: APIService;
@@ -7,121 +8,47 @@ class IngressService {
     this.api = api;
   }
 
+  get space(): string {
+    return store.getters.spaceId;
+  }
+
+  get zone(): string {
+    return store.state.zone.id;
+  }
+
   list() {
-    return Promise.resolve({
-      kind: 'IngressList',
-      apiVersion: 'extensions/v1beta1',
-      metadata: {
-        selfLink: '/apis/extensions/v1beta1/namespaces/default/ingresses',
-        resourceVersion: '1020673',
-      },
-      items: [
-        {
-          metadata: {
-            name: 'example',
-            namespace: 'default',
-            selfLink:
-              '/apis/extensions/v1beta1/namespaces/default/ingresses/example',
-            uid: 'e8ab97bf-c234-11e9-84d7-005056b4d66c',
-            resourceVersion: '613373',
-            generation: 1,
-            creationTimestamp: '2019-08-19T03:53:30Z',
-          },
-          spec: {
-            rules: [
-              {
-                host: 'example.com',
-                http: {
-                  paths: [
-                    {
-                      path: '/testpath',
-                      backend: {
-                        serviceName: 'test',
-                        servicePort: 80,
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-          status: {
-            loadBalancer: {},
-          },
-        },
-      ],
+    return this.api.get(`/spaces/${this.space}/ingresses`, { zone: this.zone });
+  }
+
+  create(data: any) {
+    return this.api.post(`/spaces/${this.space}/ingresses`, data, {
+      params: { zone: this.zone },
     });
   }
 
-  get() {
-    return Promise.resolve({
-      kind: 'Ingress',
-      apiVersion: 'extensions/v1beta1',
-      metadata: {
-        name: 'example',
-        namespace: 'default',
-        selfLink:
-          '/apis/extensions/v1beta1/namespaces/default/ingresses/example',
-        uid: 'e8ab97bf-c234-11e9-84d7-005056b4d66c',
-        resourceVersion: '1074414',
-        generation: 5,
-        creationTimestamp: '2019-08-19T03:53:30Z',
-        annotations: {
-          sdf: 'adsf',
-        },
+  get(name: string) {
+    return this.api.get(`/spaces/${this.space}/ingresses/${name}`, {
+      zone: this.zone,
+    });
+  }
+
+  update(data: any, name: string) {
+    return this.api.put(`/spaces/${this.space}/ingresses/${name}`, data, {
+      params: {
+        zone: this.zone,
       },
-      spec: {
-        tls: [
-          {
-            hosts: ['example.com'],
-            secretName: 'router-certs',
-          },
-          {
-            hosts: ['example1.com'],
-            secretName: 'router-certs',
-          },
-        ],
-        rules: [
-          {
-            host: 'example.com',
-            http: {
-              paths: [
-                {
-                  path: '/testpath',
-                  backend: {
-                    serviceName: 'test',
-                    servicePort: 80,
-                  },
-                },
-                {
-                  path: '/testpath4',
-                  backend: {
-                    serviceName: 'tesst',
-                    servicePort: 9090,
-                  },
-                },
-              ],
-            },
-          },
-          {
-            host: 'example1.com',
-            http: {
-              paths: [
-                {
-                  path: '/testpath',
-                  backend: {
-                    serviceName: 'spring',
-                    servicePort: 8080,
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-      status: {
-        loadBalancer: {},
-      },
+    });
+  }
+
+  delete(name: string) {
+    return this.api.delete(`/spaces/${this.space}/ingresses/${name}`, {
+      zone: this.zone,
+    });
+  }
+
+  getPods(name: string) {
+    return this.api.get(`/spaces/${this.space}/ingresses/${name}/pods`, {
+      zone: this.zone,
     });
   }
 }

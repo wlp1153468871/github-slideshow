@@ -128,6 +128,3 @@
 
 <script src="./_deployment.js">
 </script>
-
-<style lang="scss" src="./_deployment.scss">
-</style>

@@ -45,13 +45,16 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'apiResource']),
 
     resource() {
       return {
-        ...RESOURCE.CONFIG_MAP,
+        ...this.apiResource.ConfigMap,
         links: [
-          { text: 'ConfigMaps', route: { name: 'resource.configmaps.list' } },
+          {
+            text: this.apiResource.ConfigMap.kind,
+            route: this.apiResource.ConfigMap.route,
+          },
           { text: this.configMapName },
         ],
       };
@@ -65,13 +68,13 @@ export default {
   methods: {
     loadConfigMapDetail() {
       this.loadings.configMap = true;
-      return ConfigMapService.getConfigMap(this.space.id, this.zone.id, this.configMapName)
+      return ConfigMapService.getConfigMap(
+        this.space.id,
+        this.zone.id,
+        this.configMapName,
+      )
         .then(instance => {
-          const {
-            originData: configMap,
-            id: instanceId,
-            status,
-          } = instance;
+          const { originData: configMap, id: instanceId, status } = instance;
 
           this.configMap = configMap;
           this.initLabelsTable(configMap);
@@ -134,24 +137,28 @@ export default {
         this.zone.id,
         this.configMapName,
         configMap,
-      ).then(() => {
-        return this.loadConfigMapDetail();
-      }).then(() => {
-        if (this.status === 'approving') {
-          this.$noty.success('已提交审批请求...');
-        } else {
-          this.$noty.success('正在更新...');
-        }
-      });
+      )
+        .then(() => {
+          return this.loadConfigMapDetail();
+        })
+        .then(() => {
+          if (this.status === 'approving') {
+            this.$noty.success('已提交审批请求...');
+          } else {
+            this.$noty.success('正在更新...');
+          }
+        });
     },
 
     deleteConfigMap() {
-      ConfigMapService
-        .deleteConfigMap(this.space.id, this.zone.id, this.configMapName)
-        .then(() => {
-          this.$router.push(RESOURCE.CONFIG_MAP.route);
-          this.$noty.success(`成功删除 ConfigMap ${this.configMapName}`);
-        });
+      ConfigMapService.deleteConfigMap(
+        this.space.id,
+        this.zone.id,
+        this.configMapName,
+      ).then(() => {
+        this.$router.push(RESOURCE.CONFIG_MAP.route);
+        this.$noty.success(`成功删除 ConfigMap ${this.configMapName}`);
+      });
     },
   },
 };

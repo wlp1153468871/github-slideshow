@@ -78,18 +78,18 @@
               <svg class="icon">
                 <use xlink:href="#icon_resource"></use>
               </svg>
-              <span slot="title">容器资源对象</span>
+              <span slot="title">资源对象</span>
             </template>
-            <template v-for="(resource, key) in RESOURCE">
+            <template v-for="resource in apiResource">
               <el-menu-item
-                v-if="!resource.hidden && $can('read', resource.key)"
-                :key="key"
+                v-if="$can('read', resource.name)"
+                :key="resource.name"
                 :index="resource.route.name"
                 :route="resource.route">
                 <svg class="icon">
                   <use :xlink:href="resource.icon"></use>
                 </svg>
-                <span>{{ resource.name }}</span>
+                <span>{{ resource.kind }}</span>
               </el-menu-item>
             </template>
 
@@ -200,7 +200,6 @@
 </template>
 
 <script>
-import { RESOURCE } from '@/core/constants/resource';
 import { mapState, mapGetters } from 'vuex';
 import { find } from 'lodash';
 import SideBarSection from './side-bar-section';
@@ -227,7 +226,6 @@ export default {
 
   data() {
     return {
-      RESOURCE,
       props: {
         value: 'id',
         label: 'name',
@@ -247,6 +245,7 @@ export default {
       'services',
       'isCollapse',
       'defaultActiveMenu',
+      'apiResource',
     ]),
 
     ...mapGetters([

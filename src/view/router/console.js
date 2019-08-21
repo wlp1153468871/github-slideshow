@@ -51,6 +51,7 @@ import Registry from '@/view/pages/console/registry/registry.vue';
 // resource
 import Deployments from '@/view/pages/console/resource/deployment/list/deployments.vue';
 import Deployment from '@/view/pages/console/resource/deployment/detail/deployment.vue';
+import DeploymentConfigList from '@/view/pages/console/resource/deployment-config/list/deployment-config-list';
 import DeploymentConfig from '@/view/pages/console/resource/deployment-config/detail/deployment-config.vue';
 import StatefulSetList from '@/view/pages/console/resource/stateful-set/list/stateful-set-list.vue';
 import StatefulSetDetail from '@/view/pages/console/resource/stateful-set/detail/stateful-set-detail.vue';
@@ -139,8 +140,13 @@ export default {
       },
     },
     {
-      path: 'resource/deploymentconfigs/:name',
+      path: 'resource/deploymentconfigs',
       name: 'resource.deploymentconfigs.list',
+      component: DeploymentConfigList,
+    },
+    {
+      path: 'resource/deploymentconfigs/:name',
+      name: 'resource.deploymentconfigs.detail',
       component: DeploymentConfig,
       meta: {
         activeMenu: 'resource.deployments.list',

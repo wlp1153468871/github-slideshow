@@ -184,16 +184,6 @@ export default {
     const { name } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.DEPLOYMENT_CONFIG,
-        links: [
-          {
-            text: RESOURCE.DEPLOYMENT_CONFIG.name,
-            route: { name: 'resource.deployments.list' },
-          },
-          { text: name },
-        ],
-      },
       name,
       TABS,
       tab: TABS.INFO.name,
@@ -217,16 +207,31 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'apiResource']),
 
     dcEnv() {
       return get(this.dc, 'spec.template.spec.containers') || [];
     },
+
     projectName() {
       return get(this.dc, 'metadata.namespace', '');
     },
+
     labels() {
       return get(this.dc, 'metadata.labels', {});
+    },
+
+    resource() {
+      return {
+        ...this.apiResource.DeploymentConfig,
+        links: [
+          {
+            text: this.apiResource.DeploymentConfig.kind,
+            route: this.apiResource.DeploymentConfig.route,
+          },
+          { text: this.name },
+        ],
+      };
     },
   },
 
@@ -242,10 +247,9 @@ export default {
     poll() {
       this.pollTimer = setTimeout(() => {
         clearTimeout(this.pollTimer);
-        Promise.all([this.getDeployment(), this.listHPA()])
-          .then(() => {
-            this.poll();
-          });
+        Promise.all([this.getDeployment(), this.listHPA()]).then(() => {
+          this.poll();
+        });
       }, POLL_INTERVAL);
     },
     unsetPolling() {

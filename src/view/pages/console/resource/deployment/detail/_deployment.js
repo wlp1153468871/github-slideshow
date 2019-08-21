@@ -1,6 +1,5 @@
 import { mapState } from 'vuex';
 import { isEmpty, cloneDeep, set } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import DeploymentResourceService from '@/core/services/deployment.resource.service';
 import HPAService from '@/core/services/hpa.service';
@@ -39,16 +38,6 @@ export default {
     const { name: deploymentName } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.DEPLOYMENT,
-        links: [
-          {
-            text: RESOURCE.DEPLOYMENT.name,
-            route: { name: 'resource.deployments.list' },
-          },
-          { text: deploymentName },
-        ],
-      },
       dialogs: {
         view: false,
       },
@@ -71,7 +60,20 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'apiResource']),
+
+    resource() {
+      return {
+        ...this.apiResource.Deployment,
+        links: [
+          {
+            text: this.apiResource.Deployment.kind,
+            route: this.apiResource.Deployment.route,
+          },
+          { text: this.deploymentName },
+        ],
+      };
+    },
   },
 
   created() {
@@ -82,10 +84,9 @@ export default {
     poll() {
       this.pollTimer = setTimeout(() => {
         clearTimeout(this.pollTimer);
-        Promise.all([this.getDeployment(), this.listHPA()])
-          .then(() => {
-            this.poll();
-          });
+        Promise.all([this.getDeployment(), this.listHPA()]).then(() => {
+          this.poll();
+        });
       }, POLL_INTERVAL);
     },
     unsetPolling() {
