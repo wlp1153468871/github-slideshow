@@ -1,6 +1,5 @@
 import { mapState } from 'vuex';
 import DeploymentResourceService from '@/core/services/deployment.resource.service';
-import DeploymentConfigResourceService from '@/core/services/deployment-config.resource.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 import DeploymentsList from './tables/deployments-list';
 

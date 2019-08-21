@@ -1,6 +1,5 @@
 import { mapState } from 'vuex';
 import { isEmpty, cloneDeep, set } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import DeploymentResourceService from '@/core/services/deployment.resource.service';
 import HPAService from '@/core/services/hpa.service';
