@@ -50,10 +50,12 @@ import Timeline from './timeline/timeline';
 import TruncateLongText from './truncate-long-text/truncate-long-text';
 import UploadInput from './upload-input/upload-input';
 import XTable from './x-table/x-table';
+import ResourceLink from './resource/resource-link/resource-link';
 import { PercentCircle, PieChart, ProgressDount } from './charts';
 
 const components = {
   ...Daox,
+  ResourceLink,
   Annotations,
   AppFooter,
   Breadcrumb,

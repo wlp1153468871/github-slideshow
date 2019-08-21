@@ -19,7 +19,7 @@ export const ACCESS_MODE = {
 export const RESOURCE = {
   DEPLOYMENT: {
     key: 'deployment',
-    name: 'Deployment',
+    name: 'deployments',
     icon: '#icon_deployment',
     logo: '#icon_deployment-logo',
     route: { name: 'resource.deployments.list' },
@@ -333,8 +333,8 @@ export const DEFAULT_RESOURCE = [
   'Pod',
   'Service',
   'Route',
+  'Ingress',
   'ConfigMap',
   'Secret',
   'PersistentVolumeClaim',
-  'Ingress',
 ];

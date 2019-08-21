@@ -1,6 +1,5 @@
 <template>
-  <div class="deloyments-table">
-    <h4 class="resource-table-header">Deployments</h4>
+  <div>
     <div class="table-toolbar">
       <div class="table-toolbar-left">
         <button
@@ -148,14 +147,6 @@ export default {
   created() {
     this.getTemplate();
   },
-
-  // watch: {
-  //   'dialogConfigs.yamlEdit': {
-  //     handler(value) {
-  //       this.$router.push({ query: { create: value } });
-  //     },
-  //   },
-  // },
 
   methods: {
     getTemplate() {

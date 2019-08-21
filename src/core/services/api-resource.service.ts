@@ -10,7 +10,6 @@ class APIResourceService {
   }
 
   list(zone: any) {
-    console.log(zone);
     return Promise.resolve(resources);
   }
 }

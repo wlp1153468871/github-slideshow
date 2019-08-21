@@ -7,14 +7,9 @@
       <resource-header :resource="resource"></resource-header>
       <div class="dao-view-main">
         <div class="dao-view-content">
-          <deployment-config-list
-            :deploymentConfigs="deploymentConfigs"
-            :loading="loadings.deploymentConfigTable"
-            @refresh="getDeploymentConfig">
-          </deployment-config-list>
           <deployments-list
             :deployments="deployments"
-            :loading="loadings.deploymentsTable"
+            :loading="loadings.table"
             @refresh="getDeployments">
           </deployments-list>
         </div>
@@ -25,6 +20,3 @@
 
 <script src="./_deployments.js">
 </script>
-
-<style lang="scss" src="./_deployments.scss">
-</style>

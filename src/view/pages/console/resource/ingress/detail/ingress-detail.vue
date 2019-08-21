@@ -1,6 +1,6 @@
 <template>
   <div class="ingress-detail">
-    <circle-loading v-if="loading"></circle-loading>
+    <circle-loading v-if="loadings.detail"></circle-loading>
     <template v-else-if="ingress">
       <resource-header :resource="resource">
 
@@ -8,9 +8,9 @@
           创建于{{ ingress.metadata.creationTimestamp | date }}
         </template>
 
-        <!--<template #status v-if="status === 'approving'">
+        <template #status v-if="status === 'approving'">
           <labels highLight :labels="{'状态': '审批中'}"></labels>
-        </template>-->
+        </template>
 
         <template #labels>
           <labels :labels="ingress.metadata.labels || {}"></labels>
@@ -32,7 +32,7 @@
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
                 v-if="$can('update')"
-                @click="openUpdateDialog">
+                @click="dialogs.update = true">
                 <span>更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
@@ -69,7 +69,7 @@
               </p>
               <div class="ingress-table">
                 <div class="row ingress-table-head">
-                  <div class="col-xs-3">Host</div>
+                  <div class="col-xs-4">Host</div>
                   <div class="col-xs-3">Path</div>
                   <div class="col-xs-3">Service</div>
                   <div class="col-xs-2">Service Port</div>
@@ -80,28 +80,17 @@
                       <div
                         :key="ruleIndex + '-' + pathIndex"
                         class="row">
-                        <div class="col-xs-3 break-word">
+                        <div class="col-xs-4 break-word">
                           <div>{{ rule.host }}</div>
                         </div>
                         <div class="col-xs-3 break-word">
                           <div>{{ path.path }}</div>
                         </div>
                         <div class="col-xs-3">
-                          <span class="resource-link">
-                            <span class="sr-only">Service</span>
-                            <span
-                              class="resource-icon resource-service"
-                              title="Service">
-                              S
-                            </span>
-                            <router-link
-                              :to="{
-                                name: 'resource.services.detail',
-                                params: { name: path.backend.serviceName }
-                              }">
-                              {{ path.backend.serviceName }}
-                            </router-link>
-                          </span>
+                          <resource-link
+                            kind="Service"
+                            :name="path.backend.serviceName">
+                          </resource-link>
                         </div>
                         <div class="col-xs-2">
                           <div>{{ path.backend.servicePort }}</div>
@@ -117,46 +106,40 @@
           <div class="panel-resource">
             <h3>Pod</h3>
             <div class="panel-resource-content">
-              Pods
+              <pod-table
+                :loading="loadings.pod"
+                :pods="pods"
+                @refresh="getPods">
+              </pod-table>
             </div>
           </div>
 
           <div class="panel-resource">
             <h3>TLS Certificate</h3>
             <div class="panel-resource-content">
-              <div class="ingress-table">
+              <div class="ingress-table" v-if="ingress.spec.tls && ingress.spec.tls.length">
                 <div class="row ingress-table-head">
-                  <div class="col-xs-3">Host</div>
-                  <div class="col-xs-3">Secret</div>
+                  <div class="col-xs-6">Host</div>
+                  <div class="col-xs-6">Secret</div>
                 </div>
                 <div class="ingress-table-body">
                   <div
                     class="row"
                     v-for="(tls, index) in ingress.spec.tls"
                     :key="index">
-                    <div class="col-xs-3 break-word">
+                    <div class="col-xs-6 break-word">
                       <div>{{ tls.hosts.join() }}</div>
                     </div>
-                    <div class="col-xs-3">
-                      <span class="resource-link">
-                        <span class="sr-only">Secret</span>
-                        <span
-                          class="resource-icon resource-secret"
-                          title="Secret">
-                          S
-                        </span>
-                        <router-link
-                          :to="{
-                            name: 'resource.secrets.detail',
-                            params: { name: tls.secretName }
-                          }">
-                          {{ tls.secretName }}
-                        </router-link>
-                      </span>
+                    <div class="col-xs-6">
+                      <resource-link
+                        kind="Secret"
+                        :name="tls.secretName">
+                      </resource-link>
                     </div>
                   </div>
                 </div>
               </div>
+              <p v-else class="text-muted">暂未配置</p>
             </div>
           </div>
 
@@ -167,34 +150,54 @@
         </div>
       </div>
     </template>
+
+    <edit-yaml-dialog
+      :value="ingress"
+      :visible.sync="dialogs.update"
+      :header="'更新 ' + ingressName"
+      @update="updateIngress">
+    </edit-yaml-dialog>
   </div>
 </template>
 
 <script>
-import { RESOURCE } from '@/core/constants/resource';
+import { mapState, mapGetters } from 'vuex';
 import IngressService from '@/core/services/ingress.service';
+import PodTable from '@/view/components/resource/pod-table/pod-table';
 
 export default {
   name: 'IngressDetail',
 
-  props: {},
+  components: { PodTable },
 
   data() {
     const { name: ingressName } = this.$route.params;
     const { tab } = this.$route.query;
 
     return {
+      kind: 'Ingress',
       activeTab: tab,
-      loading: false,
-      resource: {
-        ...RESOURCE.INGRESS,
-        links: [
-          { text: RESOURCE.INGRESS.name, route: RESOURCE.INGRESS.route },
-          { text: ingressName },
-        ],
+      loadings: {
+        detail: true,
+        pod: true,
       },
       ingress: null,
+      ingressName,
+      dialogs: {
+        update: false,
+      },
+      status: '',
+      pods: [],
     };
+  },
+
+  computed: {
+    ...mapState(['apiResource']),
+    ...mapGetters(['gerResourceForHeader']),
+
+    resource() {
+      return this.gerResourceForHeader(this.kind, this.ingressName);
+    },
   },
 
   created() {
@@ -204,17 +207,53 @@ export default {
   methods: {
     init() {
       this.getIngress();
+      this.getPods();
     },
 
     getIngress() {
-      IngressService.get().then(ingress => {
-        this.ingress = ingress;
+      this.loadings.detail = true;
+      IngressService.get(this.ingressName).then(({ originData, status }) => {
+        this.ingress = originData;
+        this.status = status;
+        this.loadings.detail = false;
       });
     },
 
-    openUpdateDialog() {},
+    getPods() {
+      this.loadings.pod = true;
+      IngressService.getPods(this.ingressName).then(({ originData }) => {
+        this.pods = originData;
+        this.loadings.pod = false;
+      });
+    },
 
-    ensureRemove() {},
+    updateIngress(ingressModel) {
+      IngressService.update(ingressModel, this.ingressName).then(res => {
+        if (res.is_need_approval) {
+          this.$noty.success('请在审批记录页面，查看审批进度');
+        } else {
+          this.$noty.success('更新成功');
+        }
+        this.getIngress();
+      });
+    },
+
+    ensureRemove() {
+      this.$tada
+        .confirm({
+          title: `删除 ${this.ingressName}`,
+          text: `您确定要删除 Ingress ${this.ingressName} 吗？`,
+        })
+        .then(willDelete => {
+          if (willDelete) {
+            this.deleteIngress();
+          }
+        });
+    },
+
+    deleteIngress() {
+      IngressService.delete(this.ingressName);
+    },
   },
 };
 </script>
@@ -258,51 +297,6 @@ export default {
   .break-word {
     overflow-wrap: break-word;
     word-wrap: break-word;
-  }
-
-  .resource-link {
-    align-items: baseline;
-    display: flex;
-    min-width: 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-  }
-
-  .co-resource-link .resource-icon {
-    flex-shrink: 0;
-  }
-
-  .resource-icon {
-    display: inline-block;
-    font-weight: normal;
-    text-align: center;
-    border-radius: 10px;
-    height: 18px;
-    min-width: 18px;
-    padding: 0 4px;
-    line-height: 18px;
-    color: #fff;
-    margin: 0 4px;
-    background-color: #00b9e4;
-  }
-
-  .resource-service {
-    background-color: #6ca100;
-  }
-
-  .resource-secret {
-    background-color: #ec7a08;
   }
 }
 </style>

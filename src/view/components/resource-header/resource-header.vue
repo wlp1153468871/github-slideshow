@@ -60,7 +60,7 @@ export default {
     resource: {
       type: Object,
       default: () => {
-        return { icon: '#icon_pod', name: 'Resource' };
+        return { icon: '#icon_pods', name: 'Resource' };
       },
     },
   },

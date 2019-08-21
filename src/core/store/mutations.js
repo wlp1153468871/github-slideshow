@@ -148,6 +148,31 @@ export const getters = {
     }
     throw new Error(`没有查找到ID为 [${id}] 的Service`);
   },
+
+  gerResourceForHeader: state => (kind, name) => {
+    console.log(`查询 Kind 为 [${kind}] 的 Resource`);
+    const resource = getValue(state.apiResource, kind);
+    if (resource) {
+      console.log('查询成功', resource);
+      let links;
+      if (name) {
+        links = [
+          {
+            text: resource.kind,
+            route: resource.route,
+          },
+          { text: name },
+        ];
+      } else {
+        links = [{ text: resource.kind }];
+      }
+      return {
+        ...resource,
+        links,
+      };
+    }
+    throw new Error(`没有查找到 kind 为 [${kind}] 的 Resource`);
+  },
 };
 
 export const actions = {
@@ -390,9 +415,22 @@ export const actions = {
         },
       );
 
+      filteredResourceList.sort((a, b) => {
+        return (
+          DEFAULT_RESOURCE.indexOf(a.kind) - DEFAULT_RESOURCE.indexOf(b.kind)
+        );
+      });
+
       const resourceMap = {};
       filteredResourceList.forEach(resource => {
-        resourceMap[resource.kind] = resource;
+        resourceMap[resource.kind] = {
+          ...resource,
+          route: {
+            name: `resource.${resource.name}.list`,
+          },
+          icon: `#icon_${resource.name}`,
+          logo: `#icon_${resource.name}-logo`,
+        };
       });
 
       commit(types.LOAD_API_RESOURCE, resourceMap);

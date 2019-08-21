@@ -45,7 +45,9 @@
             <el-table-column
               label="创建时间"
               prop="metadata.creationTimestamp"
-              width="200">
+              sortable
+              width="200"
+              :formatter="dateFormat">
             </el-table-column>
           </x-table>
         </div>
@@ -55,6 +57,7 @@
     <edit-yaml-dialog
       :value="formModel"
       :visible.sync="dialogs.create"
+      :header="'创建 ' + kind"
       @opened="getTemplate"
       @update="createIngress">
     </edit-yaml-dialog>
@@ -62,32 +65,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import Vue from 'vue';
+import { mapState, mapGetters } from 'vuex';
 import { isEmpty, get as getValue } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
 import ResourceTemplateService from '@/core/services/resource.template.service';
 import IngressService from '@/core/services/ingress.service';
+import joinApproveStatus from '@/core/utils/joinApproveStatus';
 
 export default {
   name: 'IngressList',
-
-  props: {},
 
   data() {
     const { create = 'false' } = this.$route.query;
 
     return {
+      kind: 'Ingress',
       loadings: {
-        page: false,
+        page: true,
         table: false,
-      },
-      resource: {
-        ...RESOURCE.INGRESS,
-        links: [
-          {
-            text: RESOURCE.INGRESS.name,
-          },
-        ],
       },
       ingressList: [],
       filterMethod: (data, filterKey) =>
@@ -100,7 +95,12 @@ export default {
   },
 
   computed: {
-    ...mapState(['space']),
+    ...mapState(['space', 'apiResource']),
+    ...mapGetters(['gerResourceForHeader']),
+
+    resource() {
+      return this.gerResourceForHeader(this.kind);
+    },
   },
 
   created() {
@@ -109,8 +109,11 @@ export default {
 
   methods: {
     listIngresses() {
-      IngressService.list().then(({ items }) => {
-        this.ingressList = items;
+      this.loadings.table = true;
+      IngressService.list().then(ingressList => {
+        this.ingressList = joinApproveStatus(ingressList);
+        this.loadings.page = false;
+        this.loadings.table = false;
       });
     },
 
@@ -123,7 +126,16 @@ export default {
       return rules.map(rule => rule.host).join();
     },
 
-    createIngress() {},
+    createIngress(ingressModel) {
+      IngressService.create(ingressModel).then(instance => {
+        if (instance.is_need_approval) {
+          this.$noty.success('请在审批记录页面，查看审批进度');
+        } else {
+          this.$noty.success('创建 Ingress 成功');
+        }
+        this.listIngresses();
+      });
+    },
 
     getTemplate() {
       if (!isEmpty(this.formModel)) return;
@@ -131,6 +143,11 @@ export default {
         template.metadata.namespace = this.space.short_name;
         this.formModel = template;
       });
+    },
+
+    dateFormat(row) {
+      const date = getValue(row, 'metadata.creationTimestamp');
+      return date ? Vue.filter('date')(date) : '-';
     },
   },
 };
