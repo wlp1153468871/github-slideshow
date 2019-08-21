@@ -14,6 +14,7 @@
     <name-section
       :space="space"
       :name.sync="form.name"
+      :deployment-kind.sync="form.deploymentKind"
       :version.sync="form.version"
       :repository="form.repository"
       :deploy-mode="form.deployMode">
@@ -39,8 +40,10 @@
     <!-- 负载均衡 -->
     <route-section
       :using-route.sync="form.autoRoute"
+      :expose-kind.sync="form.exposeKind"
       :hostname.sync="form.hostname"
       :port.sync="form.port"
+      :path.sync="form.path"
       :domain="inrouterDomain">
     </route-section>
 
