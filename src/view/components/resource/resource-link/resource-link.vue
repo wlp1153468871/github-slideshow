@@ -39,11 +39,10 @@ export default {
           name: `resource.${resourceName}.detail`,
           params: { name },
         };
-      } else {
-        return {
-          name: `resource.${resourceName}.list`,
-        };
       }
+      return {
+        name: `resource.${resourceName}.list`,
+      };
     },
 
     resourceIcon() {

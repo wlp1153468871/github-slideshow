@@ -152,8 +152,7 @@ export default {
     filteredDcs() {
       const filterKey = this.filterKey.toLowerCase();
       return this.deploymentConfigs.filter(dc =>
-        dc.metadata.name.toLowerCase().includes(filterKey),
-      );
+        dc.metadata.name.toLowerCase().includes(filterKey));
     },
 
     paginaDcs() {
@@ -187,12 +186,10 @@ export default {
     },
 
     getTemplate() {
-      return ResourceTemplateService.getTemplate('deployment-config').then(
-        template => {
-          template.metadata.namespace = this.space.short_name;
-          this.dcTemplate = template;
-        },
-      );
+      return ResourceTemplateService.getTemplate('deployment-config').then(template => {
+        template.metadata.namespace = this.space.short_name;
+        this.dcTemplate = template;
+      });
     },
 
     createByYaml(value) {

@@ -108,12 +108,10 @@ export default {
     },
 
     deleteConfigMap(name) {
-      ConfigMapService.deleteConfigMap(this.space.id, this.zone.id, name).then(
-        () => {
-          this.$noty.success(`删除 Config Map ${name}成功`);
-          this.loadInstances();
-        },
-      );
+      ConfigMapService.deleteConfigMap(this.space.id, this.zone.id, name).then(() => {
+        this.$noty.success(`删除 Config Map ${name}成功`);
+        this.loadInstances();
+      });
     },
 
     humanizeLabel(configMap) {
