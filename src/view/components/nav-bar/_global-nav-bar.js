@@ -218,15 +218,21 @@ export default {
       });
     },
 
+    gotoDashboard() {
+      this.$router.push({
+        name: 'console.dashboard',
+      });
+    },
+
     gotoProfile() {
       this.$router.push({
         name: 'console.profile',
       });
     },
 
-    gotoOrgOrManage() {
+    gotoOrg() {
       this.$router.push({
-        name: this.isOrgView ? 'console.dashboard' : 'console.org',
+        name: 'console.org',
       });
     },
 

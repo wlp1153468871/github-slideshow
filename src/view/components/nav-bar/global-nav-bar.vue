@@ -192,31 +192,25 @@
             </svg>
           </div>
           <dao-dropdown-menu slot="list">
-            <dao-dropdown-item @click="gotoDashboard()" v-if="isDisplayOrgSelect">
+            <dao-dropdown-item @click="gotoDashboard" v-if="isDisplayOrgSelect">
               <svg>
                 <use xlink:href="#icon_app-home"></use>
               </svg>
               <span class="text">应用管理</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="gotoOrg()" v-if="isDisplayOrgSelect">
+            <dao-dropdown-item @click="gotoOrg" v-if="isDisplayOrgSelect">
               <svg class="icon">
                 <use xlink:href="#icon_city"></use>
               </svg>
               <span class="text">组织管理</span>
             </dao-dropdown-item>
-            <dao-dropdown-item v-if="isServiceAdmin" @click="gotoAudit()">
-              <svg class="icon">
-                <use xlink:href="#icon_inbox"></use>
-              </svg>
-              <span class="text">平台审批</span>
-            </dao-dropdown-item>
-            <dao-dropdown-item @click="gotoProfile()">
+            <dao-dropdown-item @click="gotoProfile">
               <svg>
                 <use xlink:href="#icon_user"></use>
               </svg>
               <span class="text">个人中心</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="onLogout()">
+            <dao-dropdown-item @click="onLogout">
               <svg>
                 <use xlink:href="#icon_log-out"></use>
               </svg>
