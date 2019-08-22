@@ -9,7 +9,7 @@
   table.csp-table-layout {
     width: 100%;
     $tr-height: 34px;
-    
+
     table-layout: fixed;
     background-color: #fff;
     border-collapse: separate;
@@ -26,7 +26,6 @@
     tbody {
       tr {
         a {
-          color: #0a60cc;
           &:hover {
             text-decoration: underline;
           }

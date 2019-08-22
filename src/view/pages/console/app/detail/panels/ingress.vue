@@ -17,7 +17,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="HOSTS"
+        label="域名"
         min-width="150">
         <template slot-scope="{ row: ingress }">
           {{ formatHost(ingress) }}
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { get as getValue } from 'lodash';
 
 export default {
@@ -59,6 +60,11 @@ export default {
     formatHost(ingress) {
       const rules = getValue(ingress, 'spec.rules');
       return rules.map(rule => rule.host).join();
+    },
+
+    dateFormat(row) {
+      const date = getValue(row, 'metadata.creationTimestamp');
+      return date ? Vue.filter('date')(date) : '-';
     },
   },
 };

@@ -44,7 +44,7 @@ export default {
         // 选择镜像
         name: '',
         version: '',
-        deploymentKind: null,
+        deploymentKind: 'Deployment',
         repository: '', // TODO(jerry) from props
         deployMode: '', // TODO(jerry) from props
         // 规格
@@ -65,7 +65,7 @@ export default {
         podModel: {},
         // 负载均衡
         autoRoute: true,
-        exposeKind: null,
+        exposeKind: 'Ingress',
         hostname: '',
         port: '80',
         path: '/',

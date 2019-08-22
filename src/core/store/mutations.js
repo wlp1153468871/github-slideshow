@@ -173,6 +173,20 @@ export const getters = {
     }
     throw new Error(`没有查找到 kind 为 [${kind}] 的 Resource`);
   },
+
+  deploymentKinds(state) {
+    const { apiResource } = state;
+    if (!apiResource) return [];
+    return ['DeploymentConfig', 'Deployment']
+      .map(kind => apiResource[kind])
+      .filter(Boolean);
+  },
+
+  exposeKinds(state) {
+    const { apiResource } = state;
+    if (!apiResource) return [];
+    return ['Ingress', 'Route'].map(kind => apiResource[kind]).filter(Boolean);
+  },
 };
 
 export const actions = {

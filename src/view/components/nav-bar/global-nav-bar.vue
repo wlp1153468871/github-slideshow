@@ -170,7 +170,7 @@
         <router-link
           v-if="!isConsoleView"
           :to="{ name: 'console' }">
-          <span>切换{{orgDescription}}视图</span>
+          <span>切换租户视图</span>
         </router-link>
         <router-link
           v-else

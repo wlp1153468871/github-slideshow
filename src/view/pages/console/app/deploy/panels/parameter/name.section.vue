@@ -73,9 +73,9 @@
           v-model="_deploymentKind">
           <dao-option
             v-for="option in deploymentKinds"
-            :key="option.label"
-            :value="option.value"
-            :label="option.label">
+            :key="option.name"
+            :value="option.kind"
+            :label="option.kind">
           </dao-option>
         </dao-select>
       </template>
@@ -85,6 +85,7 @@
 
 <script>
 import { first } from 'lodash';
+import { mapGetters } from 'vuex';
 import ApplicationService from '@/core/services/application.service';
 
 export default {
@@ -108,14 +109,12 @@ export default {
         version: '',
       },
       recommendNames: [],
-      deploymentKinds: [
-        { label: 'Deployment', value: 'Deployment' },
-        { label: 'Deployment Config', value: 'DeploymentConfig' },
-      ],
     };
   },
 
   computed: {
+    ...mapGetters(['deploymentKinds']),
+
     isDeployByMode() {
       return this.deployMode === 'image';
     },
