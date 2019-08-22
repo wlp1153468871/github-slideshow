@@ -1,5 +1,6 @@
 <template>
   <div class="pod-log-panel">
+
     <div class="container-detail">
       <!-- pod select -->
       <slot></slot>
@@ -35,44 +36,79 @@
     </div>
 
     <div class="log-view">
-      <span
-        v-if="canSave && state && state !== 'empty'"
-        class="log-icon icon-download"
-        @click="saveLog">
+      <div class="top-operation">
+        <span
+          v-if="keys.length"
+          class="log-icon"
+          @click="configFormatOptions">
+          {{ isFormatLog? '取消' : ''}}格式化日志
+        </span>
+        <span
+          v-if="isFormatLog"
+          class="log-icon"
+          @click="visible = true;">
+          配置格式参数
+        </span>
+        <span
+          v-if="canSave && state && state !== 'empty'"
+          class="log-icon icon-download"
+          @click="saveLog">
         <svg class="icon">
           <use xlink:href="#icon_download"></use>
         </svg>
       </span>
-      <el-tooltip
-        effect="dark"
-        content="实时跟踪日志输出"
-        placement="top">
+        <el-tooltip
+          effect="dark"
+          content="实时跟踪日志输出"
+          placement="top">
         <span @click="onScrollBottom" class="log-icon scroll-bottom">
         <svg class="icon">
           <use xlink:href="#icon_scroll-bottom"></use>
         </svg>
       </span>
-      </el-tooltip>
-      <span @click="onScrollTop" class="log-icon scroll-top">
+        </el-tooltip>
+      </div>
+
+      <div class="bottom-operation">
+        <span @click="onScrollTop" class="log-icon scroll-top">
         <svg class="icon">
           <use xlink:href="#icon_scroll-top"></use>
         </svg>
       </span>
+      </div>
+
       <div
-        @mousewheel="onScroll()"
+        @mousewheel.passive="onScroll"
         class="log-view-output"
         ref="logView">
         <table @mouseup="copySelectionToClipboard">
           <tbody>
           <tr
             class="log-line"
-            v-for="(message, index) in logs"
+            v-for="(log, index) in logs"
             :key="index">
             <td
               class="log-line-number"
               :data-line-number="index+1">
             </td>
-            <td class="log-line-text">{{ message }}</td>
+            <td class="log-line-text">
+              <template v-if="!checkFormat">
+                {{ log.info }}
+              </template>
+              <template v-else>
+                <template v-if="!log.isJSON">
+                  {{ log.message }}
+                </template>
+                <template v-else>
+                  <template v-for="(key, idx) in orderKeys">
+                    <span :key="idx">
+                      <span v-if="keyVisible">{{ key }}</span>
+                      <span>{{ log.message[key] }}</span>
+                    </span>
+                  </template>
+                </template>
+              </template>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -95,6 +131,42 @@
       An error occurred loading the log.
       <span href="" @click="connect">Reload</span>
     </div>
+
+    <dao-dialog
+      :visible.sync="visible"
+      header="格式化日志"
+      @cancel="isFormatLog = false"
+      @confirm="formatLog">
+      <div class="format-options">
+        <el-alert
+          style="margin: 0 10px 10px; width: auto;"
+          title="可拖拽进行排序"
+          type="info">
+        </el-alert>
+
+        <div class="format-log">
+          <el-checkbox-group
+            v-model="checkKey">
+            <draggable
+              class="dragArea"
+              v-model="keys">
+              <el-checkbox
+                class="list-group-item"
+                v-for="(key, index) in keys"
+                :key="index"
+                :label="key">
+              </el-checkbox>
+            </draggable>
+          </el-checkbox-group>
+        </div>
+
+        <el-checkbox
+          style="margin: 10px 0 0 10px;"
+          v-model="showKey">
+          显示 Key
+        </el-checkbox>
+      </div>
+    </dao-dialog>
   </div>
 </template>
 
@@ -102,8 +174,20 @@
 import Vue from 'vue';
 import { mapState } from 'vuex';
 import { saveAs } from 'file-saver';
-import { head, find, keys, includes, get as getValue, debounce } from 'lodash';
+
+import {
+  head,
+  union,
+  find,
+  keys,
+  includes,
+  get as getValue,
+  throttle,
+  intersection,
+} from 'lodash';
 import PodService from '@/core/services/pod.service';
+import draggable from 'vuedraggable';
+import Worker from './log.worker.js';
 
 export default {
   name: 'PodLogPanel',
@@ -113,25 +197,39 @@ export default {
     podName: { type: String, default: '' },
   },
 
+  components: {
+    draggable,
+  },
+
   data() {
     return {
-      selectedContainer: null,
-      ws: null,
-      logs: [],
+      autoScrollActive: true,
+      cacheLogs: [],
+      canSave: !!new Blob(),
+      checkFormat: false,
+      checkKey: [],
+      containerEndTime: null,
+      containerStartTime: null,
+      containerStateReason: null,
+      containerStatusKey: null,
+      emptyStateMessage: '',
+      errorWhileRunning: false,
+      isFormatLog: false,
+      keys: [],
+      keyVisible: false,
+      lasStatusKey: null,
+      loading: true,
       logOptions: {
         container: null,
       },
-      containerStatusKey: null,
-      containerStateReason: null,
-      containerStartTime: null,
-      containerEndTime: null,
-      lasStatusKey: null,
-      loading: true,
+      logs: [],
+      orderKeys: [],
+      selectedContainer: null,
+      showKey: false,
       state: '',
-      emptyStateMessage: '',
-      autoScrollActive: true,
-      errorWhileRunning: false,
-      canSave: !!new Blob(),
+      visible: false,
+      worker: null,
+      ws: null,
     };
   },
 
@@ -160,14 +258,15 @@ export default {
   },
 
   updated() {
-    // Follow the bottom of the log if auto-scroll is on.
     if (this.autoScrollActive) {
-      this.autoScrollBottom();
+      this.onScrollBottom();
     }
   },
 
   destroyed() {
     this.disconnect();
+    this.worker.terminate();
+    this.worker = null;
   },
 
   methods: {
@@ -181,10 +280,14 @@ export default {
         });
 
         this.ws.onopen = () => {
-          // console.log('WebSocket 建立成功');
+          this.worker = new Worker();
+          this.worker.onmessage = ({ data }) => {
+            this.logs = Object.freeze([...this.logs, ...data.mapLogs]);
+            this.keys = union(this.keys, data.keys);
+          };
         };
 
-        this.ws.onmessage = this.renderLogs;
+        this.ws.onmessage = this.onmessage;
 
         this.ws.onclose = () => {
           this.loading = false;
@@ -208,7 +311,7 @@ export default {
           }
         };
       } catch (e) {
-        console.log(`WebSocket 建立失败：${e.message}`);
+        // console.log(`WebSocket 建立失败：${e.message}`);
       }
     },
 
@@ -235,12 +338,22 @@ export default {
       document.execCommand('Copy'); // 执行浏览器的复制命令
     },
 
-    renderLogs(log) {
+    onmessage(log) {
       this.state = 'logs';
       if (log.data.length) {
-        this.logs.push(log.data);
+        this.cacheLogs.push(log.data);
+        this.renderLogs();
       }
     },
+
+    renderLogs: throttle(
+      function renderLogsThrottle() {
+        this.worker.postMessage(this.$data.cacheLogs);
+        this.cacheLogs = [];
+      },
+      500,
+      { trailing: true },
+    ),
 
     setContainerVars() {
       if (!this.pod) return;
@@ -308,26 +421,45 @@ export default {
       }
     },
 
-    autoScrollBottom() {
-      this.onScrollBottom();
-    },
-
-    onScroll: debounce(function onScroll() {
-      this.autoScrollActive = false;
-      const { logView } = this.$refs;
-      if (!logView) return;
-      if (logView.scrollHeight - logView.scrollTop <= logView.clientHeight) {
-        this.autoScrollActive = true;
-      }
-    }, 300),
+    onScroll: throttle(
+      function scrollThrottle() {
+        this.autoScrollActive = false;
+        const { logView } = this.$refs;
+        if (!logView) return;
+        if (logView.scrollHeight - logView.scrollTop <= logView.clientHeight) {
+          this.autoScrollActive = true;
+        }
+      },
+      500,
+      { trailing: true },
+    ),
 
     saveLog() {
       const { logView } = this.$refs;
       if (!logView) return;
       const text = logView.textContent;
-      const filename = `${getValue(this, 'pod.metadata.name', 'dsp')}.log`;
+      const filename = `${getValue(
+        this,
+        'pod.metadata.name',
+        'ruyicloud',
+      )}.log`;
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       saveAs(blob, filename);
+    },
+
+    formatLog() {
+      this.orderKeys = intersection(this.keys, this.checkKey);
+      this.checkFormat = true;
+      this.keyVisible = this.showKey;
+    },
+
+    configFormatOptions() {
+      this.isFormatLog = !this.isFormatLog;
+      if (!this.isFormatLog) {
+        this.checkFormat = false;
+      } else {
+        this.visible = true;
+      }
     },
   },
 
@@ -399,7 +531,6 @@ export default {
       .log-line-text {
         font-family: Menlo, Monaco, Consolas, monospace;
         padding: 0 10px;
-        white-space: pre-wrap;
         width: 100%;
         word-break: break-word;
         overflow-wrap: break-word;
@@ -407,13 +538,17 @@ export default {
         min-width: 0;
         line-height: 20px;
         font-weight: 900;
+
+        span {
+          span {
+            margin-right: 10px;
+          }
+        }
       }
     }
   }
 
   .log-icon {
-    position: absolute;
-    right: 20px;
     background-color: #5f6b77;
     color: #fff;
     text-decoration: none;
@@ -422,18 +557,23 @@ export default {
     font-size: 12px;
     padding: 5px 10px;
     cursor: pointer;
+    border: 1px solid #434a53;
+
+    & + .log-icon {
+      margin-left: 10px;
+    }
   }
 
-  .icon-download {
+  .top-operation {
+    position: absolute;
+    right: 20px;
     top: 10px;
-    right: 80px;
+    display: flex;
   }
 
-  .scroll-bottom {
-    top: 10px;
-  }
-
-  .scroll-top {
+  .bottom-operation {
+    position: absolute;
+    right: 20px;
     bottom: 10px;
   }
 
@@ -458,6 +598,17 @@ export default {
     display: inline-block;
     color: #9ba3af;
     margin-left: 15px;
+  }
+
+  .format-options {
+    padding: 20px;
+  }
+
+  .list-group-item {
+    width: calc(50% - 20px);
+    padding: 10px;
+    margin: 0 10px 10px;
+    border: 1px solid lightblue;
   }
 }
 </style>

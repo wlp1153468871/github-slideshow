@@ -1,12 +1,8 @@
 <template>
-  <div class="layout">
+  <div class="layout" :class="{ collapsed: isCollapse, hidden: !showSideMenu }">
     <global-nav-bar></global-nav-bar>
-    <div class="layout-content">
-      <manage-side-bar v-if="showSideMenu"></manage-side-bar>
-      <div class="content-wrapper">
-        <router-view class="content"></router-view>
-      </div>
-    </div>
+    <manage-side-bar v-if="showSideMenu"></manage-side-bar>
+    <router-view class="layout-content"></router-view>
   </div>
 </template>
 

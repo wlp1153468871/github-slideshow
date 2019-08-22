@@ -7,16 +7,17 @@
       ]">
       </breadcrumb>
     </div>
-    <dao-tab class="dao-header-tab-nav">
+    <!-- <dao-tab class="dao-header-tab-nav">
       <dao-tab-item :heading="TABS.SELF">
-        <div class="dao-view-main">
-          <div class="dao-view-content">
-            <self-panel>
-            </self-panel>
-          </div>
-        </div>
+
       </dao-tab-item>
-    </dao-tab>
+    </dao-tab> -->
+    <div class="dao-view-main">
+      <div class="dao-view-content">
+        <self-panel>
+        </self-panel>
+      </div>
+    </div>
   </div>
 </template>
 

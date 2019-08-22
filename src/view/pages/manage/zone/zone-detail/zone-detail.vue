@@ -13,7 +13,7 @@
         </breadcrumb>
       </div>
 
-      <el-tabs v-model="currentTab">
+      <el-tabs v-model="currentTab" class="zone-tab">
         <el-tab-pane :label="TABS.BINDS" :name="TABS.BINDS">
           <manage-panel
             :zone="zone"

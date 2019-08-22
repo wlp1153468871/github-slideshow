@@ -7,6 +7,8 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  CheckboxGroup,
+  Checkbox,
   Input,
   Loading,
   Menu,
@@ -31,6 +33,8 @@ import {
 import '../../assets/styles/element-variables.scss';
 
 Vue.use(Alert);
+Vue.use(CheckboxGroup);
+Vue.use(Checkbox);
 Vue.use(Button);
 Vue.use(Cascader);
 Vue.use(DatePicker);

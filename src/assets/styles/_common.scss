@@ -211,23 +211,14 @@ a.disabled {
 
 // 全局nav-menu
 .dao-nav-menu {
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 54px;
   width: 200px;
+  height: calc(100vh - 54px);
   background: rgb(55, 59, 65);
-
-  &.collapsed {
-    width: 64px;
-    transition: 0.3s;
-
-    .el-icon-d-arrow-left {
-      transform: rotate(-180deg);
-      transition: 0.4s;
-    }
-
-    .el-cascader__label {
-      white-space: unset;
-    }
-  }
+  z-index: 10;
+  transition: 0.3s;
 
   .menus {
     position: absolute;
@@ -237,7 +228,7 @@ a.disabled {
     overflow-y: auto;
 
     &::-webkit-scrollbar {
-      width: 0;
+      display: none;
     }
   }
 

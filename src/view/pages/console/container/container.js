@@ -18,6 +18,8 @@ export default {
   computed: {
     ...mapGetters(['zoneId']),
 
+    ...mapState(['isCollapse']),
+
     ...mapState({
       isInitTenantView: state => state.loadings.initTenantView,
     }),
@@ -30,7 +32,9 @@ export default {
       return (
         !this.$route.path.includes('/org') &&
         !this.$route.path.includes('/profile') &&
-        !this.$route.path.includes('/deploy/')
+        !this.$route.path.includes('/console/deploy') &&
+        !this.$route.path.includes('/audit') &&
+        !this.$route.path.includes('/platform-approval')
       );
     },
   },
