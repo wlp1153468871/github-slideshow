@@ -403,6 +403,8 @@ export const actions = {
     commit(types.SWITCH_ZONE, { zone });
     ZoneService.setLocalZone(zone);
 
+    dispatch('loadAPIResource');
+
     dispatch('getUserInfo').then(() => {
       dispatch('initPortal');
     });
