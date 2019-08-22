@@ -79,7 +79,9 @@
         </el-tab-pane>
 
         <el-tab-pane :label="TABS.INGRESS" :name="TABS.INGRESS">
-          INGRESS
+          <ingress-panel
+            :ingresses="resources.Ingress">
+          </ingress-panel>
         </el-tab-pane>
 
         <!-- 容器组 -->
