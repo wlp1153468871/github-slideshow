@@ -1,5 +1,5 @@
 <template>
-  <div class="dao-nav-menu" :class="{ collapsed: isCollapse }">
+  <div class="dao-nav-menu">
     <div class="menus">
       <div class="section-space">
         <template v-if="orgs.length">

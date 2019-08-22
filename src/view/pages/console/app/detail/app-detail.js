@@ -21,6 +21,7 @@ import JobPanel from './panels/job';
 import EventPanel from './panels/event';
 import ConfigPanel from './panels/config';
 import ParameterPanel from './panels/parameter';
+import IngressPanel from './panels/ingress';
 
 const TABS = {
   OVERVIEW: '总览',
@@ -56,6 +57,7 @@ export default {
     RoutePanel,
     PodTable,
     PvcTable,
+    IngressPanel,
   },
 
   created() {
@@ -93,6 +95,7 @@ export default {
         ConfigMap: [],
         Secret: [],
         PersistentVolumeClaim: [],
+        Ingress: [],
       },
     };
   },

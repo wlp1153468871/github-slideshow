@@ -24,9 +24,9 @@
           v-model="_exposeKind">
           <dao-option
             v-for="option in exposeKinds"
-            :key="option.label"
-            :value="option.value"
-            :label="option.label">
+            :key="option.name"
+            :value="option.kind"
+            :label="option.kind">
           </dao-option>
         </dao-select>
       </template>
@@ -88,6 +88,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'RouteSection',
 
@@ -102,16 +104,9 @@ export default {
     exposeKind: { type: String },
   },
 
-  data() {
-    return {
-      exposeKinds: [
-        { label: 'Route', value: 'Route' },
-        { label: 'Ingress', value: 'Ingress' },
-      ],
-    };
-  },
-
   computed: {
+    ...mapGetters(['exposeKinds']),
+
     autoRoute: {
       get() {
         return this.usingRoute;

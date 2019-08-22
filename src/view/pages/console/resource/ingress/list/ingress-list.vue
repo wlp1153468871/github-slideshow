@@ -36,7 +36,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="HOSTS"
+              label="域名"
               min-width="150">
               <template slot-scope="{ row: ingress }">
                 {{ formatHost(ingress) }}

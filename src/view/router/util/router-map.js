@@ -107,6 +107,6 @@ export default function getRoutePath(resource) {
   }
 
   return {
-    name: 'dashboard',
+    name: 'console.dashboard',
   };
 }

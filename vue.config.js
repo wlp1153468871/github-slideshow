@@ -5,6 +5,8 @@ function resolve(dir) {
 }
 
 module.exports = {
+  parallel: false,
+
   pages: {
     app: {
       entry: 'src/main.ts',
@@ -29,6 +31,17 @@ module.exports = {
       .options({
         symbolId: '[name]',
       });
+
+    config.module
+      .rule('worker')
+      .test(/\.worker\.js$/)
+      .use('worker-loader')
+      .loader('worker-loader')
+      .options({
+        inline: true,
+        name: 'worker.[hash].js',
+      })
+      .end();
   },
 
   devServer: {

@@ -161,6 +161,7 @@
 </template>
 
 <script>
+import Resource from '@/view/components/resource/resource-link/resource';
 import { mapState, mapGetters } from 'vuex';
 import IngressService from '@/core/services/ingress.service';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
@@ -252,7 +253,12 @@ export default {
     },
 
     deleteIngress() {
-      IngressService.delete(this.ingressName);
+      IngressService.delete(this.ingressName).then(() => {
+        this.$noty.success('删除成功');
+        const resource = new Resource(this.kind);
+        this.$router.push(resource.route);
+        resource.unwatch();
+      });
     },
   },
 };

@@ -17,7 +17,7 @@
       class="sync-log-panel"
       v-if="syncStatus === SYNC_STATUS.SYNCING"
       ref="logPanel"
-      @mousewheel="toggleScrollWheel">
+      @mousewheel.passive="toggleScrollWheel">
       <p
         v-for="(log, index) in logs"
         :key="index">

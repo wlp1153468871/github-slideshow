@@ -1,32 +1,27 @@
-@import '~daoColor';
+@import "~daoColor";
 
-.global-nav-bar {
-  z-index: 100;
+.g-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 101;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
   height: 54px;
-
-  .g-nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-    width: 100%;
-    height: 54px;
-    background: #2d3034;
-    z-index: 101;
-  }
+  padding: 0 20px;
+  background: #2d3034;
 
   .logo-wrapper {
     display: inline-block;
     height: 100%;
 
     .logo {
+      display: block;
       max-width: 100%;
       max-height: 100%;
-      display: block;
-      padding: 16px 0;
+      padding: 10px 0;
     }
   }
 
@@ -36,14 +31,14 @@
 
   .nav-right-container {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
   }
 
   .user-profile {
     height: 54px;
-    line-height: 54px;
     color: #ccd1d9;
+    line-height: 54px;
     cursor: pointer;
 
     .info {
@@ -92,7 +87,7 @@
 .global-search {
   width: 220px;
   margin-right: 50px;
-  transition: width 0.2s;
+  transition: width .2s;
 
   &-input {
     width: 100%;
@@ -129,11 +124,11 @@
   }
 
   .instance-create-time {
-    margin-left: 10px;
     float: right;
-    vertical-align: bottom;
+    margin-left: 10px;
+    color: rgba(0, 0, 0, .5);
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.5);
+    vertical-align: bottom;
   }
 
   .el-select-dropdown__item {
@@ -150,18 +145,18 @@
   .common-topbar-nav-list {
     position: relative;
     overflow: hidden;
+    width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 100%;
 
     li {
+      position: relative;
       display: inline-block;
       height: 54px;
-      line-height: 54px;
-      position: relative;
-      color: #fff;
-      list-style-type: none;
       padding: 0 16px;
+      color: #fff;
+      line-height: 54px;
+      list-style-type: none;
       cursor: pointer;
 
       &:hover {
@@ -176,46 +171,46 @@
 
   .common-topbar-dropdown {
     position: absolute;
-    top: 32px;
+    top: 42px;
     z-index: 998;
-    height: 0;
-    width: 560px;
     overflow: hidden;
+    width: 560px;
+    height: 0;
     color: #fff;
     background: transparent;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .16);
     border-radius: 4px;
-    transition: opacity 0.16s ease-in-out, width 0.16s ease-in-out;
+    transition: opacity .16s ease-in-out, width .16s ease-in-out;
     opacity: 0;
     visibility: hidden;
 
     &.expand {
-      opacity: 1;
       width: 600px;
+      opacity: 1;
       visibility: visible;
     }
   }
 
   .triangle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
     width: 0;
     height: 0;
     border: 8px solid transparent;
     border-bottom-color: #fff;
-    position: absolute;
-    z-index: 1000;
-    top: 0;
-    left: 0;
   }
 
   .common-topbar-dropdown-inner {
     position: relative;
     top: 16px;
-    padding-top: 0;
-    height: calc(100% - 16px);
     overflow: auto;
     overflow-x: hidden;
-    border-radius: 4px;
+    height: calc(100% - 16px);
+    padding-top: 0;
     background: #fff;
+    border-radius: 4px;
   }
 
   .block-left {
@@ -223,13 +218,13 @@
     top: 0;
     bottom: 0;
     float: left;
-    height: 100%;
+    overflow: hidden;
     width: 150px;
+    height: 100%;
     //background-image: linear-gradient(-180deg, #55aeff 0%, #188cf7 100%);
     //background-color: #1890ff;
     color: #fff;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, .8);
 
     li {
       height: 50px;
@@ -244,8 +239,8 @@
       }
 
       &.li-active {
-        background-color: #fff;
         color: #000;
+        background-color: #fff;
 
         .block-left-li-content {
           border: 0;
@@ -253,8 +248,8 @@
       }
 
       &:hover {
-        background-color: #fff;
         color: #000;
+        background-color: #fff;
 
         .block-left-li-content {
           border: 0;
@@ -266,30 +261,30 @@
   .block-right {
     position: absolute;
     left: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 460px;
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    color: #000;
     padding: 20px;
+    color: #000;
   }
 
   .service-title {
+    margin-bottom: 3px;
+    color: #3d444f;
     font-size: 16px;
     line-height: 22px;
-    color: #3d444f;
-    margin-bottom: 3px;
   }
 
   .service-description {
+    margin-bottom: 15px;
     color: #595f69;
     line-height: 22px;
-    margin-bottom: 15px;
   }
 
   .operation-line {
     padding: 6px 10px;
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(0, 0, 0, .4);
     line-height: 22px;
 
     p {
@@ -297,8 +292,8 @@
     }
 
     .operation-link {
-      color: #000;
       margin-bottom: 3px;
+      color: #000;
 
       &:hover {
         color: #1890ff;
@@ -308,6 +303,7 @@
     .operation-link {
       &.disabled {
         font-size: 14px;
+
         &:hover {
           color: #000;
         }

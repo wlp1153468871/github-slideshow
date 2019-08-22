@@ -147,7 +147,7 @@ export default {
 
     {
       path: 'deploy',
-      name: 'deploy',
+      name: 'manage.deploy',
       component: DeployContainer,
       children: [
         {

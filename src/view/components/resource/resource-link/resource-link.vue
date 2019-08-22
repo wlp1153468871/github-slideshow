@@ -2,19 +2,18 @@
   <div class="resource-link">
     <span
       class="resource-icon"
-      :class="[resourceIcon]"
+      :class="[resource.icon]"
       title="Secret">
       {{ kind[0] }}
     </span>
-    <router-link :to="resourceRoute">
+    <router-link :to="resource.route">
       {{ name || kind }}
     </router-link>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { get as getValue } from 'lodash';
+import Resource from '@/view/components/resource/resource-link/resource';
 
 export default {
   name: 'resource-link',
@@ -24,30 +23,19 @@ export default {
     name: { type: String },
   },
 
-  computed: {
-    ...mapState(['apiResource']),
+  data() {
+    return {
+      resource: {},
+      unwatch: () => {},
+    };
+  },
 
-    resourceName() {
-      return getValue(this.apiResource, `${this.kind}.name`);
-    },
+  created() {
+    this.resource = new Resource(this.kind, this.name);
+  },
 
-    resourceRoute() {
-      const { name, resourceName } = this;
-      if (!resourceName) return { name: 'dashboard' };
-      if (name) {
-        return {
-          name: `resource.${resourceName}.detail`,
-          params: { name },
-        };
-      }
-      return {
-        name: `resource.${resourceName}.list`,
-      };
-    },
-
-    resourceIcon() {
-      return `resource-${this.resourceName}`;
-    },
+  destroyed() {
+    this.resource.unwatch();
   },
 };
 </script>
@@ -76,11 +64,11 @@ export default {
   }
 
   .resource-services {
-    background-color: #43A047;
+    background-color: #43a047;
   }
 
   .resource-secrets {
-    background-color: #FFB300;
+    background-color: #ffb300;
   }
 }
 </style>
