@@ -1,11 +1,11 @@
 import getDeployPath from '@/view/router/util/deploy-map';
-import getRoutePath from '@/view/router/util/router-map';
+import getListPath from '@/view/router/util/resource-list-map';
 
 const mapRouter = services => {
   return services.map(service => {
     return {
       ...service,
-      route: getRoutePath(service),
+      route: getListPath(service),
       deployRoute: getDeployPath(service),
     };
   });

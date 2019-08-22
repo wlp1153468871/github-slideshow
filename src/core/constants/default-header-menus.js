@@ -1,3 +1,4 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import Vue from 'vue';
 
 export default function getDefaultMenus() {
@@ -16,9 +17,9 @@ export default function getDefaultMenus() {
                 '部署您自己的应用。您可以使用构建好的应用镜像，快速完成应用的部署，部署动作将产生多个资源对象。',
               description:
                 '应用是为实现特定业务目标而创建的一组相关联的资源对象，通常会包含 Deployment 或 Deployment Config、Service、Router 等。',
-              help_url: Vue.filter('help_url')('app'),
+              help_url: Vue.filter('help_url')[RESOURCE_TYPE.APPLICATION],
               route: {
-                name: 'console.applications',
+                name: 'console.applications.list',
               },
               deployRoute: {
                 name: 'deploy.app',

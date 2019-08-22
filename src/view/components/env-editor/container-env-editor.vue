@@ -98,7 +98,6 @@
 </template>
 
 <script>
-import { RESOURCE } from '@/core/constants/resource';
 import ConfigMapService from '@/core/services/config-map.service';
 import SecretService from '@/core/services/secret.service';
 import { mapState } from 'vuex';
@@ -164,7 +163,7 @@ export default {
 
   created() {
     Promise.all([
-      this.$can('read', RESOURCE.SECRET.key) && this.listSecrets(),
+      this.$can('read', 'Secret') && this.listSecrets(),
       this.listConfigMaps(),
     ]).finally(() => {
       this.loading = false;

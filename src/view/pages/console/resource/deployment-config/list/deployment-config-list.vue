@@ -1,14 +1,17 @@
 <template>
   <div>
     <circle-loading v-if="loadings.page"></circle-loading>
-    <div
-      class="page-deployment-list"
-      v-else>
+    <template v-else>
       <resource-header :resource="resource"></resource-header>
+
       <div class="dao-view-main">
         <div class="dao-view-content">
-          <div class="table-toolbar">
-            <div class="table-toolbar-left">
+          <x-table
+            :data="deploymentConfigs"
+            :filter-method="filterMethod"
+            :loading="loadings.table"
+            @refresh="getDeploymentConfig">
+            <template #operation>
               <button
                 class="dao-btn dao-icon has-icon blue"
                 v-if="$can('create')"
@@ -19,29 +22,7 @@
                 </svg>
                 <span class="text">创建</span>
               </button>
-            </div>
-            <div class="table-toolbar-right">
-              <dao-input
-                search
-                v-model="filterKey"
-                :disabled="loadings.table"
-                placeholder="请输入搜索内容">
-              </dao-input>
-              <button
-                class="dao-btn"
-                :disabled="loadings.table"
-                style="margin-left: 10px;"
-                @click="$emit('refresh')">
-                <svg class="icon">
-                  <use xlink:href="#icon_update"></use>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <el-table
-            :data="dcsInCurrentPage"
-            v-loading="loadings.table"
-            style="width: 100%">
+            </template>
             <el-table-column
               prop="metadata.name"
               label="名称">
@@ -76,35 +57,24 @@
               prop="address"
               label="触发 Trigger">
             </el-table-column> -->
-          </el-table>
-
-          <el-pagination
-            background
-            :disabled="loadings.table"
-            :page-sizes="[10,30,50]"
-            :page-size.sync="pageSize"
-            :current-page.sync="currentPage"
-            layout="sizes, prev, pager, next"
-            :total="totalPages">
-          </el-pagination>
-
-          <edit-yaml-dialog
-            :value="dcTemplate"
-            :visible="dialogConfigs.yamlEdit"
-            @update="createByYaml"
-            @close="dialogConfigs.yamlEdit = false">
-          </edit-yaml-dialog>
+          </x-table>
         </div>
       </div>
-    </div>
+    </template>
+
+    <edit-yaml-dialog
+      :value="template"
+      :visible="dialogConfigs.yamlEdit"
+      @update="createByYaml"
+      @close="dialogConfigs.yamlEdit = false"
+      @opened="getTemplate">
+    </edit-yaml-dialog>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { chunk, nth } from 'lodash';
-import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml.vue';
-import ResourceTemplateService from '@/core/services/resource.template.service';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import DCService from '@/core/services/deployment-config.service.ts';
 import DeploymentConfigResourceService from '@/core/services/deployment-config.resource.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
@@ -112,60 +82,25 @@ import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 export default {
   name: 'ResourceDeployments',
 
-  comments: [EditYamlDialog],
+  mixins: [ResourceMixin],
 
   data() {
     const { dcCreate = 'false' } = this.$route.query;
 
     return {
+      kind: RESOURCE_TYPE.DEPLOYMENT_CONFIG,
       loadings: {
         page: true,
-        deploymentConfigTable: true,
-        deploymentsTable: true,
+        table: true,
       },
       deploymentConfigs: [],
       dialogConfigs: {
         yamlEdit: JSON.parse(dcCreate),
       },
-      filterKey: '',
       yamlJSON: {},
-      dcTemplate: {},
-      currentPage: 1,
-      pageSize: 10,
+      filterMethod: (data, filterKey) =>
+        data.metadata.name.toLowerCase().includes(filterKey),
     };
-  },
-
-  computed: {
-    ...mapState(['space', 'zone', 'apiResource']),
-
-    resource() {
-      return {
-        ...this.apiResource.DeploymentConfig,
-        links: [
-          {
-            text: this.apiResource.DeploymentConfig.kind,
-          },
-        ],
-      };
-    },
-
-    filteredDcs() {
-      const filterKey = this.filterKey.toLowerCase();
-      return this.deploymentConfigs.filter(dc =>
-        dc.metadata.name.toLowerCase().includes(filterKey));
-    },
-
-    paginaDcs() {
-      return chunk(this.filteredDcs, this.pageSize);
-    },
-
-    dcsInCurrentPage() {
-      return nth(this.paginaDcs, this.currentPage - 1);
-    },
-
-    totalPages() {
-      return this.filteredDcs.length;
-    },
   },
 
   created() {
@@ -174,7 +109,7 @@ export default {
 
   methods: {
     getDeploymentConfig() {
-      this.loadings.deploymentConfigTable = true;
+      this.loadings.table = true;
       return DeploymentConfigResourceService.list(this.space.id, this.zone.id)
         .then(deploymentConfigs => {
           this.deploymentConfigs = joinApproveStatus(deploymentConfigs);
@@ -183,13 +118,6 @@ export default {
           this.loadings.page = false;
           this.loadings.table = false;
         });
-    },
-
-    getTemplate() {
-      return ResourceTemplateService.getTemplate('deployment-config').then(template => {
-        template.metadata.namespace = this.space.short_name;
-        this.dcTemplate = template;
-      });
     },
 
     createByYaml(value) {
@@ -201,8 +129,8 @@ export default {
           } else {
             this.$noty.success('创建Deployment成功');
           }
-          this.$emit('refresh');
           this.dialogConfigs.yamlEdit = false;
+          this.getDeploymentConfig();
         })
         .finally(() => {
           this.loadings = false;

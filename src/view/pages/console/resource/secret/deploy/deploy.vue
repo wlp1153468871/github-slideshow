@@ -1,5 +1,5 @@
 <template>
-  <div class="deploy-config-map">
+  <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
         <a
@@ -117,7 +117,3 @@
 </template>
 
 <script src="./deploy.js"></script>
-
-<style lang="scss">
-@import "./deploy.scss";
-</style>

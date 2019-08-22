@@ -92,22 +92,10 @@ export const CATALOG_STATUS = {
 };
 
 export const AUTOMATIC_SERVICE = 'automatic_service';
-export const MANUAL_SERVICE = 'manual_service';
-export const APPLICATION_SERVICE = 'app';
 export const DEPLOYMENT_SERVICE = 'route';
 export const VOLUME_SERVICE = 'volume';
-export const CONFIG_MAP = 'config-map';
 export const SECRET = 'secret';
 export const DCS = 'dcs';
-
-export const SERVICE_TYPES = {
-  AUTOMATIC_SERVICE,
-  MANUAL_SERVICE,
-  APPLICATION_SERVICE,
-  DEPLOYMENT_SERVICE,
-  VOLUME_SERVICE,
-  DCS,
-};
 
 export const SERVICE_TYPES_DESC = [
   {

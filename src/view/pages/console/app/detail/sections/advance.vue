@@ -21,8 +21,8 @@
 </template>
 
 <script>
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import InstanceService from '@/core/services/instance.service';
-import { SERVICE_TYPES } from '@/core/constants/constants';
 
 export default {
   name: 'AdvancePanel',
@@ -49,7 +49,7 @@ export default {
       InstanceService.deleteInstance(instance.id).then(() => {
         this.$noty.success('删除应用成功');
         this.$router.push({
-          name: 'console.applications',
+          name: 'console.applications.list',
         });
       });
     },
@@ -61,7 +61,7 @@ export default {
         const deployments = [];
         binds.forEach(bind => {
           const isDeployment =
-            bind.service_type === SERVICE_TYPES.DEPLOYMENT_SERVICE;
+            bind.service_type === RESOURCE_TYPE.ROUTE;
           const { name } = bind.params || {};
           if (isDeployment && name) deployments.push(name);
         });

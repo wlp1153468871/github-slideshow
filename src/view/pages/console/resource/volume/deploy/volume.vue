@@ -48,6 +48,3 @@
 
 <script src="./_volume.js">
 </script>
-
-<style lang="scss" src="./_volume.scss">
-</style>

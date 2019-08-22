@@ -150,11 +150,11 @@ export default {
   methods: {
     checkIsDuplicateName() {
       if (this.veeErrors.has('name')) return;
-
+      // eslint-disable-next-line no-underscore-dangle
       this.getRecommendedName(this._name).then(res => {
-        // eslint-disable-line
         if (res.is_existed) {
-          this._name = first(res.recommend_names); // eslint-disable-line
+          // eslint-disable-next-line no-underscore-dangle
+          this._name = first(res.recommend_names);
           this.recommendNames = res.recommend_names;
         }
       });

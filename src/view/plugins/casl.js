@@ -8,8 +8,7 @@ function defineAbilitiesFor(role) {
   if (role === ZONE_ROLE.VIEW) {
     return AbilityBuilder.define((can, cannot) => {
       can('read', 'all');
-      const secretName = getValue(store, 'state.apiResource.Secret.name');
-      if (secretName) cannot('read', secretName);
+      cannot('read', 'Secret');
     });
   }
 

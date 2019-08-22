@@ -1,4 +1,5 @@
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import { mapState } from 'vuex';
 import { orderBy, isEmpty } from 'lodash';
 import InstanceService from '@/core/services/instance.service';
@@ -10,6 +11,8 @@ import JobsPanel from './panels/jobs';
 
 export default {
   name: 'VolumeDetail',
+
+  mixins: [ResourceMixin],
 
   components: {
     OverviewPanel,
@@ -23,20 +26,8 @@ export default {
       SETTING: { label: '设置', name: 'setting' },
     };
 
-    const { name } = this.$route.params;
-
     return {
-      resource: {
-        ...RESOURCE.PERSISTENT_VOLUME_CLAIM,
-        links: [
-          {
-            text: RESOURCE.PERSISTENT_VOLUME_CLAIM.name,
-            route: { name: 'resource.persistentvolumeclaims.list' },
-          },
-          { text: name },
-        ],
-      },
-      name,
+      kind: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
       TABS,
       tab: TABS.OVERVIEW.name,
       loadings: {
@@ -127,14 +118,9 @@ export default {
     },
 
     removeVolume(name) {
-      this.isDeleting = true;
-      this.$noty.success(`正在删除 PVC ${name} `);
       VolumeService.delete(this.space.id, this.zone.id, name).then(() => {
-        this.$router.push({
-          name: 'resource.persistentvolumeclaims.list',
-        });
         this.$noty.success(`删除 PVC ${name} 成功`);
-        this.isDeleting = false;
+        this.goBack();
       });
     },
   },

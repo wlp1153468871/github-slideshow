@@ -1,14 +1,13 @@
 import { mapState, mapGetters } from 'vuex';
 import { orderBy, groupBy } from 'lodash';
-import { APPLICATION_CONFIG } from '@/core/constants/app';
 import { POLL_INTERVAL } from '@/core/constants/constants';
-import { RESOURCE } from '@/core/constants/resource';
 import InstanceService from '@/core/services/instance.service';
 import ApplicationService from '@/core/services/application.service';
 import Loading from '@/view/components/loading/circles';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
+import { APPLICATION_CONFIG } from '@/core/constants/resource';
 
 // panels
 import OverviewPanel from './panels/overview';
@@ -108,7 +107,7 @@ export default {
       return [
         {
           text: '应用列表',
-          route: { name: 'console.applications' },
+          route: { name: 'console.applications.list' },
         },
         {
           text: this.instance.name,
@@ -164,7 +163,7 @@ export default {
     },
 
     loadInstanceSecrets() {
-      if (!this.$can('read', RESOURCE.SECRET.key)) {
+      if (!this.$can('read', 'Secret')) {
         return Promise.resolve([]);
       }
 
@@ -182,7 +181,7 @@ export default {
     },
 
     loadInstanceYAML() {
-      if (this.$can('read', RESOURCE.SECRET.key)) {
+      if (this.$can('read', 'Secret')) {
         ApplicationService.getInstanceYaml(this.instanceId).then(yaml => {
           this.yaml = yaml;
         });

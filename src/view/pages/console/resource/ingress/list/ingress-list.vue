@@ -55,7 +55,7 @@
     </template>
 
     <edit-yaml-dialog
-      :value="formModel"
+      :value="template"
       :visible.sync="dialogs.create"
       :header="'创建 ' + kind"
       @opened="getTemplate"
@@ -65,21 +65,24 @@
 </template>
 
 <script>
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import Vue from 'vue';
-import { mapState, mapGetters } from 'vuex';
-import { isEmpty, get as getValue } from 'lodash';
-import ResourceTemplateService from '@/core/services/resource.template.service';
+import { mapState } from 'vuex';
+import { get as getValue } from 'lodash';
 import IngressService from '@/core/services/ingress.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus';
+import ResourceMixin from '@/view/mixins/resource';
 
 export default {
   name: 'IngressList',
+
+  mixins: [ResourceMixin],
 
   data() {
     const { create = 'false' } = this.$route.query;
 
     return {
-      kind: 'Ingress',
+      kind: RESOURCE_TYPE.INGRESS,
       loadings: {
         page: true,
         table: false,
@@ -87,7 +90,6 @@ export default {
       ingressList: [],
       filterMethod: (data, filterKey) =>
         data.metadata.name.toLowerCase().includes(filterKey),
-      formModel: null,
       dialogs: {
         create: JSON.parse(create),
       },
@@ -95,12 +97,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'apiResource']),
-    ...mapGetters(['gerResourceForHeader']),
-
-    resource() {
-      return this.gerResourceForHeader(this.kind);
-    },
+    ...mapState(['space']),
   },
 
   created() {
@@ -134,14 +131,6 @@ export default {
           this.$noty.success('创建 Ingress 成功');
         }
         this.listIngresses();
-      });
-    },
-
-    getTemplate() {
-      if (!isEmpty(this.formModel)) return;
-      ResourceTemplateService.getTemplate('ingress').then(template => {
-        template.metadata.namespace = this.space.short_name;
-        this.formModel = template;
       });
     },
 

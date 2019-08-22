@@ -1,7 +1,7 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { get as getValue, orderBy } from 'lodash';
-import { mapState } from 'vuex';
+import ResourceMixin from '@/view/mixins/resource';
 import { CONFIG_TITLE_TYPE } from '@/core/constants/constants';
-import { RESOURCE } from '@/core/constants/resource';
 import ConfigMapService from '@/core/services/config-map.service';
 import InstanceService from '@/core/services/instance.service';
 // panels
@@ -12,6 +12,8 @@ import EventPanel from '../../_panels/event';
 export default {
   name: 'ConfigMapDetail',
 
+  mixins: [ResourceMixin],
+
   components: {
     LabelsTable,
     SeniorPanel,
@@ -19,7 +21,6 @@ export default {
   },
 
   data() {
-    const { name: configMapName } = this.$route.params;
     const TABS = {
       OVERVIEW: '概览',
       EVENT: '操作记录',
@@ -27,7 +28,7 @@ export default {
     };
 
     return {
-      configMapName,
+      kind: RESOURCE_TYPE.CONFIG_MAP,
       CONFIG_TITLE_TYPE,
       TABS,
       configMap: {
@@ -44,23 +45,6 @@ export default {
     };
   },
 
-  computed: {
-    ...mapState(['space', 'zone', 'apiResource']),
-
-    resource() {
-      return {
-        ...this.apiResource.ConfigMap,
-        links: [
-          {
-            text: this.apiResource.ConfigMap.kind,
-            route: this.apiResource.ConfigMap.route,
-          },
-          { text: this.configMapName },
-        ],
-      };
-    },
-  },
-
   created() {
     this.loadConfigMapDetail();
   },
@@ -71,7 +55,7 @@ export default {
       return ConfigMapService.getConfigMap(
         this.space.id,
         this.zone.id,
-        this.configMapName,
+        this.name,
       )
         .then(instance => {
           const { originData: configMap, id: instanceId, status } = instance;
@@ -114,14 +98,14 @@ export default {
     },
 
     parseAsConfigMap(data, labels, annotations) {
-      // const { data, labels, annotations } = this;
+      const { name } = this;
       const namespace = this.space.short_name;
       return {
         apiVersion: 'v1',
         kind: 'ConfigMap',
         data,
         metadata: {
-          name: this.configMapName,
+          name,
           namespace,
           annotations,
           labels,
@@ -135,7 +119,7 @@ export default {
       ConfigMapService.updateConfigMap(
         this.space.id,
         this.zone.id,
-        this.configMapName,
+        this.name,
         configMap,
       )
         .then(() => {
@@ -154,10 +138,10 @@ export default {
       ConfigMapService.deleteConfigMap(
         this.space.id,
         this.zone.id,
-        this.configMapName,
+        this.name,
       ).then(() => {
-        this.$router.push(RESOURCE.CONFIG_MAP.route);
-        this.$noty.success(`成功删除 ConfigMap ${this.configMapName}`);
+        this.$noty.success(`成功删除 ConfigMap ${this.name}`);
+        this.goBack();
       });
     },
   },

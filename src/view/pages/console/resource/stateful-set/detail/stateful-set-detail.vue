@@ -39,7 +39,7 @@
           </dao-dropdown>
           <button
             class="dao-btn csp-table-update-btn"
-            @click="onRefresh"
+            @click="getStatefulSet"
             style="margin-left: 10px">
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
@@ -113,16 +113,15 @@
       :visible.sync="yamlVisible"
       :value="statefulset"
       @update="updateByYaml"
-      @close="yamlVisible = false"
     ></edit-yaml-dialog>
   </div>
 </template>
 
 <script>
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
-import { get, set, cloneDeep, isEmpty } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
-
+import { get, set, cloneDeep } from 'lodash';
+import ResourceMixin from '@/view/mixins/resource';
 import StatefulSetService from '@/core/services/stateful-set.service.ts';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml.vue';
 
@@ -135,6 +134,8 @@ import EnvPanel from './panels/env';
 
 export default {
   name: 'StatefulSetDetail',
+
+  mixins: [ResourceMixin],
 
   components: {
     LogOfflinePanel,
@@ -155,20 +156,8 @@ export default {
       EVENT: { label: '事件', name: 'event' },
     };
 
-    const { name } = this.$route.params;
-
     return {
-      resource: {
-        ...RESOURCE.STATEFUL_SET,
-        links: [
-          {
-            text: 'Stateful Set',
-            route: { name: 'resource.statefulsets.list' },
-          },
-          { text: name },
-        ],
-      },
-      name,
+      kind: RESOURCE_TYPE.STATEFUL_SET,
       TABS,
       tab: TABS.INFO.name,
       loading: {
@@ -178,7 +167,6 @@ export default {
       },
       status: '',
       statefulset: {},
-      isEmpty,
       yamlVisible: false,
       imagesByDockerReference: {},
       events: [],
@@ -200,10 +188,6 @@ export default {
   },
 
   methods: {
-    onRefresh() {
-      this.getStatefulSet();
-    },
-
     handleTabClick(tab) {
       const tabName = tab.name;
       if (tabName === this.TABS.EVENT.name) {
@@ -238,7 +222,7 @@ export default {
         })
         .catch(() => {
           this.$noty.error('Stateful Set 不存在');
-          this.$router.push(RESOURCE.STATEFUL_SET.route);
+          this.goBack();
         })
         .finally(() => {
           this.loading.page = false;
@@ -293,7 +277,7 @@ export default {
       this.loading.page = true;
       StatefulSetService.delete(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('删除成功');
-        this.$router.push(RESOURCE.STATEFUL_SET.route);
+        this.goBack();
       });
     },
 

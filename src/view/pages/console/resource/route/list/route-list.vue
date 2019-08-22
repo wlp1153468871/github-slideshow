@@ -88,11 +88,11 @@
                   {{ route.spec.to.kind }}: {{ route.spec.to.name }}
                 </span>
                 <template v-else>
-                  <router-link
+                  <resource-link
                     v-if="hasServiceBeenDeleted(route.spec.to.name)"
-                    :to="{ name: 'resource.services.detail', params: { name: route.spec.to.name } }">
-                    {{ route.spec.to.name }}
-                  </router-link>
+                    kind="Service"
+                    :name="route.spec.to.name">
+                  </resource-link>
                   <template v-else>
                     <span>{{ route.spec.to.name }}</span>
                     <el-popover

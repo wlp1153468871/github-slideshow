@@ -1,18 +1,18 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import Vue from 'vue';
 import { get as getValue } from 'lodash';
-import { mapState } from 'vuex';
 import ConfigMapService from '@/core/services/config-map.service';
 import isApprove from '@/core/utils/is-approve';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
-
 import ErrorInfo from '@/view/mixins/error-info';
+import ResourceMixin from '@/view/mixins/resource';
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
 
 export default {
   name: 'configMapList',
 
-  mixins: [ErrorInfo],
+  mixins: [ErrorInfo, ResourceMixin],
 
   components: {
     ErrorInfoDialog,
@@ -21,6 +21,7 @@ export default {
 
   data() {
     return {
+      kind: RESOURCE_TYPE.CONFIG_MAP,
       rows: [],
       selectedYaml: {},
       loadings: {
@@ -40,21 +41,6 @@ export default {
 
   created() {
     this.loadInstances();
-  },
-
-  computed: {
-    ...mapState(['space', 'zone', 'apiResource']),
-
-    resource() {
-      return {
-        ...this.apiResource.ConfigMap,
-        links: [
-          {
-            text: this.apiResource.ConfigMap.kind,
-          },
-        ],
-      };
-    },
   },
 
   methods: {

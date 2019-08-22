@@ -32,7 +32,7 @@
       ></dao-input>
       <!-- SECRET -->
       <div v-else-if="env.valueFrom && env.valueFrom.secretKeyRef" class="half-select">
-        <span class="text-muted secret-value" v-if="!$can('read', RESOURCE.SECRET.key)">
+        <span class="text-muted secret-value" v-if="!$can('read', 'Secret')">
           <span class="text-overflow-ellipsis">{{ env.valueFrom.secretKeyRef.name }}</span>
           <span class="text-overflow-ellipsis">{{ env.valueFrom.secretKeyRef.key }}</span>
         </span>
@@ -126,8 +126,6 @@
 </template>
 
 <script>
-import { RESOURCE } from '@/core/constants/resource';
-
 export default {
   name: 'env-tr',
   props: ['env', 'index', 'formatedSecrets', 'formatedConfigMaps', 'editable'],
@@ -135,7 +133,6 @@ export default {
     return {
       nameStatus: '',
       namePlaceholder: 'Name',
-      RESOURCE,
     };
   },
   methods: {
