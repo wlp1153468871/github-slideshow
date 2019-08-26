@@ -65,8 +65,8 @@
         <template v-if="isPlatformAdmin || !zoneUnauthorized">
 
           <el-menu-item
-            index="console.applications"
-            :route="{ name: 'console.applications' }">
+            index="console.applications.list"
+            :route="{ name: 'console.applications.list' }">
             <svg class="icon">
               <use xlink:href="#icon_application"></use>
             </svg>

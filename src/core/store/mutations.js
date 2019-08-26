@@ -22,7 +22,7 @@ import SystemService from '@/core/services/system.service';
 import ZoneService from '@/core/services/zone.service';
 import APIResourceService from '@/core/services/api-resource.service';
 import CategoryUtil from '@/core/utils/category-util';
-import getRoutePath from '@/view/router/util/router-map';
+import getListPath from '@/view/router/util/resource-list-map';
 import {
   find,
   isEmpty,
@@ -140,20 +140,14 @@ export const getters = {
   },
 
   getService: state => id => {
-    console.log(`查询ID为 [${id}] 的 Service`);
     const service = find(state.services, { id });
-    if (service) {
-      console.log('查询成功', service);
-      return service;
-    }
+    if (service) return service;
     throw new Error(`没有查找到ID为 [${id}] 的Service`);
   },
 
   gerResourceForHeader: state => (kind, name) => {
-    console.log(`查询 Kind 为 [${kind}] 的 Resource`);
     const resource = getValue(state.apiResource, kind);
     if (resource) {
-      console.log('查询成功', resource);
       let links;
       if (name) {
         links = [
@@ -293,7 +287,7 @@ export const actions = {
     }).then(services => {
       const { broker_services } = services;
       broker_services.forEach(bs => {
-        bs.route = getRoutePath(bs);
+        bs.route = getListPath(bs);
       });
       commit(types.LOAD_SERVICE_SUCCESS, broker_services);
       commit(types.INIT_TENANT_VIEW_SUCCESS);
@@ -408,6 +402,8 @@ export const actions = {
   switchZone({ dispatch, commit }, { zone }) {
     commit(types.SWITCH_ZONE, { zone });
     ZoneService.setLocalZone(zone);
+
+    dispatch('loadAPIResource');
 
     dispatch('getUserInfo').then(() => {
       dispatch('initPortal');

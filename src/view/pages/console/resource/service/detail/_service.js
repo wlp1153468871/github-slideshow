@@ -1,6 +1,7 @@
 import { POLL_INTERVAL } from '@/core/constants/constants';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import { each, get as getValue } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
 import ServiceResourceService from '@/core/services/service.resource.service';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import EndpointService from '@/core/services/endpoint.service';
@@ -16,23 +17,18 @@ const TABS = {
 export default {
   name: 'ResourceService',
 
+  mixins: [ResourceMixin],
+
   components: {
     ServiceOverviewPanel,
     PodTable,
   },
 
   data() {
-    const { name: serviceName } = this.$route.params;
     const { tab } = this.$route.query;
 
     return {
-      resource: {
-        ...RESOURCE.SERVICE,
-        links: [
-          { text: RESOURCE.SERVICE.name, route: RESOURCE.SERVICE.route },
-          { text: serviceName },
-        ],
-      },
+      kind: RESOURCE_TYPE.SERVICE,
       TABS,
       activeTab: tab || TABS.OVERVIEW.name,
       dialogs: {
@@ -46,7 +42,6 @@ export default {
       pods: [],
       status: '',
       service: null,
-      serviceName,
       routesForService: {},
       portsByRoute: {},
       showNodePorts: false,
@@ -93,10 +88,7 @@ export default {
 
     init() {
       this.loadings.page = true;
-      return Promise.all([
-        this.getService(),
-        this.getRoutes(),
-      ])
+      return Promise.all([this.getService(), this.getRoutes()])
         .then(() => {
           this.getPortsByRoute();
         })
@@ -106,28 +98,26 @@ export default {
     },
 
     getService() {
-      const { serviceName } = this;
-      return ServiceResourceService
-        .get({ name: serviceName })
-        .then(({ originData = null, status }) => {
-          this.service = originData;
-          this.status = status;
-        });
+      const { name } = this;
+      return ServiceResourceService.get({ name }).then(({ originData = null, status }) => {
+        this.service = originData;
+        this.status = status;
+      });
     },
 
     getRoutes() {
-      return ServiceResourceService
-        .getRoutes({ name: this.serviceName })
-        .then(({ originData: { items = [] } }) => {
-          items.forEach(route => {
-            this.routesForService[route.metadata.name] = route;
-          });
+      const { name } = this;
+      return ServiceResourceService.getRoutes({ name }).then(({ originData: { items = [] } }) => {
+        items.forEach(route => {
+          this.routesForService[route.metadata.name] = route;
         });
+      });
     },
 
     getEndpointsByService() {
+      const { name } = this;
       return EndpointService.getEndpointsByService({
-        name: this.serviceName,
+        name,
       }).then(svcEndpoint => {
         const newpodsWithEndpoints = {};
         each(svcEndpoint.subsets, subset => {
@@ -171,16 +161,17 @@ export default {
     },
 
     getEvents() {
-      const { serviceName } = this;
+      const { name } = this;
       ServiceResourceService.getEvents({
-        name: serviceName,
+        name,
       }).then(({ originData: { items } }) => {
         this.events = items;
       });
     },
 
     getPods() {
-      return ServiceResourceService.getPods({ name: this.serviceName })
+      const { name } = this;
+      return ServiceResourceService.getPods({ name })
         .then(({ originData: { items } }) => {
           this.pods = items;
         })
@@ -192,8 +183,8 @@ export default {
     ensureRemove() {
       this.$tada
         .confirm({
-          title: `删除 ${this.serviceName}  `,
-          text: `您确定要删除Service ${this.serviceName} 吗？`,
+          title: `删除 ${this.name}  `,
+          text: `您确定要删除Service ${this.name} 吗？`,
         })
         .then(ok => {
           if (ok) {
@@ -203,10 +194,10 @@ export default {
     },
 
     removeService() {
-      const { serviceName } = this;
-      ServiceResourceService.delete({ name: serviceName }).then(() => {
-        this.$noty.success(`删除Service ${this.podName} 成功`);
-        this.$router.push({ name: 'resource.services.list' });
+      const { name } = this;
+      ServiceResourceService.delete({ name }).then(() => {
+        this.$noty.success(`删除Service ${this.name} 成功`);
+        this.goBack();
       });
     },
 
@@ -215,8 +206,8 @@ export default {
     },
 
     updateService(service) {
-      const { serviceName } = this;
-      ServiceResourceService.update({ name: serviceName, data: service })
+      const { name } = this;
+      ServiceResourceService.update({ name, data: service })
         .then(() => {
           return this.init();
         })

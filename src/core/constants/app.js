@@ -20,10 +20,3 @@ export const DEPLOYMENT_TYPE = {
 export const BUILDIN_SERVICE_TOKEN_NAME = {
   DCS_DEPLOY_TOKEN: 'dcs_deploy_app_token',
 };
-
-export const APPLICATION_CONFIG = {
-  key: 'application',
-  name: '应用',
-  icon: '#icon_application',
-  logo: '#icon_application-logo',
-};

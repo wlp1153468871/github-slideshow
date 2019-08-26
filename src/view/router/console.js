@@ -103,16 +103,16 @@ export default {
       },
     },
     {
-      path: 'application',
-      name: 'console.applications',
+      path: 'applications',
+      name: 'console.applications.list',
       component: AppList,
     },
     {
-      path: 'application/:instanceId',
-      name: 'console.application',
+      path: 'applications/:instanceId',
+      name: 'console.applications.detail',
       component: AppDetail,
       meta: {
-        activeMenu: 'console.applications',
+        activeMenu: 'console.applications.list',
       },
     },
     /**

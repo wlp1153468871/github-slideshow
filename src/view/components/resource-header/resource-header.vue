@@ -57,17 +57,12 @@ export default {
       type: Boolean,
       default: false,
     },
-    resource: {
-      type: Object,
-      default: () => {
-        return { icon: '#icon_pods', name: 'Resource' };
-      },
-    },
+    resource: { type: Object },
   },
 
   computed: {
     helpUrl() {
-      return this.resource.helpUrl || Vue.filter('help_url')(this.resource.key);
+      return this.resource.helpUrl || Vue.filter('help_url')(this.resource.kind);
     },
   },
 };

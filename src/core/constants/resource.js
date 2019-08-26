@@ -16,104 +16,6 @@ export const ACCESS_MODE = {
   },
 };
 
-export const RESOURCE = {
-  DEPLOYMENT: {
-    key: 'deployment',
-    name: 'deployments',
-    icon: '#icon_deployment',
-    logo: '#icon_deployment-logo',
-    route: { name: 'resource.deployments.list' },
-  },
-  DEPLOYMENT_CONFIG: {
-    key: 'deployment-config',
-    name: 'Deployment Config',
-    icon: '#icon_deployment',
-    logo: '#icon_deployment-config-logo',
-    route: { name: 'resource.deployments.list' },
-    hidden: true,
-  },
-  STATEFUL_SET: {
-    key: 'stateful-set',
-    name: 'Stateful Set',
-    icon: '#icon_statefulset',
-    logo: '#icon_statefulset-logo',
-    route: { name: 'resource.statefulsets.list' },
-  },
-  POD: {
-    key: 'pod',
-    name: 'Pod',
-    icon: '#icon_pod',
-    logo: '#icon_pod-logo',
-    route: { name: 'resource.pods.list' },
-  },
-  SERVICE: {
-    key: 'service',
-    name: 'Service',
-    icon: '#icon_service',
-    logo: '#icon_service-logo',
-    route: { name: 'resource.services.list' },
-  },
-  ROUTE: {
-    key: 'route',
-    name: 'Route',
-    icon: '#icon_route',
-    logo: '#icon_route-logo',
-    route: { name: 'resource.routes.list' },
-  },
-  INGRESS: {
-    key: 'ingress',
-    name: 'Ingress',
-    icon: '#icon_ingress',
-    logo: '#icon_ingress-logo',
-    route: { name: 'resource.ingresses.list' },
-  },
-  PERSISTENT_VOLUME_CLAIM: {
-    key: 'pvc',
-    name: 'PVC',
-    icon: '#icon_pvc',
-    logo: '#icon_pvc-logo',
-    route: { name: 'resource.persistentvolumeclaims.list' },
-  },
-  CONFIG_MAP: {
-    key: 'config-map',
-    name: 'ConfigMap',
-    icon: '#icon_configmap',
-    logo: '#icon_configmap-logo',
-    route: { name: 'resource.configmaps.list' },
-  },
-  SECRET: {
-    key: 'secret',
-    name: 'Secret',
-    icon: '#icon_secret',
-    logo: '#icon_secret-logo',
-    route: { name: 'resource.secrets.list' },
-  },
-  APP: {
-    key: 'application',
-    name: '应用',
-    icon: '#icon_application',
-    logo: '#icon_application-logo',
-    route: { name: 'console.applications' },
-    hidden: true,
-  },
-};
-
-export const mergeDefaultHelpUrls = remotehelpURLDict => {
-  try {
-    const dict = {};
-    Object.values(RESOURCE).forEach(r => {
-      dict[r.key] = {
-        key: r.key,
-        name: r.name,
-        url: '',
-      };
-    });
-    return { ...dict, ...remotehelpURLDict };
-  } catch (error) {
-    return {};
-  }
-};
-
 export const API_PREFERRED_VERSIONS = {
   appliedclusterresourcequotas: {
     group: 'quota.openshift.io',
@@ -309,32 +211,52 @@ export const DNS1035_LABEL_VALIDATION = {
     "名称必须由小写字母、数字或 '-' 组成，不能以 '-' 和数字开头, 且不能以 '-' 结尾",
 };
 
-// 这是后端定义的资源类型的Key [😭]
 export const RESOURCE_TYPE = {
-  APPLICATION: 'app',
+  APPLICATION: 'Application',
+  DEPLOYMENT_CONFIG: 'DeploymentConfig',
+  DEPLOYMENT: 'Deployment',
+  STATEFUL_SET: 'StatefulSet',
+  POD: 'Pod',
+  SERVICE: 'Service',
+  ROUTE: 'Route',
+  INGRESS: 'Ingress',
+  CONFIG_MAP: 'ConfigMap',
+  SECRET: 'Secret',
+  PERSISTENT_VOLUME_CLAIM: 'PersistentVolumeClaim',
   BROKER_SERVICE: '',
-  CONFIG_MAP: 'config-map',
-  CONTAINER: 'container',
-  DEPLOYMENT: 'deployment',
-  DEPLOYMENT_CONFIG: 'DC',
-  POD: 'pods',
-  REPLICATION_CONTROLLER: 'RC',
-  ROUTE: 'router',
-  SECRET: 'secret',
-  SERVICE: 'services',
-  STATEFUL_SET: 'statefulsets',
-  VOLUME: 'volume',
 };
 
 export const DEFAULT_RESOURCE = [
-  'DeploymentConfig',
-  'Deployment',
-  'StatefulSet',
-  'Pod',
-  'Service',
-  'Route',
-  'Ingress',
-  'ConfigMap',
-  'Secret',
-  'PersistentVolumeClaim',
+  RESOURCE_TYPE.DEPLOYMENT_CONFIG,
+  RESOURCE_TYPE.DEPLOYMENT,
+  RESOURCE_TYPE.STATEFUL_SET,
+  RESOURCE_TYPE.POD,
+  RESOURCE_TYPE.SERVICE,
+  RESOURCE_TYPE.ROUTE,
+  RESOURCE_TYPE.INGRESS,
+  RESOURCE_TYPE.CONFIG_MAP,
+  RESOURCE_TYPE.SECRET,
+  RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
 ];
+
+export const APPLICATION_CONFIG = {
+  kind: RESOURCE_TYPE.APPLICATION,
+  name: '应用',
+  icon: '#icon_application',
+  logo: '#icon_application-logo',
+  route: {
+    name: 'console.applications.list',
+  },
+};
+
+export const mergeDefaultHelpUrls = remoteHelpURLDict => {
+  try {
+    const dict = {};
+    [APPLICATION_CONFIG.kind, ...DEFAULT_RESOURCE].forEach(r => {
+      dict[r] = '';
+    });
+    return { ...dict, ...remoteHelpURLDict };
+  } catch (error) {
+    return {};
+  }
+};

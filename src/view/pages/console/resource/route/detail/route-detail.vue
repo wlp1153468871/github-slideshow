@@ -1,7 +1,9 @@
 <template>
   <div class="page-pods">
-    <template v-if="!loadings.page">
-      <resource-header :resource="resource" v-if="!isEmpty(route)">
+    <circle-loading v-if="loadings.page"></circle-loading>
+
+    <template v-else>
+      <resource-header :resource="resource">
         <template #creationTime>
           创建于{{ route.metadata.creationTimestamp | date }}
         </template>
@@ -77,7 +79,6 @@
       </el-tabs>
     </template>
 
-    <circle-loading v-else></circle-loading>
 
     <edit-yaml-dialog
       :value="route"

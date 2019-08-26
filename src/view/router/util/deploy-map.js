@@ -1,15 +1,4 @@
-/**
- * 获取service对应的route path
- * @param route
- * @param service
- */
-import {
-  APPLICATION_SERVICE,
-  CONFIG_MAP,
-  DEPLOYMENT_SERVICE,
-  VOLUME_SERVICE,
-  SECRET,
-} from '@/core/constants/constants';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 
 export default function getDeployPath(service) {
   const getParams = ({
@@ -29,7 +18,7 @@ export default function getDeployPath(service) {
     services: [{ service_type }],
   } = service;
 
-  if (service_type === APPLICATION_SERVICE) {
+  if (service_type === RESOURCE_TYPE.APPLICATION) {
     const {
       id: serviceId,
       services: [{ id: brokerServiceId }],
@@ -42,21 +31,21 @@ export default function getDeployPath(service) {
       },
     };
   }
-  if (service_type === DEPLOYMENT_SERVICE) {
+  if (service_type === RESOURCE_TYPE.ROUTE) {
     return { name: 'deploy.router' };
   }
-  if (service_type === VOLUME_SERVICE) {
+  if (service_type === RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM) {
     return {
       name: 'deploy.volume',
       ...getParams(service),
     };
   }
-  if (service_type === CONFIG_MAP) {
+  if (service_type === RESOURCE_TYPE.CONFIG_MAP) {
     return {
       name: 'deploy.config-map',
     };
   }
-  if (service_type === SECRET) {
+  if (service_type === RESOURCE_TYPE.SECRET) {
     return {
       name: 'deploy.secret',
     };

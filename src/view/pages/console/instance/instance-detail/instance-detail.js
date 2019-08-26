@@ -2,7 +2,7 @@ import isApprove from '@/core/utils/is-approve';
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { first, get as getValue, orderBy } from 'lodash';
-import { INSTANCE_STATUS, SERVICE_TYPES } from '@/core/constants/constants';
+import { INSTANCE_STATUS } from '@/core/constants/constants';
 import InstanceService from '@/core/services/instance.service';
 import isTerminal from '@/core/utils/is-terminal';
 
@@ -47,7 +47,6 @@ export default {
       serviceId,
       instanceId,
       INSTANCE_STATUS,
-      SERVICE_TYPES,
       TABS,
       activeTabName: TABS.OVERVIEW,
       instance: {},

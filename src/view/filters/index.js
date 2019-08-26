@@ -65,7 +65,6 @@ import routeTargetPortMapping from './resource/route-target-port-mapping.filter'
 import routeWebUrl from './resource/route-web-url.filter';
 import sentenceCase from './sentence-case.filter';
 import serviceStatus from './service-status.filter';
-import serviceType from './service-type.filter';
 import shortCommit from './short-commit.filter';
 import spaceRole from './space-role.filter';
 import startCaseFilter from './start-case.filter';
@@ -145,7 +144,6 @@ const filters = {
   routeWebUrl,
   sentenceCase,
   serviceStatus,
-  serviceType,
   shortCommit,
   spaceRole,
   startCaseFilter,

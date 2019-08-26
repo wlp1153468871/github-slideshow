@@ -255,7 +255,9 @@ export default {
       this.pvcs = [];
       Object.entries(res).forEach(([zone, instances]) => {
         const pvc =
-          find(instances, { service_type: RESOURCE_TYPE.VOLUME }) || {};
+          find(instances, {
+            service_type: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
+          }) || {};
         this.pvcs.push({
           zone,
           count: pvc.instanceCount || 0,
@@ -308,7 +310,7 @@ export default {
           }) || {};
         const { instanceCount: pvcCount = 0 } =
           find(instances, {
-            service_type: RESOURCE_TYPE.VOLUME,
+            service_type: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
           }) || {};
         const { instanceCount: secretCount = 0 } =
           find(instances, {

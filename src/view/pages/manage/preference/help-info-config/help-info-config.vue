@@ -5,14 +5,13 @@
       <dao-setting-section v-if="helpURLDictIsEmpty">
         无帮助信息
       </dao-setting-section>
-      <dao-setting-section v-for="h in helpURLDict" :key="h.key">
+      <dao-setting-section v-for="(_, key) in helpURLDict" :key="key">
         <dao-setting-item>
-          <div slot="label">{{h.name}}</div>
+          <div slot="label">{{ key }}</div>
           <div slot="content">
             <dao-input
               :disabled="loading"
-              v-model="h.url"
-              placeholder="例: example.com/auth/realms/dsp">
+              v-model="helpURLDict[key]">
             </dao-input>
           </div>
         </dao-setting-item>
@@ -61,7 +60,9 @@ export default {
         res();
       })
         .then(() => {
-          return SystemService.updateSystemSettings({ helpURLDict: this.helpURLDict });
+          return SystemService.updateSystemSettings({
+            helpURLDict: this.helpURLDict,
+          });
         })
         .then(() => {
           return this.$store.dispatch('loadSystemSettings');

@@ -154,51 +154,42 @@
     <edit-yaml-dialog
       :value="ingress"
       :visible.sync="dialogs.update"
-      :header="'更新 ' + ingressName"
+      :header="'更新 ' + name"
       @update="updateIngress">
     </edit-yaml-dialog>
   </div>
 </template>
 
 <script>
-import Resource from '@/view/components/resource/resource-link/resource';
-import { mapState, mapGetters } from 'vuex';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import IngressService from '@/core/services/ingress.service';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
+import ResourceMixin from '@/view/mixins/resource';
 
 export default {
   name: 'IngressDetail',
 
+  mixins: [ResourceMixin],
+
   components: { PodTable },
 
   data() {
-    const { name: ingressName } = this.$route.params;
     const { tab } = this.$route.query;
 
     return {
-      kind: 'Ingress',
+      kind: RESOURCE_TYPE.INGRESS,
       activeTab: tab,
       loadings: {
         detail: true,
         pod: true,
       },
       ingress: null,
-      ingressName,
       dialogs: {
         update: false,
       },
       status: '',
       pods: [],
     };
-  },
-
-  computed: {
-    ...mapState(['apiResource']),
-    ...mapGetters(['gerResourceForHeader']),
-
-    resource() {
-      return this.gerResourceForHeader(this.kind, this.ingressName);
-    },
   },
 
   created() {
@@ -212,8 +203,9 @@ export default {
     },
 
     getIngress() {
+      const { name } = this;
       this.loadings.detail = true;
-      IngressService.get(this.ingressName).then(({ originData, status }) => {
+      IngressService.get(name).then(({ originData, status }) => {
         this.ingress = originData;
         this.status = status;
         this.loadings.detail = false;
@@ -222,14 +214,16 @@ export default {
 
     getPods() {
       this.loadings.pod = true;
-      IngressService.getPods(this.ingressName).then(({ originData }) => {
+      const { name } = this;
+      IngressService.getPods(name).then(({ originData }) => {
         this.pods = originData;
         this.loadings.pod = false;
       });
     },
 
     updateIngress(ingressModel) {
-      IngressService.update(ingressModel, this.ingressName).then(res => {
+      const { name } = this;
+      IngressService.update(ingressModel, name).then(res => {
         if (res.is_need_approval) {
           this.$noty.success('请在审批记录页面，查看审批进度');
         } else {
@@ -242,8 +236,8 @@ export default {
     ensureRemove() {
       this.$tada
         .confirm({
-          title: `删除 ${this.ingressName}`,
-          text: `您确定要删除 Ingress ${this.ingressName} 吗？`,
+          title: `删除 ${this.name}`,
+          text: `您确定要删除 Ingress ${this.name} 吗？`,
         })
         .then(willDelete => {
           if (willDelete) {
@@ -253,11 +247,9 @@ export default {
     },
 
     deleteIngress() {
-      IngressService.delete(this.ingressName).then(() => {
+      IngressService.delete(this.name).then(() => {
         this.$noty.success('删除成功');
-        const resource = new Resource(this.kind);
-        this.$router.push(resource.route);
-        resource.unwatch();
+        this.goBack();
       });
     },
   },

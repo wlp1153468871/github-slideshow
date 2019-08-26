@@ -141,9 +141,10 @@
 </template>
 
 <script>
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
 import { isEmpty, get, cloneDeep, set } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import DCService from '@/core/services/deployment-config.service';
 import HPAService from '@/core/services/hpa.service';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
@@ -159,6 +160,8 @@ import HistoryPanel from './panels/history';
 
 export default {
   name: 'Resource-Deployment-Config',
+
+  mixins: [ResourceMixin],
 
   components: {
     LogOfflinePanel,
@@ -181,10 +184,8 @@ export default {
       HISTORY: { label: '历史版本', name: 'history' },
     };
 
-    const { name } = this.$route.params;
-
     return {
-      name,
+      kind: RESOURCE_TYPE.DEPLOYMENT_CONFIG,
       TABS,
       tab: TABS.INFO.name,
       loading: {
@@ -207,7 +208,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone', 'apiResource']),
+    ...mapState(['space', 'zone']),
 
     dcEnv() {
       return get(this.dc, 'spec.template.spec.containers') || [];
@@ -219,19 +220,6 @@ export default {
 
     labels() {
       return get(this.dc, 'metadata.labels', {});
-    },
-
-    resource() {
-      return {
-        ...this.apiResource.DeploymentConfig,
-        links: [
-          {
-            text: this.apiResource.DeploymentConfig.kind,
-            route: this.apiResource.DeploymentConfig.route,
-          },
-          { text: this.name },
-        ],
-      };
     },
   },
 
@@ -364,7 +352,7 @@ export default {
       this.loading.page = true;
       DCService.delete(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('删除成功');
-        this.$router.push(RESOURCE.DEPLOYMENT_CONFIG.route);
+        this.goBack();
       });
     },
 

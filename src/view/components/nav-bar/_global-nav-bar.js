@@ -1,9 +1,9 @@
-import getDefaultMenus from '@/core/constants/default-header-menus';
-import getDetailPath from '@/view/router/util/detail-map';
 import { mapGetters, mapState } from 'vuex';
-import SpaceService from '@/core/services/space.service';
-import getResourcePath from '@/view/router/util/router-map';
 import { find, isEmpty, includes, cloneDeep } from 'lodash';
+import getDefaultMenus from '@/core/constants/default-header-menus';
+import getDetailPath from '@/view/router/util/resource-detail-map';
+import getListPath from '@/view/router/util/resource-list-map';
+import SpaceService from '@/core/services/space.service';
 
 export default {
   name: 'GlobalNavBar',
@@ -145,10 +145,15 @@ export default {
 
     onValueChanged(id) {
       if (!id) return;
-      const [service = {}, instance = {}] = this.options;
-      const allOptions = [...service.options, ...instance.options];
-      const { route } = find(allOptions, { id }) || {};
-      if (!route) return;
+      const [{ options: services }, { options: instances }] = this.options;
+      let route;
+      let resource = find(instances, { id });
+      if (resource) {
+        route = getDetailPath(resource);
+      } else {
+        resource = find(services, { id });
+        route = getListPath(resource);
+      }
       this.$router.push(route);
       this.options = [];
     },
@@ -179,26 +184,13 @@ export default {
           this.options = [
             {
               label: '服务',
-              options: res.superservices.map(superService => {
-                return {
-                  ...superService,
-                  route: getResourcePath(superService),
-                };
-              }),
+              options: res.superservices,
             },
             {
               label: '实例',
               showType: true,
               overflowHidden: true,
-              options: res.instances.map(instance => {
-                return {
-                  ...instance,
-                  route: {
-                    id: instance.id,
-                    ...getDetailPath(instance),
-                  },
-                };
-              }),
+              options: res.instances,
             },
           ];
         });

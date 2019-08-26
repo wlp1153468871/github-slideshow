@@ -1,8 +1,9 @@
-import { mapState } from 'vuex';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { isEmpty, cloneDeep, set } from 'lodash';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import DeploymentResourceService from '@/core/services/deployment.resource.service';
 import HPAService from '@/core/services/hpa.service';
+import ResourceMixin from '@/view/mixins/resource';
 
 // panels
 import LogOfflinePanel from '@/view/components/log/log-offline.vue';
@@ -25,6 +26,8 @@ const TABS = {
 export default {
   name: 'Resource-Deployment',
 
+  mixins: [ResourceMixin],
+
   components: {
     PodsPanel,
     EnvPanel,
@@ -35,13 +38,11 @@ export default {
   },
 
   data() {
-    const { name: deploymentName } = this.$route.params;
-
     return {
+      kind: RESOURCE_TYPE.DEPLOYMENT,
       dialogs: {
         view: false,
       },
-      deploymentName,
       TABS,
       tab: TABS.CONFIGURATION.name,
       loadings: {
@@ -57,23 +58,6 @@ export default {
       imagesByDockerReference: {}, // TODO: fix this
       autoscalers: [],
     };
-  },
-
-  computed: {
-    ...mapState(['space', 'zone', 'apiResource']),
-
-    resource() {
-      return {
-        ...this.apiResource.Deployment,
-        links: [
-          {
-            text: this.apiResource.Deployment.kind,
-            route: this.apiResource.Deployment.route,
-          },
-          { text: this.deploymentName },
-        ],
-      };
-    },
   },
 
   created() {
@@ -106,7 +90,7 @@ export default {
       return DeploymentResourceService.get(
         this.space.id,
         this.zone.id,
-        this.deploymentName,
+        this.name,
       ).then(deployment => {
         this.deployment = deployment.originData;
         this.status = deployment.status;
@@ -118,7 +102,7 @@ export default {
         this.autoscalers = HPAService.filterHPA(
           res.items,
           'Deployment',
-          this.deploymentName,
+          this.name,
         );
       });
     },
@@ -135,7 +119,7 @@ export default {
       DeploymentResourceService.getEvents(
         this.space.id,
         this.zone.id,
-        this.deploymentName,
+        this.name,
       )
         .then(res => {
           this.events = res.originData.items || [];
@@ -148,8 +132,8 @@ export default {
     ensureRemove() {
       this.$tada
         .confirm({
-          title: `删除 ${this.deploymentName}  `,
-          text: `您确定要删除Deployment ${this.deploymentName} 吗？`,
+          title: `删除 ${this.name}  `,
+          text: `您确定要删除Deployment ${this.name} 吗？`,
         })
         .then(ok => {
           if (ok) {
@@ -163,11 +147,11 @@ export default {
       DeploymentResourceService.delete(
         this.space.id,
         this.zone.id,
-        this.deploymentName,
+        this.name,
       )
         .then(() => {
-          this.$noty.success(`删除Deployment ${this.deploymentName} 成功`);
-          this.$router.push({ name: 'resource.deployments.list' });
+          this.$noty.success(`删除Deployment ${this.name} 成功`);
+          this.goBack();
         })
         .finally(() => {
           this.loadings.page = false;
@@ -189,7 +173,7 @@ export default {
       DeploymentResourceService.updateDeployment(
         this.space.id,
         this.zone.id,
-        this.deploymentName,
+        this.name,
         value,
       )
         .then(() => {
@@ -212,10 +196,10 @@ export default {
       DeploymentResourceService.restart(
         this.space.id,
         this.zone.id,
-        this.deploymentName,
+        this.name,
       )
         .then(() => {
-          this.$noty.success(`重启Deployment ${this.deploymentName} 成功`);
+          this.$noty.success(`重启Deployment ${this.name} 成功`);
         })
         .finally(() => {
           this.loadings.table = false;
@@ -226,7 +210,7 @@ export default {
       DeploymentResourceService.scale(
         this.space.id,
         this.zone.id,
-        this.deploymentName,
+        this.name,
         replicas,
       )
         .then(() => {

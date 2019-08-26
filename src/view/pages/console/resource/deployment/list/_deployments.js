@@ -1,36 +1,28 @@
-import { mapState } from 'vuex';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import DeploymentResourceService from '@/core/services/deployment.resource.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
-import DeploymentsList from './tables/deployments-list';
 
 export default {
   name: 'ResourceDeployments',
 
-  components: { DeploymentsList },
+  mixins: [ResourceMixin],
 
   data() {
+    const { create = 'false' } = this.$route.query;
+
     return {
+      kind: RESOURCE_TYPE.DEPLOYMENT,
       loadings: {
         page: true,
         table: true,
       },
       deployments: [],
+      dialogConfigs: {
+        yamlEdit: JSON.parse(create),
+      },
+      yamlJSON: {},
     };
-  },
-
-  computed: {
-    ...mapState(['space', 'zone', 'apiResource']),
-
-    resource() {
-      return {
-        ...this.apiResource.Deployment,
-        links: [
-          {
-            text: this.apiResource.Deployment.kind,
-          },
-        ],
-      };
-    },
   },
 
   created() {
@@ -48,6 +40,18 @@ export default {
           this.loadings.table = false;
           this.loadings.page = false;
         });
+    },
+
+    createByYaml(value) {
+      DeploymentResourceService.create(this.space.id, this.zone.id, value).then(instance => {
+        if (instance.is_need_approval) {
+          this.$noty.success('请在审批记录页面，查看审批进度');
+        } else {
+          this.$noty.success('创建Deployment成功');
+        }
+        this.dialogConfigs.yamlEdit = false;
+        this.$emit('refresh');
+      });
     },
   },
 };

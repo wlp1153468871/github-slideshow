@@ -1,15 +1,18 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import Vue from 'vue';
 import { keyBy, chunk, nth, get as getValue } from 'lodash';
 import { mapState } from 'vuex';
-import { RESOURCE } from '@/core/constants/resource';
 import RouteService from '@/core/services/route.service';
 import isWebRouteFilter from '@/view/filters/resource/is-web-route.filter';
 import ServiceService from '@/core/services/service.resource.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus';
+import ResourceMixin from '@/view/mixins/resource';
 import RouteWarnings from '../components/route-warnings/route-warnings';
 
 export default {
   name: 'RouteList',
+
+  mixins: [ResourceMixin],
 
   components: {
     RouteWarnings,
@@ -17,14 +20,7 @@ export default {
 
   data() {
     return {
-      resource: {
-        ...RESOURCE.ROUTE,
-        links: [
-          {
-            text: RESOURCE.ROUTE.name,
-          },
-        ],
-      },
+      kind: RESOURCE_TYPE.ROUTE,
       filterKey: '',
       routeIngressInfo:
         'The route is not accepting traffic yet because it has not been admitted by a router.',
@@ -40,7 +36,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone', 'user']),
+    ...mapState(['user']),
 
     routesFilteredByKey() {
       const filterKey = this.filterKey.toLowerCase();
@@ -72,7 +68,10 @@ export default {
       this.loadings.table = true;
       Promise.all([this.getServices(), this.getRoutes()])
         .then(([serviceList, routeList]) => {
-          this.routes = joinApproveStatus(routeList, { spec: { host: '', to: {} }, status: { ingress: [] } });
+          this.routes = joinApproveStatus(routeList, {
+            spec: { host: '', to: {} },
+            status: { ingress: [] },
+          });
           this.services = keyBy(serviceList.items, 'metadata.name');
           this.addRouteTargetPortMapping();
         })
