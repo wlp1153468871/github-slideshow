@@ -1,6 +1,6 @@
 <!--Created by Max on 2018-12-26.-->
 <template>
-  <div class="panel-footer">
+  <div class="checkout-module-footer">
     <div class="container checkout-select">
       <div class="step-btns" v-if="step === steps.CONFIG">
         <button
@@ -42,21 +42,4 @@ export default {
 
 <style lang='scss'>
 @import '~daoColor';
-
-.panel-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 70px;
-  color: #99a1ad;
-  background: #fff;
-
-  .step-btns {
-    text-align: right;
-  }
-}
 </style>

@@ -65,7 +65,3 @@
 
 <script src="./checkout.js">
 </script>
-
-<style lang="scss">
-@import './checkout';
-</style>

@@ -57,11 +57,21 @@
         </el-tab-pane>
 
         <!-- Deployment -->
-        <el-tab-pane :label="TABS.DEPLOYMENT" :name="TABS.DEPLOYMENT">
-          <deployment-panel
-            :deployments="resources.Deployment"
-            :deployment-configs="resources.DeploymentConfig">
+        <el-tab-pane
+          v-if="resources.Deployment"
+          :label="TABS.DEPLOYMENT"
+          :name="TABS.DEPLOYMENT">
+          <deployment-panel :deployments="resources.Deployment">
           </deployment-panel>
+        </el-tab-pane>
+
+        <!-- Deployment Config-->
+        <el-tab-pane
+          v-if="resources.DeploymentConfig"
+          :label="TABS.DEPLOYMENT_CONFIG"
+          :name="TABS.DEPLOYMENT_CONFIG">
+          <deployment-config-panel :deployment-configs="resources.resources">
+          </deployment-config-panel>
         </el-tab-pane>
 
         <!-- 四层负载均衡 -->
@@ -74,12 +84,14 @@
         <!-- 七层负载均衡 -->
         <el-tab-pane :label="TABS.ROUTE" :name="TABS.ROUTE">
           <route-panel
+            v-if="resources.Route"
             :routes="resources.Route">
           </route-panel>
         </el-tab-pane>
 
         <el-tab-pane :label="TABS.INGRESS" :name="TABS.INGRESS">
           <ingress-panel
+            v-if="resources.Ingress"
             :ingresses="resources.Ingress">
           </ingress-panel>
         </el-tab-pane>

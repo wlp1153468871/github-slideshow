@@ -14,6 +14,7 @@ import OverviewPanel from './panels/overview';
 import LogPanel from './panels/log.vue';
 import LogOfflinePanel from './panels/log-offline.vue';
 import DeploymentPanel from './panels/deployment';
+import DeploymentConfigPanel from './panels/deployment-config';
 import ServicePanel from './sections/service.vue';
 import RoutePanel from './sections/route.vue';
 import JobPanel from './panels/job';
@@ -27,6 +28,7 @@ const TABS = {
   LOG: '实时日志',
   OFFLINE_LOG: '离线日志',
   DEPLOYMENT: 'Deployment',
+  DEPLOYMENT_CONFIG: 'DeploymentConfig',
   SERVICE: 'Service',
   ROUTE: 'Route',
   INGRESS: 'Ingress',
@@ -50,6 +52,7 @@ export default {
     JobPanel,
     EventPanel,
     DeploymentPanel,
+    DeploymentConfigPanel,
     ConfigPanel,
     ParameterPanel,
     ServicePanel,

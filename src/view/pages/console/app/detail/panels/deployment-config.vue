@@ -1,7 +1,7 @@
 <template>
   <div class="app-deployment-panel">
     <dao-table-view
-      :rows="deployments"
+      :rows="deploymentConfigs"
       :config="tConfig">
     </dao-table-view>
   </div>
@@ -12,12 +12,12 @@ import { get as getValue } from 'lodash';
 import tableView from '@/view/mixins/table-view';
 
 export default {
-  name: 'DeploymentPanel',
+  name: 'DeploymentConfigPanel',
 
   extends: tableView('id', Infinity),
 
   props: {
-    deployments: { type: Array, default: () => [] },
+    deploymentConfigs: { type: Array, default: () => [] },
   },
 
   created() {

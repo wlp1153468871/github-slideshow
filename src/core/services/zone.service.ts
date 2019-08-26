@@ -79,11 +79,6 @@ class ZoneService {
     return this.api.get(`/organizations/${orgId}/zones`);
   }
 
-  // 删除平台可用区
-  deleteZone(zoneId: string) {
-    return this.api.delete(`/zones/${zoneId}`);
-  }
-
   // 测试集群地址
   testClustersUrl(cluster: any) {
     return this.api.post('/zone/check', cluster).then(res => {
@@ -93,6 +88,10 @@ class ZoneService {
         ? Promise.resolve()
         : Promise.reject(res);
     });
+  }
+
+  checkRegistryAccount(data: any) {
+    return this.api.post(`/registry/check`, data);
   }
 }
 

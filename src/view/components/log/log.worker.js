@@ -10,9 +10,8 @@ self.addEventListener('message', event => {
       jsonData = JSON.parse(log);
       isJSON = true;
       keys = union(keys, Object.keys(jsonData));
-    } catch (e) {
-      console.log(e);
-    }
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
     return {
       isJSON,
       message: jsonData,

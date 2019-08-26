@@ -1,5 +1,5 @@
 <template>
-  <div class="dao-setting-layout-footer">
+  <div class="checkout-module-footer">
     <div class="container checkout-select">
       <!-- 第一步 -->
       <div class="step-btns" v-if="stepIndex === steps.CONFIG">

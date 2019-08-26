@@ -1,5 +1,5 @@
 <template>
-  <div class="page-deploy-zone">
+  <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
         <a
@@ -55,6 +55,3 @@
 
 <script src="./_deploy.js">
 </script>
-
-<style lang="scss" src="./_deploy.scss">
-</style>

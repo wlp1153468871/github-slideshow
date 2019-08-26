@@ -130,6 +130,7 @@ export const DICTIONARY = {
 
 // 集群连接测试的几种状态
 export const TEST_STATUS = {
+  UNTEST: 'untest',
   LOADING: 'loading',
   ACCESS: 'access',
   ERROR: 'error',
