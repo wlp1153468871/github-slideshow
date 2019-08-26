@@ -212,7 +212,7 @@ export const DNS1035_LABEL_VALIDATION = {
 };
 
 export const RESOURCE_TYPE = {
-  APPLICATION: 'app',
+  APPLICATION: 'Application',
   DEPLOYMENT_CONFIG: 'DeploymentConfig',
   DEPLOYMENT: 'Deployment',
   STATEFUL_SET: 'StatefulSet',
