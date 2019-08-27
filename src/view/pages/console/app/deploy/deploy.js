@@ -16,8 +16,6 @@ import CheckoutFooterPanel from '../../resource/_panels/checkout-footer';
 export default {
   name: 'DeployApp',
 
-  provide: ['$validator'],
-
   components: {
     ParameterPanel,
     OverviewPanel,

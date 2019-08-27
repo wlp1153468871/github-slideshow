@@ -79,7 +79,7 @@ export default {
       this.$router.push({
         name: 'resource.persistentvolumeclaims.detail',
         params: {
-          name: this.volume.name,
+          name: this.volume.metadata.name,
         },
       });
     },

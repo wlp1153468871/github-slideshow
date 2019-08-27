@@ -10,7 +10,7 @@
             <div slot="content">
               <dao-input
                 icon-inside
-                v-model="form.name"
+                v-model="form.metadata.name"
                 type="text"
                 name="name"
                 v-validate="{
@@ -34,42 +34,21 @@
         <dao-setting-section>
           <dao-setting-item>
             <p slot="label">容量</p>
-            <template slot="content">
-              <div class="resource-size">
-                <dao-input
-                  icon-inside
-                  v-model="form.storage"
-                  type="text"
-                  name="storage"
-                  v-validate="{
-                    required: true,
-                    decimal: 5,
-                    min_value: 0,
-                    is_not: '0',
+            <template #content>
+              <storage-input
+                name="amount"
+                v-validate="{
+                    storageRequired: true,
+                    storageNumber: true,
+                    storageMin: 0
                   }"
-                  :class="veeErrors.has('storage') ? 'error' : ''"
-                  :status="veeErrors.has('storage') ? 'error' : ''"
-                  :message="veeErrors.first('storage')"
-                  data-vv-as="容量">
-                </dao-input>
-                <el-select
-                  disabled
-                  size="small"
-                  style="width: 120px;"
-                  v-model="form.unit">
-                  <el-option-group
-                    v-for="group in units"
-                    :key="group.label"
-                    :label="group.label">
-                    <el-option
-                      v-for="item in group.options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-option-group>
-                </el-select>
-              </div>
+                :clazz="veeErrors.has('amount') ? 'error' : ''"
+                :status="veeErrors.has('amount') ? 'error' : ''"
+                :message="veeErrors.first('amount')"
+                data-vv-as="容量"
+                v-model="form.spec.resources.requests.storage"
+              >
+              </storage-input>
             </template>
           </dao-setting-item>
         </dao-setting-section>
@@ -77,15 +56,26 @@
           <dao-setting-item>
             <p slot="label">读写模式</p>
             <template slot="content">
-              <dao-radio-group class="radio-group-row">
-                <dao-radio
+              <el-checkbox-group
+                v-model="form.spec.accessModes"
+                :min="1">
+                <el-checkbox
                   v-for="mode in ACCESS_MODE"
-                  v-model="form.accessModes"
+                  :label="mode.key"
                   :key="mode.key"
-                  :label="mode.key">
+                >
                   {{ mode.description }}
-                </dao-radio>
-              </dao-radio-group>
+                </el-checkbox>
+              </el-checkbox-group>
+              <!--              <dao-radio-group class="radio-group-row">-->
+              <!--                <dao-radio-->
+              <!--                  v-for="mode in ACCESS_MODE"-->
+              <!--                  v-model="form.spec.accessModes"-->
+              <!--                  :key="mode.key"-->
+              <!--                  :label="mode.key">-->
+              <!--                  {{ mode.description }}-->
+              <!--                </dao-radio>-->
+              <!--              </dao-radio-group>-->
             </template>
           </dao-setting-item>
         </dao-setting-section>
@@ -95,70 +85,86 @@
 </template>
 
 <script>
+import { nth, first } from 'lodash';
+import { mapState } from 'vuex';
 import {
   ACCESS_MODE,
   DNS1123_SUBDOMAIN_VALIDATION,
+  RESOURCE_TYPE,
 } from '@/core/constants/resource';
 import SpaceZone from '@/view/components/space-zone/space-zone';
+import { Validator } from 'vee-validate';
+import StorageInput from './storage-input/storage-input';
 
 export default {
   name: 'ConfigPanel',
 
   components: {
     SpaceZone,
+    StorageInput,
   },
 
   props: {
     value: { type: Object, default: () => ({}) },
   },
 
+  computed: {
+    ...mapState(['space']),
+  },
+
   data() {
+    const reg = /(-?[0-9.]*)\s*(.*)[G]$/;
+    Validator.extend('storageRequired', {
+      getMessage: field => `${field} 不能为空`,
+      validate: value => {
+        const split = reg.exec(value);
+        return !!`${nth(split, 1)}${nth(split, 2)}`;
+      },
+    });
+
+    Validator.extend('storageNumber', {
+      getMessage: field => `${field} 必须为数字`,
+      validate: value => {
+        const split = reg.exec(value);
+        return !nth(split, 2);
+      },
+    });
+
+    Validator.extend('storageMin', {
+      getMessage: field => `${field} 必须大于0`,
+      validate: (value, params) => {
+        const split = /(-?[0-9.]+)[G]/.exec(value);
+        let amount = nth(split, 1);
+        amount = Number(amount);
+        return amount > first(params);
+      },
+    });
+
     return {
+      kind: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
       ACCESS_MODE,
       form: {
-        name: '',
-        storage: 1,
-        unit: 'G',
-        accessModes: 'ReadWriteMany',
+        apiVersion: 'v1',
+        kind: this.kind,
+        metadata: {
+          name: '',
+          namespace: '',
+        },
+        spec: {
+          accessModes: ['ReadWriteMany'],
+          resources: {
+            requests: {
+              storage: '1G',
+            },
+          },
+        },
       },
       nameValidation: DNS1123_SUBDOMAIN_VALIDATION,
-      units: [
-        {
-          label: 'Binary Units',
-          options: [
-            {
-              value: 'Mi',
-              label: 'MiB',
-            },
-            {
-              value: 'Gi',
-              label: 'GiB',
-            },
-            {
-              value: 'Ti',
-              label: 'TiB',
-            },
-          ],
-        },
-        {
-          label: 'Decimal Units',
-          options: [
-            {
-              value: 'M',
-              label: 'MB',
-            },
-            {
-              value: 'G',
-              label: 'GB',
-            },
-            {
-              value: 'T',
-              label: 'TB',
-            },
-          ],
-        },
-      ],
     };
+  },
+
+  created() {
+    this.form.metadata.namespace = this.space.short_name;
   },
 };
 </script>

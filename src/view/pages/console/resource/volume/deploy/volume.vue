@@ -29,7 +29,7 @@
     <finish-panel
       v-if="STEPS.FINISH === stepIndex"
       :error="error"
-      :volume="volume"
+      :volume="formModel"
       :STEPS="STEPS"
       @prev="prev">
     </finish-panel>

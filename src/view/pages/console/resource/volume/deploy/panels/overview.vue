@@ -19,19 +19,21 @@
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">名称</div>
-          <div slot="content">{{ formModel.name }}</div>
+          <div slot="content">{{ formModel.metadata.name }}</div>
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">容量</div>
-          <div slot="content">{{formModel.storage}} {{formModel.unit}}B</div>
+          <div slot="content">
+            {{formModel.spec.resources.requests.storage | usage_with_units('storage')}}
+          </div>
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">读写模式</div>
-          <div slot="content">{{ [formModel.accessModes] | access_modes }}</div>
+          <div slot="content">{{ formModel.spec.accessModes | access_modes  }}</div>
         </dao-setting-item>
       </dao-setting-section>
     </dao-setting-layout>

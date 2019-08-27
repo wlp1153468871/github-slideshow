@@ -44,7 +44,7 @@
           </div>
           <div class="ins-info-item">
             <span class="info-item-label">
-              Requested Capacity
+              请求容量
             </span>
             <span class="info-item-content">
               <span v-if="pvc.spec.resources.requests['storage']">
