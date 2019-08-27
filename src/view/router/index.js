@@ -17,7 +17,6 @@ Vue.use(Router);
 const router = new Router({
   linkActiveClass: 'active',
   scrollBehavior(to, from, savedPosition) {
-    console.log(savedPosition);
     if (savedPosition) {
       return savedPosition;
     }
