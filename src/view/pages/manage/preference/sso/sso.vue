@@ -129,7 +129,6 @@ export default {
 
     openDialog() {
       this.visible = true;
-      console.log(this.visible);
     },
 
     handleOperate(command, sso) {

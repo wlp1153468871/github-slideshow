@@ -129,7 +129,7 @@
     </template>
 
     <edit-yaml-dialog
-      :value="formModel"
+      :value="template"
       :visible="dialogs.create"
       @update="createService"
       @close="dialogs.create = false">
