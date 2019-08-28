@@ -299,32 +299,58 @@ export default {
       component: DeployContainer,
       children: [
         {
-          path: 'app',
-          name: 'deploy.app',
+          path: 'form/applications',
+          name: 'deploy.applications',
           component: DeployApp,
         },
         {
-          path: 'config-map',
-          name: 'deploy.config-map',
-          component: DeployConfigMap,
+          path: 'deploymentconfigs',
+          name: 'deploy.deploymentconfigs',
+          component: DeploymentConfigList,
         },
         {
-          path: 'secret',
-          name: 'deploy.secret',
-          component: DeploySecret,
+          path: 'deployments',
+          name: 'deploy.deployments',
+          component: Deployments,
         },
         {
-          path: 'route',
-          name: 'deploy.route',
+          path: 'statefulsets',
+          name: 'deploy.statefulsets',
+          component: StatefulSetList,
+        },
+        {
+          path: 'services',
+          name: 'deploy.services',
+          component: ServiceList,
+        },
+        {
+          path: 'form/routes',
+          name: 'deploy.routes',
           component: DeployRoute,
         },
         {
-          path: 'volume',
-          name: 'deploy.volume',
+          path: 'ingresses',
+          name: 'deploy.ingresses',
+          component: IngressList,
+        },
+        {
+          path: 'form/configmaps',
+          name: 'deploy.configmaps',
+          component: DeployConfigMap,
+        },
+        {
+          path: 'form/secrets',
+          name: 'deploy.secrets',
+          component: DeploySecret,
+        },
+
+        {
+          path: 'form/persistentvolumeclaims',
+          name: 'deploy.persistentvolumeclaims',
           component: DeployVolume,
         },
         {
-          path: 'product/:serviceId',
+          path: 'form/product/:serviceId',
           name: 'product.checkout',
           component: ProductCheckout,
         },

@@ -33,10 +33,6 @@ export default {
   created() {
     this.resource = new Resource(this.kind, this.name);
   },
-
-  destroyed() {
-    this.resource.unwatch();
-  },
 };
 </script>
 

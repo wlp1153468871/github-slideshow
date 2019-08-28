@@ -67,7 +67,7 @@
       :visible="dialogConfigs.yamlEdit"
       @update="createByYaml"
       @close="dialogConfigs.yamlEdit = false"
-      @opened="getTemplate">
+    >
     </edit-yaml-dialog>
   </div>
 </template>
@@ -85,7 +85,7 @@ export default {
   mixins: [ResourceMixin],
 
   data() {
-    const { dcCreate = 'false' } = this.$route.query;
+    const { create = 'false' } = this.$route.query;
 
     return {
       kind: RESOURCE_TYPE.DEPLOYMENT_CONFIG,
@@ -95,7 +95,7 @@ export default {
       },
       deploymentConfigs: [],
       dialogConfigs: {
-        yamlEdit: JSON.parse(dcCreate),
+        yamlEdit: JSON.parse(create),
       },
       yamlJSON: {},
       filterMethod: (data, filterKey) =>
@@ -105,6 +105,7 @@ export default {
 
   created() {
     this.getDeploymentConfig();
+    this.getTemplate();
   },
 
   methods: {

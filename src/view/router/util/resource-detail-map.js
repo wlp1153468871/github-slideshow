@@ -30,6 +30,5 @@ export default function getDetailPath(instance) {
   }
 
   const resourceService = new Resource(kind, name);
-  resourceService.unwatch();
   return resourceService.route;
 }

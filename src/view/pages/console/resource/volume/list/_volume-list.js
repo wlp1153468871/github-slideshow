@@ -71,7 +71,7 @@ export default {
 
     createInstance() {
       this.$router.push({
-        name: 'deploy.volume',
+        name: 'deploy.persistentvolumeclaims',
       });
     },
 

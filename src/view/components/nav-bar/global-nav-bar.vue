@@ -40,7 +40,7 @@
                     @mouseenter="onMouserEnterSubMenu(index)"
                     v-for="(subCategory, index) in headerMenus[selectedIndex].children"
                     :key="index">
-                    <div class="block-left-li-content">{{subCategory.name}}</div>
+                    <div class="block-left-li-content">{{ subCategory.name | translate }}</div>
                   </li>
                 </ul>
               </div>
@@ -51,7 +51,7 @@
                     v-if="item.available === 'available'"
                     class="panel-operation"
                     :key="'service' + index">
-                    <h3 class="service-title">{{item.name}}</h3>
+                    <h3 class="service-title">{{ item.name | translate }}</h3>
                     <p class="service-description">
                       {{ item.description }}
                     </p>
@@ -63,9 +63,9 @@
                           class="operation-link"
                           :to="item.deployRoute"
                           @click.native="expand = false">
-                          创建{{ item.name }}
+                          创建{{ item.name | translate  }}
                         </router-link>
-                        <p class="operation-link disabled" v-else>创建{{ item.name }}</p>
+                        <p class="operation-link disabled" v-else>创建{{ item.name | translate }}</p>
                         <p>{{ item.createMessage }}</p>
                       </div>
 
@@ -73,9 +73,9 @@
                         <router-link
                           class="operation-link"
                           :to="item.route"
-                          @click.native="expand = false">查看{{ item.name }}列表
+                          @click.native="expand = false">查看{{ item.name | translate  }}列表
                         </router-link>
-                        <p>查看已经创建的{{item.name}}的列表</p>
+                        <p>查看已经创建的{{ item.name | translate }}的列表</p>
                       </div>
                     </template>
 

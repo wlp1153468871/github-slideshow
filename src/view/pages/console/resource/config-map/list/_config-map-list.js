@@ -62,7 +62,7 @@ export default {
 
     createConfigMap() {
       this.$router.push({
-        name: 'deploy.config-map',
+        name: 'deploy.configmaps',
         query: {
           serviceId: this.brokerServiceId,
         },

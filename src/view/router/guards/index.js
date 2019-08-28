@@ -19,7 +19,7 @@ export default function ensureHooks(router) {
         NProgress.done();
       } else if (!store.state.user.id) {
         store
-          .dispatch('getUserInfo')
+          .dispatch('loadUserInfo')
           .then(() => {
             const redirect = decodeURIComponent(from.query.redirect || to.path);
             if (to.path === redirect) {

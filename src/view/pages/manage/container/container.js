@@ -5,7 +5,7 @@ export default {
   name: 'ManageContainer',
 
   beforeRouteEnter(to, from, next) {
-    store.dispatch('initManageView');
+    store.dispatch('initView');
     next();
   },
 

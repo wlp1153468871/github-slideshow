@@ -61,7 +61,6 @@
     <edit-yaml-dialog
       :value="template"
       :visible="dialogConfigs.yamlEdit"
-      @opened="getTemplate"
       @update="createByYaml"
       @close="dialogConfigs.yamlEdit = false">
     </edit-yaml-dialog>

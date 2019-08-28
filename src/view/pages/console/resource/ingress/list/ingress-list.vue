@@ -58,8 +58,8 @@
       :value="template"
       :visible.sync="dialogs.create"
       :header="'创建 ' + kind"
-      @opened="getTemplate"
-      @update="createIngress">
+      @update="createIngress"
+    >
     </edit-yaml-dialog>
   </div>
 </template>
@@ -102,6 +102,7 @@ export default {
 
   created() {
     this.listIngresses();
+    this.getTemplate();
   },
 
   methods: {

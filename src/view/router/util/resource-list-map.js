@@ -34,6 +34,5 @@ export default function getListPath(resource) {
   }
 
   const resourceService = new Resource(kind);
-  resourceService.unwatch();
   return resourceService.route;
 }

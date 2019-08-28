@@ -55,7 +55,7 @@ export default {
 
     createSecret() {
       this.$router.push({
-        name: 'deploy.secret',
+        name: 'deploy.secrets',
         query: {
           serviceId: this.brokerServiceId,
         },

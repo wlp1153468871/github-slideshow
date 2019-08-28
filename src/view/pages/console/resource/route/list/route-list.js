@@ -101,7 +101,7 @@ export default {
 
     createRoute() {
       this.$router.push({
-        name: 'deploy.route',
+        name: 'deploy.routes',
       });
     },
 
