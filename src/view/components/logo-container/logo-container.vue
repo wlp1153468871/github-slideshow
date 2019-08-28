@@ -36,6 +36,9 @@ export default {
     ...mapState(['theme']),
 
     isSelfDefined() {
+      if (this.target === 'login') {
+        return !!getValue(this.theme, 'appPicture.loginPicture');
+      }
       return !!getValue(this.theme, 'appPicture.navPicture');
     },
 

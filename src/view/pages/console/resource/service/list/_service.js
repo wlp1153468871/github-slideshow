@@ -2,7 +2,6 @@ import { RESOURCE_TYPE } from '@/core/constants/resource';
 import dayjs from 'dayjs';
 import { mapState } from 'vuex';
 import { chunk, nth, size } from 'lodash';
-import ResourceTemplateService from '@/core/services/resource.template.service';
 import ServiceResourceService from '@/core/services/service.resource.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 import ResourceMixin from '@/view/mixins/resource';
@@ -28,7 +27,6 @@ export default {
       dialogs: {
         create: JSON.parse(create),
       },
-      formModel: null,
     };
   },
 
@@ -82,13 +80,6 @@ export default {
           this.loadings.page = false;
           this.loadings.table = false;
         });
-    },
-
-    getTemplate() {
-      return ResourceTemplateService.getTemplate('service').then(template => {
-        template.metadata.namespace = this.space.short_name;
-        this.formModel = template;
-      });
     },
 
     openCreateDialog() {
