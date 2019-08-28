@@ -89,7 +89,7 @@
                 <svg class="icon">
                   <use :xlink:href="resource.icon"></use>
                 </svg>
-                <span>{{ resource.kind }}</span>
+                <overflow-tooltip slot="title" :text="resource.kind"></overflow-tooltip>
               </el-menu-item>
             </template>
 

@@ -27,6 +27,7 @@ export default {
 
   created() {
     this.getDeployments();
+    this.getTemplate();
   },
 
   methods: {

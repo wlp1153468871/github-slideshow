@@ -114,14 +114,8 @@ export default {
     },
 
     deployApplication() {
-      const { serviceId, brokerServiceId } = this;
-
       this.$router.push({
-        name: 'deploy.app',
-        query: {
-          serviceId,
-          brokerServiceId,
-        },
+        name: 'deploy.applications',
       });
     },
 

@@ -6,7 +6,6 @@
     :footer="{confirmText}"
     :visible.sync="isShow"
     @before-open="init"
-    @opened="$emit('opened')"
     @cancel="onClose"
     @confirm="onConfirm">
     <dao-setting-section>

@@ -1,3 +1,4 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapGetters, mapState } from 'vuex';
 import { find, isEmpty, includes, cloneDeep } from 'lodash';
 import getDefaultMenus from '@/core/constants/default-header-menus';
@@ -60,10 +61,6 @@ export default {
       );
     },
 
-    isOrgView() {
-      return this.$route.name.substring(0, 4) === 'org.';
-    },
-
     availableServices() {
       return this.services.map(s => s.id);
     },
@@ -71,7 +68,24 @@ export default {
 
   created() {
     this.ensureServices().then(() => {
-      this.defaultMenus = getDefaultMenus();
+      this.$store.watch(
+        () => this.$store.state.apiResource,
+        apiResource => {
+          if (!apiResource) return;
+          const defaultMenus = getDefaultMenus();
+          defaultMenus[0].children = defaultMenus[0].children.filter(resource => {
+            if (resource.kind) {
+              if (resource.kind === RESOURCE_TYPE.APPLICATION) return true;
+              return !!apiResource[resource.kind];
+            }
+            return true;
+          });
+          this.defaultMenus = defaultMenus;
+        },
+        {
+          immediate: true,
+        },
+      );
     });
   },
 
@@ -112,7 +126,7 @@ export default {
 
   methods: {
     ensureServices() {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         const { helpURLDict } = this.$store.state;
         if (!isEmpty(helpURLDict)) {
           resolve(helpURLDict);
@@ -120,7 +134,6 @@ export default {
           this.$store.watch(
             () => this.$store.state.helpURLDict,
             res => {
-              if (isEmpty(res)) reject();
               resolve(res);
             },
           );
@@ -197,17 +210,6 @@ export default {
       } else {
         this.options = [];
       }
-    },
-
-    onSelectOrg(org) {
-      this.$store.dispatch('switchOrg', { org });
-      this.$tada(`切换租户到 ${org.name}`, {
-        buttons: false,
-        timer: 2000,
-      });
-      this.$router.push({
-        name: 'console.dashboard',
-      });
     },
 
     gotoDashboard() {

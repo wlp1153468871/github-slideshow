@@ -91,7 +91,7 @@
       :value="template"
       @update="onYAMLDialogUpdate"
       @close="dialog.isOpen = false"
-      @opened="getTemplate">
+    >
     </edit-yaml-dialog>
 
   </div>
@@ -135,6 +135,7 @@ export default {
   },
 
   created() {
+    this.getTemplate();
     this.getStatefulSets().finally(() => {
       this.loadings.table = false;
       this.loadings.page = false;

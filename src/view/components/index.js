@@ -51,6 +51,7 @@ import TruncateLongText from './truncate-long-text/truncate-long-text';
 import UploadInput from './upload-input/upload-input';
 import XTable from './x-table/x-table';
 import ResourceLink from './resource/resource-link/resource-link';
+import OverflowTooltip from './overflow-tooltip/overflow-tooltip';
 import { PercentCircle, PieChart, ProgressDount } from './charts';
 
 const components = {
@@ -111,6 +112,7 @@ const components = {
   TruncateLongText,
   UploadInput,
   XTable,
+  OverflowTooltip,
 };
 
 function install(Vue) {

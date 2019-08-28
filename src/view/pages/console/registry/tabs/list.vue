@@ -135,7 +135,7 @@ export default {
       imgUrl = imgUrl.replace(/http[s]:\/\//, '');
 
       this.$router.push({
-        name: 'deploy.app',
+        name: 'deploy.applications',
         query: { imgUrl },
       });
     },

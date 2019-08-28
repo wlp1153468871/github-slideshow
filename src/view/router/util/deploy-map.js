@@ -1,4 +1,5 @@
 import { RESOURCE_TYPE } from '@/core/constants/resource';
+import Resource from '@/view/components/resource/resource-link/resource';
 
 export default function getDeployPath(service) {
   const getParams = ({
@@ -24,35 +25,20 @@ export default function getDeployPath(service) {
       services: [{ id: brokerServiceId }],
     } = service;
     return {
-      name: 'deploy.app',
+      name: 'deploy.applications',
       query: {
         serviceId,
         brokerServiceId,
       },
     };
   }
-  if (service_type === RESOURCE_TYPE.ROUTE) {
-    return { name: 'deploy.router' };
-  }
-  if (service_type === RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM) {
+
+  if (service_type === RESOURCE_TYPE.BROKER_SERVICE) {
     return {
-      name: 'deploy.volume',
+      name: 'product.checkout',
       ...getParams(service),
     };
   }
-  if (service_type === RESOURCE_TYPE.CONFIG_MAP) {
-    return {
-      name: 'deploy.config-map',
-    };
-  }
-  if (service_type === RESOURCE_TYPE.SECRET) {
-    return {
-      name: 'deploy.secret',
-    };
-  }
 
-  return {
-    name: 'product.checkout',
-    ...getParams(service),
-  };
+  return new Resource(service_type).deployRoute;
 }

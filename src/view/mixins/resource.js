@@ -16,7 +16,14 @@ export default {
     ...mapGetters(['gerResourceForHeader']),
 
     resource() {
-      return this.gerResourceForHeader(this.kind, this.name);
+      let resourceList;
+      try {
+        resourceList = this.gerResourceForHeader(this.kind, this.name);
+      } catch (e) {
+        console.log(e);
+        this.$router.push({ name: 'console.dashboard' });
+      }
+      return resourceList;
     },
   },
 
@@ -24,7 +31,6 @@ export default {
     goBack() {
       const resource = new Resource(this.kind);
       this.$router.push(resource.route);
-      resource.unwatch();
     },
 
     getTemplate() {

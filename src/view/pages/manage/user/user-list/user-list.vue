@@ -14,7 +14,7 @@
           @update-user-dialog="updateUserDialog"
           @confirm-disable="disableConfirm"
           @confirm-enable="enableConfirm">
-          <!--<div slot="tool" class="dao-table-view-left-bar">
+          <div slot="tool" class="dao-table-view-left-bar">
             <button
               class="dao-btn has-icon blue"
               @click="openCreateUserDialog()">
@@ -23,7 +23,7 @@
               </svg>
               <span class="text">创建用户</span>
             </button>
-          </div>-->
+          </div>
         </dao-table-view>
       </div>
     </div>

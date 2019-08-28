@@ -5,7 +5,7 @@ export default {
   name: 'ConsoleContainer',
 
   beforeRouteEnter(to, from, next) {
-    store.dispatch('initTenantView');
+    store.dispatch('initSpaceView');
     next();
   },
 
@@ -32,7 +32,7 @@ export default {
       return (
         !this.$route.path.includes('/org') &&
         !this.$route.path.includes('/profile') &&
-        !this.$route.path.includes('/console/deploy') &&
+        !this.$route.path.includes('/console/deploy/form') &&
         !this.$route.path.includes('/audit') &&
         !this.$route.path.includes('/platform-approval')
       );

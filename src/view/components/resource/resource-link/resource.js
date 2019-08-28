@@ -3,22 +3,12 @@ import store from '@/core/store';
 
 export default class Resource {
   kind = '';
-  apiResource = {};
+  apiResource = store.state.apiResource;
   instanceName = null;
-  unwatch = () => {};
 
   constructor(kind, instanceName) {
     this.kind = kind;
     this.instanceName = instanceName;
-    this.unwatch = store.watch(
-      x => x.apiResource,
-      resource => {
-        this.apiResource = resource;
-      },
-      {
-        immediate: true,
-      },
-    );
   }
 
   get name() {
@@ -36,6 +26,17 @@ export default class Resource {
     }
     return {
       name: `resource.${name}.list`,
+    };
+  }
+
+  get deployRoute() {
+    const { name } = this;
+    if (!name) return { name: 'console.dashboard' };
+    return {
+      name: `deploy.${name}`,
+      query: {
+        create: true,
+      },
     };
   }
 

@@ -198,30 +198,6 @@ export const actions = {
     });
   },
 
-  getUserInfo({ commit }) {
-    return new Promise((resolve, reject) => {
-      AuthService.getUserInfo()
-        .then(user => {
-          commit('LOAD_USER_SUCCESS', { user });
-          resolve(user);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-
-  loadSSOInfo({ commit }) {
-    return SSOService.getIdentityProvider().then(providers => {
-      const ssoInfo = first(providers) || {};
-      const login_url = getValue(ssoInfo, 'login_url');
-      const logout_url = getValue(ssoInfo, 'logout_url');
-      commit(types.SET_SGM_SSO, ssoInfo);
-      commit(types.SET_SGM_LOGIN_URL, login_url);
-      commit(types.SET_SGM_LOGOUT_URL, logout_url);
-    });
-  },
-
   logout({ dispatch }) {
     return AuthService.logout().then(() => {
       dispatch('clearCache');
@@ -237,119 +213,79 @@ export const actions = {
     });
   },
 
-  initTenantView({ dispatch, commit, state }) {
+  initSpaceView({ dispatch, commit }) {
     commit(types.INIT_TENANT_VIEW_REQUEST);
-    dispatch('loadSSOInfo');
-    dispatch('loadQuotaField');
-    dispatch('loadSpaces')
-      .then(() => {
-        dispatch('loadZones').then(() => {
-          dispatch('getUserInfo').then(() => {
-            if (state.zones.length) {
-              dispatch('initPortal');
-            } else {
-              commit(types.INIT_TENANT_VIEW_SUCCESS);
-            }
-          });
-        });
-      })
-      .catch(() => {
-        commit(types.INIT_TENANT_VIEW_SUCCESS);
-      });
+    dispatch('initView');
+    dispatch('loadSpaces');
   },
 
-  initManageView({ dispatch }) {
+  initView({ dispatch }) {
     dispatch('loadQuotaField');
     dispatch('loadSSOInfo');
-  },
-
-  initPortal({ dispatch }) {
-    dispatch('loadBrokerService').then(() => {
-      dispatch('loadCategory');
-    });
   },
 
   loadQuotaField({ commit }) {
-    return QuotaService.listQuotaFields().then(res => {
+    QuotaService.listQuotaFields().then(res => {
       commit(types.LOAD_QUOTA_FIELD, res);
     });
   },
 
-  loadCategory({ commit }) {
-    return CatalogService.getSchema().then(res => {
-      commit(types.LOAD_CATEGORY, res);
+  loadSSOInfo({ commit }) {
+    SSOService.getIdentityProvider().then(providers => {
+      const ssoInfo = first(providers) || {};
+      const login_url = getValue(ssoInfo, 'login_url');
+      const logout_url = getValue(ssoInfo, 'logout_url');
+      commit(types.SET_SGM_SSO, ssoInfo);
+      commit(types.SET_SGM_LOGIN_URL, login_url);
+      commit(types.SET_SGM_LOGOUT_URL, logout_url);
     });
   },
 
-  loadBrokerService({ commit, state }) {
-    return SpaceService.listBrokerServices(state.space.id, {
-      zoneId: state.zone.id,
-    }).then(services => {
-      const { broker_services } = services;
-      broker_services.forEach(bs => {
-        bs.route = getListPath(bs);
+  loadSpaces({ dispatch, commit }) {
+    Promise.all([OrgService.getUserOrgs(), SpaceService.getUserSpaces()]).then(([orgs, spaces]) => {
+      if (isEmpty(spaces)) {
+        router.push({ name: '403' });
+        commit(types.INIT_TENANT_VIEW_SUCCESS);
+      }
+
+      const dict = groupBy(spaces, 'organization_id');
+      orgs.forEach(org => {
+        if (dict[org.id]) {
+          org.children = dict[org.id];
+        } else {
+          org.disabled = true;
+        }
       });
-      commit(types.LOAD_SERVICE_SUCCESS, broker_services);
-      commit(types.INIT_TENANT_VIEW_SUCCESS);
-    });
-  },
+      orgs = orgs.filter(org => !org.disabled);
+      commit(types.LOAD_SPACE_SUCCESS, { orgs, spaces });
 
-  loadSystemSettings({ commit }) {
-    return SystemService.getSystemSettings().then(param => {
-      commit(types.LOAD_SYSTEM_SETTINGS_SUCCESS, { param });
-    });
-  },
+      // handle selected org
+      let org = OrgService.getLocalOrg();
+      if (org && org.id) org = orgs.find(x => x.id === org.id);
 
-  loadSpaces({ commit }) {
-    return new Promise((resolve, reject) => {
-      Promise.all([
-        OrgService.getUserOrgs(),
-        SpaceService.getUserSpaces(),
-      ]).then(([orgs, spaces]) => {
-        if (isEmpty(spaces)) {
-          router.push({ name: '403' });
-          reject(new Error('no space'));
-        }
+      if (!org || !org.id) {
+        org = first(orgs);
+      }
 
-        const dict = groupBy(spaces, 'organization_id');
-        orgs.forEach(org => {
-          if (dict[org.id]) {
-            org.children = dict[org.id];
-          } else {
-            org.disabled = true;
-          }
-        });
-        orgs = orgs.filter(org => !org.disabled);
-        commit(types.LOAD_SPACE_SUCCESS, { orgs, spaces });
+      if (org) {
+        commit(types.SWITCH_ORG, { org });
+        OrgService.setLocalOrg(org);
+      }
 
-        // handle selected org
-        let org = OrgService.getLocalOrg();
-        if (org && org.id) org = orgs.find(x => x.id === org.id);
+      // handle selected space
+      let space = SpaceService.getLocalSpace();
+      if (space && space.id) space = spaces.find(x => x.id === space.id);
 
-        if (!org || !org.id) {
-          org = first(orgs);
-        }
+      if (!space || !space.id) {
+        space = first((org || {}).children);
+      }
 
-        if (org) {
-          commit(types.SWITCH_ORG, { org });
-          OrgService.setLocalOrg(org);
-        }
+      if (space) {
+        SpaceService.setLocalSpace(space);
+        commit(types.SWITCH_SPACE, { space });
+      }
 
-        // handle selected space
-        let space = SpaceService.getLocalSpace();
-        if (space && space.id) space = spaces.find(x => x.id === space.id);
-
-        if (!space || !space.id) {
-          space = first((org || {}).children);
-        }
-
-        if (space) {
-          SpaceService.setLocalSpace(space);
-          commit(types.SWITCH_SPACE, { space });
-        }
-
-        resolve();
-      });
+      dispatch('loadZones');
     });
   },
 
@@ -372,46 +308,45 @@ export const actions = {
 
       commit(types.SWITCH_ZONE, { zone });
 
-      dispatch('loadAPIResource');
-    });
-  },
-
-  switchOrg({ dispatch, commit }, { org, space }) {
-    commit(types.SWITCH_ORG, { org });
-    OrgService.setLocalOrg(org);
-    dispatch('switchSpace', { space });
-  },
-
-  switchSpace({ dispatch, commit }, { space }) {
-    commit(types.SWITCH_SPACE, { space });
-    SpaceService.setLocalSpace(space);
-
-    dispatch('loadZones').then(() => {
       if (state.zones.length) {
-        const zone = first(state.zones);
-        dispatch('switchZone', { zone });
-        router.push({
-          name: 'console',
-        });
+        dispatch('loadUserInfo');
+        dispatch('initPortal');
       } else {
-        Vue.noty.error('暂无可用区');
+        commit(types.INIT_TENANT_VIEW_SUCCESS);
       }
     });
   },
 
-  switchZone({ dispatch, commit }, { zone }) {
-    commit(types.SWITCH_ZONE, { zone });
-    ZoneService.setLocalZone(zone);
+  loadUserInfo({ commit }) {
+    return AuthService.getUserInfo().then(user => {
+      commit('LOAD_USER_SUCCESS', { user });
+    });
+  },
 
-    dispatch('loadAPIResource');
+  initPortal({ dispatch, commit }) {
+    Promise.all([
+      dispatch('loadBrokerService'),
+      dispatch('loadAPIResource'),
+    ]).then(() => {
+      commit(types.INIT_TENANT_VIEW_SUCCESS);
+    });
+  },
 
-    dispatch('getUserInfo').then(() => {
-      dispatch('initPortal');
+  loadBrokerService({ commit, state, dispatch }) {
+    return SpaceService.listBrokerServices(state.space.id, {
+      zoneId: state.zone.id,
+    }).then(services => {
+      const { broker_services } = services;
+      broker_services.forEach(bs => {
+        bs.route = getListPath(bs);
+      });
+      dispatch('loadCategory');
+      commit(types.LOAD_SERVICE_SUCCESS, broker_services);
     });
   },
 
   loadAPIResource({ commit, state }) {
-    APIResourceService.list(state.zone).then(resources => {
+    return APIResourceService.list(state.zone).then(resources => {
       const simplifiedResourceList = uniqBy(
         flatten(resources.map(resourceList => resourceList.resources)),
         'kind',
@@ -445,6 +380,36 @@ export const actions = {
 
       commit(types.LOAD_API_RESOURCE, resourceMap);
     });
+  },
+
+  loadCategory({ commit }) {
+    CatalogService.getSchema().then(res => {
+      commit(types.LOAD_CATEGORY, res);
+    });
+  },
+
+  loadSystemSettings({ commit }) {
+    return SystemService.getSystemSettings().then(param => {
+      commit(types.LOAD_SYSTEM_SETTINGS_SUCCESS, { param });
+    });
+  },
+
+  switchOrg({ dispatch, commit }, { org, space }) {
+    commit(types.SWITCH_ORG, { org });
+    OrgService.setLocalOrg(org);
+    dispatch('switchSpace', { space });
+  },
+
+  switchSpace({ dispatch, commit }, { space }) {
+    commit(types.SWITCH_SPACE, { space });
+    SpaceService.setLocalSpace(space);
+    dispatch('loadZones');
+  },
+
+  switchZone({ dispatch, commit }, { zone }) {
+    commit(types.SWITCH_ZONE, { zone });
+    ZoneService.setLocalZone(zone);
+    dispatch('loadZones');
   },
 };
 
