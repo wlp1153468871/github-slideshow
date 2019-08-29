@@ -81,7 +81,12 @@
                         :key="ruleIndex + '-' + pathIndex"
                         class="row">
                         <div class="col-xs-4 break-word">
-                          <div>{{ rule.host }}</div>
+                          <a :href="ingress | ingress_web_url(rule, path)" target="_blank">
+                            {{ rule.host }}
+                            <svg class="icon">
+                              <use xlink:href="#icon_link"></use>
+                            </svg>
+                          </a>
                         </div>
                         <div class="col-xs-3 break-word">
                           <div>{{ path.path }}</div>

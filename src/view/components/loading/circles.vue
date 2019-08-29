@@ -1,28 +1,52 @@
 <template>
-  <div class="loader">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
+  <div class="loader" :class="{ 'space-loader': position==='space-view' }">
+    <div class="ball-triangle-path">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'CircleLoading',
+
+  props: {
+    position: { type: String, default: 'content-view' },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .loader {
-  position: absolute;
-  top: 50%;
-  left: 40%;
-  margin-left: 10%;
-  transform: translate3d(-50%, -50%, 0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f3f6;
+  transition: 0.3s;
+  z-index: 9;
+  transform: translateX(100px);
   animation: show-loading 1s forwards;
-  opacity: 0;
+
+  &.space-loader {
+    z-index: 10;
+    opacity: 1;
+    animation: none;
+    transform: translateX(0);
+    background: rgba(69, 94, 107, 0.8);
+  }
+}
+
+.collapsed {
+  .loader {
+    transform: translateX(-32px);
+  }
 }
 
 @keyframes show-loading {
@@ -33,50 +57,6 @@ export default {
 
   100% {
     opacity: 1;
-  }
-}
-
-.dot {
-  width: 20px;
-  height: 20px;
-  background: #cfd8dc;
-  border-radius: 100%;
-  display: inline-block;
-  animation: slide 1s infinite;
-  & + .dot {
-    margin-left: 10px;
-  }
-}
-.dot:nth-child(1) {
-  animation-delay: 0.1s;
-  background: #cfd8dc;
-}
-.dot:nth-child(2) {
-  animation-delay: 0.2s;
-  background: #b0bec5;
-}
-.dot:nth-child(3) {
-  animation-delay: 0.3s;
-  background: #90a4ae;
-}
-.dot:nth-child(4) {
-  animation-delay: 0.4s;
-  background: #78909c;
-}
-.dot:nth-child(5) {
-  animation-delay: 0.5s;
-  background: #607d8b;
-}
-@keyframes slide {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.3;
-    transform: scale(2);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 </style>

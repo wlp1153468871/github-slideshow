@@ -30,7 +30,6 @@ import LabelTip from './label-tip/label-tip';
 import LoadingStack from './loading/stack';
 import LoadingState from './loading-state/loading-state';
 import LoadingThreeBounce from './loading/three-bounce';
-import LoadingTwoPoint from './loading/two-point';
 import LogoContainer from './logo-container/logo-container';
 import LogoPlaceholder from './logo-placeholder/logo-placeholder';
 import ManageSideBar from './side-bar/manage-side-bar';
@@ -88,7 +87,6 @@ const components = {
   LoadingStack,
   LoadingState,
   LoadingThreeBounce,
-  LoadingTwoPoint,
   LogoContainer,
   LogoPlaceholder,
   ManageSideBar,

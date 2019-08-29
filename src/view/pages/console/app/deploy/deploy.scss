@@ -2,10 +2,15 @@
 
 .deploy-app {
   .header-title {
-    position: absolute;
+    position: fixed;
+    top: $nav-height;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    z-index: 11;
     margin-left: 30px;
     font-size: 16px;
-    line-height: 40px;
 
     .go-back {
       color: #000000;
@@ -21,7 +26,10 @@
   }
 
   .wizard-nav-pills {
-    justify-content: center;
+    position: fixed;
+    top: $nav-height;
+    left: 0;
+    z-index: 10;
     list-style: none;
   }
 }

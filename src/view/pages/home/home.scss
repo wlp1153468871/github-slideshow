@@ -22,7 +22,7 @@
   .header {
     position: sticky;
     top: 0;
-    height: 54px;
+    height: $nav-height;
     z-index: 10;
     //background: rgb(35, 35, 35);
     background: #2d3034;
@@ -57,7 +57,7 @@
     .user-profile {
       display: flex;
       align-items: center;
-      height: 54px;
+      height: $nav-height;
       color: #ccd1d9;
       cursor: pointer;
 

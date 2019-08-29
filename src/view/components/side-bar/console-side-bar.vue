@@ -73,7 +73,8 @@
             <span slot="title">应用</span>
           </el-menu-item>
 
-          <el-submenu index="resource">
+          <el-submenu
+            index="resource">
             <template slot="title">
               <svg class="icon">
                 <use xlink:href="#icon_resource"></use>
@@ -89,7 +90,12 @@
                 <svg class="icon">
                   <use :xlink:href="resource.icon"></use>
                 </svg>
-                <overflow-tooltip slot="title" :text="resource.kind"></overflow-tooltip>
+                <overflow-tooltip
+                  v-if="resourceMenuOpened"
+                  slot="title"
+                  :text="resource.kind"
+                >
+                </overflow-tooltip>
               </el-menu-item>
             </template>
 
@@ -258,6 +264,13 @@ export default {
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;
     },
+
+    resourceMenuOpened() {
+      return (
+        this.$refs.bottomMenu &&
+        this.$refs.bottomMenu.openedMenus.indexOf('resource') > -1
+      );
+    },
   },
 
   watch: {
@@ -267,6 +280,7 @@ export default {
         this.selectedOptions = [val.id, this.selectedOptions[1]];
       },
     },
+
     space: {
       immediate: true,
       handler(val) {

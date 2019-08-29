@@ -8,21 +8,21 @@
 
   .wizard-navigation {
     .wizard-nav {
-      height: 42px;
-      line-height: 42px;
-      width: 100%;
-      background: white;
-      box-shadow: inset 0 -1px 0 0 #e4e7ed;
       display: flex;
       justify-content: center;
+      width: 100%;
+      height: 42px;
+      background: white;
+      border-bottom: 1px solid #e4e7ed;
+      box-sizing: content-box;
 
       .wizard-nav-pills {
-        margin-bottom: 0;
-        padding-left: 0; // Override default ul/ol
-        list-style: none;
         display: flex;
         justify-content: center;
-        box-shadow: inset 0 -1px 0 0 #e4e7ed;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        border-bottom: 1px solid #e4e7ed;
       }
 
       .wizard-nav-left,
@@ -33,44 +33,43 @@
     }
 
     .step-content {
+      display: flex;
+      align-items: center;
       background-color: #fff;
+
       .step-tab {
         $tab-width: 20px;
-        // line-height: $tab-width;
-        // width: 92px;
         position: relative;
         color: #9ba3af;
         vertical-align: middle;
 
         .step-icon {
+          display: inline-block;
+          box-sizing: content-box;
           width: $tab-width;
           height: $tab-width;
+          margin-right: 5px;
           line-height: $tab-width;
-          // color: #ffffff;
-          border-radius: 50%;
-          // background-color: $blue;
-          display: inline-block;
           text-align: center;
           border: 1px solid #9ba3af;
-          box-sizing: content-box;
-          margin-right: 5px;
+          border-radius: 50%;
         }
 
         .step-title {
-          // margin-left: 6px;
+          display: inline-block;
           font-size: 16px;
           font-weight: 500;
           line-height: $tab-width;
-          display: inline-block;
         }
       }
 
       &.checked {
         .step-icon {
-          color: #ffffff;
+          color: #fff;
           background-color: $blue;
           border: 1px solid $blue;
         }
+
         .step-title {
           color: #3d444f;
         }
@@ -84,24 +83,26 @@
 
       &::after {
         content: ' ';
-        border-bottom: 1px solid #ccd1d9;
         display: inline-block;
         width: 48px;
-        vertical-align: middle;
         margin: 0 10px;
+        vertical-align: middle;
+        border-bottom: 1px solid #ccd1d9;
       }
     }
 
     .wizard-tab-content {
       min-height: 100px;
-      padding: 30px 20px 100px;
+      padding: 70px 20px 100px;
     }
 
     .wizard-card-footer {
       padding: 0 20px;
+
       .wizard-footer-left {
         float: left;
       }
+
       .wizard-footer-right {
         float: right;
       }
@@ -112,6 +113,7 @@
     .wizard-footer-left {
       float: left;
     }
+
     .wizard-footer-right {
       float: right;
     }
