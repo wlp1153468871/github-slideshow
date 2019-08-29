@@ -14,6 +14,16 @@ module.exports = {
       filename: 'index.html',
     },
   },
+
+  css: {
+    loaderOptions: {
+      sass: {
+        // 向全局sass样式传入共享的全局变量
+        data: '@import "@/assets/styles/variables.scss";',
+      },
+    },
+  },
+
   chainWebpack: config => {
     config.resolve.alias.set(
       'daoColor$',

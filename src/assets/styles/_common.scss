@@ -213,9 +213,9 @@ a.disabled {
 .dao-nav-menu {
   position: fixed;
   left: 0;
-  top: 54px;
+  top: $nav-height;
   width: 200px;
-  height: calc(100vh - 54px);
+  height: calc(100vh - #{$nav-height});
   background: rgb(55, 59, 65);
   z-index: 10;
   transition: 0.3s;

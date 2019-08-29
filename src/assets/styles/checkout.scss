@@ -19,7 +19,7 @@
 
   .top-bar {
     position: fixed;
-    top: 54px;
+    top: $nav-height;
     z-index: 3;
     display: flex;
     flex-direction: row;

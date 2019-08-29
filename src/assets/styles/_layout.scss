@@ -2,7 +2,7 @@
 
 .layout {
   height: 100%;
-  padding-top: 54px;
+  padding-top: $nav-height;
 
   .layout-content {
     position: relative;
@@ -15,7 +15,7 @@
     .dao-nav-menu {
       position: fixed;
       left: 0;
-      top: 54px;
+      top: $nav-height;
       z-index: 10;
     }
   }
