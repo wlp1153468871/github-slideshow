@@ -32,6 +32,7 @@ import humanizeTlsTermination from './resource/humanize-tls-termination.filter';
 import imageObjectRef from './resource/image-object-ref.filter';
 import imageStreamName from './resource/image-stream-name.filter';
 import imageTag from './image-tag.filter';
+import ingressWebUrl from './resource/ingress-web-url.filter';
 import instanceDetail from './instance-detail.filter';
 import instanceStatus from './instance-status.filter';
 import isApproving from './is-approving.filter';
@@ -111,6 +112,7 @@ const filters = {
   imageObjectRef,
   imageStreamName,
   imageTag,
+  ingressWebUrl,
   instanceDetail,
   instanceStatus,
   isApproving,

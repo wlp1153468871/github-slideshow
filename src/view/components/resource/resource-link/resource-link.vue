@@ -55,16 +55,24 @@ export default {
     line-height: 18px;
     color: #fff;
     margin: 0 4px;
-    background-color: #00b9e4;
+    background-color: #6dd9bf;
     flex-shrink: 0;
   }
 
   .resource-services {
-    background-color: #43a047;
+    background-color: #50a18e;
   }
 
   .resource-secrets {
-    background-color: #ffb300;
+    background-color: #f2d680;
+  }
+
+  .resource-routes {
+    background-color: #f2916d;
+  }
+
+  .resource-pods {
+    background-color: #f26e50;
   }
 }
 </style>

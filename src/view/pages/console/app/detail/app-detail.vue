@@ -82,16 +82,22 @@
         </el-tab-pane>
 
         <!-- 七层负载均衡 -->
-        <el-tab-pane :label="TABS.ROUTE" :name="TABS.ROUTE">
+        <el-tab-pane
+          v-if="resources.Route"
+          :label="TABS.ROUTE"
+          :name="TABS.ROUTE"
+        >
           <route-panel
-            v-if="resources.Route"
             :routes="resources.Route">
           </route-panel>
         </el-tab-pane>
 
-        <el-tab-pane :label="TABS.INGRESS" :name="TABS.INGRESS">
+        <el-tab-pane
+          v-if="resources.Ingress"
+          :label="TABS.INGRESS"
+          :name="TABS.INGRESS"
+        >
           <ingress-panel
-            v-if="resources.Ingress"
             :ingresses="resources.Ingress">
           </ingress-panel>
         </el-tab-pane>

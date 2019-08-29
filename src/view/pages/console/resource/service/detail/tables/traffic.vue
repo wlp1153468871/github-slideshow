@@ -28,13 +28,11 @@
           :key="routeName + index">
 
           <td>
-            <router-link
-              :to="{
-                name: 'resource.routes.detail',
-                params: { name: routes[routeName].metadata.name }
-               }">
-              {{ routes[routeName].metadata.name }}
-            </router-link>
+            <resource-link
+              kind="Route"
+              :name="routes[routeName].metadata.name"
+            >
+            </resource-link>
             <span v-if="showNodePorts">
               <span v-if="port.nodePort"> / {{port.nodePort}}</span>
             </span>

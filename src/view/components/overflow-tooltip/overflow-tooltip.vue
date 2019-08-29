@@ -1,7 +1,7 @@
 <template>
   <div style="display: inline-block; width: 100%;" ref="container">
     <el-tooltip
-      v-if="overflow"
+      v-if="!isCollapse && overflow"
       :content="text"
       placement="right">
       <span class="menu-content">
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'overflow-tooltip',
 
@@ -25,13 +27,16 @@ export default {
 
   data() {
     return {
-      width: 0,
+      contentWidth: 0,
+      containerWidth: 0,
     };
   },
 
   computed: {
+    ...mapState(['isCollapse']),
+
     overflow() {
-      return this.width > 115;
+      return this.contentWidth > this.containerWidth;
     },
   },
 
@@ -42,8 +47,9 @@ export default {
     fakeTextNode.style.fontSize = fontSize;
     fakeTextNode.innerText = this.text;
     document.body.append(fakeTextNode);
-    this.width = fakeTextNode.clientWidth;
+    this.contentWidth = fakeTextNode.clientWidth;
     fakeTextNode.remove();
+    this.containerWidth = this.$refs.container.clientWidth;
   },
 };
 </script>
