@@ -1,7 +1,7 @@
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import { RESOURCE_TYPE } from '@/core/constants/resource';
 import ResourceMixin from '@/view/mixins/resource';
-import { each, get as getValue } from 'lodash';
+import { each, get as getValue, partition } from 'lodash';
 import ServiceResourceService from '@/core/services/service.resource.service';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import EndpointService from '@/core/services/endpoint.service';
@@ -31,22 +31,16 @@ export default {
       kind: RESOURCE_TYPE.SERVICE,
       TABS,
       activeTab: tab || TABS.OVERVIEW.name,
-      dialogs: {
-        update: false,
-      },
+      dialogs: { update: false },
       events: [],
-      loadings: {
-        page: true,
-        pod: true,
-      },
+      loadings: { page: true, pod: true },
       pods: [],
       status: '',
       service: null,
-      routesForService: {},
-      portsByRoute: {},
-      showNodePorts: false,
       podsWithEndpoints: {},
       pollTimer: null,
+      ingresses: [],
+      routes: [],
     };
   },
 
@@ -88,13 +82,9 @@ export default {
 
     init() {
       this.loadings.page = true;
-      return Promise.all([this.getService(), this.getRoutes()])
-        .then(() => {
-          this.getPortsByRoute();
-        })
-        .finally(() => {
-          this.loadings.page = false;
-        });
+      return Promise.all([this.getService(), this.getTraffic()]).finally(() => {
+        this.loadings.page = false;
+      });
     },
 
     getService() {
@@ -105,12 +95,17 @@ export default {
       });
     },
 
-    getRoutes() {
+    getTraffic() {
       const { name } = this;
-      return ServiceResourceService.getRoutes({ name }).then(({ originData: { items = [] } }) => {
-        items.forEach(route => {
-          this.routesForService[route.metadata.name] = route;
+      return ServiceResourceService.getTraffic({ name }).then(({ originData = [] }) => {
+        const [routes, ingresses] = partition(originData, {
+          kind: RESOURCE_TYPE.ROUTE,
         });
+        if (routes.length) {
+          this.routes = routes;
+        } else {
+          this.ingresses = ingresses;
+        }
       });
     },
 
@@ -128,35 +123,6 @@ export default {
           });
         });
         this.podsWithEndpoints = newpodsWithEndpoints;
-      });
-    },
-
-    // receives routes for the current service and maps service ports to each route name
-    getPortsByRoute() {
-      this.portsByRoute = {};
-      each(this.service.spec.ports, port => {
-        let reachedByRoute = false;
-        if (port.nodePort) {
-          this.showNodePorts = true;
-        }
-
-        each(this.routesForService, route => {
-          if (
-            !route.spec.port ||
-            route.spec.port.targetPort === port.name ||
-            route.spec.port.targetPort === port.targetPort
-          ) {
-            this.portsByRoute[route.metadata.name] =
-              this.portsByRoute[route.metadata.name] || [];
-            this.portsByRoute[route.metadata.name].push(port);
-            reachedByRoute = true;
-          }
-        });
-
-        if (!reachedByRoute) {
-          this.portsByRoute[''] = this.portsByRoute[''] || [];
-          this.portsByRoute[''].push(port);
-        }
       });
     },
 

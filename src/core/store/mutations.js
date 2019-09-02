@@ -242,53 +242,51 @@ export const actions = {
   },
 
   loadSpaces({ dispatch, commit }) {
-    Promise.all([OrgService.getUserOrgs(), SpaceService.getUserSpaces()]).then(
-      ([orgs, spaces]) => {
-        if (isEmpty(spaces)) {
-          router.push({ name: '403' });
-          commit(types.INIT_TENANT_VIEW_SUCCESS);
+    Promise.all([OrgService.getUserOrgs(), SpaceService.getUserSpaces()]).then(([orgs, spaces]) => {
+      if (isEmpty(spaces)) {
+        router.push({ name: '403' });
+        commit(types.INIT_TENANT_VIEW_SUCCESS);
+      }
+
+      const dict = groupBy(spaces, 'organization_id');
+      orgs.forEach(org => {
+        if (dict[org.id]) {
+          org.children = dict[org.id];
+        } else {
+          org.disabled = true;
         }
+      });
+      orgs = orgs.filter(org => !org.disabled);
+      commit(types.LOAD_SPACE_SUCCESS, { orgs, spaces });
 
-        const dict = groupBy(spaces, 'organization_id');
-        orgs.forEach(org => {
-          if (dict[org.id]) {
-            org.children = dict[org.id];
-          } else {
-            org.disabled = true;
-          }
-        });
-        orgs = orgs.filter(org => !org.disabled);
-        commit(types.LOAD_SPACE_SUCCESS, { orgs, spaces });
+      // handle selected org
+      let org = OrgService.getLocalOrg();
+      if (org && org.id) org = orgs.find(x => x.id === org.id);
 
-        // handle selected org
-        let org = OrgService.getLocalOrg();
-        if (org && org.id) org = orgs.find(x => x.id === org.id);
+      if (!org || !org.id) {
+        org = first(orgs);
+      }
 
-        if (!org || !org.id) {
-          org = first(orgs);
-        }
+      if (org) {
+        commit(types.SWITCH_ORG, { org });
+        OrgService.setLocalOrg(org);
+      }
 
-        if (org) {
-          commit(types.SWITCH_ORG, { org });
-          OrgService.setLocalOrg(org);
-        }
+      // handle selected space
+      let space = SpaceService.getLocalSpace();
+      if (space && space.id) space = spaces.find(x => x.id === space.id);
 
-        // handle selected space
-        let space = SpaceService.getLocalSpace();
-        if (space && space.id) space = spaces.find(x => x.id === space.id);
+      if (!space || !space.id) {
+        space = first((org || {}).children);
+      }
 
-        if (!space || !space.id) {
-          space = first((org || {}).children);
-        }
+      if (space) {
+        SpaceService.setLocalSpace(space);
+        commit(types.SWITCH_SPACE, { space });
+      }
 
-        if (space) {
-          SpaceService.setLocalSpace(space);
-          commit(types.SWITCH_SPACE, { space });
-        }
-
-        dispatch('loadZones');
-      },
-    );
+      dispatch('loadZones');
+    });
   },
 
   loadZones({ dispatch, commit, state }) {

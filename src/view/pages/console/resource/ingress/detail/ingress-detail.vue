@@ -133,7 +133,12 @@
                     v-for="(tls, index) in ingress.spec.tls"
                     :key="index">
                     <div class="col-xs-6 break-word">
-                      <div>{{ tls.hosts.join() }}</div>
+                      <template v-if="tls.hosts">
+                        {{ tls.hosts.join() }}
+                      </template>
+                      <template v-else>
+                        暂无
+                      </template>
                     </div>
                     <div class="col-xs-6">
                       <resource-link
@@ -262,44 +267,44 @@ export default {
 </script>
 
 <style lang="scss">
-.ingress-detail {
-  .ingress-table {
-    .ingress-table-head,
-    .ingress-table-body .row {
-      border-bottom: solid 1px #eee;
+  .ingress-detail {
+    .ingress-table {
+      .ingress-table-head,
+      .ingress-table-body .row {
+        border-bottom: solid 1px #eee;
+      }
+
+      .row,
+      [class*='col-'] {
+        vertical-align: middle;
+      }
+
+      .row {
+        line-height: normal;
+        margin: 0;
+      }
     }
 
-    .row,
-    [class*='col-'] {
-      vertical-align: middle;
-    }
-
-    .row {
-      line-height: normal;
-      margin: 0;
-    }
-  }
-
-  .ingress-table-head {
-    padding: 0 0 10px 0;
-    color: #666;
-    text-transform: uppercase;
-    padding: 10px 0;
-  }
-
-  .ingress-table-body {
-    min-height: 50px;
-    position: relative;
-    width: 100%;
-
-    .row {
+    .ingress-table-head {
+      padding: 0 0 10px 0;
+      color: #666;
+      text-transform: uppercase;
       padding: 10px 0;
     }
-  }
 
-  .break-word {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+    .ingress-table-body {
+      min-height: 50px;
+      position: relative;
+      width: 100%;
+
+      .row {
+        padding: 10px 0;
+      }
+    }
+
+    .break-word {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
   }
-}
 </style>

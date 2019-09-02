@@ -128,12 +128,12 @@
         </el-tab-pane>
 
         <!-- 事件 -->
-        <el-tab-pane :label="TABS.EVENT" :name="TABS.EVENT">
+        <!--<el-tab-pane :label="TABS.EVENT" :name="TABS.EVENT">
           <event-panel
             :instance="instance"
             :zone-id="zoneId">
           </event-panel>
-        </el-tab-pane>
+        </el-tab-pane>-->
 
         <!-- 操作记录 -->
         <el-tab-pane :label="TABS.JOB" :name="TABS.JOB">

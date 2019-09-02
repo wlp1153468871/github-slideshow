@@ -31,7 +31,7 @@ export default {
   background: #f1f3f6;
   transition: 0.3s;
   z-index: 9;
-  transform: translateX(100px);
+  transform: translateX(200px);
   animation: show-loading 1s forwards;
 
   &.space-loader {
@@ -40,6 +40,13 @@ export default {
     animation: none;
     transform: translateX(0);
     background: rgba(69, 94, 107, 0.8);
+    .ball-triangle-path {
+      transform: translate(-29.99px, -37.51px);
+    }
+  }
+
+  .ball-triangle-path {
+    transform: translate(-129.99px, -37.51px);
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
-  <div class="page-pods">
+  <div>
     <circle-loading v-if="loadings.page"></circle-loading>
-    <template v-else-if="service">
+    <template v-else>
       <resource-header :resource="resource">
 
         <template #status v-if="status === 'approving'">
@@ -55,9 +55,9 @@
           :name="TABS.OVERVIEW.name">
           <service-overview-panel
             :service="service"
-            :ports-by-route="portsByRoute"
-            :routes="routesForService"
-            :show-node-ports="showNodePorts">
+            :ingresses="ingresses"
+            :routes="routes"
+          >
           </service-overview-panel>
         </el-tab-pane>
 
@@ -84,15 +84,17 @@
         </el-tab-pane>
       </el-tabs>
     </template>
-    <error-info v-else></error-info>
+
     <edit-yaml-dialog
       :value="service"
       :visible.sync="dialogs.update"
       @update="updateService">
     </edit-yaml-dialog>
-
   </div>
 </template>
 
 <script src="./_service.js">
 </script>
+
+<style src="./_service.scss" lang="scss">
+</style>

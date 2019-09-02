@@ -115,6 +115,20 @@ class ServiceService {
   }) {
     return this.api.get(`/spaces/${space}/service/${name}/routes`, { zone });
   }
+
+  getTraffic({
+    name,
+    space = this.space,
+    zone = this.zone,
+  }: {
+    name: string;
+    space?: string;
+    zone?: string;
+  }) {
+    return this.api.get(`/spaces/${space}/service/${name}/trafficobjects`, {
+      zone,
+    });
+  }
 }
 
 export default new ServiceService();

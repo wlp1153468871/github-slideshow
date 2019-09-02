@@ -69,7 +69,7 @@
               </dd>
             </div>
             <div
-              v-if="hashSizeFilter(routes) === 0"
+              v-if="routes.length"
               class="dl-item">
               <dt>Routes:</dt>
               <dd>
@@ -87,16 +87,26 @@
         </div>
       </div>
     </div>
-    <div class="col-md-12" style="margin-top: 20px;">
+    <div
+      class="col-md-12"
+      style="margin-top: 20px;"
+    >
       <div class="panel-resource">
         <h3>流量</h3>
         <div class="panel-resource-content">
-          <traffic-table
+          <traffic-route
+            v-if="routes.length"
             :service="service"
-            :ports-by-route="portsByRoute"
             :routes="routes"
-            :show-node-ports="showNodePorts">
-          </traffic-table>
+          >
+          </traffic-route>
+
+          <traffic-ingress
+            v-else
+            :service="service"
+            :ingress-list="ingresses"
+          >
+          </traffic-ingress>
         </div>
       </div>
     </div>
@@ -106,20 +116,21 @@
 <script>
 import { size } from 'lodash';
 import hashSizeFilter from '@/view/filters/hash-size.filter';
-import TrafficTable from '../tables/traffic';
+import TrafficRoute from '../tables/traffic-route';
+import TrafficIngress from '../tables/traffic-ingress';
 
 export default {
   name: 'service-overview-panel',
 
   props: {
     service: { type: Object, default: () => ({}) },
-    routes: { type: Object, default: () => ({}) },
-    portsByRoute: { type: Object, default: () => ({}) },
-    showNodePorts: { type: Boolean, default: () => false },
+    routes: { type: Array, default: () => [] },
+    ingresses: { type: Array, default: () => [] },
   },
 
   components: {
-    TrafficTable,
+    TrafficRoute,
+    TrafficIngress,
   },
 
   computed: {
@@ -133,7 +144,6 @@ export default {
 
   methods: {
     hashSizeFilter,
-
     size,
   },
 };
