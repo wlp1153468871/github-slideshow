@@ -151,13 +151,16 @@
                   <thead>
                   <tr>
                     <th>可用区</th>
-                    <th>Deployment</th>
-                    <th>Deployment Config</th>
-                    <th>Stateful Set</th>
-                    <th>Pod</th>
-                    <th>Service</th>
-                    <th>Route</th>
-                    <th>Ingress</th>
+                    <th
+                      :key="index"
+                      v-for="(text, index) in headers"
+                    >
+                      <overflow-tooltip
+                        placement="top-start"
+                        :text="text"
+                      >
+                      </overflow-tooltip>
+                    </th>
                   </tr>
                   </thead>
                   <tbody>
@@ -200,6 +203,16 @@ export default {
       resources: [],
       loading: true,
       hasData: false,
+      RESOURCE_TYPE,
+      headers: [
+        RESOURCE_TYPE.DEPLOYMENT_CONFIG,
+        RESOURCE_TYPE.DEPLOYMENT,
+        RESOURCE_TYPE.STATEFUL_SET,
+        RESOURCE_TYPE.POD,
+        RESOURCE_TYPE.SERVICE,
+        RESOURCE_TYPE.ROUTE,
+        RESOURCE_TYPE.INGRESS,
+      ],
     };
   },
 
@@ -268,7 +281,9 @@ export default {
       Object.entries(res).forEach(([zone, instances]) => {
         let count = 0;
         instances
-          .filter(instance => instance.service_type === RESOURCE_TYPE.BROKER_SERVICE)
+          .filter(
+            instance => instance.service_type === RESOURCE_TYPE.BROKER_SERVICE,
+          )
           .forEach(i => {
             count += i.instanceCount;
           });

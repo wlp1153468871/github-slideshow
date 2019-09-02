@@ -1,17 +1,20 @@
 <template>
-  <div style="display: inline-block; width: 100%;" ref="container">
+  <span
+    class="overflow-tooltip"
+    ref="container"
+  >
     <el-tooltip
-      v-if="!isCollapse && overflow"
+      v-if="overflow"
       :content="text"
-      placement="right">
-      <span class="menu-content">
+      :placement="placement">
+      <span class="content">
         {{ text }}
       </span>
     </el-tooltip>
-    <span class="menu-content" v-else>
+    <span class="content" v-else>
       {{ text }}
     </span>
-  </div>
+  </span>
 
 </template>
 
@@ -23,13 +26,13 @@ export default {
 
   props: {
     text: { type: String },
+    placement: { type: String, default: 'right' },
   },
 
   data() {
     return {
       contentWidth: 0,
       containerWidth: 0,
-      unwatch: () => {},
     };
   },
 
@@ -37,7 +40,7 @@ export default {
     ...mapState(['isCollapse']),
 
     overflow() {
-      return this.contentWidth > this.containerWidth;
+      return this.contentWidth >= this.containerWidth;
     },
   },
 
@@ -48,38 +51,33 @@ export default {
     fakeTextNode.style.fontSize = fontSize;
     fakeTextNode.innerText = this.text;
     document.body.append(fakeTextNode);
-    this.contentWidth = fakeTextNode.clientWidth;
+    this.contentWidth = fakeTextNode.clientWidth + 1;
     fakeTextNode.remove();
-    this.unwatch = this.$store.watch(
-      () => this.$store.state.openedMenus,
-      menus => {
-        if (menus.indexOf('resource') > -1) {
-          this.containerWidth = this.$refs.container.clientWidth;
-        }
-      },
-    );
-  },
-
-  destroyed() {
-    this.unwatch();
+    this.containerWidth = this.$refs.container.clientWidth;
   },
 };
 </script>
 
 <style lang="scss">
-.menu-content {
+.overflow-tooltip {
   display: inline-block;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  width: 100%;
 
-.width-calculator {
-  position: fixed;
-  visibility: hidden;
-  height: auto;
-  width: auto;
-  white-space: nowrap;
+  .content {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .width-calculator {
+    position: fixed;
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    white-space: nowrap;
+  }
 }
 </style>

@@ -207,10 +207,11 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { find } from 'lodash';
+import * as types from '@/core/store/mutation-types';
 import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
 import ZoneSelect from './zone-select';
-import * as types from '../../../core/store/mutation-types';
+import OverflowTooltip from './overflow-tooltip';
 
 export default {
   name: 'ConsoleSideBar',
@@ -219,6 +220,7 @@ export default {
     SideBarSection,
     SideBarLogo,
     ZoneSelect,
+    OverflowTooltip,
   },
 
   updated() {
