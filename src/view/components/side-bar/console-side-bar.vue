@@ -91,7 +91,6 @@
                   <use :xlink:href="resource.icon"></use>
                 </svg>
                 <overflow-tooltip
-                  v-if="resourceMenuOpened"
                   slot="title"
                   :text="resource.kind"
                 >
@@ -238,7 +237,6 @@ export default {
       },
       defaultOpeneds: ['service'],
       selectedOptions: [],
-      resourceMenuOpened: false,
     };
   },
 
@@ -328,7 +326,7 @@ export default {
         return this.$refs.bottomMenu.openedMenus;
       },
       val => {
-        this.resourceMenuOpened = val.indexOf('resource') > -1;
+        this.$store.commit(types.UPDATE_OPENED_MENUS, [...val]);
       },
     );
   },

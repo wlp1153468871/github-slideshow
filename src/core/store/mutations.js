@@ -75,6 +75,7 @@ export const state = {
     refreshingCall: null,
   },
   apiResource: null,
+  openedMenus: [],
 };
 
 /* eslint-disable no-shadow */
@@ -549,6 +550,10 @@ export const mutations = {
 
   [types.LOAD_API_RESOURCE](state, resourceMap) {
     state.apiResource = resourceMap;
+  },
+
+  [types.UPDATE_OPENED_MENUS](state, openedMenus) {
+    state.openedMenus = openedMenus;
   },
 };
 /* eslint-enable no-shadow */

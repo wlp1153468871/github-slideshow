@@ -29,6 +29,7 @@ export default {
     return {
       contentWidth: 0,
       containerWidth: 0,
+      unwatch: () => {},
     };
   },
 
@@ -49,7 +50,18 @@ export default {
     document.body.append(fakeTextNode);
     this.contentWidth = fakeTextNode.clientWidth;
     fakeTextNode.remove();
-    this.containerWidth = this.$refs.container.clientWidth;
+    this.unwatch = this.$store.watch(
+      () => this.$store.state.openedMenus,
+      menus => {
+        if (menus.indexOf('resource') > -1) {
+          this.containerWidth = this.$refs.container.clientWidth;
+        }
+      },
+    );
+  },
+
+  destroyed() {
+    this.unwatch();
   },
 };
 </script>
