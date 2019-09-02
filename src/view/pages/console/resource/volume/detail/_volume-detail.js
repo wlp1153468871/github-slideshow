@@ -40,6 +40,9 @@ export default {
         basic: {},
       },
       jobs: [],
+      dialogConfigs: {
+        yamlEdit: false,
+      },
     };
   },
 
@@ -121,6 +124,14 @@ export default {
       VolumeService.delete(this.space.id, this.zone.id, name).then(() => {
         this.$noty.success(`删除 PVC ${name} 成功`);
         this.goBack();
+      });
+    },
+
+    updateByYaml(data) {
+      const { name } = this;
+      VolumeService.updateByYaml({ name, data }).then(() => {
+        this.$noty.success('更新成功');
+        this.getVolume();
       });
     },
   },

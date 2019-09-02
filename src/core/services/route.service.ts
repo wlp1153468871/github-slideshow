@@ -1,3 +1,4 @@
+import store from '@/core/store';
 import api, { APIService } from './api';
 
 class RouteService {
@@ -5,6 +6,14 @@ class RouteService {
 
   constructor() {
     this.api = api;
+  }
+
+  get space() {
+    return store.getters.spaceId;
+  }
+
+  get zone() {
+    return store.state.zone.id;
   }
 
   /**
@@ -66,6 +75,25 @@ class RouteService {
    */
   get(spaceId: string, zone: string, name: string) {
     return this.api.get(`/spaces/${spaceId}/routers/${name}`, { zone });
+  }
+
+  updateByYaml(
+    {
+      name,
+      data,
+      space = this.space,
+      zone = this.zone,
+    }: {
+      name: string;
+      data: any;
+      space?: string;
+      zone?: string;
+    } = { name: '', data: '' },
+  ) {
+    if (!name) return;
+    return this.api.put(`/spaces/${space}/routers/${name}/yaml`, data, {
+      params: { zone },
+    });
   }
 }
 

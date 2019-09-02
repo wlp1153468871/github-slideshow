@@ -11,6 +11,10 @@ export default class Resource {
     this.instanceName = instanceName;
   }
 
+  set name(name) {
+    this.instanceName = name;
+  }
+
   get name() {
     return getValue(this.apiResource, `${this.kind}.name`);
   }

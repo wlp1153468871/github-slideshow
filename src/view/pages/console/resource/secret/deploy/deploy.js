@@ -1,3 +1,4 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
 import { CONFIG_TITLE_TYPE } from '@/core/constants/constants';
 import SecreatService from '@/core/services/secret.service';
@@ -31,7 +32,7 @@ export default {
 
   data() {
     return {
-      type: 'secret',
+      type: RESOURCE_TYPE.SECRET,
       CONFIG_TITLE_TYPE,
       STEPS,
       stepIndex: STEPS.CONFIG,

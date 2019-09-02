@@ -1,13 +1,14 @@
 <template>
   <div class="resource-link">
     <span
+      v-if="showKind"
       class="resource-icon"
       :class="[resource.icon]"
       title="Secret">
       {{ kind[0] }}
     </span>
     <router-link :to="resource.route">
-      {{ name || kind }}
+      <slot>{{ name || kind }}</slot>
     </router-link>
   </div>
 </template>
@@ -21,17 +22,23 @@ export default {
   props: {
     kind: { type: String, required: true },
     name: { type: String },
+    showKind: { type: Boolean, default: true },
   },
 
   data() {
     return {
       resource: {},
-      unwatch: () => {},
     };
   },
 
   created() {
     this.resource = new Resource(this.kind, this.name);
+  },
+
+  watch: {
+    name(name) {
+      this.resource.name = name;
+    },
   },
 };
 </script>

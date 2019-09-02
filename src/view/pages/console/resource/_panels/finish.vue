@@ -2,17 +2,29 @@
   <div class="dao-setting-layout checkout-confirm-panel">
     <div v-if="type === RESULT_TYPES.SUCCESS">
       <div class="confirm-icon">
-        <svg><use xlink:href="#icon_checkmark"></use></svg>
+        <svg>
+          <use xlink:href="#icon_checkmark"></use>
+        </svg>
       </div>
       <div class="tip">
         <h3>已完成订购</h3>
-        <p>您可以在 <a @click="gotoDetail">{{resourceName}}详情页面</a> 查看创建状态
+        <p class="flex-cc">您可以在
+          <resource-link
+            :kind="configType"
+            :name="resourceName"
+            :show-kind="false"
+          >
+            &nbsp;{{ resourceName }}&nbsp;详情页面
+          </resource-link>
+          查看创建状态
         </p>
       </div>
     </div>
     <div v-if="type === RESULT_TYPES.APPROVAL">
       <div class="confirm-icon">
-        <svg><use xlink:href="#icon_checkmark"></use></svg>
+        <svg>
+          <use xlink:href="#icon_checkmark"></use>
+        </svg>
       </div>
       <div class="tip">
         <h3>您的请求已提交审批</h3>
@@ -21,7 +33,9 @@
     </div>
     <div v-if="type === RESULT_TYPES.ERROR">
       <div class="confirm-icon wrong">
-        <svg><use xlink:href="#icon_cross"></use></svg>
+        <svg>
+          <use xlink:href="#icon_cross"></use>
+        </svg>
       </div>
       <div class="tip">
         <h3>订购失败</h3>
@@ -34,19 +48,15 @@
 </template>
 
 <script>
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { isEmpty } from 'lodash';
-
-const SERVICE_TYPE = {
-  CONFIG_MAP: 'config-map',
-  SECRET: 'secret',
-};
 
 export default {
   props: {
     resourceName: { type: String, default: '' },
     instance: { type: Object, default: () => ({}) },
     error: { type: Object, default: () => ({}) },
-    configType: { type: String, default: SERVICE_TYPE.CONFIG_MAP },
+    configType: { type: String, default: RESOURCE_TYPE.CONFIG_MAP },
   },
   data() {
     return {
@@ -78,7 +88,7 @@ export default {
   methods: {
     gotoDetail() {
       this.$router.push({
-        name: `resource.${this.configType}`,
+        name: `resource.${this.configType}.detail`,
         params: {
           name: this.resourceName,
         },
@@ -103,6 +113,7 @@ export default {
   position: relative;
   padding: 100px 0;
   border-bottom: 1px solid #e4e7ed;
+
   .confirm-icon {
     width: 60px;
     height: 60px;
@@ -110,22 +121,27 @@ export default {
     padding: 11px;
     border-radius: 50%;
     background-color: #22c36a;
+
     &.wrong {
       background-color: #f1483f;
     }
+
     svg {
       width: 40px;
       height: 40px;
       fill: #fff;
     }
   }
+
   .tip {
     margin: 20px auto;
     text-align: center;
+
     h3 {
       font-size: 28px;
       margin: 0 auto;
     }
+
     p,
     pre {
       font-size: 14px;

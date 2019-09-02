@@ -24,11 +24,11 @@ export default {
     const TABS = {
       OVERVIEW: '概览',
       EVENT: '操作记录',
-      SENIOR: '高级设置',
     };
 
     return {
       kind: RESOURCE_TYPE.SECRET,
+      activeName: TABS.OVERVIEW,
       CONFIG_TITLE_TYPE,
       TABS,
       secret: {},
@@ -40,6 +40,9 @@ export default {
       events: [],
       loadings: {
         secret: false,
+      },
+      dialogConfigs: {
+        yamlEdit: false,
       },
     };
   },
@@ -120,6 +123,28 @@ export default {
             this.$noty.success('创建审批成功');
           } else {
             this.$noty.success('更新成功');
+          }
+        });
+    },
+
+    updateByYaml(data) {
+      const name = getValue(this.secret, 'metadata.name');
+      SecretService.updateByYaml({ name, data }).then(() => {
+        this.$noty.success('更新成功');
+        this.loadSecretDetail();
+      });
+    },
+
+    removeConfirm() {
+      const name = getValue(this.secret, 'metadata.name');
+      this.$tada
+        .confirm({
+          title: '删除 Secret',
+          text: `您确定要删除 ${name} 吗？`,
+        })
+        .then(ok => {
+          if (ok) {
+            this.deleteSecret();
           }
         });
     },

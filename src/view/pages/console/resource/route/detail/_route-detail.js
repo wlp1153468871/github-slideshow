@@ -106,12 +106,6 @@ export default {
         });
     },
 
-    openDialog() {
-      this.dialogConfigs.yamlEdit = true;
-    },
-
-    updateByYaml() {},
-
     removeConfirm() {
       const { name } = this;
       this.$tada
@@ -129,6 +123,17 @@ export default {
       RouteService.delete(this.space.id, this.zone.id, name).then(() => {
         this.$noty.success(`删除 Route ${name} 成功`);
         this.goBack();
+      });
+    },
+
+    updateByYaml(data) {
+      const {
+        metadata: { name },
+      } = this.route;
+      RouteService.updateByYaml({ name, data }).then(() => {
+        this.$noty.success('更新成功');
+        this.getRoute();
+        this.getServices();
       });
     },
   },
