@@ -77,7 +77,7 @@
             <div class="panel">
               <div class="panel-header">
                 <svg class="icon">
-                  <use xlink:href="#icon_pvc"></use>
+                  <use xlink:href="#icon_persistentvolumeclaims"></use>
                 </svg>
                 <span class="panel-name">存储</span>
               </div>
@@ -152,26 +152,24 @@
                   <tr>
                     <th>可用区</th>
                     <th>Deployment</th>
+                    <th>Deployment Config</th>
                     <th>Stateful Set</th>
                     <th>Pod</th>
                     <th>Service</th>
                     <th>Route</th>
-                    <th>PVC</th>
-                    <th>Secret</th>
-                    <th>Config Map</th>
+                    <th>Ingress</th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr v-for="(resource, index) in resources" :key="index">
                     <td>{{ resource.zone }}</td>
                     <td class="count">{{ resource.deploymentCount }}</td>
+                    <td class="count">{{ resource.deploymentConfigCount }}</td>
                     <td class="count">{{ resource.statefulSetCount }}</td>
                     <td class="count">{{ resource.podCount }}</td>
                     <td class="count">{{ resource.serviceCount }}</td>
                     <td class="count">{{ resource.routeCount }}</td>
-                    <td class="count">{{ resource.pvcCount }}</td>
-                    <td class="count">{{ resource.secretCount }}</td>
-                    <td class="count">{{ resource.configMapCount }}</td>
+                    <td class="count">{{ resource.ingressCount }}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -270,7 +268,9 @@ export default {
       Object.entries(res).forEach(([zone, instances]) => {
         let count = 0;
         instances
-          .filter(instance => instance.service_type === RESOURCE_TYPE.BROKER_SERVICE)
+          .filter(
+            instance => instance.service_type === RESOURCE_TYPE.BROKER_SERVICE,
+          )
           .forEach(i => {
             count += i.instanceCount;
           });
@@ -308,28 +308,20 @@ export default {
           find(instances, {
             service_type: RESOURCE_TYPE.ROUTE,
           }) || {};
-        const { instanceCount: pvcCount = 0 } =
+        const { instanceCount: ingressCount = 0 } =
           find(instances, {
-            service_type: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
+            service_type: RESOURCE_TYPE.ROUTE,
           }) || {};
-        const { instanceCount: secretCount = 0 } =
-          find(instances, {
-            service_type: RESOURCE_TYPE.SECRET,
-          }) || {};
-        const { instanceCount: configMapCount = 0 } =
-          find(instances, {
-            service_type: RESOURCE_TYPE.CONFIG_MAP,
-          }) || {};
+
         this.resources.push({
           zone,
-          deploymentCount: deploymentCount + deploymentConfigCount,
+          deploymentCount,
+          deploymentConfigCount,
           statefulSetCount,
           podCount,
           serviceCount,
           routeCount,
-          pvcCount,
-          secretCount,
-          configMapCount,
+          ingressCount,
         });
       });
     },

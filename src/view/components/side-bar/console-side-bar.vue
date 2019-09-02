@@ -238,6 +238,7 @@ export default {
       },
       defaultOpeneds: ['service'],
       selectedOptions: [],
+      resourceMenuOpened: false,
     };
   },
 
@@ -263,13 +264,6 @@ export default {
 
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;
-    },
-
-    resourceMenuOpened() {
-      return (
-        this.$refs.bottomMenu &&
-        this.$refs.bottomMenu.openedMenus.indexOf('resource') > -1
-      );
     },
   },
 
@@ -326,6 +320,17 @@ export default {
     onBottomMenuSelect() {
       this.$refs.topMenu.activeIndex = '';
     },
+  },
+
+  mounted() {
+    this.$watch(
+      () => {
+        return this.$refs.bottomMenu.openedMenus;
+      },
+      val => {
+        this.resourceMenuOpened = val.indexOf('resource') > -1;
+      },
+    );
   },
 };
 </script>

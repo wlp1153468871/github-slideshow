@@ -1,3 +1,4 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
 import { CONFIG_TITLE_TYPE } from '@/core/constants/constants';
 import ConfigMapService from '@/core/services/config-map.service';
@@ -27,7 +28,7 @@ export default {
 
   data() {
     return {
-      type: 'config-map',
+      type: RESOURCE_TYPE.CONFIG_MAP,
       CONFIG_TITLE_TYPE,
       STEPS,
       stepIndex: STEPS.CONFIG,

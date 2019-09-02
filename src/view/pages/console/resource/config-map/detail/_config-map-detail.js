@@ -24,11 +24,11 @@ export default {
     const TABS = {
       OVERVIEW: '概览',
       EVENT: '操作记录',
-      SENIOR: '高级设置',
     };
 
     return {
       kind: RESOURCE_TYPE.CONFIG_MAP,
+      activeName: TABS.OVERVIEW,
       CONFIG_TITLE_TYPE,
       TABS,
       configMap: {
@@ -41,6 +41,9 @@ export default {
       status: '',
       loadings: {
         configMap: false,
+      },
+      dialogConfigs: {
+        yamlEdit: false,
       },
     };
   },
@@ -134,6 +137,20 @@ export default {
         });
     },
 
+    removeConfirm() {
+      const name = getValue(this.configMap, 'metadata.name');
+      this.$tada
+        .confirm({
+          title: '删除 ConfigMap',
+          text: `您确定要删除 ${name} 吗？`,
+        })
+        .then(ok => {
+          if (ok) {
+            this.deleteConfigMap();
+          }
+        });
+    },
+
     deleteConfigMap() {
       ConfigMapService.deleteConfigMap(
         this.space.id,
@@ -142,6 +159,13 @@ export default {
       ).then(() => {
         this.$noty.success(`成功删除 ConfigMap ${this.name}`);
         this.goBack();
+      });
+    },
+
+    updateByYaml(data) {
+      ConfigMapService.updateByYaml(data).then(() => {
+        this.$noty.success('更新成功');
+        this.loadConfigMapDetail();
       });
     },
   },

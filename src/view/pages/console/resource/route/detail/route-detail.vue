@@ -29,6 +29,9 @@
             </button>
 
             <dao-dropdown-menu slot="list">
+              <dao-dropdown-item @click="dialogConfigs.yamlEdit = true">
+                <span>Yaml 更新</span>
+              </dao-dropdown-item>
               <dao-dropdown-item
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red">
@@ -84,7 +87,7 @@
       :value="route"
       :visible.sync="dialogConfigs.yamlEdit"
       @update="updateByYaml"
-      @close="dialogConfigs.yamlEdit = false">
+    >
     </edit-yaml-dialog>
   </div>
 </template>
