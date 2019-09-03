@@ -1,0 +1,80 @@
+$dsp-prefix: 'dsp';
+$alert-prefix-cls: '#{$dsp-prefix}-alert';
+
+.#{$alert-prefix-cls} {
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+  position: relative;
+  padding: 8px 15px 8px 37px;
+  border-radius: 4px;
+
+  .icon {
+    position: absolute;
+    top: 11.5px;
+    left: 16px;
+    color: #1890ff;
+  }
+
+  &-description {
+    line-height: 22px;
+  }
+
+  &-success {
+    border: 1px solid #b7eb8f;
+    background-color: #f6ffed;
+    .icon {
+      color: #52c41a;
+    }
+  }
+
+  &-info {
+    border: 1px solid #91d5ff;
+    background-color: #e6f7ff;
+    .icon {
+      color: #1890ff;
+    }
+  }
+
+  &-warning {
+    border: 1px solid #ffe58f;
+    background-color: #fffbe6;
+    .icon {
+      color: #faad14;
+    }
+  }
+
+  &-error {
+    border: 1px solid #ffa39e;
+    background-color: #fff1f0;
+    .icon {
+      color: #f5222d;
+    }
+  }
+
+  &-with-description {
+    padding: 15px 15px 15px 64px;
+    position: relative;
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 1.5;
+  }
+
+  &-with-description .icon {
+    position: absolute;
+    top: 16px;
+    left: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  &-with-description &-message {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  &-with-description &-description {
+    display: block;
+  }
+}

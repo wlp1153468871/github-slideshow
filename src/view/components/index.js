@@ -1,4 +1,5 @@
 import { forEach, camelCase } from 'lodash';
+import DAlert from './alert/alert';
 import Annotations from './resource/annotations/annotations';
 import AppFooter from './app-footer/app-footer';
 import Breadcrumb from './breadcrumb/breadcrumb';
@@ -55,6 +56,7 @@ import { PercentCircle, PieChart, ProgressDount } from './charts';
 
 const components = {
   ...Daox,
+  DAlert,
   ResourceLink,
   Annotations,
   AppFooter,

@@ -55,11 +55,7 @@ export default {
   methods: {
     loadConfigMapDetail() {
       this.loadings.configMap = true;
-      return ConfigMapService.getConfigMap(
-        this.space.id,
-        this.zone.id,
-        this.name,
-      )
+      return ConfigMapService.getConfigMap(this.space.id, this.zone.id, this.name)
         .then(instance => {
           const { originData: configMap, id: instanceId, status } = instance;
 
@@ -119,12 +115,7 @@ export default {
     update(data, labels, annotations) {
       const configMap = this.parseAsConfigMap(data, labels, annotations);
 
-      ConfigMapService.updateConfigMap(
-        this.space.id,
-        this.zone.id,
-        this.name,
-        configMap,
-      )
+      ConfigMapService.updateConfigMap(this.space.id, this.zone.id, this.name, configMap)
         .then(() => {
           return this.loadConfigMapDetail();
         })
@@ -152,11 +143,7 @@ export default {
     },
 
     deleteConfigMap() {
-      ConfigMapService.deleteConfigMap(
-        this.space.id,
-        this.zone.id,
-        this.name,
-      ).then(() => {
+      ConfigMapService.deleteConfigMap(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success(`成功删除 ConfigMap ${this.name}`);
         this.goBack();
       });

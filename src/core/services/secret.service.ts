@@ -67,6 +67,10 @@ class SecretService {
       params: { zone: this.zone },
     });
   }
+
+  getRefs(name: string) {
+    return this.api.get(`/spaces/${this.space}/secrets/${name}/objrefs`);
+  }
 }
 
 export default new SecretService();

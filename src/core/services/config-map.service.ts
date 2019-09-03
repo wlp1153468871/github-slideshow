@@ -53,6 +53,10 @@ class ConfigMapService {
       params: { zone: this.zone },
     });
   }
+
+  getRefs(name: string) {
+    return this.api.get(`/spaces/${this.space}/configmaps/${name}/objrefs`);
+  }
 }
 
 export default new ConfigMapService();

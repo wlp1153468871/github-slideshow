@@ -11,12 +11,14 @@
         size="small"
         filterable
         v-model="logOptions.container"
-        placeholder="Container Name">
+        placeholder="Container Name"
+      >
         <el-option
           v-for="container in pod.spec.containers"
           :key="container.name"
           :label="container.name"
-          :value="container.name">
+          :value="container.name"
+        >
         </el-option>
       </el-select>
 
@@ -40,19 +42,22 @@
         <span
           v-if="keys.length"
           class="log-icon"
-          @click="configFormatOptions">
+          @click="configFormatOptions"
+        >
           {{ isFormatLog? '取消' : ''}}格式化日志
         </span>
         <span
           v-if="isFormatLog"
           class="log-icon"
-          @click="visible = true;">
+          @click="visible = true;"
+        >
           配置格式参数
         </span>
         <span
           v-if="canSave && state && state !== 'empty'"
           class="log-icon icon-download"
-          @click="saveLog">
+          @click="saveLog"
+        >
         <svg class="icon">
           <use xlink:href="#icon_download"></use>
         </svg>
@@ -60,7 +65,8 @@
         <el-tooltip
           effect="dark"
           content="实时跟踪日志输出"
-          placement="top">
+          placement="top"
+        >
         <span @click="onScrollBottom" class="log-icon scroll-bottom">
         <svg class="icon">
           <use xlink:href="#icon_scroll-bottom"></use>
@@ -80,46 +86,51 @@
       <div
         @mousewheel.passive="onScroll"
         class="log-view-output"
-        ref="logView">
+        ref="logView"
+      >
         <table @mouseup="copySelectionToClipboard">
           <tbody>
-          <tr
-            class="log-line"
-            v-for="(log, index) in logs"
-            :key="index">
-            <td
-              class="log-line-number"
-              :data-line-number="index+1">
-            </td>
-            <td class="log-line-text">
-              <template v-if="!checkFormat">
-                {{ log.info }}
-              </template>
-              <template v-else>
-                <template v-if="!log.isJSON">
-                  {{ log.message }}
+            <tr
+              class="log-line"
+              v-for="(log, index) in logs"
+              :key="index"
+            >
+              <td
+                class="log-line-number"
+                :data-line-number="index+1"
+              >
+              </td>
+              <td class="log-line-text">
+                <template v-if="!checkFormat">
+                  {{ log.info }}
                 </template>
                 <template v-else>
-                  <template v-for="(key, idx) in orderKeys">
+                  <template v-if="!log.isJSON">
+                    {{ log.message }}
+                  </template>
+                  <template v-else>
+                    <template v-for="(key, idx) in orderKeys">
                     <span :key="idx">
                       <span v-if="keyVisible">{{ key }}</span>
                       <span>{{ log.message[key] }}</span>
                     </span>
+                    </template>
                   </template>
                 </template>
-              </template>
-            </td>
-          </tr>
+              </td>
+            </tr>
           </tbody>
         </table>
         <div
           v-if="(!loading) && (!limitReached) && (!errorWhileRunning) && state === 'logs'"
-          class="log-end-msg">
+          class="log-end-msg"
+        >
           End of log
         </div>
         <loading-three-bounce
           v-if="loading"
-          style="padding: 10px;">
+          style="padding: 10px;"
+        >
         </loading-three-bounce>
         <p style="color: #cfcfcf; margin-left: 20px;">
           {{emptyStateMessage}}
@@ -136,25 +147,29 @@
       :visible.sync="visible"
       header="格式化日志"
       @cancel="isFormatLog = false"
-      @confirm="formatLog">
+      @confirm="formatLog"
+    >
       <div class="format-options">
-        <el-alert
+        <dsp-alert
           style="margin: 0 10px 10px; width: auto;"
-          title="可拖拽进行排序"
-          type="info">
-        </el-alert>
+          message="可拖拽进行排序"
+        >
+        </dsp-alert>
 
         <div class="format-log">
           <el-checkbox-group
-            v-model="checkKey">
+            v-model="checkKey"
+          >
             <draggable
               class="dragArea"
-              v-model="keys">
+              v-model="keys"
+            >
               <el-checkbox
                 class="list-group-item"
                 v-for="(key, index) in keys"
                 :key="index"
-                :label="key">
+                :label="key"
+              >
               </el-checkbox>
             </draggable>
           </el-checkbox-group>
@@ -162,7 +177,8 @@
 
         <el-checkbox
           style="margin: 10px 0 0 10px;"
-          v-model="showKey">
+          v-model="showKey"
+        >
           显示 Key
         </el-checkbox>
       </div>
@@ -175,16 +191,7 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 import { saveAs } from 'file-saver';
 
-import {
-  head,
-  union,
-  find,
-  keys,
-  includes,
-  get as getValue,
-  throttle,
-  intersection,
-} from 'lodash';
+import { head, union, find, keys, includes, get as getValue, throttle, intersection } from 'lodash';
 import PodService from '@/core/services/pod.service';
 import draggable from 'vuedraggable';
 import Worker from './log.worker.js';
@@ -245,10 +252,7 @@ export default {
     },
 
     containerState() {
-      return (
-        this.containerStateReason ||
-        Vue.filter('capitalize')(this.containerStatusKey)
-      );
+      return this.containerStateReason || Vue.filter('capitalize')(this.containerStatusKey);
     },
   },
 
@@ -293,8 +297,7 @@ export default {
           this.loading = false;
           this.autoScrollActive = false;
           this.state = 'empty';
-          this.emptyStateMessage =
-            'The logs are no longer available or could not be loaded.';
+          this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
         };
 
         this.ws.onerror = () => {
@@ -302,8 +305,7 @@ export default {
           this.autoScrollActive = false;
           if (this.pods.length === 0) {
             this.state = 'empty';
-            this.emptyStateMessage =
-              'The logs are no longer available or could not be loaded.';
+            this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
           } else {
             // if logs were running but something went wrong, will
             // show what we have & give option to retry
@@ -357,17 +359,12 @@ export default {
 
     setContainerVars() {
       if (!this.pod) return;
-      const containerStatus = find(
-        getValue(this.pod, 'status.containerStatuses', {}),
-        {
-          name: this.logOptions.container,
-        },
-      );
+      const containerStatus = find(getValue(this.pod, 'status.containerStatuses', {}), {
+        name: this.logOptions.container,
+      });
       const state = getValue(containerStatus, 'state');
       const statusKey = head(keys(state));
-      const knownKey = includes(['running', 'waiting', 'terminated'], statusKey)
-        ? statusKey
-        : '';
+      const knownKey = includes(['running', 'waiting', 'terminated'], statusKey) ? statusKey : '';
       const lastState = getValue(containerStatus, 'lastState');
       const lastStatusKey = head(keys(lastState));
       const isWaiting = getValue(containerStatus, 'state.waiting');
@@ -377,14 +374,8 @@ export default {
 
       if (isWaiting) {
         this.lasStatusKey = lastStatusKey;
-        this.containerStartTime = getValue(lastState, [
-          lastStatusKey,
-          'startedAt',
-        ]);
-        this.containerEndTime = getValue(lastState, [
-          lastStatusKey,
-          'finishedAt',
-        ]);
+        this.containerStartTime = getValue(lastState, [lastStatusKey, 'startedAt']);
+        this.containerEndTime = getValue(lastState, [lastStatusKey, 'finishedAt']);
       } else {
         this.containerStartTime = getValue(state, [statusKey, 'startedAt']);
         this.containerEndTime = getValue(state, [statusKey, 'finishedAt']);
@@ -405,8 +396,7 @@ export default {
       if (!node) {
         window.scrollTo(
           0,
-          document.documentElement.scrollHeight -
-            document.documentElement.clientHeight,
+          document.documentElement.scrollHeight - document.documentElement.clientHeight,
         );
       } else {
         node.scrollTop = node.scrollHeight;
@@ -438,11 +428,7 @@ export default {
       const { logView } = this.$refs;
       if (!logView) return;
       const text = logView.textContent;
-      const filename = `${getValue(
-        this,
-        'pod.metadata.name',
-        'ruyicloud',
-      )}.log`;
+      const filename = `${getValue(this, 'pod.metadata.name', 'ruyicloud')}.log`;
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       saveAs(blob, filename);
     },

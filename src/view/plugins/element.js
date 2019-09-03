@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import {
-  Alert,
   Button,
   Cascader,
   DatePicker,
@@ -32,7 +31,6 @@ import {
 
 import '../../assets/styles/element-variables.scss';
 
-Vue.use(Alert);
 Vue.use(CheckboxGroup);
 Vue.use(Checkbox);
 Vue.use(Button);

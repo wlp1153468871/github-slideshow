@@ -281,9 +281,7 @@ export default {
       Object.entries(res).forEach(([zone, instances]) => {
         let count = 0;
         instances
-          .filter(
-            instance => instance.service_type === RESOURCE_TYPE.BROKER_SERVICE,
-          )
+          .filter(instance => instance.service_type === RESOURCE_TYPE.BROKER_SERVICE)
           .forEach(i => {
             count += i.instanceCount;
           });
