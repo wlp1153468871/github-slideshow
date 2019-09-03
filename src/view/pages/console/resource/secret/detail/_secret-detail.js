@@ -44,11 +44,13 @@ export default {
       dialogConfigs: {
         yamlEdit: false,
       },
+      objrefs: [],
     };
   },
 
   created() {
     this.loadSecretDetail();
+    this.getRefs();
   },
 
   methods: {
@@ -153,6 +155,12 @@ export default {
       SecretService.deleteSecret(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('成功删除 Secret');
         this.goBack();
+      });
+    },
+
+    getRefs() {
+      SecretService.getRefs(this.name).then(res => {
+        this.objrefs = res;
       });
     },
   },

@@ -1,15 +1,25 @@
 <template>
   <div class="registry-content">
-    <div class="table-actions">
-      <el-input
-        class="image-search"
-        size="medium"
-        placeholder="搜索镜像"
-        clearable
-        prefix-icon="el-icon-search"
-        @change="updateKey"
-        v-model="query.q">
-      </el-input>
+    <div class="table-toolbar">
+      <div class="table-toolbar-right">
+        <div>
+          <dao-input
+            search
+            placeholder="搜索镜像"
+            @change="updateKey"
+            v-model="query.q"
+          >
+          </dao-input>
+          <button
+            class="dao-btn"
+            style="margin-left: 10px;"
+            @click="getImages">
+            <svg class="icon">
+              <use xlink:href="#icon_update"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <el-table

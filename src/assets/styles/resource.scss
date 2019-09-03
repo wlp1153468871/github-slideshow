@@ -8,7 +8,7 @@
     margin-top: 20px;
   }
 
-  .sub-title{
+  .sub-title {
     color: #777;
     margin-bottom: 20px;
   }
@@ -26,36 +26,6 @@
 
     &.content-bordered {
       padding: 0 0 0 20px;
-    }
-  }
-
-  .alert {
-    position: relative;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    color: rgba(0, 0, 0, 0.65);
-    line-height: 1.5;
-
-    &.alert-info {
-      border: 1px solid #91d5ff;
-      background-color: #e6f7ff;
-
-      .alert-message {
-        font-size: 16px;
-        color: rgba(0, 0, 0, 0.85);
-        display: block;
-        margin-bottom: 4px;
-      }
-
-      .alert-description {
-        .icon {
-          fill: #1890ff;
-        }
-
-        font-size: 14px;
-        line-height: 22px;
-      }
     }
   }
 
@@ -103,7 +73,6 @@
     margin-left: 5px;
   }
 }
-
 
 .instance-overview {
   display: flex;

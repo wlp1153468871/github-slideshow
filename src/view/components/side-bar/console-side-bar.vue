@@ -91,7 +91,6 @@
                   <use :xlink:href="resource.icon"></use>
                 </svg>
                 <overflow-tooltip
-                  v-if="resourceMenuOpened"
                   slot="title"
                   :text="resource.kind"
                 >
@@ -208,10 +207,11 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { find } from 'lodash';
+import * as types from '@/core/store/mutation-types';
 import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
 import ZoneSelect from './zone-select';
-import * as types from '../../../core/store/mutation-types';
+import OverflowTooltip from './overflow-tooltip';
 
 export default {
   name: 'ConsoleSideBar',
@@ -220,6 +220,7 @@ export default {
     SideBarSection,
     SideBarLogo,
     ZoneSelect,
+    OverflowTooltip,
   },
 
   updated() {
@@ -238,7 +239,6 @@ export default {
       },
       defaultOpeneds: ['service'],
       selectedOptions: [],
-      resourceMenuOpened: false,
     };
   },
 
@@ -328,7 +328,7 @@ export default {
         return this.$refs.bottomMenu.openedMenus;
       },
       val => {
-        this.resourceMenuOpened = val.indexOf('resource') > -1;
+        this.$store.commit(types.UPDATE_OPENED_MENUS, [...val]);
       },
     );
   },

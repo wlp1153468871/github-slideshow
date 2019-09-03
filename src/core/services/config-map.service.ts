@@ -31,12 +31,7 @@ class ConfigMapService {
     });
   }
 
-  async updateConfigMap(
-    spaceId: string,
-    zone: string,
-    name: string,
-    configMap: any,
-  ) {
+  async updateConfigMap(spaceId: string, zone: string, name: string, configMap: any) {
     return this.api.put(`/spaces/${spaceId}/configmaps/${name}`, configMap, {
       params: { zone },
     });
@@ -51,6 +46,12 @@ class ConfigMapService {
     if (!name) Promise.reject('缺少名称');
     return this.api.put(`/spaces/${this.space}/configmaps/${name}/yaml`, data, {
       params: { zone: this.zone },
+    });
+  }
+
+  getRefs(name: string) {
+    return this.api.get(`/spaces/${this.space}/configmaps/${name}/objrefs`, {
+      zone: this.zone,
     });
   }
 }
