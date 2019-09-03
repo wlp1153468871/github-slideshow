@@ -45,11 +45,13 @@ export default {
       dialogConfigs: {
         yamlEdit: false,
       },
+      objrefs: [],
     };
   },
 
   created() {
     this.loadConfigMapDetail();
+    this.getRefs();
   },
 
   methods: {
@@ -153,6 +155,12 @@ export default {
       ConfigMapService.updateByYaml(data).then(() => {
         this.$noty.success('更新成功');
         this.loadConfigMapDetail();
+      });
+    },
+
+    getRefs() {
+      ConfigMapService.getRefs(this.name).then(res => {
+        this.objrefs = res;
       });
     },
   },

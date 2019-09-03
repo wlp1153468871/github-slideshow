@@ -39,7 +39,7 @@
               </dao-dropdown-item>
 
               <dao-dropdown-item
-                v-if="$can('delete')"
+                v-if="$can('delete') && !objrefs.length"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >
@@ -65,10 +65,24 @@
           :label="TABS.OVERVIEW"
           :name="TABS.OVERVIEW"
         >
+
           <d-alert
+            v-if="objrefs.length"
             :show-icon="true"
-            message="Success Text"
           >
+            <template #message>
+              <div style="display: flex">
+                该 {{ kind }} 正在被资源
+                <resource-link
+                  :key="index"
+                  v-for="(item, index) in objrefs"
+                  :kind="item.kind"
+                  :name="item.name"
+                >
+                </resource-link>
+                &nbsp;所使用，所以您无法删除该 {{ kind }}。
+              </div>
+            </template>
           </d-alert>
 
           <labels-table

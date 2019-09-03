@@ -69,7 +69,9 @@ class SecretService {
   }
 
   getRefs(name: string) {
-    return this.api.get(`/spaces/${this.space}/secrets/${name}/objrefs`);
+    return this.api.get(`/spaces/${this.space}/secrets/${name}/objrefs`, {
+      zone: this.zone,
+    });
   }
 }
 

@@ -3,7 +3,9 @@
     <svg class="icon" v-if="showIcon">
       <use :xlink:href="icon"></use>
     </svg>
-    <span class="dsp-alert-message">{{ message }}</span>
+    <span class="dsp-alert-message">
+      <slot name="message">{{ message }}</slot>
+    </span>
     <span class="dsp-alert-description">
       <slot name="description">{{ description }}</slot>
     </span>

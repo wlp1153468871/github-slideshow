@@ -31,12 +31,7 @@ class ConfigMapService {
     });
   }
 
-  async updateConfigMap(
-    spaceId: string,
-    zone: string,
-    name: string,
-    configMap: any,
-  ) {
+  async updateConfigMap(spaceId: string, zone: string, name: string, configMap: any) {
     return this.api.put(`/spaces/${spaceId}/configmaps/${name}`, configMap, {
       params: { zone },
     });
@@ -55,7 +50,9 @@ class ConfigMapService {
   }
 
   getRefs(name: string) {
-    return this.api.get(`/spaces/${this.space}/configmaps/${name}/objrefs`);
+    return this.api.get(`/spaces/${this.space}/configmaps/${name}/objrefs`, {
+      zone: this.zone,
+    });
   }
 }
 

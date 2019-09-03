@@ -18,13 +18,15 @@
                   <inline-extend
                     :autoscalers="autoscalers"
                     :data="dc"
-                    @extend="(replicas) => $emit('extend', replicas)">
+                    @extend="(replicas) => $emit('extend', replicas)"
+                  >
                   </inline-extend>
                   <span v-if="autoscalers.length">
                     (autoscaled)
                     <el-tooltip
                       content="自动水平扩展"
-                      placement="top">
+                      placement="top"
+                    >
                       <svg class="icon text-muted" style="height: 12px;">
                         <use xlink:href="#icon_info-line"></use>
                       </svg>
@@ -55,13 +57,15 @@
                       style="margin-left: 3px;"
                       v-if="$can('update')"
                       class="dao-btn btn-sm mini blue"
-                      @click="updateHPA(hpa)">编辑
+                      @click="updateHPA(hpa)"
+                    >编辑
                     </button>
                     <button
                       style="margin-left: 0;"
                       v-if="$can('delete')"
                       class="dao-btn btn-sm mini red"
-                      @click="confirmDeleteHPA(hpa.metadata.name)">删除
+                      @click="confirmDeleteHPA(hpa.metadata.name)"
+                    >删除
                     </button>
                   </div>
                 </dd>
@@ -97,22 +101,20 @@
       <div class="panel-resource">
         <h3>容器</h3>
         <div class="panel-resource-content">
-          <div v-if="detailed && !hasHealthChecks(dc)" class="alert alert-info">
-            <div class="alert-description">
-              <svg class="icon">
-                <use xlink:href="#icon_warning-line"></use>
-              </svg>
-              <span
-                v-if="dc.spec.template.spec.containers.length === 1"
-              >
+          <dso-alert
+            v-if="detailed && !hasHealthChecks(dc)"
+            type="warning"
+          >
+            <slot>
+              <template v-if="dc.spec.template.spec.containers.length === 1">
                 Container {{dc.spec.template.spec.containers[0].name}} does not have health checks
-              </span>
-              <span
-                v-if="dc.spec.template.spec.containers.length > 1"
-              >Not all containers have health checks</span>
+              </template>
+              <template v-if="dc.spec.template.spec.containers.length > 1">
+                Not all containers have health checks
+              </template>
               to ensure your application is running correctly.
-            </div>
-          </div>
+            </slot>
+          </dso-alert>
           <h4>Containers</h4>
 
           <div class="pod-template-container">
@@ -147,7 +149,8 @@
             :projectName="projectName"
             :dcName="dc.metadata.name"
             v-if="dc.spec.triggers && dc.spec.triggers.length"
-            :triggers="dc.spec.triggers">
+            :triggers="dc.spec.triggers"
+          >
           </triggers>
           <div v-else>暂无</div>
         </div>
@@ -158,7 +161,8 @@
       header="更新 HPA"
       :value="selectedHPA"
       :visible.sync="dialogConfigs.hpaEdit"
-      @update="updateHPAByYaml">
+      @update="updateHPAByYaml"
+    >
     </edit-yaml-dialog>
   </div>
 </template>
