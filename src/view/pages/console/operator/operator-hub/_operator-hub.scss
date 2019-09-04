@@ -1,0 +1,41 @@
+.operator-hub {
+  padding: 15px 20px 0 20px;
+
+  .page__nav-title {
+  }
+
+  .page__heading {
+    display: flex;
+    font-size: 22px;
+    justify-content: space-between;
+    margin: 0 0 20px;
+    color: $black-dark;
+  }
+
+  .page__description {
+    color: $black-dark;
+  }
+
+  .d-catalog-page {
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(204, 209, 216, 0.35);
+    display: flex;
+    flex: 1;
+    margin-top: 20px;
+    padding: 15px 0 0;
+
+    &__tabs {
+      flex: 0 0 220px;
+      margin: 0 15px 0 0;
+    }
+
+    &__content {
+      flex: 1 1 auto;
+    }
+  }
+
+  .catalog-tile-view {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

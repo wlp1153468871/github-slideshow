@@ -62,6 +62,23 @@
         :collapse="isCollapse"
         @select="onBottomMenuSelect">
 
+        <el-submenu index="operators">
+          <template slot="title">
+            <svg class="icon">
+              <use xlink:href="#icon_opreators"></use>
+            </svg>
+            <span slot="title">Operators</span>
+          </template>
+          <el-menu-item
+            index="console.operator-hub"
+            :route="{ name: 'console.operator-hub' }">
+            <svg class="icon">
+              <use xlink:href="#icon_opreator-hub"></use>
+            </svg>
+            <span>Operator Hub</span>
+          </el-menu-item>
+        </el-submenu>
+
         <template v-if="isPlatformAdmin || !zoneUnauthorized">
 
           <el-menu-item
