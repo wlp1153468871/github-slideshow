@@ -221,12 +221,10 @@ export default {
         spaceName,
         zoneName,
       } = instance;
-      const planField = this.generatePlanDesc(plan, instance.service.name);
       const unixDate = Vue.filter('unix_date');
       return [
         { name: '租户 / 项目组', value: `${organizationName} / ${spaceName}` },
         { name: '区域 / 环境', value: `${zoneName}` },
-        ...planField,
         { name: '创建者', value: owner.name },
         { name: '创建时间', value: unixDate(instance.created_at) },
       ];

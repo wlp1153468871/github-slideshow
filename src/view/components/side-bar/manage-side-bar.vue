@@ -15,7 +15,6 @@
             <span slot="title">账号与管理</span>
           </template>
           <el-menu-item
-            background-color="#545c64"
             index="manage.org.list"
             :route="{ name: 'manage.org.list' }">
             <svg class="icon">

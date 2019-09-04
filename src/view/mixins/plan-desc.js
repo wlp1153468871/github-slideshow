@@ -21,9 +21,7 @@ export default {
 
   methods: {
     filterBullets(originBullets, name) {
-      const rule = this.filterRule[name]
-        ? this.filterRule[name]
-        : this.filterRule.others;
+      const rule = this.filterRule[name] ? this.filterRule[name] : this.filterRule.others;
       return originBullets.filter(bullet => rule.indexOf(bullet.name) > -1);
     },
 
@@ -101,9 +99,7 @@ export default {
         if (currentValue.name === PLANKEY.CPU) {
           value = currentValue.value / 1000;
         }
-        return `${accumulator}${accumulator ? ', ' : ''}${dict.name}: ${value}${
-          dict.unit
-        }`;
+        return `${accumulator}${accumulator ? ', ' : ''}${dict.name}: ${value}${dict.unit}`;
       };
 
       return this.filterBullets(bullets, name).reduce(group, '');
@@ -112,8 +108,7 @@ export default {
     getApplicationPlan(plan) {
       const { bullets } = plan;
 
-      const planFormatter = bullet =>
-        `${bullet.name}: ${bullet.value}${bullet.unit}`;
+      const planFormatter = bullet => `${bullet.name}: ${bullet.value}${bullet.unit}`;
 
       return this.humanizeBullets(bullets).map(planFormatter);
     },

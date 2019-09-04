@@ -66,6 +66,9 @@ import ServiceDetail from '@/view/pages/console/resource/service/detail/service.
 import IngressList from '@/view/pages/console/resource/ingress/list/ingress-list';
 import IngressDetail from '@/view/pages/console/resource/ingress/detail/ingress-detail';
 
+// operators
+import OperatorHub from '@/view/pages/console/operator/operator-hub/operator-hub';
+
 export default {
   path: '/console',
   name: 'console',
@@ -432,6 +435,12 @@ export default {
           component: OrgRegistry,
         },
       ],
+    },
+
+    {
+      path: 'operator-hub',
+      name: 'console.operator-hub',
+      component: OperatorHub,
     },
   ],
 };
