@@ -12,15 +12,11 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-consecutive-blank-lines": false,
-    "variable-name": [
-      true,
-      "ban-keywords",
-      "check-format",
-      "allow-leading-underscore"
-    ],
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     "member-access": [true, "no-public"],
     "arrow-parens": [true, "ban-single-arg-parens"],
     "curly": [true, "ignore-same-line"],
-    "object-literal-key-quotes": [true, "as-needed"]
+    "object-literal-key-quotes": [true, "as-needed"],
+    "interface-over-type-literal": false
   }
 }

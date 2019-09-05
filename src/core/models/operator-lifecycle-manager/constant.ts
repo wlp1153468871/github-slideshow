@@ -50,11 +50,11 @@ export type CRDDescription = {
   description?: string;
   specDescriptors?: Descriptor[];
   statusDescriptors?: Descriptor[];
-  resources?: {
+  resources?: Array<{
     name?: string;
     version: string;
     kind: string;
-  }[];
+  }>;
 };
 
 export type APIServiceDefinition = {
@@ -68,11 +68,11 @@ export type APIServiceDefinition = {
   description?: string;
   specDescriptors?: Descriptor[];
   statusDescriptors?: Descriptor[];
-  resources?: {
+  resources?: Array<{
     name?: string;
     version: string;
     kind: string;
-  }[];
+  }>;
 };
 
 export type RequirementStatus = {
@@ -93,17 +93,17 @@ export type ClusterServiceVersionKind = {
     install: {
       strategy: 'Deployment';
       spec: {
-        permissions: {
+        permissions: Array<{
           serviceAccountName: string;
-          rules: { apiGroups: string[]; resources: string[]; verbs: string[] }[];
-        }[];
-        deployments: { name: string; spec: any }[];
+          rules: Array<{ apiGroups: string[]; resources: string[]; verbs: string[] }>;
+        }>;
+        deployments: Array<{ name: string; spec: any }>;
       };
     };
     customresourcedefinitions?: { owned?: CRDDescription[]; required?: CRDDescription[] };
     apiservicedefinitions?: { owned?: APIServiceDefinition[]; required?: APIServiceDefinition[] };
     replaces?: string;
-    installModes: { type: InstallModeType; supported: boolean }[];
+    installModes: Array<{ type: InstallModeType; supported: boolean }>;
     displayName?: string;
     description?: string;
     provider?: { name: string };
@@ -199,24 +199,24 @@ export type PackageManifestKind = {
       name: string;
     };
     packageName: string;
-    channels: {
+    channels: Array<{
       name: string;
       currentCSV: string;
       currentCSVDesc: {
         displayName: string;
-        icon: { mediatype: string; base64data: string }[];
+        icon: Array<{ mediatype: string; base64data: string }>;
         version: string;
         provider: {
           name: string;
         };
-        installModes: { type: InstallModeType; supported: boolean }[];
+        installModes: Array<{ type: InstallModeType; supported: boolean }>;
         customresourcedefinitions?: { owned?: CRDDescription[]; required?: CRDDescription[] };
         apiservicedefinitions?: {
           owned?: APIServiceDefinition[];
           required?: APIServiceDefinition[];
         };
       };
-    }[];
+    }>;
     defaultChannel: string;
   };
 } & K8sResourceKind;
@@ -235,7 +235,7 @@ export type OperatorGroupKind = {
   };
 } & K8sResourceKind;
 
-export const PackageManifestModel: K8sKind = {
+export const PACKAGE_MANIFEST_MODEL: K8sKind = {
   kind: 'PackageManifest',
   label: 'PackageManifest',
   labelPlural: 'PackageManifests',

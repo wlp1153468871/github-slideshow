@@ -1,6 +1,6 @@
 import api, { APIService } from './api';
 import store from '@/core/store';
-
+/* tslint:disable */
 class OperatorService {
   api: APIService;
 

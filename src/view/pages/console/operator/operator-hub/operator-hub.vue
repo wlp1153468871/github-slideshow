@@ -52,7 +52,7 @@
 <script lang="ts">
 import { get, pick, map } from 'lodash';
 import OperatorService from '@/core/services/operator.service.ts';
-import { PackageManifestModel } from '@/core/models/operator-lifecycle-manager/constant';
+import { PACKAGE_MANIFEST_MODEL } from '@/core/models/operator-lifecycle-manager/constant';
 import {
   installedFor,
   subscriptionFor,
@@ -107,12 +107,15 @@ export default {
 
           return {
             obj: pkg,
-            kind: PackageManifestModel.kind,
+            kind: PACKAGE_MANIFEST_MODEL.kind,
             name: get(currentCSVDesc, 'displayName', pkg.metadata.name),
             uid: `${pkg.metadata.name}-${pkg.status.catalogSourceNamespace}`,
+            // eslint-disable-next-line max-len
             installed: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace),
+            // eslint-disable-next-line max-len
             subscription: subscriptionFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace),
             // FIXME: Just use `installed`
+            // eslint-disable-next-line max-len
             installState: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace)
               ? 'Installed'
               : 'Not Installed',

@@ -3,7 +3,7 @@ import {
   SubscriptionKind,
   OperatorGroupKind,
   PackageManifestKind,
-  PackageManifestModel,
+  PACKAGE_MANIFEST_MODEL,
 } from './constant';
 import { get, isEmpty, map, isNil } from 'lodash';
 
@@ -16,10 +16,11 @@ export enum InstallModeType {
   InstallModeTypeAllNamespaces = 'AllNamespaces',
 }
 
-export type InstallModeSet = { type: InstallModeType; supported: boolean }[];
+export type InstallModeSet = Array<{ type: InstallModeType; supported: boolean }>;
 
 /**
- * Logic consistent with https://github.com/operator-framework/operator-lifecycle-manager/blob/4ef074e4207f5518d95ddf8c378036dfc4270dda/pkg/api/apis/operators/v1alpha1/clusterserviceversion.go#L165.
+ * Logic consistent with https://github.com/operator-framework/operator-lifecycle-manager
+ * /blob/4ef074e4207f5518d95ddf8c378036dfc4270dda/pkg/api/apis/operators/v1alpha1/clusterserviceversion.go#L165.
  */
 export const supports = (set: InstallModeSet) => (obj: OperatorGroupKind) => {
   const namespaces = get(obj.status, 'namespaces') || [];
@@ -63,7 +64,8 @@ export const isSingle = (obj: OperatorGroupKind) =>
 
 /**
  * Determines if a given Operator package has a `Subscription` that makes it available in the given namespace.
- * Finds any `Subscriptions` for the given package, matches them to their `OperatorGroup`, and checks if the `OperatorGroup` is targeting the given namespace or if it is global.
+ * Finds any `Subscriptions` for the given package, matches them to their `OperatorGroup`,
+ * and checks if the `OperatorGroup` is targeting the given namespace or if it is global.
  */
 export const subscriptionFor = (allSubscriptions: SubscriptionKind[] = []) => (
   allGroups: OperatorGroupKind[] = [],
@@ -149,7 +151,7 @@ export const resourceURL = (
     u += `/${options.path}`;
   }
   if (!isEmpty(options.queryParams)) {
-    q = map(options.queryParams, function(v, k) {
+    q = map(options.queryParams, (v, k) => {
       return `${k}=${v}`;
     });
     u += `?${q.join('&')}`;
@@ -159,7 +161,7 @@ export const resourceURL = (
 };
 
 export const iconFor = (pkg: PackageManifestKind) =>
-  resourceURL(PackageManifestModel, {
+  resourceURL(PACKAGE_MANIFEST_MODEL, {
     ns: get(pkg.status, 'catalogSourceNamespace'),
     // @ts-ignore
     name: pkg.metadata.name,
