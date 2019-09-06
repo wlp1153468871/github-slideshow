@@ -215,7 +215,6 @@ export default {
     // TODO: fix bullet…
     getBasicInfos(instance) {
       const {
-        plan = {},
         owner = {},
         organizationName,
         spaceName,

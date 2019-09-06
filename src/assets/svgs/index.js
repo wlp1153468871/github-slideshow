@@ -29,6 +29,7 @@ import './icon_ingresses-logo.svg';
 import './icon_ingresses.svg';
 import './icon_monitor-logo.svg';
 import './icon_monitor.svg';
+import './icon_operator.svg';
 import './icon_persistentvolumeclaims-logo.svg';
 import './icon_persistentvolumeclaims.svg';
 import './icon_pods-logo.svg';

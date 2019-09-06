@@ -3,13 +3,14 @@
     <div class="catalog-tile-header">
       <img
         class="catalog-tile-icon"
-        src="~@/assets/images/home/shape.png"
+        :src="tile.imgUrl"
         alt=""
       />
+      <!--<span class="catalog-tile-badge">{{ badge }}</span>-->
     </div>
     <div class="catalog-tile-body">
       <div class="catalog-tile-title">{{ tile.name }}</div>
-      <div class="catalog-tile-subtitle">provided by {{ tile.provider }}, Inc.</div>
+      <div class="catalog-tile-subtitle">provided by {{ tile.provider }}.</div>
       <div
         :style="{ maxHeight }"
         class="catalog-tile-description"
@@ -26,6 +27,9 @@
 </template>
 
 <script>
+const COMMUNITY_PROVIDER_TYPE = 'Community';
+const CUSTOM_PROVIDER_TYPE = 'Custom';
+
 export default {
   name: 'CatalogTile',
 
@@ -40,6 +44,14 @@ export default {
       maxHeight: 'none',
       color: '#9BA3AF',
     };
+  },
+
+  computed: {
+    badge() {
+      return [COMMUNITY_PROVIDER_TYPE, CUSTOM_PROVIDER_TYPE].includes(this.tile.providerType)
+        ? this.tile.providerType
+        : '';
+    },
   },
 
   created() {
@@ -93,6 +105,14 @@ export default {
     transition: 0.3s;
   }
 
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
   &-icon {
     font-size: 40px;
     height: 40px;
@@ -100,11 +120,9 @@ export default {
     min-width: 40px;
   }
 
-  &-header {
-    display: flex;
-    flex-shrink: 0;
-    font-size: 16px;
-    font-weight: 400;
+  &-badge {
+    font-size: 15px;
+    color: $black-light;
   }
 
   &-body {
