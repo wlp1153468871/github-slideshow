@@ -1,11 +1,12 @@
-import { K8sKind } from '@/core/models/operator-lifecycle-manager/types';
+// @ts-ignore
+import operatorLogo from '@/assets/images/operator.png';
 import {
   SubscriptionKind,
   OperatorGroupKind,
   PackageManifestKind,
   PACKAGE_MANIFEST_MODEL,
 } from './constant';
-import { get, isEmpty, map, isNil } from 'lodash';
+import { get, isNil } from 'lodash';
 
 export type GroupVersionKind = string;
 
@@ -112,66 +113,11 @@ export type OperatorGroupSelectorProps = {
   dataFilter?: (obj: OperatorGroupKind) => boolean;
 };
 
-// TODO: fix
-export const k8sBasePath = '/';
-
-const getK8sAPIPath = (model: K8sKind) => {
-  const isLegacy = get(model, 'apiGroup', 'core') === 'core' && model.apiVersion === 'v1';
-  let p = k8sBasePath;
-
-  if (isLegacy) {
-    p += '/api/';
+export const iconFor = (pkg: PackageManifestKind) => {
+  const icon = get(pkg, 'status.channels[0].currentCSVDesc.icon[0]');
+  if (icon) {
+    return `data:${icon.mediatype};base64,${icon.base64data}`;
   } else {
-    p += '/apis/';
+    return operatorLogo;
   }
-
-  if (!isLegacy && model.apiGroup) {
-    p += `${model.apiGroup}/`;
-  }
-
-  p += model.apiVersion;
-  return p;
 };
-
-export const resourceURL = (
-  model: K8sKind,
-  options: { ns?: string; name?: string; path?: string; queryParams?: { [k: string]: string } },
-) => {
-  let q = [];
-  let u = getK8sAPIPath(model);
-
-  if (options.ns) {
-    u += `/namespaces/${options.ns}`;
-  }
-  u += `/${model.plural}`;
-  if (options.name) {
-    u += `/${options.name}`;
-  }
-  if (options.path) {
-    u += `/${options.path}`;
-  }
-  if (!isEmpty(options.queryParams)) {
-    q = map(options.queryParams, (v, k) => {
-      return `${k}=${v}`;
-    });
-    u += `?${q.join('&')}`;
-  }
-
-  return u;
-};
-
-export const iconFor = (pkg: PackageManifestKind) =>
-  resourceURL(PACKAGE_MANIFEST_MODEL, {
-    ns: get(pkg.status, 'catalogSourceNamespace'),
-    // @ts-ignore
-    name: pkg.metadata.name,
-    path: 'icon',
-    queryParams: {
-      resourceVersion: [
-        // @ts-ignore
-        pkg.metadata.name,
-        get(pkg.status, 'channels[0].name'),
-        get(pkg.status, 'channels[0].currentCSV'),
-      ].join('.'),
-    },
-  });

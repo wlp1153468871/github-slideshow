@@ -20,7 +20,6 @@ export default {
       try {
         resourceList = this.gerResourceForHeader(this.kind, this.name);
       } catch (e) {
-        console.log(e);
         this.$router.push({ name: 'console.dashboard' });
       }
       return resourceList;

@@ -1,5 +1,5 @@
 .operator-hub {
-  padding: 15px 20px 0 20px;
+  padding: 15px 20px 20px 20px;
 
   .page__nav-title {
   }
@@ -29,8 +29,30 @@
       margin: 0 15px 0 0;
     }
 
+    &__header{
+      margin: 0 15px 30px 0;
+      border-bottom: 1px solid $grey-light;
+    }
+
     &__content {
       flex: 1 1 auto;
+    }
+
+    &__heading {
+      font-size: 16px;
+      font-weight: 400;
+      margin: 0 0 15px;
+    }
+
+    &__filter {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    &__num-items {
+      font-weight: 700;
+      padding-right: 15px;
     }
   }
 

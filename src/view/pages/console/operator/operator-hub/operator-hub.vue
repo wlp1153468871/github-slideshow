@@ -34,12 +34,33 @@
         </span>
       </d-alert>
       <div class="d-catalog-page" v-else>
-        <div class="d-catalog-page__tabs"></div>
+        <div class="d-catalog-page__tabs">
+          <d-vertical-tabs
+            v-model="selectedCategory"
+            :tabs="categories"
+          ></d-vertical-tabs>
+          <d-filter-panel
+            @change="updateActiveFilters"
+            :available-filters="availableFilters"
+          ></d-filter-panel>
+        </div>
         <div class="d-catalog-page__content">
+          <div class="d-catalog-page__header">
+            <div class="d-catalog-page__heading text-capitalize">{{ selectedCategory.label }}</div>
+            <div class="d-catalog-page__filter">
+              <dao-input
+                search
+                @change="updateActiveFilters('keyword', null, $event)"
+                placeholder="请输入搜索内容"
+              >
+              </dao-input>
+              <div class="d-catalog-page__num-items">{{ filterItems.length }} items</div>
+            </div>
+          </div>
           <div class="catalog-tile-view">
             <catalog-tile
-              :key="index"
-              v-for="(tile, index) in operatorHubItemList"
+              :key="tile.name + index"
+              v-for="(tile, index) in filterItems"
               :tile="tile"
             ></catalog-tile>
           </div>
@@ -49,103 +70,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { get, pick, map } from 'lodash';
-import OperatorService from '@/core/services/operator.service.ts';
-import { PACKAGE_MANIFEST_MODEL } from '@/core/models/operator-lifecycle-manager/constant';
-import {
-  installedFor,
-  subscriptionFor,
-  iconFor,
-} from '@/core/models/operator-lifecycle-manager/operator-group';
-import { getOperatorProviderType } from '@/core/models/operator-lifecycle-manager/utils';
-import CatalogTile from './components/catalog-tile';
-
-export default {
-  name: 'OperatorHub',
-
-  components: {
-    CatalogTile,
-  },
-
-  data() {
-    return {
-      operatorGroupList: [],
-      subscriptionList: [],
-      loading: false,
-      loadError: null,
-      operatorHubItemList: [],
-      namespace: 'test',
-    };
-  },
-
-  created() {
-    Promise.all([this.listSubscriptions(), this.listOperatorGroups()]).then(() => {
-      this.listPackageManifests();
-    });
-  },
-
-  methods: {
-    listSubscriptions() {
-      return OperatorService.listSubscriptions().then(({ items }) => {
-        this.subscriptionList = items;
-      });
-    },
-
-    listOperatorGroups() {
-      return OperatorService.listOperatorGroups().then(({ items }) => {
-        this.operatorGroupList = items;
-      });
-    },
-
-    listPackageManifests() {
-      const { operatorGroupList, subscriptionList, namespace } = this;
-      OperatorService.listPackageManifests().then(({ items }) => {
-        this.operatorHubItemList = items.map(pkg => {
-          const { currentCSVDesc } = get(pkg, 'status.channels[0]', {});
-          const currentCSVAnnotations = get(currentCSVDesc, 'annotations', {});
-
-          return {
-            obj: pkg,
-            kind: PACKAGE_MANIFEST_MODEL.kind,
-            name: get(currentCSVDesc, 'displayName', pkg.metadata.name),
-            uid: `${pkg.metadata.name}-${pkg.status.catalogSourceNamespace}`,
-            // eslint-disable-next-line max-len
-            installed: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace),
-            // eslint-disable-next-line max-len
-            subscription: subscriptionFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace),
-            // FIXME: Just use `installed`
-            // eslint-disable-next-line max-len
-            installState: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace)
-              ? 'Installed'
-              : 'Not Installed',
-            imgUrl: iconFor(pkg),
-            description: currentCSVAnnotations.description || currentCSVDesc.description,
-            longDescription: currentCSVDesc.description || currentCSVAnnotations.description,
-            provider: get(pkg, 'status.provider.name', get(pkg, 'metadata.labels.provider')),
-            providerType: getOperatorProviderType(pkg),
-            tags: pkg.metadata.tags,
-            version: get(currentCSVDesc, 'version'),
-            categories:
-              currentCSVAnnotations.categories &&
-              map(currentCSVAnnotations.categories.split(','), category => category.trim()),
-            catalogSource: get(pkg, 'status.catalogSource'),
-            catalogSourceNamespace: get(pkg, 'status.catalogSourceNamespace'),
-            ...pick(currentCSVAnnotations, [
-              'certifiedLevel',
-              'healthIndex',
-              'repository',
-              'containerImage',
-              'createdAt',
-              'support',
-            ]),
-            capabilityLevel: currentCSVAnnotations.capabilities,
-          };
-        });
-      });
-    },
-  },
-};
+<script src="./_operator-hub.js">
 </script>
 
 <style lang="scss" src="./_operator-hub.scss">
