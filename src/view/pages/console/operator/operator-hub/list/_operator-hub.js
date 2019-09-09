@@ -19,21 +19,22 @@ import {
   values,
 } from 'lodash';
 import OperatorService from '@/core/services/operator.service.ts';
+import {
+  ProviderType,
+  InstalledState,
+  CapabilityLevel,
+} from '@/core/models/operator-lifecycle-manager/operator.ts';
 import { PACKAGE_MANIFEST_MODEL } from '@/core/models/operator-lifecycle-manager/constant';
+import { getOperatorProviderType } from '@/core/models/operator-lifecycle-manager/utils';
 import {
   installedFor,
   subscriptionFor,
   iconFor,
 } from '@/core/models/operator-lifecycle-manager/operator-group';
-import { getOperatorProviderType } from '@/core/models/operator-lifecycle-manager/utils';
-import {
-  InstalledState,
-  ProviderType,
-  CapabilityLevel,
-} from '@/core/models/operator-lifecycle-manager/operator';
-import CatalogTile from './components/catalog-tile';
-import DVerticalTabs from './components/vertical-tabs';
-import DFilterPanel from './components/filter-panel';
+import CatalogTile from '../components/catalog-tile';
+import DVerticalTabs from '../components/vertical-tabs';
+import DFilterPanel from '../components/filter-panel';
+import ItemDetail from '../components/item-detail';
 
 /**
  * Filter property white list
@@ -66,6 +67,7 @@ export default {
     CatalogTile,
     DVerticalTabs,
     DFilterPanel,
+    ItemDetail,
   },
 
   data() {
@@ -84,6 +86,8 @@ export default {
       filterGroupsShowAll: {},
       availableFilters: {},
       emptyStateInfo: 'No OperatorHub items are being shown due to the filters being applied.',
+      isShowRight: false,
+      selectedItem: null,
     };
   },
 
@@ -95,7 +99,8 @@ export default {
       const filteredByKeyword = this.filterByKeyword();
       const filteredByGroup = this.filterByGroup(filteredByKeyword);
       return [...values(filteredByGroup), filteredByKeyword].reduce((a, b) =>
-        a.filter(c => b.includes(c)));
+        a.filter(c => b.includes(c)),
+      );
     },
   },
 
@@ -103,11 +108,13 @@ export default {
     Promise.all([this.listSubscriptions(), this.listOperatorGroups()]).then(() => {
       this.listPackageManifests().then(() => {
         this.availableFilters = this.getAvailableFilters(defaultFilters, this.items);
-        this.categories = Object.freeze(this.categorizeItems(
-          this.items,
-          this.itemsSorter,
-          this.getAvailableCategories(this.items),
-        ));
+        this.categories = Object.freeze(
+          this.categorizeItems(
+            this.items,
+            this.itemsSorter,
+            this.getAvailableCategories(this.items),
+          ),
+        );
       });
     });
   },
@@ -138,12 +145,18 @@ export default {
             name: get(currentCSVDesc, 'displayName', pkg.metadata.name),
             uid: `${pkg.metadata.name}-${pkg.status.catalogSourceNamespace}`,
             // eslint-disable-next-line max-len
-            installed: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace),
+            installed: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(
+              namespace,
+            ),
             // eslint-disable-next-line max-len
-            subscription: subscriptionFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace),
+            subscription: subscriptionFor(subscriptionList)(operatorGroupList)(
+              pkg.status.packageName,
+            )(namespace),
             // FIXME: Just use `installed`
             // eslint-disable-next-line max-len
-            installState: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(namespace)
+            installState: installedFor(subscriptionList)(operatorGroupList)(pkg.status.packageName)(
+              namespace,
+            )
               ? 'Installed'
               : 'Not Installed',
             imgUrl: iconFor(pkg),
@@ -243,7 +256,8 @@ export default {
         });
 
         forEach(this.sortFilterValues(values, field), nextValue =>
-          set(filters, [field, nextValue.value], nextValue));
+          set(filters, [field, nextValue.value], nextValue),
+        );
       });
 
       return filters;
@@ -306,7 +320,8 @@ export default {
       });
 
       const sortedKeys = keys(newCategories).sort((key1, key2) =>
-        key1.toLowerCase().localeCompare(key2.toLowerCase()));
+        key1.toLowerCase().localeCompare(key2.toLowerCase()),
+      );
 
       return reduce(
         sortedKeys,
@@ -384,7 +399,8 @@ export default {
         if (category.subcategories) {
           each(category.items, item => {
             const included = find(keys(category.subcategories), subcat =>
-              includes(category.subcategories[subcat].items, item));
+              includes(category.subcategories[subcat].items, item),
+            );
             if (!included) {
               // eslint-disable-next-line no-shadow
               let otherCategory = get(category.subcategories, 'other');
@@ -412,7 +428,8 @@ export default {
         }
 
         const intersection = [category.values, values].reduce((a, b) =>
-          a.filter(c => b.includes(c)));
+          a.filter(c => b.includes(c)),
+        );
         if (!isEmpty(intersection)) {
           return [category];
         }
@@ -430,7 +447,8 @@ export default {
         }
 
         const valuesIntersection = [subCategory.values, values].reduce((a, b) =>
-          a.filter(c => b.includes(c)));
+          a.filter(c => b.includes(c)),
+        );
         if (!isEmpty(valuesIntersection)) {
           matchedSubcategories.push(subCategory, ...this.filterSubcategories(subCategory, item));
         }
@@ -579,6 +597,11 @@ export default {
       const updatedShow = clone(filterGroupsShowAll);
       set(updatedShow, groupName, !get(filterGroupsShowAll, groupName, false));
       this.filterGroupsShowAll = updatedShow;
+    },
+
+    openOverlay(item) {
+      this.selectedItem = item;
+      this.isShowRight = true;
     },
   },
 

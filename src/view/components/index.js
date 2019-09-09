@@ -53,10 +53,12 @@ import UploadInput from './upload-input/upload-input';
 import XTable from './x-table/x-table';
 import ResourceLink from './resource/resource-link/resource-link';
 import OverflowTooltip from './overflow-tooltip/overflow-tooltip';
+import DAside from './aside';
 import { PercentCircle, PieChart, ProgressDount } from './charts';
 
 const components = {
   ...Daox,
+  DAside,
   DVerticalTabs,
   DAlert,
   ResourceLink,
