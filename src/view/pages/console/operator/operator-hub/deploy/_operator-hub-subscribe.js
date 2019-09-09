@@ -20,21 +20,17 @@ const supportedInstallModesFor = pkg => channel =>
   installModesFor(pkg)(channel).filter(({ supported }) => supported);
 
 const providedAPIsForChannel = pkg => channel =>
-  compact(
-    flatten([
-      pkg.status.channels.find(ch => ch.name === channel).currentCSVDesc.customresourcedefinitions
-        .owned,
-      pkg.status.channels.find(ch => ch.name === channel).currentCSVDesc.apiservicedefinitions
-        .owned,
-    ]),
-  );
+  compact(flatten([
+    pkg.status.channels.find(ch => ch.name === channel).currentCSVDesc.customresourcedefinitions
+      .owned,
+    pkg.status.channels.find(ch => ch.name === channel).currentCSVDesc.apiservicedefinitions
+      .owned,
+  ]));
 
 export const referenceForProvidedAPI = desc =>
-  get(desc, 'group')
+  (get(desc, 'group')
     ? referenceForGroupVersionKind(desc.group)(desc.version)(desc.kind)
-    : referenceForGroupVersionKind(desc.name.slice(desc.name.indexOf('.') + 1))(desc.version)(
-        desc.kind,
-      );
+    : referenceForGroupVersionKind(desc.name.slice(desc.name.indexOf('.') + 1))(desc.version)(desc.kind));
 
 export default {
   name: 'OperatorHubSubscribe',
@@ -105,13 +101,11 @@ export default {
     ]).then(() => {
       this.packageManifest = get(this.packageManifestList, 'items[0]');
       this.selectedUpdateChannel = defaultChannelFor(this.packageManifest);
-      this.selectedInstallMode = supportedInstallModesFor(this.packageManifest)(
-        this.selectedUpdateChannel,
-      ).reduce(
+      this.selectedInstallMode = supportedInstallModesFor(this.packageManifest)(this.selectedUpdateChannel).reduce(
         (preferredInstallMode, mode) =>
-          mode.type === InstallModeType.InstallModeTypeAllNamespaces
+          (mode.type === InstallModeType.InstallModeTypeAllNamespaces
             ? InstallModeType.InstallModeTypeAllNamespaces
-            : preferredInstallMode,
+            : preferredInstallMode),
         InstallModeType.InstallModeTypeOwnNamespace,
       );
     });
@@ -147,9 +141,7 @@ export default {
     },
 
     subscriptionExists(ns) {
-      installedFor(this.subscription)(this.operatorGroup)(this.packageManifest.status.packageName)(
-        ns,
-      );
+      installedFor(this.subscription)(this.operatorGroup)(this.packageManifest.status.packageName)(ns);
     },
 
     namespaceSupports(ns) {
@@ -163,16 +155,12 @@ export default {
     },
 
     conflictingProvidedAPIs(ns) {
-      const operatorGroups = this.operatorGroup.filter(
-        og => og.status.namespaces.includes(ns) || isGlobal(og),
-      );
+      const operatorGroups = this.operatorGroup.filter(og => og.status.namespaces.includes(ns) || isGlobal(og));
       if (isEmpty(operatorGroups)) {
         return [];
       }
       const existingAPIs = flatMap(operatorGroups, providedAPIsFor);
-      const providedAPIs = providedAPIsForChannel(this.packageManifest)(
-        this.selectedUpdateChannel,
-      ).map(desc => referenceForProvidedAPI(desc));
+      const providedAPIs = providedAPIsForChannel(this.packageManifest)(this.selectedUpdateChannel).map(desc => referenceForProvidedAPI(desc));
 
       return intersection(existingAPIs, providedAPIs);
     },
