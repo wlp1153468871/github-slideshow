@@ -1,0 +1,37 @@
+.operator-hub-subscribe {
+  padding: 20px 15px;
+
+  h1 {
+    font-weight: 300;
+    font-size: 28px;
+    margin-top: 23px;
+    margin-bottom: 11.5px;
+  }
+
+  .d-help-text {
+    color: $black-light;
+    margin: 0 0 11.5px;
+  }
+
+  .d-pane__body {
+    margin: 30px 0 0;
+    padding: 0 15px 30px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    font-weight: 600;
+    display: block;
+    max-width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .co-required:after {
+    color: $red;
+    content: '*';
+    padding-left: 3px;
+  }
+}

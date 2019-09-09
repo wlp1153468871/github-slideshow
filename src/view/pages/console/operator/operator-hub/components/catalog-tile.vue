@@ -1,5 +1,9 @@
 <template>
-  <div class="catalog-tile" :style="{ color }">
+  <div
+    class="catalog-tile"
+    :style="{ color }"
+    @click="$emit('click', tile)"
+  >
     <div class="catalog-tile-header">
       <img
         class="catalog-tile-icon"
@@ -42,7 +46,7 @@ export default {
       descFullHeight: 0,
       descLineHeight: 0,
       maxHeight: 'none',
-      color: '#9BA3AF',
+      color: '#9ba3af',
     };
   },
 
@@ -55,7 +59,7 @@ export default {
   },
 
   created() {
-    this.color = this.tile.installed ? '#22C36A' : '#9BA3AF';
+    this.color = this.tile.installed ? '#22c36a' : '#9ba3af';
   },
 
   mounted() {

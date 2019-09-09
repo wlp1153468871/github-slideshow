@@ -19,21 +19,22 @@ import {
   values,
 } from 'lodash';
 import OperatorService from '@/core/services/operator.service.ts';
+import {
+  ProviderType,
+  InstalledState,
+  CapabilityLevel,
+} from '@/core/models/operator-lifecycle-manager/operator.ts';
 import { PACKAGE_MANIFEST_MODEL } from '@/core/models/operator-lifecycle-manager/constant';
+import { getOperatorProviderType } from '@/core/models/operator-lifecycle-manager/utils';
 import {
   installedFor,
   subscriptionFor,
   iconFor,
 } from '@/core/models/operator-lifecycle-manager/operator-group';
-import { getOperatorProviderType } from '@/core/models/operator-lifecycle-manager/utils';
-import {
-  InstalledState,
-  ProviderType,
-  CapabilityLevel,
-} from '@/core/models/operator-lifecycle-manager/operator';
-import CatalogTile from './components/catalog-tile';
-import DVerticalTabs from './components/vertical-tabs';
-import DFilterPanel from './components/filter-panel';
+import CatalogTile from '../components/catalog-tile';
+import DVerticalTabs from '../components/vertical-tabs';
+import DFilterPanel from '../components/filter-panel';
+import ItemDetail from '../components/item-detail';
 
 /**
  * Filter property white list
@@ -66,6 +67,7 @@ export default {
     CatalogTile,
     DVerticalTabs,
     DFilterPanel,
+    ItemDetail,
   },
 
   data() {
@@ -84,6 +86,8 @@ export default {
       filterGroupsShowAll: {},
       availableFilters: {},
       emptyStateInfo: 'No OperatorHub items are being shown due to the filters being applied.',
+      isShowRight: false,
+      selectedItem: null,
     };
   },
 
@@ -579,6 +583,11 @@ export default {
       const updatedShow = clone(filterGroupsShowAll);
       set(updatedShow, groupName, !get(filterGroupsShowAll, groupName, false));
       this.filterGroupsShowAll = updatedShow;
+    },
+
+    openOverlay(item) {
+      this.selectedItem = item;
+      this.isShowRight = true;
     },
   },
 

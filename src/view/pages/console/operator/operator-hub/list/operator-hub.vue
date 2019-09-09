@@ -62,11 +62,45 @@
               :key="tile.name + index"
               v-for="(tile, index) in filterItems"
               :tile="tile"
+              @click="openOverlay"
             ></catalog-tile>
           </div>
         </div>
       </div>
     </template>
+
+    <d-aside
+      :is-show="isShowRight"
+      title="Right Aside!"
+      :show-footer="false"
+      placement="right"
+      :width="900"
+      @close="isShowRight=false"
+    >
+      <template #header>
+        <header class="catalog-item-header">
+          <div class="catalog-item-left-header">
+            <img
+              class="catalog-item-header-pf-icon"
+              :src="selectedItem.imgUrl"
+              alt=""
+            />
+            <div class="catalog-item-header-text">
+              <h1 class="catalog-item-header-title">{{ selectedItem.name }}</h1>
+              <h5 class="catalog-item-header-subtitle">
+                {{ selectedItem.version }} provided by {{ selectedItem.provider }}
+              </h5>
+            </div>
+          </div>
+          <i class="el-icon-close close" @click="isShowRight = false"></i>
+        </header>
+      </template>
+      <item-detail
+        :item="selectedItem"
+      ></item-detail>
+    </d-aside>
+
+    <router-view></router-view>
   </div>
 </template>
 

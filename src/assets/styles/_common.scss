@@ -5,7 +5,6 @@
 }
 
 html {
-  overflow-x: auto !important;
   min-width: 960px !important;
   height: 100%;
 }
@@ -23,6 +22,7 @@ body {
 
   -webkit-font-smoothing: antialiased;
   line-height: 1.66667;
+  overflow-x: auto !important;
 }
 
 // 生成一堆 margin 和 padding 的 class。

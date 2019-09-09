@@ -67,7 +67,9 @@ import IngressList from '@/view/pages/console/resource/ingress/list/ingress-list
 import IngressDetail from '@/view/pages/console/resource/ingress/detail/ingress-detail';
 
 // operators
-import OperatorHub from '@/view/pages/console/operator/operator-hub/operator-hub';
+import OperatorContainer from '@/view/pages/console/operator/operator-hub/container';
+import OperatorHub from '@/view/pages/console/operator/operator-hub/list/operator-hub';
+import OperatorHubSubscribePage from '@/view/pages/console/operator/operator-hub/deploy/operator-hub-subscribe';
 
 export default {
   path: '/console',
@@ -439,8 +441,19 @@ export default {
 
     {
       path: 'operator-hub',
-      name: 'console.operator-hub',
-      component: OperatorHub,
+      component: OperatorContainer,
+      children: [
+        {
+          path: '',
+          name: 'console.operator-hub',
+          component: OperatorHub,
+        },
+        {
+          path: 'subscribe',
+          name: 'console.operator-hub-subscribe',
+          component: OperatorHubSubscribePage,
+        },
+      ],
     },
   ],
 };
