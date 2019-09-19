@@ -27,6 +27,14 @@ class SpaceService {
     return this.api.post('/spaces', space);
   }
 
+  createSpaceZone(spaceId, space) {
+    return this.api.post(`spaces/${spaceId}/zones`, space);
+  }
+
+  getSpaceZones(spaceId) {
+    return this.api.get(`spaces/${spaceId}/zones`);
+  }
+
   getSpace(spaceId) {
     return this.api.get(`/spaces/${spaceId}`);
   }

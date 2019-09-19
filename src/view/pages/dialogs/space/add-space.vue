@@ -42,6 +42,27 @@
         </div>
       </dao-setting-item>
     </dao-setting-section>
+    <dao-setting-section>
+      <dao-setting-item>
+        <div slot="label">可用区</div>
+        <div slot="content">
+          <el-select
+            remote
+            filterable
+            multiple
+            v-model="zoneIds"
+            placeholder="请输入关键词"
+            :remote-method="loadZones">
+            <el-option
+              v-for="zone in zones"
+              :key="zone.id"
+              :label="zone.name"
+              :value="zone.id">
+            </el-option>
+          </el-select>
+        </div>
+      </dao-setting-item>
+    </dao-setting-section>
     <div slot="footer">
       <button
         class="dao-btn ghost"
@@ -59,6 +80,9 @@
 </template>
 
 <script>
+import { differenceBy } from 'lodash';
+import ZoneService from '@/core/services/zone.service';
+
 export default {
   name: 'AddOrgDialog',
 
@@ -71,6 +95,9 @@ export default {
       name: '',
       short_name: '',
       description: '',
+      zones: [],
+      zoneIds: [],
+      loading: false,
     };
   },
 
@@ -85,19 +112,22 @@ export default {
     },
     isValidForm() {
       return (
-        this.name !== '' && this.short_name !== '' && !this.veeErrors.any()
+        this.name !== '' && this.zoneIds.length !== 0 && this.short_name !== '' && !this.veeErrors.any()
       );
     },
   },
 
   methods: {
     onConfirm() {
-      const { name, short_name, description } = this;
+      const {
+        name, short_name, description, zoneIds,
+      } = this;
 
       this.$emit('create', {
         name,
         short_name,
         description,
+        zoneIds,
       });
       this.onClose();
     },
@@ -110,6 +140,21 @@ export default {
       this.name = '';
       this.short_name = '';
       this.description = '';
+      this.zoneIds = [];
+    },
+
+    loadZones(query) {
+      if (query !== '') {
+        this.loading = true;
+        ZoneService.getAvailableZones().then(zones => {
+          this.loading = false;
+          const diffZones = differenceBy(zones, this.zoneList, 'id');
+          this.zones = diffZones.filter(zone => {
+            return zone.area_name.toLowerCase()
+              .indexOf(query.toLowerCase()) > -1;
+          });
+        });
+      }
     },
   },
 };

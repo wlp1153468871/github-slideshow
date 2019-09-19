@@ -291,7 +291,7 @@ export const actions = {
   },
 
   loadZones({ dispatch, commit, state }) {
-    return ZoneService.getOrgZones(state.org.id).then(zones => {
+    return SpaceService.getSpaceZones(state.space.id).then(zones => {
       commit(types.LOAD_ZONE_SUCCESS, { zones });
 
       // get localStorage saved zone;

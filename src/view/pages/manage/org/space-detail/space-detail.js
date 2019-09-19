@@ -7,6 +7,7 @@ import QuotaRequestPanel from './panels/quota-request';
 import ServicePanel from './panels/service';
 import SettingPanel from './panels/setting';
 import UserPanel from './panels/user';
+import ZonePanel from './panels/zone';
 
 export default {
   name: 'SpaceDetail',
@@ -18,6 +19,7 @@ export default {
     ServicePanel,
     SettingPanel,
     UserPanel,
+    ZonePanel,
   },
 
   created() {
@@ -32,6 +34,7 @@ export default {
     const SIDE_BAR = {
       OVERVIEW: '设置',
       USER: '用户列表',
+      ZONE: '可用区',
       SERVICE: '可用服务',
       QUOTA: '项目配额',
       QUOTA_REQUEST: '配额请求',

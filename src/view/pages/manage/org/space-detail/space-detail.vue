@@ -30,6 +30,15 @@
         </service-panel>
       </el-tab-pane>
 
+      <el-tab-pane
+        :label="SIDE_BAR.ZONE"
+        :name="SIDE_BAR.ZONE"
+        lazy>
+        <zone-panel
+          :space-id="spaceId">
+        </zone-panel>
+      </el-tab-pane>
+
       <el-tab-pane :label="SIDE_BAR.QUOTA" :name="SIDE_BAR.QUOTA">
         <quota-panel
           ref="qutoaPanel"
