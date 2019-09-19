@@ -1,5 +1,4 @@
 import { forEach, camelCase } from 'lodash';
-import DVerticalTabs from '@/view/pages/console/operator/operator-hub/components/vertical-tabs';
 import DAlert from './alert/alert';
 import Annotations from './resource/annotations/annotations';
 import AppFooter from './app-footer/app-footer';
@@ -59,7 +58,6 @@ import { PercentCircle, PieChart, ProgressDount } from './charts';
 const components = {
   ...Daox,
   DAside,
-  DVerticalTabs,
   DAlert,
   ResourceLink,
   Annotations,
