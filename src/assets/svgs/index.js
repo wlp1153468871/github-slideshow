@@ -57,7 +57,8 @@ import './icon_statefulsets.svg';
 import './icon_war-pkg.svg';
 import './logo_login.svg';
 import './icon_opreators.svg';
-import './icon_opreator-hub.svg';
+import './icon_operator-hub.svg';
+import './icon_operator-hub-icon.svg';
 
 // home
 import './home/home-app.svg';

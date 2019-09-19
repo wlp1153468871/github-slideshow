@@ -81,21 +81,21 @@ export default {
 .catalog-tile {
   position: relative;
   display: flex;
-  flex: 0 0 auto;
   flex-direction: column;
-  height: 235px;
-  margin: 0 15px 15px 0;
-  padding: 15px;
+  flex: 0 0 auto;
   width: 220px;
+  height: 235px;
+  padding: 15px;
+  margin: 0 15px 15px 0;
   background: #fff;
   border: 1px solid #e4e7ed;
   border-radius: 4px;
-  transition: 0.3s;
+  transition: .3s;
   cursor: pointer;
 
   &::before {
+    content: "";
     position: absolute;
-    content: '';
     top: -1px;
     left: -1px;
     width: calc(100% + 2px);
@@ -104,9 +104,9 @@ export default {
   }
 
   &:hover {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
     transform: translateY(-5px);
-    transition: 0.3s;
+    transition: .3s;
   }
 
   &-header {
@@ -118,29 +118,29 @@ export default {
   }
 
   &-icon {
-    font-size: 40px;
-    height: 40px;
-    max-width: 80px;
     min-width: 40px;
+    max-width: 80px;
+    height: 40px;
+    font-size: 40px;
   }
 
   &-badge {
-    font-size: 15px;
     color: $black-light;
+    font-size: 15px;
   }
 
   &-body {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    margin-top: 10px;
+    flex: 1;
     min-height: 0;
+    margin-top: 10px;
   }
 
   &-title {
+    color: $black-dark;
     font-size: 15px;
     font-weight: 400;
-    color: $black-dark;
   }
 
   &-subtitle {
@@ -149,32 +149,32 @@ export default {
   }
 
   &-description {
-    flex: 1;
-    margin-top: 15px;
-    overflow: hidden;
     position: relative;
+    flex: 1;
+    overflow: hidden;
+    margin-top: 15px;
     color: $black-light;
 
     &::after {
-      background: linear-gradient(90deg, hsla(0, 0%, 100%, 0), #fff 75%);
-      bottom: 0;
-      color: transparent;
-      content: '.';
+      content: ".";
       position: absolute;
       right: 0;
+      bottom: 0;
       width: 50%;
+      color: transparent;
       text-align: right;
+      background: linear-gradient(90deg, hsla(0, 0%, 100%, 0), #fff 75%);
     }
   }
 
   &-footer {
-    color: $green;
-    border-top: 1px solid #e4e7ed;
-    padding: 5px 15px;
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
+    padding: 5px 15px;
+    color: $green;
+    border-top: 1px solid #e4e7ed;
   }
 }
 </style>

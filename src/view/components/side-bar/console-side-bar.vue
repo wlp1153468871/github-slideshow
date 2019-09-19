@@ -73,7 +73,7 @@
             index="console.operator-hub"
             :route="{ name: 'console.operator-hub' }">
             <svg class="icon">
-              <use xlink:href="#icon_opreator-hub"></use>
+              <use xlink:href="#icon_operator-hub"></use>
             </svg>
             <span>Operator Hub</span>
           </el-menu-item>

@@ -1,14 +1,23 @@
 <template>
   <div class="login-layout">
-    <div class="bg-img" :style="{backgroundImage: `url('${loginBackground}')`}"></div>
+    <div
+      class="bg-img"
+      :style="{backgroundImage: `url('${loginBackground}')`}"
+    ></div>
     <div class="section-logo">
-      <logo-container :target="'login'" :inverse="true"></logo-container>
+      <logo-container
+        :target="'login'"
+        :inverse="true"
+      ></logo-container>
     </div>
-    <div class="login-container" :class="{'shake': !loginFail}">
+    <div
+      class="login-container"
+      :class="{'shake': !loginFail}"
+    >
       <h2 class="title">
         {{ title }}
       </h2>
-      <hr class="header-line"/>
+      <hr class="header-line" />
 
       <div class="login-form">
         <div class="form-group">
@@ -20,8 +29,8 @@
             v-model="user.username"
             @keyup.enter="login"
             tabindex="1"
-            autofocus>
-          </dao-input>
+            autofocus
+          ></dao-input>
         </div>
         <div class="form-group">
           <label>密码</label>
@@ -30,13 +39,15 @@
             type="password"
             v-model="user.password"
             @keyup.enter="login"
-            tabindex="2">
+            tabindex="2"
+          >
           </dao-input>
         </div>
         <button
           class="dao-btn blue login-btn"
           tabindex="3"
-          @click="login">
+          @click="login"
+        >
           登录
         </button>
       </div>
@@ -48,7 +59,8 @@
           :key="item.key"
           class="dao-btn ghost sso-btn"
           style="margin:10px 0"
-          :href="item.login_url">
+          :href="item.login_url"
+        >
           {{ item.name }}
         </a>
       </div>
