@@ -158,8 +158,8 @@
             <span>用户管理</span>
           </el-menu-item>
           <el-menu-item
-            index="console.quota.used"
-            :route="{ name: 'console.quota.used' }">
+            index="console.space-quota"
+            :route="{ name: 'console.space-quota' }">
             <svg class="icon">
               <use xlink:href="#icon_quota"></use>
             </svg>

@@ -39,22 +39,6 @@
         </zone-panel>
       </el-tab-pane>
 
-      <el-tab-pane :label="SIDE_BAR.QUOTA" :name="SIDE_BAR.QUOTA">
-        <quota-panel
-          ref="qutoaPanel"
-          :org-id="orgId"
-          :space-id="spaceId"
-          :quota-usages="space.quota_usages">
-        </quota-panel>
-      </el-tab-pane>
-
-      <el-tab-pane :label="SIDE_BAR.QUOTA_REQUEST" :name="SIDE_BAR.QUOTA_REQUEST">
-        <quota-request-panel
-          @update-quota="refreshSpaceQuotaGroups"
-          :space-id="spaceId">
-        </quota-request-panel>
-      </el-tab-pane>
-
       <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
         <overview-panel
           :org-id="orgId"

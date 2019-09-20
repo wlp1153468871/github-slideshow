@@ -52,33 +52,6 @@
             </svg>
             <span>可用区设置</span>
           </el-menu-item>
-          <el-menu-item
-            background-color="#545c64"
-            index="manage.quota.list"
-            :route="{ name: 'manage.quota.list' }">
-            <svg class="icon">
-              <use xlink:href="#icon_quota-field"></use>
-            </svg>
-            <span>配额字段</span>
-          </el-menu-item>
-          <el-submenu index="quota-setting">
-            <template slot="title">
-              <svg class="icon">
-                <use xlink:href="#icon_quota"></use>
-              </svg>
-              <span slot="title">配额组设置</span>
-            </template>
-            <el-menu-item
-              index="manage.quota.group"
-              :route="{ name: 'manage.quota.group' }">
-              <span>租户配额组</span>
-            </el-menu-item>
-            <el-menu-item
-              index="manage.quota.org-group"
-              :route="{ name: 'manage.quota.org-group' }">
-              <span>项目配额组</span>
-            </el-menu-item>
-          </el-submenu>
         </el-submenu>
         <el-menu-item
           index="manage.preference.home"

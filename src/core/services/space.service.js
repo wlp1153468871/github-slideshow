@@ -1,4 +1,6 @@
 import store from '@/core/store';
+import { gib2byte } from '@/core/utils/gib2byte';
+
 import api from './api';
 import StorageCache from './storage.cache';
 
@@ -98,6 +100,26 @@ class SpaceService {
 
   addSpaceService(spaceId, serviceId) {
     return this.api.put(`/spaces/${spaceId}/services/${serviceId}`);
+  }
+
+  getResourceQuota(spaceId) {
+    return this.api.get(`spaces/${spaceId || this.spaceId}/space_quota`);
+  }
+
+  applyResourceQuota(quota) {
+    quota.memory = gib2byte(quota.memory);
+    quota.storage = gib2byte(quota.storage);
+    return this.api.post('/quota/approval/space', quota, { params: { space_id: this.spaceId } });
+  }
+
+  updateResourceQuota(spaceId, quota) {
+    quota.memory = gib2byte(quota.memory);
+    quota.storage = gib2byte(quota.storage);
+    return this.api.put(`/spaces/${spaceId || this.spaceId}/space_quota`, quota);
+  }
+
+  getResourceQuotaApprovals(type = 'apply') {
+    return this.api.get('/quota/approval/space', { space_id: this.spaceId, type });
   }
 }
 

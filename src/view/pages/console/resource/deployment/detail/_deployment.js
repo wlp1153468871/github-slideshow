@@ -116,13 +116,13 @@ export default {
 
     getEvents() {
       this.loadings.table = true;
-      DeploymentResourceService.getEvents(
+      DeploymentResourceService.getEventsAndLatestHistoryEvents(
         this.space.id,
         this.zone.id,
         this.name,
       )
         .then(res => {
-          this.events = res.originData.items || [];
+          this.events = res || [];
         })
         .finally(() => {
           this.loadings.table = false;

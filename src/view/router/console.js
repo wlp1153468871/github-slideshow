@@ -16,7 +16,7 @@ import ConfigMapDetail from '@/view/pages/console/resource/config-map/detail/con
 import SecretList from '@/view/pages/console/resource/secret/list/secret-list.vue';
 import SecretDetail from '@/view/pages/console/resource/secret/detail/secret-detail.vue';
 import UserList from '@/view/pages/console/user/user-list/user-list.vue';
-import QuotaUsed from '@/view/pages/console/quota/quota-used/quota-used.vue';
+import SpaceQuota from '@/view/pages/console/quota/space-quota.vue';
 import AppList from '@/view/pages/console/app/list/app-list.vue';
 import AppDetail from '@/view/pages/console/app/detail/app-detail.vue';
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
@@ -38,8 +38,8 @@ import ProfileCharging from '@/view/pages/profile/charging/charging/charging.vue
 import OrgContainer from '@/view/pages/org/container/container.vue';
 import SpaceList from '@/view/pages/org/space/space-list/space-list.vue';
 import OrgUserList from '@/view/pages/org/user/user-list/user-list.vue';
-import QuotaGroup from '@/view/pages/org/quota/quota-group/quota-group.vue';
-import QuotaRequest from '@/view/pages/org/quota/quota-request/quota-request.vue';
+import OrgQuota from '@/view/pages/org/quota/org-quota.vue';
+import OrgQuotaApproval from '@/view/pages/org/quota/org-quota-approval.vue';
 import OrgRegistry from '@/view/pages/org/registry/registry.vue';
 
 // product
@@ -379,8 +379,8 @@ export default {
     },
     {
       path: 'quota',
-      name: 'console.quota.used',
-      component: QuotaUsed,
+      name: 'console.space-quota',
+      component: SpaceQuota,
     },
     // org
     {
@@ -413,18 +413,13 @@ export default {
         },
         {
           path: 'approval',
-          name: 'org.approval',
-          component: SpaceList,
-        },
-        {
-          path: 'approval',
-          name: 'org.quota-request',
-          component: QuotaRequest,
+          name: 'org.quota-approval',
+          component: OrgQuotaApproval,
         },
         {
           path: 'group',
           name: 'org.quota',
-          component: QuotaGroup,
+          component: OrgQuota,
         },
         {
           path: 'registry',

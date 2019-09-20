@@ -36,8 +36,8 @@ export default {
       USER: '用户列表',
       ZONE: '可用区',
       SERVICE: '可用服务',
-      QUOTA: '项目配额',
-      QUOTA_REQUEST: '配额请求',
+      // QUOTA: '项目配额',
+      // QUOTA_REQUEST: '配额请求',
     };
 
     return {

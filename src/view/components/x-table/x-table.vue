@@ -9,7 +9,7 @@
           <dao-input
             search
             v-model="filterKey"
-            placeholder="请输入搜索内容"
+            :placeholder="searchPlaceholder">
           >
           </dao-input>
           <button

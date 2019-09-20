@@ -86,19 +86,42 @@
         fixed="right"
         label="操作"
         width="180">
-        <template
-          slot-scope="{ row: history }"
-          v-if="$can('update')">
+        <template #default="{ row: rc }">
+          <el-button
+            v-if="$can('update') && dc.status.latestVersion !== rc.deploymentVersion"
+            type="text"
+            size="small"
+            @click="onRollback(rc)"
+          >回滚
+          </el-button>
           <el-button
             type="text"
             size="small"
-            @click="onRollback(history)"
-            v-if="dc.status.latestVersion !== history.deploymentVersion">回滚
+            @click="onCheckEvents(rc)"
+          >查看事件
           </el-button>
         </template>
       </el-table-column>
       <!-- !SECTION  -->
     </el-table>
+
+    <dao-dialog
+      :size=" { width: '1000px' } "
+      :visible.sync="events.show"
+      :footer="false"
+      :header="{
+        title: '历史版本RC事件',
+        showClose: true,
+      }"
+      @close="events.show = false"
+    >
+      <events-table
+        @refresh="getHistoryEvents"
+        :events="events.data"
+        :loading="events.loading"
+      >
+      </events-table>
+    </dao-dialog>
     <!-- SECTION preview -->
     <yaml-preview-dialog
       :value="preview.history"
@@ -122,7 +145,8 @@
 </template>
 
 <script>
-import { chunk, nth, get } from 'lodash';
+  import { mapState } from 'vuex';
+  import { chunk, nth, get } from 'lodash';
 
 import DCService from '@/core/services/deployment-config.service.ts';
 import YAMLPreviewDialog from '@/view/components/yaml-preview-dialog/yaml-preview-dialog.vue';
@@ -138,8 +162,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    spaceId: String,
-    zone: String,
     name: String,
   },
   data() {
@@ -157,9 +179,16 @@ export default {
       filterKey: '',
       currentPage: 1,
       pageSize: 10,
+      events: {
+        data: [],
+        loading: false,
+        show: false,
+        name: '',
+      },
     };
   },
   computed: {
+    ...mapState(['space', 'zone']),
     formatedHistories() {
       return this.histories
         .map(h => {
@@ -252,7 +281,7 @@ export default {
     // SECTION fetch
     loadHistory() {
       this.loading = true;
-      DCService.getHistoryList(this.spaceId, this.zone, this.name)
+      DCService.getHistoryList(this.space.id, this.zone.id, this.name)
         .then(res => {
           this.histories = res.items;
         })
@@ -284,8 +313,8 @@ export default {
           if (ok) {
             this.loading = true;
             DCService.rollbackToHistoryVersion(
-              this.spaceId,
-              this.zone,
+              this.space.id,
+              this.zone.id,
               this.name,
               history.deploymentVersion,
             )
@@ -310,6 +339,25 @@ export default {
       };
     },
     // !SECTION
+    getHistoryEvents() {
+      this.events.loading = true;
+      DCService.getHistoryEvents(this.space.id, this.zone.id, this.events.name)
+        .then(res => {
+          this.events.data = res.items || [];
+        })
+        .finally(() => {
+          this.events.loading = false;
+        });
+    },
+
+    onCheckEvents(rc) {
+      this.events.show = true;
+      this.events.name = rc.metadata.name;
+      this.$nextTick(() => {
+        this.getHistoryEvents();
+      });
+    },
+
   },
 };
 </script>

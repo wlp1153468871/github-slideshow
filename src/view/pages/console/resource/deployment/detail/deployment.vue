@@ -105,6 +105,8 @@
           lazy>
           <events-table
             v-if="tab === TABS.EVENT.name"
+            :loading="loadings.table"
+            @refresh="getEvents"
             :events="events">
           </events-table>
         </el-tab-pane>

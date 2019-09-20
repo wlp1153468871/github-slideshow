@@ -1,4 +1,5 @@
 import store from '@/core/store';
+import { gib2byte } from '@/core/utils/gib2byte';
 import StorageCache from './storage.cache';
 import { APIService } from './api';
 import api from './api';
@@ -12,6 +13,14 @@ class ZoneService {
 
   get orgId(): string {
     return store.getters.orgId;
+  }
+
+  get spaceId() {
+    return store.getters.spaceId;
+  }
+
+  get zoneId() {
+    return store.getters.zoneId;
   }
 
   get(zoneId: string): any {
@@ -87,6 +96,27 @@ class ZoneService {
       return res.status.status === 'True'
         ? Promise.resolve()
         : Promise.reject(res);
+    });
+  }
+
+  updateResourceQuota(quota: any) {
+    return this.getResourceQuota().then((res: any) => {
+      res.spec.hard = {
+        'limits.cpu': quota.cpu,
+        'limits.memory': gib2byte(quota.memory),
+        'requests.storage': gib2byte(quota.storage),
+      };
+      return this.api.put(`spaces/${this.spaceId}/resourcequota`, res, {
+        params: {
+          zone: this.zoneId,
+        },
+      });
+    });
+  }
+
+  getResourceQuota() {
+    return this.api.get(`spaces/${this.spaceId}/resourcequota`, {
+      zone: this.zoneId,
     });
   }
 

@@ -1,4 +1,5 @@
 import store from '@/core/store';
+import { gib2byte } from '@/core/utils/gib2byte';
 import api from './api';
 import StorageCache from './storage.cache';
 
@@ -62,6 +63,32 @@ class OrgService {
   addOrg(org) {
     return this.api.post('/organizations', org);
   }
+
+  getResourceQuota(orgId) {
+    return this.api.get(`organizations/${orgId || this.orgId}/organization_quota`);
+  }
+
+  getSpaceResourceQuotas(orgId) {
+    return this.api.get(`organizations/${orgId || this.orgId}/space_quota`);
+  }
+
+  applyResourceQuota(quota) {
+    quota.memory = gib2byte(quota.memory);
+    quota.storage = gib2byte(quota.storage);
+    return this.api.post('/quota/approval/organization', quota, { params: { organization_id: this.orgId } });
+  }
+
+  updateResourceQuota(orgId, quota) {
+    quota.memory = gib2byte(quota.memory);
+    quota.storage = gib2byte(quota.storage);
+    console.log(quota);
+    return this.api.put(`/organizations/${orgId}/organization_quota`, quota);
+  }
+
+  getResourceQuotaApprovals(orgId, type = 'apply') {
+    return this.api.get('/quota/approval/organization', { organization_id: orgId || this.orgId, type });
+  }
+
 }
 
 export default new OrgService();

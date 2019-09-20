@@ -124,8 +124,6 @@
           :lazy="true">
           <history-panel
             :dc="dc"
-            :spaceId="space.id"
-            :zone="zone.id"
             @rollback="loadData"
             :name="this.name"></history-panel>
         </el-tab-pane>
@@ -286,9 +284,9 @@ export default {
 
     getEvents() {
       this.loading.event = true;
-      DCService.getEventList(this.space.id, this.zone.id, this.name)
+      DCService.getEventsAndLatestHistoryEvents(this.space.id, this.zone.id, this.name)
         .then(res => {
-          this.events = res.originData.items || [];
+          this.events = res || [];
         })
         .finally(() => {
           this.loading.event = false;

@@ -112,7 +112,7 @@ export default {
         notifyErrorResponse(response);
       }
     } else {
-      notifyErrorResponse(response);
+      notifyErrorResponse(response, error.message);
     }
 
     return Promise.reject(response);
