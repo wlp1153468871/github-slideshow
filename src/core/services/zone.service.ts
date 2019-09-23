@@ -102,7 +102,7 @@ class ZoneService {
   updateResourceQuota(quota: any) {
     return this.getResourceQuota().then((res: any) => {
       res.spec.hard = {
-        'limits.cpu': quota.cpu,
+        'limits.cpu': gib2byte(quota.cpu, 'CPU'),
         'limits.memory': gib2byte(quota.memory),
         'requests.storage': gib2byte(quota.storage),
       };
@@ -117,7 +117,7 @@ class ZoneService {
   getResourceQuota() {
     return this.api.get(`spaces/${this.spaceId}/resourcequota`, {
       zone: this.zoneId,
-    });
+    }, { noNotify: true });
   }
 
   checkRegistryAccount(data: any) {

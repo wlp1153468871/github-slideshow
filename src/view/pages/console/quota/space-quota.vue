@@ -44,6 +44,7 @@
             @refresh="getZoneQuota"
             scope="可用区配额"
             sub-scope="已使用"
+            v-if="!noZoneQuota"
           >
             <button
               class="dao-btn blue"
@@ -52,6 +53,12 @@
               v-if="isAdmin && $can('update')"
             >更新可用区配额</button>
           </quota-cards>
+          <p
+            v-else
+            class="empty-msg"
+          >
+            当前可用区未设置资源配额，不纳入配额计算范围。
+          </p>
           <p
             style="color: red; padding-bottom: 15px;"
             v-if="zoneWarning.length > 0"
@@ -188,6 +195,7 @@ export default {
         loading: false,
         visible: false,
       },
+      noZoneQuota: false,
     };
   },
   methods: {
@@ -215,7 +223,12 @@ export default {
             storage: used['requests.storage'],
           },
         };
-      });
+      })
+        .catch(err => {
+          if (err.status === 404) {
+            this.noZoneQuota = true;
+          }
+        });
     },
     onApplySpaceQuota(quota) {
       this.applyDialog.loading = true;
@@ -302,6 +315,12 @@ export default {
     font-size: 16px;
     color: #303133;
     padding: 0px 0 15px;
+  }
+  .empty-msg {
+    margin: 0 20px 20px 0;
+    padding-bottom: 20px;
+    font-size: 16px;
+    color: #9ba3af;
   }
 }
 </style>

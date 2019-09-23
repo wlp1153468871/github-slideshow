@@ -103,6 +103,7 @@ export const ZONE_AREA_LABEL = '区域';
 export const ZONE_ENV_LABEL = '环境';
 
 export const AREA_ENV = `${ZONE_AREA_LABEL} / ${ZONE_ENV_LABEL}`;
+export const ORG_SPACE = `${ORG_LABEL} / ${SPACE_LABEL}`;
 
 export const SERVICE_TYPES_DESC = [
   {

@@ -73,15 +73,16 @@ class OrgService {
   }
 
   applyResourceQuota(quota) {
+    quota.cpu = gib2byte(quota.cpu, 'CPU');
     quota.memory = gib2byte(quota.memory);
     quota.storage = gib2byte(quota.storage);
     return this.api.post('/quota/approval/organization', quota, { params: { organization_id: this.orgId } });
   }
 
   updateResourceQuota(orgId, quota) {
+    quota.cpu = gib2byte(quota.cpu, 'CPU');
     quota.memory = gib2byte(quota.memory);
     quota.storage = gib2byte(quota.storage);
-    console.log(quota);
     return this.api.put(`/organizations/${orgId}/organization_quota`, quota);
   }
 

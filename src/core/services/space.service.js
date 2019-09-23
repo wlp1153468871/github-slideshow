@@ -107,12 +107,14 @@ class SpaceService {
   }
 
   applyResourceQuota(quota) {
+    quota.cpu = gib2byte(quota.cpu, 'CPU');
     quota.memory = gib2byte(quota.memory);
     quota.storage = gib2byte(quota.storage);
     return this.api.post('/quota/approval/space', quota, { params: { space_id: this.spaceId } });
   }
 
   updateResourceQuota(spaceId, quota) {
+    quota.cpu = gib2byte(quota.cpu, 'CPU');
     quota.memory = gib2byte(quota.memory);
     quota.storage = gib2byte(quota.storage);
     return this.api.put(`/spaces/${spaceId || this.spaceId}/space_quota`, quota);

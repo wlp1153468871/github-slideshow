@@ -113,7 +113,7 @@ export default {
       }
     } else if (response.status === 423) {
       // pass to show alarm-banned page
-    } else {
+    } else if (!error.config.noNotify) {
       notifyErrorResponse(response, error.message);
     }
 
