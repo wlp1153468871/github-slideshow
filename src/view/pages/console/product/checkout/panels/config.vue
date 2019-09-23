@@ -1,5 +1,8 @@
 <template>
-  <div class="page-instance-config">
+  <div
+    class="page-instance-config"
+    v-loading="loadings.init"
+  >
     <space-zone></space-zone>
 
     <dao-setting-layout>
@@ -13,7 +16,10 @@
               部署方式
               <label-tip text="实例创建的方式包括单点部署和高可用部署"></label-tip>
             </div>
-            <div class="reset-margin" slot="content">
+            <div
+              class="reset-margin"
+              slot="content"
+            >
               {{plan.ha? '高可用' : '单点'}}
             </div>
           </dao-setting-item>
@@ -21,27 +27,32 @@
 
         <dao-setting-section
           v-for="(bullet, key, index) in standard"
-          :key="'section' + index">
+          :key="'section' + index"
+        >
           <dao-setting-item>
             <div slot="label">
               {{ (quotaDict[key] && quotaDict[key].name) || DICTIONARY[key] || key }}
               <label-tip
                 v-if="key === PLANKEY.CONFIG"
-                text="实例的计算资源，包括CPU数量和内存数量"></label-tip>
+                text="实例的计算资源，包括CPU数量和内存数量"
+              ></label-tip>
               <label-tip
                 v-if="isVolume && key === PLANKEY.STORAGE"
-                text="PVC 的创建会默认消耗1核CPU和1G内存的配额"></label-tip>
+                text="PVC 的创建会默认消耗1核CPU和1G内存的配额"
+              ></label-tip>
             </div>
             <template slot="content">
               <dao-select
                 class="reset-margin"
                 @change="changePlan(key)"
-                v-model="planModel[key]">
+                v-model="planModel[key]"
+              >
                 <dao-option
                   v-for="option in bullet"
                   :key="option.label"
                   :value="option.value"
-                  :label="option.label">
+                  :label="option.label"
+                >
                 </dao-option>
               </dao-select>
             </template>
@@ -59,12 +70,14 @@
             <dao-select
               class="reset-margin"
               @change="changePlan()"
-              v-model="planModel">
+              v-model="planModel"
+            >
               <dao-option
                 v-for="option in plan.plans"
                 :key="option.id"
                 :value="option"
-                :label="option.description">
+                :label="option.description"
+              >
               </dao-option>
             </dao-select>
           </template>
@@ -72,14 +85,14 @@
       </dao-setting-section>
 
     </dao-setting-layout>
-
     <parameter-panel
+      :isLoading="loadings.param"
       v-show="hasParams"
-      :parameters="parameters"
+      :schema="parameters"
       ref="parameterPanel"
-      @valid="$emit('valid', $event)">
+      @valid="$emit('valid', $event)"
+    >
     </parameter-panel>
-
   </div>
 </template>
 
@@ -87,17 +100,9 @@
 import { mapState } from 'vuex';
 import { cloneDeep, orderBy, isEmpty, find, first } from 'lodash';
 import { convert } from '@/core/utils';
-import UserService from '@/core/services/user.service';
 import ServiceService from '@/core/services/service.service';
 import PlanService from '@/core/services/plan.service';
-import { BUILDIN_SERVICE_TOKEN_NAME } from '@/core/constants/app';
-import {
-  PLANKEY,
-  DICTIONARY,
-  VOLUME_SERVICE,
-  DCS,
-} from '@/core/constants/constants';
-import SpaceZone from '@/view/components/space-zone/space-zone';
+import { PLANKEY, DICTIONARY, VOLUME_SERVICE } from '@/core/constants/constants';
 import ParameterPanel from './parameter';
 
 export default {
@@ -105,7 +110,6 @@ export default {
 
   components: {
     ParameterPanel,
-    SpaceZone,
   },
 
   props: {
@@ -118,25 +122,16 @@ export default {
     return {
       configDict: {},
       DICTIONARY,
-      fields: [
-        {
-          key: 'fname',
-          type: 'input',
-        },
-        {
-          key: 'lname',
-          type: 'input',
-        },
-      ],
       form: {},
       loadings: {
         init: false,
+        param: false,
       },
       model: {
         fname: '',
         lname: '',
       },
-      parameters: [],
+      parameters: {},
       plan: null,
       planId: null,
       PLANKEY,
@@ -146,12 +141,29 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState(['space', 'quotaDict']),
+
+    isVolume() {
+      return this.service.brokerService.service_type === VOLUME_SERVICE;
+    },
+
+    hasParams() {
+      return !isEmpty(this.parameters);
+    },
+
+    isValidForm() {
+      return !this.loadings.init && this.orgId && this.spaceId;
+    },
+  },
+
   created() {
     this.getPlan();
   },
 
   methods: {
     getPlan(data) {
+      this.loadings.init = true;
       PlanService.getPlan(this.brokerServiceId, data)
         .then(res => {
           this.plan = cloneDeep(res);
@@ -171,11 +183,7 @@ export default {
                 });
                 this.$set(this.standard, key, options);
                 if (!data) {
-                  this.$set(
-                    this.planModel,
-                    key,
-                    find(value.options, value.default),
-                  );
+                  this.$set(this.planModel, key, find(value.options, value.default));
                 }
               } else {
                 this.$set(
@@ -188,10 +196,7 @@ export default {
                     };
                   }),
                 );
-                if (
-                  !data ||
-                  (data && value.options.indexOf(this.planModel[key]) === -1)
-                ) {
+                if (!data || (data && value.options.indexOf(this.planModel[key]) === -1)) {
                   this.$set(this.planModel, key, value.default);
                 }
               }
@@ -199,10 +204,13 @@ export default {
           } else {
             this.planModel = first(res.plans);
           }
-          this.getParameters();
+          return this.getParameters();
         })
         .catch(e => {
           console.error(e);
+        })
+        .finally(() => {
+          this.loadings.init = false;
         });
     },
 
@@ -228,49 +236,49 @@ export default {
       )}${quotaDict[MEMORY].unit}`;
     },
 
-    async getExternalParams() {
-      if (!this.planModel.id) return;
-      try {
-        const response = await ServiceService.getExternalParams(
-          this.brokerServiceId,
-          this.planModel.id,
-          this.space.id,
-        );
-        this.planId = this.planModel.id;
-        if (this.chargingEnable) this.$emit('searchChargingRules', this.planId);
-        this.parameters = response.map(this.initDefaultValue);
-      } catch (e) {
-        this.$noty.error('加载服务的参数失败');
-      }
+    getExternalParams() {
+      if (!this.planModel.id) return Promise.reject(Error('没有plan id'));
+      this.loadings.param = true;
+      return ServiceService.getExternalParams(
+        this.brokerServiceId,
+        this.planModel.id,
+        this.space.id,
+      )
+        .then(response => {
+          this.loadings.param = false;
+          this.planId = this.planModel.id;
+          delete response.$schema;
+          this.parameters = response;
+        })
+        .catch(() => {
+          this.loadings.param = false;
+          this.$noty.error('加载服务的参数失败');
+        });
     },
 
-    async getPlatformParams() {
-      try {
-        const [response, dsp] = await Promise.all([
-          ServiceService.getServiceParameters(
-            this.brokerServiceId,
-            this.space.id,
-            this.planModel,
-          ),
-          this.isDCSService && this.loadKeyForDSP(),
-        ]);
-        if (this.isDCSService) {
-          this.injectParameters(response.params, dsp);
-        }
-        this.planId = response.planId;
-        if (this.chargingEnable) this.$emit('searchChargingRules', this.planId);
-        this.parameters = response.params.map(this.initDefaultValue);
-      } catch (e) {
-        this.$noty.error('加载服务的参数失败');
-      }
+    getPlatformParams() {
+      this.loadings.param = true;
+      return ServiceService.getServiceParameters(
+        this.brokerServiceId,
+        this.space.id,
+        this.planModel,
+      )
+        .then(response => {
+          this.loadings.param = false;
+          this.planId = response.planId;
+          this.parameters = response;
+        })
+        .catch(e => {
+          this.loadings.param = false;
+          this.$noty.error('加载服务的参数失败', e);
+        });
     },
 
     getParameters() {
       if (this.plan && this.plan.symbol) {
-        this.getPlatformParams();
-      } else {
-        this.getExternalParams();
+        return this.getPlatformParams();
       }
+      return this.getExternalParams();
     },
 
     initDefaultValue(param) {
@@ -302,68 +310,23 @@ export default {
       return param;
     },
 
-    /**
-     * inject params named 'dsp_access_key' and 'dsp_secert_key'
-     * from user/keys
-     * @param {Array<Object>} parameters params list;
-     */
-    async injectParameters(parameters, dsp) {
-      // const dsp = await this.loadKeyForDSP();
-      parameters.forEach(p => {
-        // dcs access key
-        if (p.name === 'name') {
-          p.default = this.space.short_name;
-        }
-        if (/dsp_access_key$/.test(p.name)) {
-          p.default = dsp.access_key; // dirty change!
-        } else if (/dsp_secert_key$/.test(p.name)) {
-          p.default = dsp.secert_key;
-        }
-      });
-      return parameters;
-    },
-
-    async loadKeyForDSP() {
-      const { DCS_DEPLOY_TOKEN } = BUILDIN_SERVICE_TOKEN_NAME;
-      return UserService.listKeys().then(keys => {
-        const DCSKey = keys.find(x => x.name === DCS_DEPLOY_TOKEN);
-        if (!DCSKey) {
-          return UserService.createKey(DCS_DEPLOY_TOKEN);
-        }
-        return DCSKey;
-      });
-    },
-
     formModel() {
+      if (this.loadings.init) {
+        return null;
+      }
+      const parameters = this.$refs.parameterPanel.next();
+      if (!parameters) {
+        return null;
+      }
       return {
         plan: this.planModel,
         ha: this.plan.ha,
         symbol: this.plan.symbol,
         planId: this.planId,
-        parameters: this.$refs.parameterPanel.next(),
+        parameters,
         standard: this.plan,
         quotaDict: this.quotaDict,
       };
-    },
-  },
-
-  computed: {
-    ...mapState(['space', 'chargingEnable', 'quotaDict']),
-
-    isVolume() {
-      return this.service.brokerService.service_type === VOLUME_SERVICE;
-    },
-
-    hasParams() {
-      return !isEmpty(this.parameters);
-    },
-
-    isDCSService() {
-      return this.service.brokerService.service_type === DCS;
-    },
-
-    isValidForm() {
-      return !this.loadings.init && this.orgId && this.spaceId;
     },
   },
 };
@@ -436,14 +399,14 @@ export default {
       &.active {
         z-index: 1;
         color: #1d81ff;
-        background: rgba(56, 144, 255, .05);
+        background: rgba(56, 144, 255, 0.05);
         border-color: #5290de;
       }
 
       &:hover {
         z-index: 1;
         color: #1d81ff;
-        background: rgba(56, 144, 255, .05);
+        background: rgba(56, 144, 255, 0.05);
         border-color: #5290de;
       }
 

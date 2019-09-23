@@ -98,6 +98,11 @@ export const SECRET = 'secret';
 export const DCS = 'dcs';
 export const ORG_LABEL = '租户';
 export const SPACE_LABEL = '项目组';
+export const ZONE_LABEL = '可用区';
+export const ZONE_AREA_LABEL = '区域';
+export const ZONE_ENV_LABEL = '环境';
+
+export const AREA_ENV = `${ZONE_AREA_LABEL} / ${ZONE_ENV_LABEL}`;
 
 export const SERVICE_TYPES_DESC = [
   {

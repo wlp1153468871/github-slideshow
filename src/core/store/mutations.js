@@ -94,6 +94,19 @@ export const getters = {
   orgDescription() {
     return ORG_LABEL;
   },
+
+  tenantDescription() {
+    return ORG_SPACE;
+  },
+
+  zoneDescription() {
+    return AREA_ENV;
+  },
+
+  envDescription() {
+    return ZONE_LABEL;
+  },
+
   isLocalAccount(state) {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
@@ -234,10 +247,34 @@ export const actions = {
     });
   },
 
-  initSpaceView({ dispatch, commit }) {
+  // 初始化项目组视图，获取sso、配额、项目组的信息
+  initTenantView({ dispatch, commit }) {
     commit(types.INIT_TENANT_VIEW_REQUEST);
-    dispatch('initView');
-    dispatch('loadSpaces');
+    return Promise.all([
+      dispatch('loadSSOInfo'),
+      dispatch('loadQuotaField'),
+      dispatch('initConsoleView'),
+    ]).then(() => {
+      commit(types.INIT_TENANT_VIEW_SUCCESS);
+    }).catch(() => {
+      commit(types.INIT_TENANT_VIEW_SUCCESS);
+    });
+  },
+
+  initConsoleView({ dispatch, state }) {
+    return dispatch('loadSpaces')
+      .then(() => {
+        return dispatch('loadZones');
+      })
+      .then(() => {
+        return dispatch('getUserInfo');
+      })
+      .then(() => {
+        if (state.zones.length) {
+          return dispatch('initPortal');
+        }
+        return Promise.resolve();
+      });
   },
 
   initView({ dispatch }) {

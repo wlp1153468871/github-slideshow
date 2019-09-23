@@ -16,7 +16,7 @@
       </div>
       <div class="tip">
         <h3>您的请求已提交审批</h3>
-        <p>您可以在 <a @click="gotoList">实例列表页面</a> 查看具体的审批进度</p>
+        <p>您可以在 <a @click="go toList">实例列表页面</a> 查看具体的审批进度</p>
       </div>
     </div>
     <div v-if="type === RESULT_TYPES.ERROR">
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { isEmpty } from 'lodash';
 
 export default {
@@ -52,6 +53,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['orgDescription']),
     type() {
       if (!isEmpty(this.error)) {
         return this.RESULT_TYPES.ERROR;
@@ -64,7 +66,7 @@ export default {
       const { data = {} } = this.error;
       let msg = '';
       if (/not\senough$/.test(data.error_info)) {
-        msg = '该租户的配额不足';
+        msg = `该${this.orgDescription}的配额不足`;
       }
       return [msg, data.error_info].join('\n');
     },
