@@ -27,15 +27,26 @@
       v-loading="imageTableLoading"
       @expand-change="onExpandChange">
       <el-table-column type="expand">
-        <template slot-scope="props">
+        <template #default="{ row: repositories }">
           <el-table
-            v-loading="props.row.tagLoading"
-            :data="props.row.tags"
+            v-loading="repositories.tagLoading"
+            :data="repositories.tags"
             size="mini">
             <el-table-column
               prop="name"
               label="标签"
               width="180">
+              <template #default="{ row: tag }">
+                <router-link
+                  :to="{ name: 'registry.registryTag',
+                     params: {
+                       tagName: tag.name,
+                       registryName: encodeURIComponent(repositories.name)
+                       }
+                     }">
+                  {{tag.name}}
+                </router-link>
+              </template>
             </el-table-column>
             <el-table-column
               prop="author"
@@ -50,6 +61,10 @@
             <el-table-column
               prop="docker_version"
               label="Docker版本">
+            </el-table-column>
+            <el-table-column
+              prop="scan_overview"
+              label="漏洞扫描">
             </el-table-column>
           </el-table>
         </template>
@@ -79,6 +94,10 @@
           <button
             class="dao-btn btn-sm mini blue"
             @click="deploy(scope.row)">部署应用
+          </button>
+          <button
+            class="dao-btn btn-sm mini blue"
+            @click="deploy(scope.row)">新建同步任务
           </button>
         </template>
       </el-table-column>

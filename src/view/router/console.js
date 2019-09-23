@@ -53,6 +53,7 @@ import ProductCheckout from '@/view/pages/console/product/checkout/checkout.vue'
 
 import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
 import Registry from '@/view/pages/console/registry/registry.vue';
+import RegistryTag from '@/view/pages/console/registry/detail/registryTag.vue';
 
 // resource
 import Deployments from '@/view/pages/console/resource/deployment/list/deployments.vue';
@@ -89,6 +90,14 @@ export default {
       path: 'registry',
       name: 'console.registry',
       component: Registry,
+    },
+    {
+      path: 'registry/:registryName/tags/:tagName',
+      name: 'registry.registryTag',
+      component: RegistryTag,
+      meta: {
+        activeMenu: 'console.registry',
+      },
     },
     {
       path: 'monitor',
