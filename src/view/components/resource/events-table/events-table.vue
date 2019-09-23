@@ -148,7 +148,7 @@ export default {
   },
 
   methods: {
-    onSortChange({order}) {
+    onSortChange({ order }) {
       this.sortOrder = order;
     },
   },

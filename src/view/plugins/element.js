@@ -27,6 +27,9 @@ import {
   TabPane,
   Tabs,
   Tooltip,
+  Form,
+  FormItem,
+  Card,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
@@ -58,3 +61,7 @@ Vue.use(Tooltip);
 Vue.use(Radio);
 Vue.use(RadioButton);
 Vue.use(RadioGroup);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Card);
+

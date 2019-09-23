@@ -1,0 +1,10 @@
+#metric-table {
+  .table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    .table-title {
+      color: #606266;
+      font-style: italic;
+    }
+  }
+}

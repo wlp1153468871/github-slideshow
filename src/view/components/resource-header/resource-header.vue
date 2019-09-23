@@ -38,6 +38,7 @@
           </div>
           <slot name="labels"></slot>
         </div>
+
       </div>
     </div>
     <div class="action-buttons">
@@ -132,5 +133,11 @@ export default {
   .action-buttons {
     flex-shrink: 0;
   }
+
+  .description {
+    color: #3d444f;
+  }
+
+
 }
 </style>

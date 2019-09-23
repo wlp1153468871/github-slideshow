@@ -78,6 +78,8 @@ import upperCase from './upper-case.filter';
 import usageWithUnits from './resource/usage-with-units.filter';
 import volumeMountMode from './resource/volume-mount-mode.filter';
 import zoneAuth from './zone-auth.filter';
+import threshold from './threshold.filter';
+import alarmScope from './alarm-scope.filter';
 
 const filters = {
   accessModes,
@@ -158,6 +160,8 @@ const filters = {
   usageWithUnits,
   volumeMountMode,
   zoneAuth,
+  threshold,
+  alarmScope,
 };
 
 Object.keys(filters).forEach(key => {

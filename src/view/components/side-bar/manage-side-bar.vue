@@ -52,6 +52,14 @@
             </svg>
             <span>可用区设置</span>
           </el-menu-item>
+          <el-menu-item
+            index="manage.alarm-metrics.list"
+            :route="{ name: 'manage.alarm-metrics.list' }">
+            <svg class="icon">
+              <use xlink:href="#icon_bell"></use>
+            </svg>
+            <span>告警指标</span>
+          </el-menu-item>
         </el-submenu>
         <el-menu-item
           index="manage.preference.home"

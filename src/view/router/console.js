@@ -5,6 +5,13 @@ import Vue from 'vue';
 // container
 import ConsoleContainer from '@/view/pages/console/container/container.vue';
 
+// monitor
+import Monitor from '@/view/pages/console/monitor/monitor.vue';
+
+// alarm
+import Alarm from '@/view/pages/console/alarm/list/list.vue';
+import AlarmDetail from '@/view/pages/console/alarm/detail/detail.vue';
+import CreateAlarmRule from '@/view/pages/console/alarm/new-add/new-add.vue';
 // console
 import ApprovalHistory from '@/view/pages/console/approval/approval-history/approval-history.vue';
 import ApprovalList from '@/view/pages/console/approval/approval-list/approval-list.vue';
@@ -19,7 +26,6 @@ import UserList from '@/view/pages/console/user/user-list/user-list.vue';
 import SpaceQuota from '@/view/pages/console/quota/space-quota.vue';
 import AppList from '@/view/pages/console/app/list/app-list.vue';
 import AppDetail from '@/view/pages/console/app/detail/app-detail.vue';
-import Monitor from '@/view/pages/console/monitor/monitor.vue';
 
 // deploy
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
@@ -88,6 +94,28 @@ export default {
       path: 'monitor',
       name: 'console.monitor',
       component: Monitor,
+    },
+    {
+      path: 'alarm/rules',
+      name: 'console.alarm',
+      component: Alarm,
+    },
+    {
+      path: 'alarm/rule/create',
+      name: 'console.alarm.create',
+      component: CreateAlarmRule,
+      beforeEnter(to, from, next) {
+        if (store.getters.alarmAdminAccessed) {
+          next();
+          return;
+        }
+        next({ name: 'console.alarm' });
+      },
+    },
+    {
+      path: 'alarm/rule/:id',
+      name: 'console.alarm.rule',
+      component: AlarmDetail,
     },
     {
       path: 'instances/:serviceId',

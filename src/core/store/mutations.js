@@ -13,6 +13,8 @@ import {
   LOCAL_ACCOUNT_KEY,
   LS_KYES,
   SYNC_STATUS,
+  SPACE_LABEL,
+  ORG_LABEL,
 } from '@/core/constants/constants';
 import CatalogService from '@/core/services/catalog.service';
 import AuthService from '@/core/services/auth.service';
@@ -32,6 +34,7 @@ import {
   uniqBy,
   flatten,
   intersectionWith,
+  pick,
 } from 'lodash';
 import {
   DEFAULT_RESOURCE,
@@ -53,6 +56,7 @@ export const state = {
   helpURLDict: {},
   loadings: {
     initTenantView: false,
+    alarmListView: false,
   },
   theme: {
     productName: '',
@@ -76,10 +80,20 @@ export const state = {
   },
   apiResource: null,
   openedMenus: [],
+  alarm: {
+    rules: [],
+  },
 };
 
 /* eslint-disable no-shadow */
 export const getters = {
+  spaceDescription() {
+    return SPACE_LABEL;
+  },
+
+  orgDescription() {
+    return ORG_LABEL;
+  },
   isLocalAccount(state) {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
@@ -97,6 +111,12 @@ export const getters = {
   isSpaceAdmin(state, getters) {
     return (
       getters.isPlatformAdmin || state.user.space_role === SPACE_ROLE.ADMIN
+    );
+  },
+
+  alarmAdminAccessed(state, getters) {
+    return (
+      getters.isPlatformAdmin || getters.isOrganizationAdmin || getters.isSpaceAdmin
     );
   },
 
@@ -478,6 +498,17 @@ export const mutations = {
 
   [types.INIT_TENANT_VIEW_SUCCESS](state) {
     state.loadings.initTenantView = false;
+  },
+  [types.ALARM_LIST_VIEW_REQUEST](state) {
+    state.loadings.alarmListView = true;
+  },
+
+  [types.ALARM_LIST_VIEW_SUCCESS](state) {
+    state.loadings.alarmListView = false;
+  },
+
+  [types.ALARM_RULES](state, rules) {
+    state.alarm.rules = rules.map(rule => pick(rule, ['name', 'id']));
   },
 
   [types.LOAD_SERVICE_SUCCESS](state, services) {

@@ -1,0 +1,25 @@
+.alarm-instances-table {
+  margin-top: 10px;
+  .item-row {
+    margin-bottom: 20px;
+  }
+  .addReceiverBtn {
+    margin-top: 15px;
+  }
+  .receiver-dialog {
+    margin: 20px 0 0 20px;
+    label {
+      text-align: left;
+    }
+    input {
+      height: auto!important;
+      width: 300px;
+    }
+    .el-select-dropdown {
+      width: 300px;
+    }
+    .el-select__tags {
+      flex-wrap: nowrap;
+    }
+  }
+}

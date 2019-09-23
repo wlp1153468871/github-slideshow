@@ -111,6 +111,8 @@ export default {
       } else {
         notifyErrorResponse(response);
       }
+    } else if (response.status === 423) {
+      // pass to show alarm-banned page
     } else {
       notifyErrorResponse(response, error.message);
     }

@@ -88,7 +88,6 @@ class OrgService {
   getResourceQuotaApprovals(orgId, type = 'apply') {
     return this.api.get('/quota/approval/organization', { organization_id: orgId || this.orgId, type });
   }
-
 }
 
 export default new OrgService();
