@@ -2,6 +2,7 @@ import { mapState } from 'vuex';
 // import SpaceService from '@/core/services/space.service';
 import OrgService from '@/core/services/org.service';
 import AddSpaceDialog from '@/view/pages/dialogs/space/add-space';
+import { omit } from 'lodash';
 
 export default {
   name: 'SpaceList',
@@ -24,7 +25,8 @@ export default {
   methods: {
     createSpace(params) {
       const space = {
-        ...params,
+        ...omit(params, 'zoneIds'),
+        zone_ids: params.zoneIds,
         organization_id: this.org.id,
       };
       OrgService.createOrgSpace(this.org.id, space).then(() => {

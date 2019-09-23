@@ -319,7 +319,7 @@ export default {
   .empty-msg {
     margin: 0 20px 20px 0;
     padding-bottom: 20px;
-    font-size: 16px;
+    font-size: 14px;
     color: #9ba3af;
   }
 }

@@ -381,7 +381,7 @@ export const actions = {
     });
   },
 
-  loadZones({ dispatch, commit, state }) {
+  loadZones({ commit, state }) {
     return SpaceService.getSpaceZones(state.space.id).then(zones => {
       commit(types.LOAD_ZONE_SUCCESS, { zones });
 
@@ -393,25 +393,25 @@ export const actions = {
         zone = zones.find(x => x.id === zone.id);
       }
 
-      if (!zone) {
+      if (!zone || !Object.keys(zone).length) {
         zone = first(zones) || {};
-        ZoneService.setLocalZone(zone);
       }
+      ZoneService.setLocalZone(zone);
 
       commit(types.SWITCH_ZONE, { zone });
-
-      if (state.zones.length) {
-        dispatch('loadUserInfo');
-        dispatch('initPortal');
-      } else {
-        commit(types.INIT_TENANT_VIEW_SUCCESS);
-      }
     });
   },
 
-  loadUserInfo({ commit }) {
-    return AuthService.getUserInfo().then(user => {
-      commit('LOAD_USER_SUCCESS', { user });
+  getUserInfo({ commit }) {
+    return new Promise((resolve, reject) => {
+      AuthService.getUserInfo()
+        .then(user => {
+          commit('LOAD_USER_SUCCESS', { user });
+          resolve(user);
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   },
 
@@ -492,16 +492,31 @@ export const actions = {
     dispatch('switchSpace', { space });
   },
 
+  // 切换项目组
   switchSpace({ dispatch, commit }, { space }) {
     commit(types.SWITCH_SPACE, { space });
     SpaceService.setLocalSpace(space);
-    dispatch('loadZones');
+
+    dispatch('loadZones').then(() => {
+      if (state.zones.length) {
+        const zone = first(state.zones);
+        dispatch('switchZone', { zone });
+        router.push({
+          name: 'console.dashboard',
+        });
+      } else {
+        Vue.noty.error('暂无可用区');
+      }
+    });
   },
 
+  // 切换可用区
   switchZone({ dispatch, commit }, { zone }) {
     commit(types.SWITCH_ZONE, { zone });
     ZoneService.setLocalZone(zone);
-    dispatch('loadZones');
+    dispatch('getUserInfo').then(() => {
+      dispatch('initPortal');
+    });
   },
 };
 
