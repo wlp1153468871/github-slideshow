@@ -142,7 +142,8 @@ class PodService {
 
   fetchContainerMonitorUrl({
      pod,
-     container,
+     instance,
+     numberEx,
      space = this.space,
      zone = this.zone,
      from = '',
@@ -150,7 +151,8 @@ class PodService {
      refresh = '',
    }: {
     pod: string;
-    container: string;
+    instance: string;
+    numberEx: string;
     space?: string;
     zone?: string;
     from?: string;
@@ -158,8 +160,8 @@ class PodService {
     refresh?: string;
   }) {
     return this.api.get(
-      `/spaces/${space}/monitoring/pod/${pod}/container/${container}`,
-      { zone, from, to, refresh },
+      `/spaces/${space}/monitoring/instance/${instance}/number/${numberEx}`,
+      { zone, pod, from, to, refresh },
     );
   }
 
