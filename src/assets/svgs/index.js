@@ -59,6 +59,10 @@ import './logo_login.svg';
 import './icon_opreators.svg';
 import './icon_operator-hub.svg';
 import './icon_operator-hub-icon.svg';
+import './icon_pvc-logo.svg';
+import './icon_pvc.svg';
+import './icon_bell.svg';
+
 
 // home
 import './home/home-app.svg';
