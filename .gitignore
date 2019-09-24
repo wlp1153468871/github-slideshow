@@ -29,7 +29,7 @@ node_modules/
 .idea
 .DS_Store
 dist
-lib
+# lib
 yarn.lock
 package-lock.json
 webstorm.config.js
