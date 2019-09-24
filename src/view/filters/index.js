@@ -80,6 +80,7 @@ import volumeMountMode from './resource/volume-mount-mode.filter';
 import zoneAuth from './zone-auth.filter';
 import threshold from './threshold.filter';
 import alarmScope from './alarm-scope.filter';
+import scanOverviewStatus from './resource/scan-overview-status.filter.js';
 
 const filters = {
   accessModes,
@@ -162,6 +163,7 @@ const filters = {
   zoneAuth,
   threshold,
   alarmScope,
+  scanOverviewStatus,
 };
 
 Object.keys(filters).forEach(key => {

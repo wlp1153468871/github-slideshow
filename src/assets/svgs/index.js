@@ -62,6 +62,7 @@ import './icon_operator-hub-icon.svg';
 import './icon_pvc-logo.svg';
 import './icon_pvc.svg';
 import './icon_bell.svg';
+import './icon_deployment-config-logo.svg';
 
 
 // home
