@@ -25,7 +25,7 @@
 
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item @click="viewYaml">
-                <span>查看 Yaml</span>
+                <span>查看 YAML</span>
               </dao-dropdown-item>
               <dao-dropdown-item
                 v-if="$can('delete')"
@@ -101,6 +101,7 @@
                 size="small"
                 filterable
                 v-model="selectedTerminalContainer"
+                value-key="containerName"
                 placeholder="Container Name">
                 <el-option
                   v-for="term in containerTerminals"
@@ -179,6 +180,25 @@
             v-if="activeTab === TABS.EVENT.name"
             :events="events">
           </events-table>
+        </el-tab-pane>
+
+        <el-tab-pane
+          :label="TABS.TERMINAL_HISTORY.label"
+          :name="TABS.TERMINAL_HISTORY.name"
+          lazy>
+          <terminal-history-panel
+            v-if="activeTab === TABS.TERMINAL_HISTORY.name"
+            :pod="pod">
+          </terminal-history-panel>
+        </el-tab-pane>
+        <el-tab-pane
+          :label="TABS.MONITOR.label"
+          :name="TABS.MONITOR.name"
+          lazy>
+          <monitor-panel
+            v-if="activeTab === TABS.MONITOR.name"
+          >
+          </monitor-panel>
         </el-tab-pane>
 
       </el-tabs>

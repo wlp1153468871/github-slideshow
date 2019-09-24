@@ -18,6 +18,12 @@ class DeploymentConfigResourceService {
       },
     });
   }
+
+  getResourceReports(spaceId, zone) {
+    return this.api.get(`/spaces/${spaceId}/monitoring/resourcedeviation`, {
+      zone,
+    });
+  }
 }
 
 export default new DeploymentConfigResourceService();

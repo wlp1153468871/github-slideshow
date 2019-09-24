@@ -37,6 +37,24 @@ class RegistryService {
       query,
     );
   }
+
+  getTag(spaceId: string, registryName: string, tag: string, zone: string) {
+    return this.api.get(
+      `/spaces/${spaceId}/repositories/${registryName}/tags/${tag}`, { zone },
+    );
+  }
+
+  /**
+   * 获取某一标签扫描详情
+   * @returns
+   */
+  getTagDetails(spaceId: string, registryName: string, tag: string, zone: string) {
+    return this.api.get(
+      `/spaces/${spaceId}/repositories/${registryName}/tags/${tag}/vulnerability/details`,
+      { zone },
+    );
+  }
+
 }
 
 export default new RegistryService();

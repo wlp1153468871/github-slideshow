@@ -6,6 +6,8 @@ import OverviewPanel from './panels/overview';
 import SpacePanel from './panels/space';
 import QuotaRequestPanel from './panels/quota-request';
 import QuotaPanel from './panels/quota';
+import OrgQuotaPanel from './panels/org-quota';
+import OrgQuotaApprovalPanel from './panels/org-quota-approval';
 import UserPanel from './panels/user';
 import RegistryPanel from './panels/registry';
 import ZonePanel from './panels/zone';
@@ -23,6 +25,8 @@ export default {
     UserPanel,
     RegistryPanel,
     ZonePanel,
+    OrgQuotaPanel,
+    OrgQuotaApprovalPanel,
   },
 
   created() {
@@ -35,7 +39,8 @@ export default {
       OVERVIEW: '设置',
       USER: '用户列表',
       TEAM: '项目组',
-      QUOTA: '租户配额',
+      QUOTA: '配额管理',
+      QUOTA_APPROVAL: '配额更新请求',
       QUOTA_GROUP: '配额组',
       REGISTRY: '镜像仓库信息',
       QUOTA_REQUEST: '配额审批',

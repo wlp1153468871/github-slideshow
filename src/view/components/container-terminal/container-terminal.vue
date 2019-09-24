@@ -11,7 +11,8 @@
     <div
       class="xterm-wrapper-container"
       ref="xtermContainer"
-      @mouseup="copySelectionToClipboard">
+      @mouseup="copySelectionToClipboard"
+      @onkeydown="keydown">
     </div>
   </div>
 </template>
@@ -24,6 +25,7 @@ import { Terminal } from 'xterm';
 import * as fit from 'xterm/dist/addons/fit/fit';
 import * as fullscreen from 'xterm/dist/addons/fullscreen/fullscreen';
 import PodService from '@/core/services/pod.service';
+import TerminalHistoryService from '@/core/services/terminal-history.service';
 import SockJS from 'sockjs-client';
 
 Terminal.applyAddon(fit);
@@ -50,6 +52,7 @@ export default {
       terminalResponse: {},
       first: true,
       isFullscreened: false,
+      keyWords: [],
     };
   },
 
@@ -91,7 +94,26 @@ export default {
           Cols: this.term.cols,
         }));
       }
+      this.keyWords.push(data);
     });
+
+    this.term.textarea.onkeydown = e => {
+      if (e.keyCode === 8) {
+        this.keyWords.pop();
+        this.keyWords.pop();
+      }
+      if (e.keyCode === 13) {
+        this.keyWords.pop();
+        TerminalHistoryService.saveTerminalHistories(
+          this.space.id,
+          this.zone.id,
+          this.pod.metadata.name,
+          this.container,
+          { message: this.keyWords.join('') },
+        );
+        this.keyWords = [];
+      }
+    };
     // eslint-disable-next-line no-underscore-dangle
     this.term._initialized = true;
   },
@@ -117,6 +139,13 @@ export default {
   methods: {
     copySelectionToClipboard() {
       document.execCommand('Copy');
+    },
+
+    keydown(event) {
+      if (event.keyCode === 13) {
+        return true;
+      }
+      return false;
     },
 
     fullScreen() {

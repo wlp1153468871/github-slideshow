@@ -21,16 +21,22 @@
       :default-sort="{prop: 'time', order: 'descending'}"
       v-loading="loading"
       :data="eventsInCurrentPage"
+      @sort-change="onSortChange"
       style="width: 100%">
       <el-table-column
-        sortable
+        sortable="custom"
         prop="time"
         label="时间"
-        :sort-method="sortStartTime"
         width="200">
         <template slot-scope="{ row: event }">
           <td data-title="Time" class="nowrap">{{event.lastTimestamp | date}}</td>
         </template>
+      </el-table-column>
+      <el-table-column
+        prop="involvedObject.kind"
+        label="涉及对象"
+        width="200"
+      >
       </el-table-column>
       <el-table-column
         prop="reason"
@@ -96,15 +102,36 @@ export default {
       filterKey: '',
       currentPage: 1,
       pageSize: 10,
+      sortOrder: 'descending',
     };
   },
 
   computed: {
     eventsFilteredByKey() {
       const filterKey = this.filterKey.toLowerCase();
-      return this.events.filter(event =>
-        event.reason.toLowerCase().includes(filterKey) ||
-          event.message.toLowerCase().includes(filterKey));
+      return this.events
+        .filter(event => {
+          return (
+            event.reason.toLowerCase().includes(filterKey) ||
+            event.message.toLowerCase().includes(filterKey)
+          );
+        })
+        .sort((a, b) => {
+          let before = 1;
+          let after = -1;
+          if (this.sortOrder === 'ascending') {
+            before = -1;
+            after = 1;
+          }
+          const prevTime = dayjs(a.lastTimestamp);
+          const nextTime = dayjs(b.lastTimestamp);
+          if (prevTime.isSame(nextTime)) {
+            return 0;
+          } else if (prevTime.isBefore(nextTime)) {
+            return before;
+          }
+          return after;
+        });
     },
 
     paginaEvents() {
@@ -121,15 +148,8 @@ export default {
   },
 
   methods: {
-    sortStartTime(a, b) {
-      const prevTime = dayjs(a.lastTimestamp);
-      const nextTime = dayjs(b.lastTimestamp);
-      if (prevTime.isSame(nextTime)) {
-        return 0;
-      } else if (prevTime.isBefore(nextTime)) {
-        return -1;
-      }
-      return 1;
+    onSortChange({ order }) {
+      this.sortOrder = order;
     },
   },
 };

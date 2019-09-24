@@ -30,20 +30,13 @@
         </service-panel>
       </el-tab-pane>
 
-      <el-tab-pane :label="SIDE_BAR.QUOTA" :name="SIDE_BAR.QUOTA">
-        <quota-panel
-          ref="qutoaPanel"
-          :org-id="orgId"
-          :space-id="spaceId"
-          :quota-usages="space.quota_usages">
-        </quota-panel>
-      </el-tab-pane>
-
-      <el-tab-pane :label="SIDE_BAR.QUOTA_REQUEST" :name="SIDE_BAR.QUOTA_REQUEST">
-        <quota-request-panel
-          @update-quota="refreshSpaceQuotaGroups"
+      <el-tab-pane
+        :label="SIDE_BAR.ZONE"
+        :name="SIDE_BAR.ZONE"
+        lazy>
+        <zone-panel
           :space-id="spaceId">
-        </quota-request-panel>
+        </zone-panel>
       </el-tab-pane>
 
       <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">

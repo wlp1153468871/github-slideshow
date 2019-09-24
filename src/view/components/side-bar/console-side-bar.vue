@@ -140,6 +140,15 @@
             </svg>
             <span slot="title">监控中心</span>
           </el-menu-item>
+          <el-menu-item
+            v-if="$can('read')"
+            index="console.alarm"
+            :route="{ name: 'console.alarm' }">
+            <svg class="icon">
+              <use xlink:href="#icon_bell"></use>
+            </svg>
+            <span slot="title">告警中心</span>
+          </el-menu-item>
 
         </template>
 
@@ -158,8 +167,8 @@
             <span>用户管理</span>
           </el-menu-item>
           <el-menu-item
-            index="console.quota.used"
-            :route="{ name: 'console.quota.used' }">
+            index="console.space-quota"
+            :route="{ name: 'console.space-quota' }">
             <svg class="icon">
               <use xlink:href="#icon_quota"></use>
             </svg>

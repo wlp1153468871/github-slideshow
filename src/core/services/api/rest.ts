@@ -31,7 +31,7 @@ class Rest {
   get<T>(
     url: string,
     params?: {},
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig & { noNotify?: boolean },
   ): AxiosPromise<T> {
     const getConfig = {};
     if (params) Object.assign(getConfig, { params });

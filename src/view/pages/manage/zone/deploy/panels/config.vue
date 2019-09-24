@@ -368,6 +368,21 @@
         </dao-setting-item>
       </dao-setting-section>
     </dao-setting-layout>
+    <dao-setting-layout>
+      <template #layout-title>报警配置</template>
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label>是否开启</template>
+          <template #content>
+            <dao-switch
+              size="sm"
+              v-model="form.is_alert">
+            </dao-switch>
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+
+    </dao-setting-layout>
 
   </div>
 </template>

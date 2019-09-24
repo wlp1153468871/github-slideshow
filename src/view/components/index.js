@@ -54,6 +54,7 @@ import ResourceLink from './resource/resource-link/resource-link';
 import OverflowTooltip from './overflow-tooltip/overflow-tooltip';
 import DAside from './aside';
 import { PercentCircle, PieChart, ProgressDount } from './charts';
+import SpaceZone from './space-zone/space-zone';
 
 const components = {
   ...Daox,
@@ -115,6 +116,7 @@ const components = {
   UploadInput,
   XTable,
   OverflowTooltip,
+  SpaceZone,
 };
 
 function install(Vue) {

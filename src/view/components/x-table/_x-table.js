@@ -8,14 +8,16 @@ export default {
     filterMethod: { type: Function },
     loading: { type: Boolean, default: false },
     small: { type: Boolean, default: false },
+    initalPageSize: { type: Number, default: 20 },
     showRefresh: { type: Boolean, default: true },
+    searchPlaceholder: { type: String, default: '请输入搜索内容' },
   },
 
   data() {
     return {
       filterKey: '',
       currentPage: 1,
-      pageSize: 10,
+      pageSize: this.initalPageSize,
     };
   },
 

@@ -13,6 +13,11 @@ import {
   LOCAL_ACCOUNT_KEY,
   LS_KYES,
   SYNC_STATUS,
+  SPACE_LABEL,
+  ORG_LABEL,
+  ORG_SPACE,
+  AREA_ENV,
+  ZONE_LABEL,
 } from '@/core/constants/constants';
 import CatalogService from '@/core/services/catalog.service';
 import AuthService from '@/core/services/auth.service';
@@ -32,6 +37,7 @@ import {
   uniqBy,
   flatten,
   intersectionWith,
+  pick,
 } from 'lodash';
 import {
   DEFAULT_RESOURCE,
@@ -53,6 +59,7 @@ export const state = {
   helpURLDict: {},
   loadings: {
     initTenantView: false,
+    alarmListView: false,
   },
   theme: {
     productName: '',
@@ -76,10 +83,33 @@ export const state = {
   },
   apiResource: null,
   openedMenus: [],
+  alarm: {
+    rules: [],
+  },
 };
 
 /* eslint-disable no-shadow */
 export const getters = {
+  spaceDescription() {
+    return SPACE_LABEL;
+  },
+
+  orgDescription() {
+    return ORG_LABEL;
+  },
+
+  tenantDescription() {
+    return ORG_SPACE;
+  },
+
+  zoneDescription() {
+    return AREA_ENV;
+  },
+
+  envDescription() {
+    return ZONE_LABEL;
+  },
+
   isLocalAccount(state) {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
@@ -97,6 +127,12 @@ export const getters = {
   isSpaceAdmin(state, getters) {
     return (
       getters.isPlatformAdmin || state.user.space_role === SPACE_ROLE.ADMIN
+    );
+  },
+
+  alarmAdminAccessed(state, getters) {
+    return (
+      getters.isPlatformAdmin || getters.isOrganizationAdmin || getters.isSpaceAdmin
     );
   },
 
@@ -214,10 +250,34 @@ export const actions = {
     });
   },
 
-  initSpaceView({ dispatch, commit }) {
+  // 初始化项目组视图，获取sso、配额、项目组的信息
+  initTenantView({ dispatch, commit }) {
     commit(types.INIT_TENANT_VIEW_REQUEST);
-    dispatch('initView');
-    dispatch('loadSpaces');
+    return Promise.all([
+      dispatch('loadSSOInfo'),
+      dispatch('loadQuotaField'),
+      dispatch('initConsoleView'),
+    ]).then(() => {
+      commit(types.INIT_TENANT_VIEW_SUCCESS);
+    }).catch(() => {
+      commit(types.INIT_TENANT_VIEW_SUCCESS);
+    });
+  },
+
+  initConsoleView({ dispatch, state }) {
+    return dispatch('loadSpaces')
+      .then(() => {
+        return dispatch('loadZones');
+      })
+      .then(() => {
+        return dispatch('getUserInfo');
+      })
+      .then(() => {
+        if (state.zones.length) {
+          return dispatch('initPortal');
+        }
+        return Promise.resolve();
+      });
   },
 
   initView({ dispatch }) {
@@ -242,56 +302,87 @@ export const actions = {
     });
   },
 
-  loadSpaces({ dispatch, commit }) {
-    Promise.all([OrgService.getUserOrgs(), SpaceService.getUserSpaces()]).then(([orgs, spaces]) => {
-      if (isEmpty(spaces)) {
-        router.push({ name: '403' });
-        commit(types.INIT_TENANT_VIEW_SUCCESS);
-      }
-
-      const dict = groupBy(spaces, 'organization_id');
-      orgs.forEach(org => {
-        if (dict[org.id]) {
-          org.children = dict[org.id];
-        } else {
-          org.disabled = true;
+  loadSpaces({ commit, state, getters }) {
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        OrgService.getUserOrgs(),
+        SpaceService.getUserSpaces(),
+      ]).then(([orgs, spaces]) => {
+        // 如果没有可以进入的租户，则跳转页面，onInitTenantView设为true防止循环调用
+        if (isEmpty(orgs)) {
+          if (state.user.service_role === 'service_admin') {
+            router.push({ name: 'console.platform-approval', query: { onInitTenantView: true } });
+          } else {
+            Vue.noty.error(`您暂未加入任何${getters.orgDescription}及${getters.spaceDescription}`);
+            router.push({ name: 'console.profile', query: { onInitTenantView: true } });
+          }
+          reject(new Error('no orgs'));
+          return;
         }
+
+        // 过滤没有项目组的租户，设为 disabled，保存 orgs 和 spaces 到 vuex
+        const dict = groupBy(spaces, 'organization_id');
+        orgs.forEach(org => {
+          if (dict[org.id]) {
+            org.children = dict[org.id];
+          } else {
+            org.disabled = true;
+          }
+        });
+        orgs = orgs.filter(org => !org.disabled);
+        commit(types.LOAD_SPACE_SUCCESS, { orgs, spaces });
+
+        // 获取上次登录的租户
+        let org = OrgService.getLocalOrg();
+        if (org && org.id) {
+          org = orgs.find(x => x.id === org.id);
+        }
+
+        // 如果没有上次登录的租户，或者id在orgs找不到，则选择第一个有项目组的租户
+        if (!org || !org.id) {
+          org = first(orgs);
+        }
+
+        if (org) {
+          commit(types.SWITCH_ORG, { org });
+          OrgService.setLocalOrg(org);
+        } else {
+          // 如果org为空，也就是org没有space，则跳转到profile页面，onInitTenantView设为true防止循环调用
+          Vue.noty.error(`您暂未加入任何${getters.spaceDescription}`);
+          router.push({ name: 'console.profile', query: { onInitTenantView: true } });
+          reject(new Error('no space'));
+          return;
+        }
+
+        // 选择项目组
+        // 获取上次登录的项目组
+        let space = SpaceService.getLocalSpace();
+        if (space && space.id) {
+          space = spaces.find(x => x.id === space.id && x.organization_id === org.id);
+        }
+
+        // 如果没有上次登录的项目组，或者id在spaces中找不到，或者space不在当前的org中，则获取当前org中的第一个项目组
+        if (!space || !space.id) {
+          space = first(org.children);
+        }
+
+        if (space) {
+          SpaceService.setLocalSpace(space);
+          commit(types.SWITCH_SPACE, { space });
+        } else {
+          // 不会出现，以防万一
+          Vue.noty.error('出错了');
+          router.push({ name: 'console.profile', query: { onInitTenantView: true } });
+          reject(new Error('no space'));
+          return;
+        }
+        resolve();
       });
-      orgs = orgs.filter(org => !org.disabled);
-      commit(types.LOAD_SPACE_SUCCESS, { orgs, spaces });
-
-      // handle selected org
-      let org = OrgService.getLocalOrg();
-      if (org && org.id) org = orgs.find(x => x.id === org.id);
-
-      if (!org || !org.id) {
-        org = first(orgs);
-      }
-
-      if (org) {
-        commit(types.SWITCH_ORG, { org });
-        OrgService.setLocalOrg(org);
-      }
-
-      // handle selected space
-      let space = SpaceService.getLocalSpace();
-      if (space && space.id) space = spaces.find(x => x.id === space.id);
-
-      if (!space || !space.id) {
-        space = first((org || {}).children);
-      }
-
-      if (space) {
-        SpaceService.setLocalSpace(space);
-        commit(types.SWITCH_SPACE, { space });
-      }
-
-      dispatch('loadZones');
     });
   },
 
-  loadZones({ dispatch, commit, state }) {
-    return ZoneService.getOrgZones(state.org.id).then(zones => {
+  loadZones({ commit, state }) {
+    return SpaceService.getSpaceZones(state.space.id).then(zones => {
       commit(types.LOAD_ZONE_SUCCESS, { zones });
 
       // get localStorage saved zone;
@@ -302,25 +393,25 @@ export const actions = {
         zone = zones.find(x => x.id === zone.id);
       }
 
-      if (!zone) {
+      if (!zone || !Object.keys(zone).length) {
         zone = first(zones) || {};
-        ZoneService.setLocalZone(zone);
       }
+      ZoneService.setLocalZone(zone);
 
       commit(types.SWITCH_ZONE, { zone });
-
-      if (state.zones.length) {
-        dispatch('loadUserInfo');
-        dispatch('initPortal');
-      } else {
-        commit(types.INIT_TENANT_VIEW_SUCCESS);
-      }
     });
   },
 
-  loadUserInfo({ commit }) {
-    return AuthService.getUserInfo().then(user => {
-      commit('LOAD_USER_SUCCESS', { user });
+  getUserInfo({ commit }) {
+    return new Promise((resolve, reject) => {
+      AuthService.getUserInfo()
+        .then(user => {
+          commit('LOAD_USER_SUCCESS', { user });
+          resolve(user);
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   },
 
@@ -401,16 +492,31 @@ export const actions = {
     dispatch('switchSpace', { space });
   },
 
+  // 切换项目组
   switchSpace({ dispatch, commit }, { space }) {
     commit(types.SWITCH_SPACE, { space });
     SpaceService.setLocalSpace(space);
-    dispatch('loadZones');
+
+    dispatch('loadZones').then(() => {
+      if (state.zones.length) {
+        const zone = first(state.zones);
+        dispatch('switchZone', { zone });
+        router.push({
+          name: 'console.dashboard',
+        });
+      } else {
+        Vue.noty.error('暂无可用区');
+      }
+    });
   },
 
+  // 切换可用区
   switchZone({ dispatch, commit }, { zone }) {
     commit(types.SWITCH_ZONE, { zone });
     ZoneService.setLocalZone(zone);
-    dispatch('loadZones');
+    dispatch('getUserInfo').then(() => {
+      dispatch('initPortal');
+    });
   },
 };
 
@@ -478,6 +584,17 @@ export const mutations = {
 
   [types.INIT_TENANT_VIEW_SUCCESS](state) {
     state.loadings.initTenantView = false;
+  },
+  [types.ALARM_LIST_VIEW_REQUEST](state) {
+    state.loadings.alarmListView = true;
+  },
+
+  [types.ALARM_LIST_VIEW_SUCCESS](state) {
+    state.loadings.alarmListView = false;
+  },
+
+  [types.ALARM_RULES](state, rules) {
+    state.alarm.rules = rules.map(rule => pick(rule, ['name', 'id']));
   },
 
   [types.LOAD_SERVICE_SUCCESS](state, services) {

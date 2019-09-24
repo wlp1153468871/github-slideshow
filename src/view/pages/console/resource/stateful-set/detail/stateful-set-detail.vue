@@ -39,7 +39,7 @@
           </dao-dropdown>
           <button
             class="dao-btn csp-table-update-btn"
-            @click="getStatefulSet"
+            @click="onRefresh"
             style="margin-left: 10px">
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
@@ -107,35 +107,54 @@
             @refresh="getEvents">
           </events-table>
         </el-tab-pane>
+        <el-tab-pane
+          :label="TABS.OPERATING_DATA.label"
+          :name="TABS.OPERATING_DATA.name"
+          :lazy="true">
+          <operating-data :name="name"></operating-data>
+        </el-tab-pane>
+        <el-tab-pane
+          v-if="pods.length"
+          :label="TABS.MONITOR.label"
+          :name="TABS.MONITOR.name"
+          :lazy="true">
+          <monitor-panel
+            v-if="tab === TABS.MONITOR.name"
+            :pods="pods"
+            :name="name">
+          </monitor-panel>
+        </el-tab-pane>
       </el-tabs>
     </template>
     <edit-yaml-dialog
       :visible.sync="yamlVisible"
       :value="statefulset"
       @update="updateByYaml"
+      @close="yamlVisible = false"
     ></edit-yaml-dialog>
   </div>
 </template>
 
 <script>
-import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
-import { get, set, cloneDeep } from 'lodash';
-import ResourceMixin from '@/view/mixins/resource';
+import { get, set, cloneDeep, isEmpty } from 'lodash';
+import { RESOURCE } from '@/core/constants/resource';
+import { MONITOR_ALL_PODS } from '@/core/constants/constants';
+
 import StatefulSetService from '@/core/services/stateful-set.service.ts';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml.vue';
+import OperatingData from '@/view/components/log/operating-data';
 
 // panels
 import LogOfflinePanel from '@/view/components/log/log-offline.vue';
 import LogPanel from '@/view/components/log/log.vue';
+import MonitorPanel from '@/view/pages/console/resource/deployment-config/detail/panels/monitor.vue';
 import InfoPanel from './panels/info';
 import PodsPanel from './panels/pods';
 import EnvPanel from './panels/env';
 
 export default {
   name: 'StatefulSetDetail',
-
-  mixins: [ResourceMixin],
 
   components: {
     LogOfflinePanel,
@@ -144,6 +163,8 @@ export default {
     InfoPanel,
     PodsPanel,
     EnvPanel,
+    OperatingData,
+    MonitorPanel,
   },
 
   data() {
@@ -154,10 +175,24 @@ export default {
       PODS: { label: '容器组', name: 'pods' },
       ENV: { label: '环境变量', name: 'env' },
       EVENT: { label: '事件', name: 'event' },
+      OPERATING_DATA: { label: '操作记录', name: 'operating-data' },
+      MONITOR: { label: '查看监控', name: 'viewing-monitor' },
     };
 
+    const { name } = this.$route.params;
+
     return {
-      kind: RESOURCE_TYPE.STATEFUL_SET,
+      resource: {
+        ...RESOURCE.STATEFUL_SET,
+        links: [
+          {
+            text: 'Stateful Set',
+            route: { name: 'resource.stateful-sets' },
+          },
+          { text: name },
+        ],
+      },
+      name,
       TABS,
       tab: TABS.INFO.name,
       loading: {
@@ -167,9 +202,11 @@ export default {
       },
       status: '',
       statefulset: {},
+      isEmpty,
       yamlVisible: false,
       imagesByDockerReference: {},
       events: [],
+      pods: [],
     };
   },
 
@@ -188,6 +225,10 @@ export default {
   },
 
   methods: {
+    onRefresh() {
+      this.getStatefulSet();
+    },
+
     handleTabClick(tab) {
       const tabName = tab.name;
       if (tabName === this.TABS.EVENT.name) {
@@ -211,10 +252,7 @@ export default {
         this.switchTab(this.TABS.EVENTS);
       }
     },
-
-    getStatefulSet() {
-      this.loading.page = true;
-      this.loading.tabs = true;
+    getStatefulSetService() {
       return StatefulSetService.get(this.space.id, this.zone.id, this.name)
         .then(statefulset => {
           this.statefulset = statefulset.originData;
@@ -222,8 +260,13 @@ export default {
         })
         .catch(() => {
           this.$noty.error('Stateful Set 不存在');
-          this.goBack();
-        })
+          this.$router.push(RESOURCE.STATEFUL_SET.route);
+        });
+    },
+    getStatefulSet() {
+      this.loading.page = true;
+      this.loading.tabs = true;
+      return Promise.all([this.getStatefulSetService(), this.fetchPods()])
         .finally(() => {
           this.loading.page = false;
           this.loading.tabs = false;
@@ -277,7 +320,7 @@ export default {
       this.loading.page = true;
       StatefulSetService.delete(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('删除成功');
-        this.goBack();
+        this.$router.push(RESOURCE.STATEFUL_SET.route);
       });
     },
 
@@ -309,6 +352,14 @@ export default {
           this.loading.tabs = false;
         });
     },
+    async fetchPods() {
+      const res = await StatefulSetService.getPodList(this.space.id, this.zone.id, this.name);
+      this.pods = get(res, 'originData.items', []).map(({ metadata }) => metadata);
+      if (this.pods.length > 1) {
+        this.pods.unshift({ name: MONITOR_ALL_PODS });
+      }
+    },
+
   },
 };
 </script>

@@ -1,0 +1,11 @@
+@import '~daoColor';
+
+#alarm-rule-table {
+  .action {
+    cursor: pointer;
+    color: #ccd1d9;
+    &:hover {
+      color: $blue;
+    }
+  }
+}

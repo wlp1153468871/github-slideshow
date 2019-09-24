@@ -1,0 +1,64 @@
+#alarm-new-add {
+  .wizard-nav-pills {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    z-index: 10;
+    list-style: none;
+  }
+  .service-name {
+    padding-left: 15px;
+    border-left: 1px solid #ccd1d9;
+    margin-left: 15px;
+    line-height: 16px;
+  }
+  .header-title {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    z-index: 11;
+    margin-left: 30px;
+    font-size: 16px;
+    .go-back {
+      cursor: pointer;
+    }
+  }
+  .step {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: transparent;
+  }
+  .atomSelector {
+    width: 40%;
+    margin-right: 15px;
+  }
+  .search-atom-container {
+    overflow: hidden;
+    .search-atom {
+      float: right;
+    }
+  }
+  .addReceiverBtn {
+    margin-top: 15px;
+  }
+  .receiver-dialog {
+    margin: 20px 0 0 20px;
+    label {
+      text-align: left;
+    }
+    input {
+      height: auto!important;
+      width: 300px;
+    }
+    .el-select-dropdown {
+      width: 300px;
+    }
+    .el-select__tags {
+      flex-wrap: nowrap;
+    }
+  }
+}

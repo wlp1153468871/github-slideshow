@@ -139,6 +139,32 @@ class PodService {
         return new Blob([res], { type: 'application/x-tar' });
       });
   }
+
+  fetchContainerMonitorUrl({
+     pod,
+     instance,
+     numberEx,
+     space = this.space,
+     zone = this.zone,
+     from = '',
+     to = '',
+     refresh = '',
+   }: {
+    pod: string;
+    instance: string;
+    numberEx: string;
+    space?: string;
+    zone?: string;
+    from?: string;
+    to?: string;
+    refresh?: string;
+  }) {
+    return this.api.get(
+      `/spaces/${space}/monitoring/instance/${instance}/number/${numberEx}`,
+      { zone, pod, from, to, refresh },
+    );
+  }
+
 }
 
 export default new PodService();

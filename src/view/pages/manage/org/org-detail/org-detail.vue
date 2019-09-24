@@ -20,11 +20,26 @@
           :org-id="orgId">
         </user-panel>
       </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.QUOTA" :name="SIDE_BAR.QUOTA">
-        <quota-panel
+      <el-tab-pane
+        :label="SIDE_BAR.QUOTA"
+        :name="SIDE_BAR.QUOTA"
+      >
+        <org-quota-panel
+          :tab="tab"
+          :defautlTab="SIDE_BAR.QUOTA"
+        >
+        </org-quota-panel>
+      </el-tab-pane>
+      <el-tab-pane
+        :label="SIDE_BAR.QUOTA_APPROVAL"
+        :name="SIDE_BAR.QUOTA_APPROVAL"
+      >
+        <org-quota-approval-panel
+          :tab="tab"
+          :defautlTab="SIDE_BAR.QUOTA_APPROVAL"
           :quota-usages="org.quota_usages"
-          :org-id="orgId">
-        </quota-panel>
+        >
+        </org-quota-approval-panel>
       </el-tab-pane>
       <el-tab-pane :label="SIDE_BAR.ZONE" :name="SIDE_BAR.ZONE">
         <zone-panel :org-id="orgId">

@@ -104,6 +104,8 @@
           :name="TABS.EVENT.name"
           lazy>
           <events-table
+            :loading="loadings.table"
+            @refresh="getEvents"
             v-if="tab === TABS.EVENT.name"
             :events="events">
           </events-table>
@@ -114,6 +116,23 @@
           :lazy="true"
         >
           <history-panel :deployment="deployment"></history-panel>
+        </el-tab-pane>
+        <el-tab-pane
+          :label="TABS.OPERATING_DATA.label"
+          :name="TABS.OPERATING_DATA.name"
+          :lazy="true">
+          <operating-data :name="name"></operating-data>
+        </el-tab-pane>
+        <el-tab-pane
+          v-if="pods.length"
+          :label="TABS.MONITOR.label"
+          :name="TABS.MONITOR.name"
+          :lazy="true">
+          <monitor-panel
+            v-if="tab === TABS.MONITOR.name"
+            :pods="pods"
+            :name="name">
+          </monitor-panel>
         </el-tab-pane>
       </el-tabs>
     </template>
@@ -128,3 +147,6 @@
 
 <script src="./_deployment.js">
 </script>
+
+<style lang="scss" src="./_deployment.scss">
+</style>

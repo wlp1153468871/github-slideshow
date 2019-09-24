@@ -260,3 +260,79 @@ export const mergeDefaultHelpUrls = remoteHelpURLDict => {
     return {};
   }
 };
+
+export const RESOURCE = {
+  DEPLOYMENT: {
+    key: 'deployment',
+    name: 'Deployment',
+    icon: '#icon_deployments',
+    logo: '#icon_deployments-logo',
+    route: { name: 'resource.deployments' },
+  },
+  DEPLOYMENT_CONFIG: {
+    key: 'deployment-config',
+    name: 'Deployment Config',
+    icon: '#icon_deployments',
+    logo: '#icon_deployment-config-logo',
+    route: { name: 'resource.deployments' },
+    hidden: true,
+  },
+  STATEFUL_SET: {
+    key: 'stateful-set',
+    name: 'Stateful Set',
+    icon: '#icon_statefulsets',
+    logo: '#icon_statefulsets-logo',
+    route: { name: 'resource.stateful-sets' },
+  },
+  POD: {
+    key: 'pod',
+    name: 'Pod',
+    icon: '#icon_pod',
+    logo: '#icon_pod-logo',
+    route: { name: 'resource.pods' },
+  },
+  SERVICE: {
+    key: 'service',
+    name: 'Service',
+    icon: '#icon_services',
+    logo: '#icon_services-logo',
+    route: { name: 'resource.services' },
+  },
+  ROUTE: {
+    key: 'route',
+    name: 'Route',
+    icon: '#icon_routes',
+    logo: '#icon_routes-logo',
+    route: { name: 'resource.routes' },
+  },
+  PERSISTENT_VOLUME_CLAIM: {
+    key: 'pvc',
+    name: 'PVC',
+    icon: '#icon_pvc',
+    logo: '#icon_pvc-logo',
+    route: { name: 'resource.persistent-volume-claims' },
+  },
+  CONFIG_MAP: {
+    key: 'config-map',
+    name: 'ConfigMap',
+    icon: '#icon_configmaps',
+    logo: '#icon_configmaps-logo',
+    route: { name: 'resource.config-maps' },
+  },
+  SECRET: {
+    key: 'secret',
+    name: 'Secret',
+    icon: '#icon_secrets',
+    logo: '#icon_secrets-logo',
+    route: { name: 'resource.secrets' },
+  },
+  APP: {
+    key: 'application',
+    name: '应用',
+    icon: '#icon_application',
+    logo: '#icon_application-logo',
+    route: { name: 'console.applications' },
+    hidden: true,
+  },
+};
+

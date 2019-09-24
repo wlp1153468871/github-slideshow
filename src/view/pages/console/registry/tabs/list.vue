@@ -27,15 +27,26 @@
       v-loading="imageTableLoading"
       @expand-change="onExpandChange">
       <el-table-column type="expand">
-        <template slot-scope="props">
+        <template #default="{ row: repository }">
           <el-table
-            v-loading="props.row.tagLoading"
-            :data="props.row.tags"
+            v-loading="repository.tagLoading"
+            :data="repository.tags"
             size="mini">
             <el-table-column
               prop="name"
               label="标签"
               width="180">
+              <template #default="{ row: tag }">
+                <router-link
+                  :to="{ name: 'registry.registryTag',
+                     params: {
+                       tagName: tag.name,
+                       registryName: encodeURIComponent(repository.name)
+                       }
+                     }">
+                  {{tag.name}}
+                </router-link>
+              </template>
             </el-table-column>
             <el-table-column
               prop="author"
@@ -50,6 +61,26 @@
             <el-table-column
               prop="docker_version"
               label="Docker版本">
+            </el-table-column>
+            <el-table-column
+              prop="scan_overview"
+              label="漏洞扫描">
+              <template #default="{ row: tag }">
+                <scan-status :status="tag.scan_overview | scan_overview_status"></scan-status>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              align="center"
+              header-align="center"
+              width="80"
+            >
+              <template #default="{ row: tag }">
+                <router-link :to="scanDetailRouter(repository.name, tag)">
+                  详情
+                </router-link>
+              </template>
             </el-table-column>
           </el-table>
         </template>
@@ -101,6 +132,7 @@
 import { mapState } from 'vuex';
 import { debounce, toNumber } from 'lodash';
 import RegistryService from '@/core/services/registry.service';
+import ScanStatus from '@/view/components/scan-overview-status/scan-status';
 
 export default {
   name: 'Registry-List',
@@ -184,6 +216,21 @@ export default {
         row.tagLoading = false;
       });
     },
+
+    scanDetailRouter(repositoryName, tag) {
+      const [project, imageName] = repositoryName.split('/');
+      return {
+        name: 'registry.registryTag',
+        params: {
+          project,
+          imageName,
+          tagName: tag.name,
+        },
+      };
+    },
+  },
+  components: {
+    ScanStatus,
   },
 };
 </script>

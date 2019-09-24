@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { isEmpty } from 'lodash';
 
 export default {
@@ -52,6 +53,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['orgDescription']),
     type() {
       if (!isEmpty(this.error)) {
         return this.RESULT_TYPES.ERROR;
@@ -64,7 +66,7 @@ export default {
       const { data = {} } = this.error;
       let msg = '';
       if (/not\senough$/.test(data.error_info)) {
-        msg = '该租户的配额不足';
+        msg = `该${this.orgDescription}的配额不足`;
       }
       return [msg, data.error_info].join('\n');
     },

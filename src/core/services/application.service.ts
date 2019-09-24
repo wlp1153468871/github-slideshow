@@ -83,6 +83,35 @@ class ApplicationService {
       zone: this.zone,
     });
   }
+
+  async getInstancePod(
+    spaceId: string,
+    zone: string,
+    appName: string,
+  ) {
+    return this.api.get(`/spaces/${spaceId}/monitoring/app/${appName}`, {
+      zone,
+    });
+  }
+
+  // by default get application monitor with 'jmx' type
+  async getAppMonitor(
+    podName: string,
+    spaceId: string,
+    zone: string,
+    from: string = '',
+    to: string = '',
+    type: string = 'jmx',
+    refresh: string = '30s',
+  ) {
+    return this.api.get(`spaces/${spaceId}/monitoring/service/${podName}/type/${type}`, {
+      zone,
+      from,
+      to,
+      refresh,
+    });
+  }
+
 }
 
 export default new ApplicationService();

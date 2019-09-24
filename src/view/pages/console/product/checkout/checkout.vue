@@ -2,15 +2,14 @@
   <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
-        <a
+        <span
           class="go-back"
-          href="javascript:void(0)"
           @click="$router.go(-1)">
           <svg class="icon">
             <use xlink:href="#icon_caret-left"></use>
           </svg>
           <span class="text">返回</span>
-        </a>
+        </span>
         <span class="service-name">服务 {{ service.name }}</span>
       </div>
     </div>
@@ -65,3 +64,7 @@
 
 <script src="./checkout.js">
 </script>
+
+<style lang="scss">
+@import './checkout';
+</style>
