@@ -91,7 +91,7 @@ import { mapState, mapGetters } from 'vuex';
 import { find, first } from 'lodash';
 
 export default {
-  name: 'spaceAndZone',
+  name: 'space-zone',
 
   data() {
     return {
