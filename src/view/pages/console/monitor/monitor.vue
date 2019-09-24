@@ -1,5 +1,6 @@
 <template>
   <div id="monitor">
+    <resource-header :resource="resource"></resource-header>
     <div id="monitor-tabs">
       <el-tabs v-model="activeTab">
         <el-tab-pane
@@ -22,25 +23,15 @@
         >
           <services></services>
         </el-tab-pane>
-        <el-tab-pane
-          lazy
-          label="资源偏差报表"
-          name="report"
-        >
-          <reports></reports>
-        </el-tab-pane>
       </el-tabs>
-      <!--<resource-header :resource="resource"></resource-header>-->
     </div>
   </div>
-
 </template>
 
 <script>
 import Applications from './applications/applications.vue';
 import Containers from './containers/containers.vue';
 import Services from './services/services.vue';
-import Reports from './reports/reports.vue';
 
 export default {
   name: 'Monitor',
@@ -66,7 +57,6 @@ export default {
     Applications,
     Containers,
     Services,
-    Reports,
   },
 };
 </script>

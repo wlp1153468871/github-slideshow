@@ -12,7 +12,7 @@
           <el-select
             filterable
             size="small"
-            :disabled="false"
+            :disabled="!servicesBrokers.length"
             v-model="filters.servicesBroker"
             value-key="name"
             placeholder=""
