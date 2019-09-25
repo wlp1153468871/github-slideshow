@@ -122,19 +122,15 @@ export default {
     },
 
     createByYaml(value) {
-      this.loadings = true;
       DCService.post(value)
         .then(instance => {
           if (instance.is_need_approval) {
             this.$noty.success('请在审批记录页面，查看审批进度');
           } else {
-            this.$noty.success('创建Deployment成功');
+            this.$noty.success('创建DeploymentConfig成功');
           }
           this.dialogConfigs.yamlEdit = false;
           this.getDeploymentConfig();
-        })
-        .finally(() => {
-          this.loadings = false;
         });
     },
   },

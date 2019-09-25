@@ -586,11 +586,11 @@ export const mutations = {
     state.loadings.initTenantView = false;
   },
   [types.ALARM_LIST_VIEW_REQUEST](state) {
-    state.loadings.alarmListView = true;
+    state.loadings = { ...state.loadings, alarmListView: true };
   },
 
   [types.ALARM_LIST_VIEW_SUCCESS](state) {
-    state.loadings.alarmListView = false;
+    state.loadings = { ...state.loadings, alarmListView: false };
   },
 
   [types.ALARM_RULES](state, rules) {
