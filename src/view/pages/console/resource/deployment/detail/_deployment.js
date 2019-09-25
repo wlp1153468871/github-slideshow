@@ -50,7 +50,7 @@ export default {
         links: [
           {
             text: RESOURCE.DEPLOYMENT.name,
-            route: { name: 'resource.deployments' },
+            route: { name: 'resource.deployments.list' },
           },
           { text: deploymentName },
         ],
@@ -186,7 +186,7 @@ export default {
       )
         .then(() => {
           this.$noty.success(`删除Deployment ${this.deploymentName} 成功`);
-          this.$router.push({ name: 'resource.deployments' });
+          this.$router.push({ name: 'resource.deployments.list' });
         })
         .finally(() => {
           this.loadings.page = false;

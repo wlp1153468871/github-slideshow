@@ -51,7 +51,7 @@ export default {
           this.$noty.success('创建Deployment成功');
         }
         this.dialogConfigs.yamlEdit = false;
-        this.$emit('refresh');
+        this.getDeployments();
       });
     },
   },
