@@ -70,7 +70,7 @@
           v-if="resources.DeploymentConfig"
           :label="TABS.DEPLOYMENT_CONFIG"
           :name="TABS.DEPLOYMENT_CONFIG">
-          <deployment-config-panel :deployment-configs="resources.resources">
+          <deployment-config-panel :deployment-configs="resources.DeploymentConfig">
           </deployment-config-panel>
         </el-tab-pane>
 
