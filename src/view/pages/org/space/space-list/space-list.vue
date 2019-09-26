@@ -27,6 +27,7 @@
     <add-space-dialog
       @create="createSpace"
       :visible="dialogConfigs.addSpace.visible"
+      :orgId="org.id"
       @close="dialogConfigs.addSpace.visible = false">
     </add-space-dialog>
     <!-- dialog end -->
