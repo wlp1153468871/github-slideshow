@@ -20,7 +20,7 @@
     "d3": "^5.9.1",
     "dao-style-vue": "1.0.8",
     "dayjs": "^1.8.5",
-    "element-ui": "^2.9.1",
+    "element-ui": "^2.12.0",
     "file-saver": "^2.0.2",
     "github-markdown-css": "^2.10.0",
     "js-base64": "^2.5.1",
