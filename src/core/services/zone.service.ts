@@ -42,13 +42,17 @@ class ZoneService {
     StorageCache.saveZone(zone);
   }
 
-  getZones() {
-    return this.api.get('/zones');
+  getZones(organizationId?: string) {
+    const params = {};
+    if (organizationId) {
+      Object.assign(params, { organization_id: organizationId });
+    }
+    return this.api.get('/zones', params);
   }
 
   // get available zones
-  getAvailableZones() {
-    return this.getZones().then(zones => {
+  getAvailableZones(organizationId?: string) {
+    return this.getZones(organizationId).then(zones => {
       // @ts-ignore
       return zones.filter(x => x.available);
     });

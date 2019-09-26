@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import { differenceBy } from 'lodash';
 import ZoneService from '@/core/services/zone.service';
 
 export default {
@@ -88,6 +87,7 @@ export default {
 
   props: {
     visible: { type: Boolean, default: false },
+    orgId: { type: String, required: false },
   },
 
   data() {
@@ -146,11 +146,10 @@ export default {
     loadZones(query) {
       if (query !== '') {
         this.loading = true;
-        ZoneService.getAvailableZones().then(zones => {
+        ZoneService.getAvailableZones(this.orgId).then(zones => {
           this.loading = false;
-          const diffZones = differenceBy(zones, this.zoneList, 'id');
-          this.zones = diffZones.filter(zone => {
-            return zone.area_name.toLowerCase()
+          this.zones = zones.filter(zone => {
+            return zone.name.toLowerCase()
               .indexOf(query.toLowerCase()) > -1;
           });
         });
