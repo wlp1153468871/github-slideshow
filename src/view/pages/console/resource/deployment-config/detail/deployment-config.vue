@@ -387,7 +387,7 @@ export default {
       this.loading.page = true;
       DCService.delete(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('删除成功');
-        this.$router.push(this.resource.route);
+        this.goBack();
       });
     },
 
