@@ -81,7 +81,7 @@ export default {
 
     getVolume() {
       this.loadings.detail = true;
-      VolumeService.getVolume(this.space.id, this.zone.id, this.name)
+      return VolumeService.getVolume(this.space.id, this.zone.id, this.name)
         .then(res => {
           this.instance = res;
           this.volume = res.originData || {};
@@ -138,7 +138,8 @@ export default {
       });
     },
     getRefs() {
-      VolumeService.getRefs(this.name).then(res => {
+      this.loadings.detail = true;
+      return VolumeService.getRefs(this.name).then(res => {
         this.objrefs = res;
       });
     },
