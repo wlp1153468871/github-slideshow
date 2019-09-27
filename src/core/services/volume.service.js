@@ -52,6 +52,12 @@ class VolumeService {
       params: { zone },
     });
   }
+
+  getRefs(name) {
+    return this.api.get(`/spaces/${this.space}/volumes/${name}/objrefs`, {
+      zone: this.zone,
+    });
+  }
 }
 
 export default new VolumeService();

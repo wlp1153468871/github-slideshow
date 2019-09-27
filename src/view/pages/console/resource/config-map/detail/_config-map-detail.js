@@ -45,6 +45,7 @@ export default {
         yamlEdit: false,
       },
       objrefs: [],
+      kind: RESOURCE_TYPE.CONFIG_MAP,
     };
   },
 
@@ -159,7 +160,7 @@ export default {
 
     getRefs() {
       ConfigMapService.getRefs(this.name).then(res => {
-        this.objrefs = res;
+        objrefs = res;
       });
     },
   },
