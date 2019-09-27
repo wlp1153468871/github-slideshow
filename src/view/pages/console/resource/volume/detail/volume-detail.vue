@@ -62,6 +62,7 @@
             :pvc="volume"
             :information="information"
             :jobs="jobs"
+            :objrefs="objrefs"
             @change-tab="tab = $event">
           </overview-panel>
         </el-tab-pane>

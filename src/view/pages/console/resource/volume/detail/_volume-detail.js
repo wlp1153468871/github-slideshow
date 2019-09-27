@@ -42,6 +42,7 @@ export default {
       dialogConfigs: {
         yamlEdit: false,
       },
+      objrefs: [],
     };
   },
 
@@ -49,8 +50,14 @@ export default {
     ...mapState(['space', 'zone']),
   },
 
-  created() {
-    this.getVolume();
+  async created() {
+    try {
+      await this.getVolume();
+      await this.getRefs();
+    } finally {
+      this.loadings.detail = false;
+      this.loadings.page = false;
+    }
   },
 
   methods: {
@@ -85,10 +92,6 @@ export default {
             创建者: res.owner.name || '暂无',
           };
           this.getJobs();
-        })
-        .finally(() => {
-          this.loadings.detail = false;
-          this.loadings.page = false;
         });
     },
 
@@ -131,6 +134,11 @@ export default {
       VolumeService.updateByYaml({ name, data }).then(() => {
         this.$noty.success('更新成功');
         this.getVolume();
+      });
+    },
+    getRefs() {
+      VolumeService.getRefs(this.name).then(res => {
+        this.objrefs = res;
       });
     },
   },
