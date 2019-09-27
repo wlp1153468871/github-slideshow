@@ -51,13 +51,14 @@ export default {
   },
 
   async created() {
-    try {
-      await this.getVolume();
-      await this.getRefs();
-    } finally {
-      this.loadings.detail = false;
-      this.loadings.page = false;
-    }
+    Promise.all([
+      this.getVolume(),
+      this.getRefs(),
+    ])
+      .finally(() => {
+        this.loadings.detail = false;
+        this.loadings.page = false;
+      });
   },
 
   methods: {
