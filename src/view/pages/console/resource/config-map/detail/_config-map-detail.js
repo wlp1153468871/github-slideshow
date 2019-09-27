@@ -160,7 +160,7 @@ export default {
 
     getRefs() {
       ConfigMapService.getRefs(this.name).then(res => {
-        objrefs = res;
+        this.objrefs = res;
       });
     },
   },
