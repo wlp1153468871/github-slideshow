@@ -138,8 +138,9 @@
 <script>
 import { mapState } from 'vuex';
 import { get, set, cloneDeep, isEmpty } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { MONITOR_ALL_PODS } from '@/core/constants/constants';
+import ResourceMixin from '@/view/mixins/resource';
 
 import StatefulSetService from '@/core/services/stateful-set.service.ts';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml.vue';
@@ -167,6 +168,8 @@ export default {
     MonitorPanel,
   },
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.STATEFUL_SET)],
+
   data() {
     const TABS = {
       LOG: { label: '实时日志', name: 'log' },
@@ -182,16 +185,6 @@ export default {
     const { name } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.STATEFUL_SET,
-        links: [
-          {
-            text: 'Stateful Set',
-            route: { name: 'resource.stateful-sets' },
-          },
-          { text: name },
-        ],
-      },
       name,
       TABS,
       tab: TABS.INFO.name,
@@ -260,7 +253,7 @@ export default {
         })
         .catch(() => {
           this.$noty.error('Stateful Set 不存在');
-          this.$router.push(RESOURCE.STATEFUL_SET.route);
+          this.goBack();
         });
     },
     getStatefulSet() {
@@ -320,7 +313,7 @@ export default {
       this.loading.page = true;
       StatefulSetService.delete(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('删除成功');
-        this.$router.push(RESOURCE.STATEFUL_SET.route);
+        this.goBack();
       });
     },
 

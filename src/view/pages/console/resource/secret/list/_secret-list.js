@@ -12,7 +12,7 @@ import ResourceMixin from '@/view/mixins/resource';
 export default {
   name: 'SecretList',
 
-  mixins: [ErrorInfo, ResourceMixin],
+  mixins: [ErrorInfo, ResourceMixin(RESOURCE_TYPE.SECRET)],
 
   components: {
     ErrorInfoDialog,
@@ -20,7 +20,6 @@ export default {
 
   data() {
     return {
-      kind: RESOURCE_TYPE.SECRET,
       rows: [],
       selectedYaml: {},
       secret: {},

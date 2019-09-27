@@ -12,7 +12,7 @@ import RouteWarnings from '../components/route-warnings/route-warnings';
 export default {
   name: 'RouteList',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.ROUTE)],
 
   components: {
     RouteWarnings,
@@ -20,7 +20,6 @@ export default {
 
   data() {
     return {
-      kind: RESOURCE_TYPE.ROUTE,
       filterKey: '',
       routeIngressInfo:
         'The route is not accepting traffic yet because it has not been admitted by a router.',

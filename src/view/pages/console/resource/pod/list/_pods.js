@@ -7,7 +7,7 @@ import ResourceMixin from '@/view/mixins/resource';
 export default {
   name: 'ResourcePod',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.POD)],
 
   components: {
     PodTable,
@@ -15,7 +15,6 @@ export default {
 
   data() {
     return {
-      kind: RESOURCE_TYPE.POD,
       loadings: {
         page: true,
         table: true,

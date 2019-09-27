@@ -1,4 +1,3 @@
-import { RESOURCE_TYPE } from '@/core/constants/resource';
 import Vue from 'vue';
 import { get as getValue } from 'lodash';
 import ConfigMapService from '@/core/services/config-map.service';
@@ -8,11 +7,12 @@ import ErrorInfo from '@/view/mixins/error-info';
 import ResourceMixin from '@/view/mixins/resource';
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 
 export default {
   name: 'configMapList',
 
-  mixins: [ErrorInfo, ResourceMixin],
+  mixins: [ErrorInfo, ResourceMixin(RESOURCE_TYPE.CONFIG_MAP)],
 
   components: {
     ErrorInfoDialog,
@@ -21,7 +21,6 @@ export default {
 
   data() {
     return {
-      kind: RESOURCE_TYPE.CONFIG_MAP,
       rows: [],
       selectedYaml: {},
       loadings: {

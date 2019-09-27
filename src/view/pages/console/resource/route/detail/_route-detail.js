@@ -14,7 +14,7 @@ import JobsPanel from './panels/jobs';
 export default {
   name: 'VolumeDetail',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.ROUTE)],
 
   components: {
     OverviewPanel,
@@ -31,7 +31,6 @@ export default {
     };
 
     return {
-      kind: RESOURCE_TYPE.ROUTE,
       dialogConfigs: {
         yamlEdit: false,
       },

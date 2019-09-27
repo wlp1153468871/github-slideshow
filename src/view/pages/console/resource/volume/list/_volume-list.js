@@ -10,11 +10,10 @@ import ResourceMixin from '@/view/mixins/resource';
 export default {
   name: 'VolumeList',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM)],
 
   data() {
     return {
-      kind: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
       INSTANCE_STATUS,
       volumes: [],
       loadings: {

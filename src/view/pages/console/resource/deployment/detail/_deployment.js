@@ -1,10 +1,11 @@
 import { mapState } from 'vuex';
 import { isEmpty, cloneDeep, set, get } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { POLL_INTERVAL, MONITOR_ALL_PODS } from '@/core/constants/constants';
 import DeploymentResourceService from '@/core/services/deployment.resource.service';
 import HPAService from '@/core/services/hpa.service';
 import OperatingData from '@/view/components/log/operating-data';
+import ResourceMixin from '@/view/mixins/resource';
 
 // panels
 import LogOfflinePanel from '@/view/components/log/log-offline.vue';
@@ -30,6 +31,8 @@ const TABS = {
 export default {
   name: 'Resource-Deployment',
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.DEPLOYMENT)],
+
   components: {
     PodsPanel,
     EnvPanel,
@@ -45,16 +48,6 @@ export default {
     const { name: deploymentName } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.DEPLOYMENT,
-        links: [
-          {
-            text: RESOURCE.DEPLOYMENT.name,
-            route: { name: 'resource.deployments.list' },
-          },
-          { text: deploymentName },
-        ],
-      },
       dialogs: {
         view: false,
       },
@@ -186,7 +179,7 @@ export default {
       )
         .then(() => {
           this.$noty.success(`删除Deployment ${this.deploymentName} 成功`);
-          this.$router.push({ name: 'resource.deployments.list' });
+          this.goBack();
         })
         .finally(() => {
           this.loadings.page = false;
