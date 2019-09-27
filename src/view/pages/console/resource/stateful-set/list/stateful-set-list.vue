@@ -110,13 +110,12 @@ import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 export default {
   name: 'StatefulSetList',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.STATEFUL_SET)],
 
   components: { EditYamlDialog },
 
   data() {
     return {
-      kind: RESOURCE_TYPE.STATEFUL_SET,
       loadings: {
         page: true,
         table: true,

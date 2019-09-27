@@ -161,7 +161,8 @@
 <script>
 import { mapState } from 'vuex';
 import { isEmpty, get, cloneDeep, set } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import DCService from '@/core/services/deployment-config.service';
 import HPAService from '@/core/services/hpa.service';
 import { MONITOR_ALL_PODS, POLL_INTERVAL } from '@/core/constants/constants';
@@ -193,6 +194,8 @@ export default {
     MonitorPanel,
   },
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.DEPLOYMENT_CONFIG)],
+
   data() {
     const TABS = {
       LOG: { label: '实时日志', name: 'log' },
@@ -209,16 +212,6 @@ export default {
     const { name } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.DEPLOYMENT_CONFIG,
-        links: [
-          {
-            text: RESOURCE.DEPLOYMENT_CONFIG.name,
-            route: { name: 'resource.deployments.list' },
-          },
-          { text: name },
-        ],
-      },
       name,
       TABS,
       tab: TABS.INFO.name,
@@ -394,7 +387,7 @@ export default {
       this.loading.page = true;
       DCService.delete(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('删除成功');
-        this.$router.push(RESOURCE.DEPLOYMENT_CONFIG.route);
+        this.goBack();
       });
     },
 

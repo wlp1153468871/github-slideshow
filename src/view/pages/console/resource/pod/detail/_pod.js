@@ -1,11 +1,12 @@
 import { find, get as getValue, head, keys } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import PodService from '@/core/services/pod.service';
 import FileSaveInContainer from '@/view/components/resource/file-save-in-container/file-save-in-container';
 import PodLogPanel from '@/view/components/log/pod-log.vue';
 import PodLogOfflinePanel from '@/view/components/log/pod-offline-log.vue';
 import TerminalHistoryPanel from '@/view/components/log/terminal-history.vue';
+import ResourceMixin from '@/view/mixins/resource';
 
 import PodStatusPanel from './panels/pod-status';
 import PodTemplatePanel from './panels/pod-template';
@@ -36,17 +37,12 @@ export default {
     MonitorPanel,
   },
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.POD)],
+
   data() {
     const { name: podName } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.POD,
-        links: [
-          { text: RESOURCE.POD.name, route: { name: 'resource.pods' } },
-          { text: podName },
-        ],
-      },
       TABS,
       activeTab: TABS.OVERVIEW.name,
       builds: {},
@@ -132,7 +128,7 @@ export default {
       const { podName } = this;
       PodService.delete({ podName }).then(() => {
         this.$noty.success(`删除Pod ${this.podName} 成功`);
-        this.$router.push({ name: 'resource.pods' });
+        this.goBack();
       });
     },
 

@@ -179,7 +179,7 @@ import ResourceMixin from '@/view/mixins/resource';
 export default {
   name: 'IngressDetail',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.INGRESS)],
 
   components: { PodTable },
 
@@ -187,7 +187,6 @@ export default {
     const { tab } = this.$route.query;
 
     return {
-      kind: RESOURCE_TYPE.INGRESS,
       activeTab: tab,
       loadings: {
         detail: true,

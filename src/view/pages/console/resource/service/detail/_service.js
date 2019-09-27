@@ -17,7 +17,7 @@ const TABS = {
 export default {
   name: 'ResourceService',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.SERVICE)],
 
   components: {
     ServiceOverviewPanel,
@@ -28,7 +28,6 @@ export default {
     const { tab } = this.$route.query;
 
     return {
-      kind: RESOURCE_TYPE.SERVICE,
       TABS,
       activeTab: tab || TABS.OVERVIEW.name,
       dialogs: { update: false },

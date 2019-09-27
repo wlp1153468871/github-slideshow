@@ -186,7 +186,7 @@ export default {
       name: 'resource.deploymentconfigs.detail',
       component: DeploymentConfig,
       meta: {
-        activeMenu: 'resource.deployments.list',
+        activeMenu: 'resource.deploymentconfigs.list',
       },
     },
     {

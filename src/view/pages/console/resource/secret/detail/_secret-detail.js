@@ -12,7 +12,7 @@ import EventPanel from '../../_panels/event';
 export default {
   name: 'SecretMapDetail',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.SECRET)],
 
   components: {
     LabelsTable,
@@ -27,7 +27,6 @@ export default {
     };
 
     return {
-      kind: RESOURCE_TYPE.SECRET,
       activeName: TABS.OVERVIEW,
       CONFIG_TITLE_TYPE,
       TABS,

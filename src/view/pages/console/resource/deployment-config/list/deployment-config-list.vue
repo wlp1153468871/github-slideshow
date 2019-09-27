@@ -82,13 +82,12 @@ import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 export default {
   name: 'ResourceDeployments',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.DEPLOYMENT_CONFIG)],
 
   data() {
     const { create = 'false' } = this.$route.query;
 
     return {
-      kind: RESOURCE_TYPE.DEPLOYMENT_CONFIG,
       loadings: {
         page: true,
         table: true,

@@ -76,7 +76,7 @@ import ResourceMixin from '@/view/mixins/resource';
 export default {
   name: 'IngressList',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.INGRESS)],
 
   data() {
     const { create = 'false' } = this.$route.query;

@@ -9,13 +9,12 @@ import ResourceMixin from '@/view/mixins/resource';
 export default {
   name: 'ServiceList',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.SERVICE)],
 
   data() {
     const { create = 'false' } = this.$route.query;
 
     return {
-      kind: RESOURCE_TYPE.SERVICE,
       loadings: {
         page: true,
         table: true,

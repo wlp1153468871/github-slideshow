@@ -12,7 +12,7 @@ import JobsPanel from './panels/jobs';
 export default {
   name: 'VolumeDetail',
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin(RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM)],
 
   components: {
     OverviewPanel,
@@ -27,7 +27,6 @@ export default {
     };
 
     return {
-      kind: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
       TABS,
       tab: TABS.OVERVIEW.name,
       loadings: {
