@@ -134,9 +134,6 @@ export default {
     },
     jobs: { type: Array, default: () => [] },
   },
-  created() {
-    console.log(this.pvc);
-  },
 };
 </script>
 <style scoped lang="scss">
