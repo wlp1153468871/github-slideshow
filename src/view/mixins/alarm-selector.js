@@ -1,12 +1,11 @@
-import { mapGetters } from 'vuex';
-import { cloneDeep } from 'lodash';
-import { MONITOR_KIND, MONITOR_KIND_MAP_FLIP } from '@/core/constants/constants';
+import { mapGetters, mapState } from 'vuex';
+import { cloneDeep, intersection } from 'lodash';
+import { MONITOR_KIND_MAP_FLIP, MONITOR_KIND_MAP } from '@/core/constants/constants';
 
 export default {
   data() {
     return {
       filterType: '',
-      typeList: Object.values(MONITOR_KIND),
       currentRules: [],
     };
   },
@@ -20,6 +19,14 @@ export default {
     ...mapGetters({
       adminAccessed: 'alarmAdminAccessed',
     }),
+    ...mapState(['apiResource']),
+    typeList() {
+      return intersection(
+        Object.keys(this.apiResource || {}),
+        Object.values(MONITOR_KIND_MAP_FLIP),
+      )
+        .map(kind => MONITOR_KIND_MAP[kind]);
+    },
   },
   methods: {
     onChooseType() {

@@ -13,19 +13,7 @@ const FILTER_MAP = {
 };
 export default {
   data() {
-    const kinds = Object.values(MONITOR_KIND);
     return {
-      filters: {
-        kind: kinds[0],
-        instance: {
-          name: '',
-          id: '',
-        },
-        pod: {
-          name: '',
-        },
-      },
-      kinds,
       instances: [],
       pods: [],
       loading: false,
@@ -33,13 +21,27 @@ export default {
     };
   },
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'apiResource']),
     instancesExisted() {
       return this.instances.length && this.pods.length;
     },
+    filters() {
+      return {
+        kind: this.kinds[0],
+        instance: {
+          name: '',
+          id: '',
+        },
+        pod: {
+          name: '',
+        },
+      };
+    },
   },
   async created() {
-    await this.init();
+    if (this.filters.kind) {
+      await this.init();
+    }
   },
   methods: {
     async getPodMonitor({ instance, pod, numberEx }) {

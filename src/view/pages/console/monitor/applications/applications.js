@@ -1,28 +1,12 @@
 import ApplicationService from '@/core/services/application.service';
 
-import { MONITOR_KIND, MONITOR_KIND_MAP, MONITOR_TIME_MAP } from '@/core/constants/constants';
+import { MONITOR_KIND_MAP, MONITOR_TIME_MAP } from '@/core/constants/constants';
 import MonitorSelector from '@/view/mixins/monitor-selector';
 
 export default {
   data() {
-    const kinds = Object.values(MONITOR_KIND);
     return {
-      filters: {
-        app: {
-          name: '',
-          id: '',
-        },
-        kind: kinds[0],
-        instance: {
-          name: '',
-          id: '',
-        },
-        pod: {
-          name: '',
-        },
-      },
       applications: [],
-      kinds,
       instances: [],
       pods: [],
       loading: false,
@@ -34,17 +18,38 @@ export default {
     instancesExisted() {
       return this.instances.length && this.pods.length;
     },
+    filters() {
+      return {
+        app: {
+          name: '',
+          id: '',
+        },
+        kind: this.kinds[0],
+        instance: {
+          name: '',
+          id: '',
+        },
+        pod: {
+          name: '',
+        },
+      };
+    },
   },
   async created() {
     this.loading = true;
-    this.applications = await this.fetchApplications();
-    const { tab, id, app } = this.$route.query;
-    this.filters.app = tab === 'app'
-      ? { name: app, id }
-      : this.applications[0] || { name: '' };
-    await this.onClickApp();
+    if (this.filters.kind) {
+      await this.init();
+    }
   },
   methods: {
+    async init() {
+      this.applications = await this.fetchApplications();
+      const { tab, id, app } = this.$route.query;
+      this.filters.app = tab === 'app'
+        ? { name: app, id }
+        : this.applications[0] || { name: '' };
+      await this.onClickApp();
+    },
     async fetchApplications() {
       this.setFilters(true);
       let appList;
