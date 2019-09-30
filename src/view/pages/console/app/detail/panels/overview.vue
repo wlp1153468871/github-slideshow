@@ -5,6 +5,17 @@
       <daox-info-table
         title="基本信息"
         :list="basicInformations">
+        <template #self>
+          <router-link
+            :to="{
+              name: 'console.monitor',
+              query: { tab: 'app', app: instance.name, id: instance.id },
+            }"
+            tag="a"
+            target="_blank"
+          >点击查看</router-link>
+        </template>
+
       </daox-info-table>
     </div>
     <div class="detail-column">
@@ -56,6 +67,7 @@ export default {
         { name: '应用版本', value: version || '无' },
         { name: '创建者', value: owner.name },
         { name: '创建时间', value: unixDate(createdAt) },
+        { name: '查看监控', value: [] },
       ];
     },
   },

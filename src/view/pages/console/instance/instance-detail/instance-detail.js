@@ -1,6 +1,6 @@
 import isApprove from '@/core/utils/is-approve';
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { first, get as getValue, orderBy } from 'lodash';
 import { INSTANCE_STATUS } from '@/core/constants/constants';
 import InstanceService from '@/core/services/instance.service';
@@ -19,8 +19,6 @@ const INFO_TYPE = {
   LINK: 'link',
 };
 
-const GRAFANA_URL = 'grafanaUrl';
-
 export default {
   name: 'InstanceDetail',
 
@@ -36,7 +34,7 @@ export default {
     const TABS = {
       OVERVIEW: '基本属性',
       EVENTS: '操作记录',
-      MONITOR: '监控',
+      MONITOR: '查看监控',
       SENIOR: '设置',
     };
 
@@ -55,7 +53,6 @@ export default {
       dashboards: [],
       events: [],
       btns: [],
-      monitorUrl: undefined,
       loadings: {
         instance: false,
         actions: false,
@@ -70,7 +67,7 @@ export default {
 
   computed: {
     ...mapGetters(['zoneId', 'getService', 'isZoneSyncing']),
-
+    ...mapState(['services']),
     resource() {
       return {
         key: this.instanceId,
@@ -98,11 +95,6 @@ export default {
 
     brokerService() {
       return first(this.service.services) || {};
-    },
-
-    hasMonitorUrl() {
-      if (this.monitorUrl === undefined) return true;
-      return this.monitorUrl !== '';
     },
 
     canDelete() {
@@ -178,10 +170,6 @@ export default {
               if (isTerminal(info.name)) {
                 dashboards.push(info);
               }
-              if (info.name === GRAFANA_URL) {
-                this.monitorUrl = info.value;
-                return;
-              }
             }
             informations.push(info);
           });
@@ -190,7 +178,6 @@ export default {
           this.dashboards = dashboards;
         })
         .finally(() => {
-          if (this.monitorUrl === undefined) this.monitorUrl = '';
           this.loadings.instance = false;
         });
     },

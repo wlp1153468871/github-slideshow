@@ -83,13 +83,14 @@
 
         <el-tab-pane
           lazy
-          v-if="hasMonitorUrl"
+          v-if="service.monitor"
           :label="TABS.MONITOR"
           :name="TABS.MONITOR">
           <monitor-panel
             v-if="activeTabName === TABS.MONITOR"
-            :url="monitorUrl"
-            :instance-id="instanceId">
+            :instance="instance.name"
+            :type="service.services[0].name"
+          >
           </monitor-panel>
         </el-tab-pane>
       </el-tabs>
