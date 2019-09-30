@@ -255,7 +255,8 @@ export default {
     },
 
     onSave() {
-      this.categoryList = this.categoryList.filter(category => category.children.length);
+      this.categoryList = this.categoryList
+        .filter(category => Array.isArray(category.children) && category.children.length);
       const saveCategory = CategoryUtil.array2Map(this.categoryList);
       SchemaService.updateSchema(saveCategory)
         .then(() => {
