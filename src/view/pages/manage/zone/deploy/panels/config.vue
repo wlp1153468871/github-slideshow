@@ -1,5 +1,5 @@
 <template>
-  <div class="panel-config">
+  <div class="panel-config" id="zone-panel-config">
 
     <dao-setting-layout>
       <template #layout-title>基本信息</template>
@@ -599,7 +599,14 @@ export default {
 
 <style lang='scss'>
 @import '~daoColor';
-
+#zone-panel-config {
+  .dao-setting-layout-footer {
+    position: relative;
+    .cluster-test {
+      width: 100%;
+    }
+  }
+}
 .panel-config {
   .cluster-test {
     display: flex;

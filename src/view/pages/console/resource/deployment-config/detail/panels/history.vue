@@ -145,8 +145,8 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-  import { chunk, nth, get } from 'lodash';
+import { mapState } from 'vuex';
+import { chunk, nth, get } from 'lodash';
 
 import DCService from '@/core/services/deployment-config.service.ts';
 import YAMLPreviewDialog from '@/view/components/yaml-preview-dialog/yaml-preview-dialog.vue';
