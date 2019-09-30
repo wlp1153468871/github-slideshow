@@ -38,12 +38,7 @@
               width="180">
               <template #default="{ row: tag }">
                 <router-link
-                  :to="{ name: 'registry.registryTag',
-                     params: {
-                       tagName: tag.name,
-                       registryName: encodeURIComponent(repository.name)
-                       }
-                     }">
+                  :to="scanDetailRouter(repository.name, tag)">
                   {{tag.name}}
                 </router-link>
               </template>
