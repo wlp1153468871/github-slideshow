@@ -132,6 +132,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      hide-on-single-page
       background
       :disabled="loading"
       :page-sizes="[10,30,50]"

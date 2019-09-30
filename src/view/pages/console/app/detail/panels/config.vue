@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { RESOURCE } from '@/core/constants/resource';
 import SecretSection from '../sections/secret';
 import ConfigMapSection from '../sections/config-map';
 
@@ -32,7 +31,7 @@ export default {
 
   computed: {
     displaySecret() {
-      return this.$can('read', RESOURCE.SECRET.key);
+      return this.$can('read', 'Secret');
     },
   },
 };

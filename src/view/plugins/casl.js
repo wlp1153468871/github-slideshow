@@ -1,5 +1,4 @@
 import { ZONE_ROLE } from '@/core/constants/role';
-import { RESOURCE } from '@/core/constants/resource';
 import { abilitiesPlugin } from '@casl/vue';
 import { AbilityBuilder } from '@casl/ability';
 import store from '@/core/store';
@@ -9,7 +8,7 @@ function defineAbilitiesFor(role) {
   if (role === ZONE_ROLE.VIEW) {
     return AbilityBuilder.define((can, cannot) => {
       can('read', 'all');
-      cannot('read', RESOURCE.SECRET.key);
+      cannot('read', 'Secret');
     });
   }
 

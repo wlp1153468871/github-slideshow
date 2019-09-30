@@ -1,11 +1,17 @@
-/**
- * Created by smvexf on 2019/4/25.
- */
+import store from '@/core/store';
 import api from './api';
 
 class VolumeService {
   constructor() {
     this.api = api;
+  }
+
+  get space() {
+    return store.getters.spaceId;
+  }
+
+  get zone() {
+    return store.state.zone.id;
   }
 
   /**
@@ -36,6 +42,20 @@ class VolumeService {
   delete(spaceId, zone, name) {
     return this.api.delete(`/spaces/${spaceId}/volumes/${name}`, {
       zone,
+    });
+  }
+
+  updateByYaml({
+    space = this.space, zone = this.zone, name, data,
+  }) {
+    return this.api.put(`/spaces/${space}/volumes/${name}/yaml`, data, {
+      params: { zone },
+    });
+  }
+
+  getRefs(name) {
+    return this.api.get(`/spaces/${this.space}/volumes/${name}/objrefs`, {
+      zone: this.zone,
     });
   }
 }

@@ -1,21 +1,28 @@
-import fieldCheckbox from './fields/fieldCheckbox';
-import fieldInput from './fields/fieldInput';
-import fieldInteger from './fields/fieldInteger';
-import fieldRadio from './fields/fieldRadio';
-import fieldSelect from './fields/fieldSelect';
-import fieldSwitch from './fields/fieldSwitch';
-import fieldTextarea from './fields/fieldTextarea';
-// import fieldPassword from './fields/fieldPassword';
+import ArrayField from './fields/array';
+import Checkbox from './fields/checkbox';
+import HTMLInput from './fields/HTMLInput';
+import Integer from './fields/integer';
+import ObjectField from './fields/object';
+import Radio from './fields/radio';
+import Select from './fields/select';
+import Switch from './fields/switch';
+import Textarea from './fields/textarea';
+
+import input from './fields/input.js';
 
 const Fields = {
-  checkbox: fieldCheckbox,
-  input: fieldInput,
-  integer: fieldInteger,
-  radio: fieldRadio,
-  select: fieldSelect,
-  switch: fieldSwitch,
-  textarea: fieldTextarea,
-  // password: fieldPassword,
+  array: ArrayField,
+  checkbox: Checkbox,
+  text: HTMLInput,
+  integer: Integer,
+  number: Integer,
+  object: ObjectField,
+  radio: Radio,
+  select: Select,
+  switch: Switch,
+  textarea: Textarea,
+  email: input('email'),
+  url: input('url'),
 };
 
 const FormlyDaoStyle = {

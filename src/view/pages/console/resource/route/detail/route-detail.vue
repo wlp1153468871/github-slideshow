@@ -1,7 +1,9 @@
 <template>
   <div class="page-pods">
-    <template v-if="!loadings.page">
-      <resource-header :resource="resource" v-if="!isEmpty(route)">
+    <circle-loading v-if="loadings.page"></circle-loading>
+
+    <template v-else>
+      <resource-header :resource="resource">
         <template #creationTime>
           创建于{{ route.metadata.creationTimestamp | date }}
         </template>
@@ -27,6 +29,9 @@
             </button>
 
             <dao-dropdown-menu slot="list">
+              <dao-dropdown-item @click="dialogConfigs.yamlEdit = true">
+                <span>Yaml 更新</span>
+              </dao-dropdown-item>
               <dao-dropdown-item
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red">
@@ -77,13 +82,12 @@
       </el-tabs>
     </template>
 
-    <circle-loading v-else></circle-loading>
 
     <edit-yaml-dialog
       :value="route"
       :visible.sync="dialogConfigs.yamlEdit"
       @update="updateByYaml"
-      @close="dialogConfigs.yamlEdit = false">
+    >
     </edit-yaml-dialog>
   </div>
 </template>

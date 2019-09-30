@@ -21,7 +21,7 @@
             trigger="click"
             :append-to-body="true"
             placement="bottom-end">
-            <button class="dao-btn ghosthas-icon">
+            <button class="dao-btn ghost has-icon">
               操作
               <svg class="icon">
                 <use xlink:href="#icon_caret-down"></use>
@@ -29,6 +29,11 @@
             </button>
 
             <dao-dropdown-menu slot="list">
+
+              <dao-dropdown-item @click="dialogConfigs.yamlEdit = true">
+                <span>Yaml 更新</span>
+              </dao-dropdown-item>
+
               <dao-dropdown-item
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red">
@@ -57,6 +62,7 @@
             :pvc="volume"
             :information="information"
             :jobs="jobs"
+            :objrefs="objrefs"
             @change-tab="tab = $event">
           </overview-panel>
         </el-tab-pane>
@@ -70,8 +76,16 @@
           </jobs-panel>
         </el-tab-pane>
       </el-tabs>
+
     </template>
     <circle-loading v-else></circle-loading>
+
+    <edit-yaml-dialog
+      :value="volume"
+      :visible.sync="dialogConfigs.yamlEdit"
+      @update="updateByYaml"
+      @close="dialogConfigs.yamlEdit = false">
+    </edit-yaml-dialog>
   </div>
 </template>
 

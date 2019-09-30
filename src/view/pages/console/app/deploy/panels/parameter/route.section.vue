@@ -21,13 +21,12 @@
       </template>
       <template #content>
         <dao-select
-          v-model="routeResource"
-          @change="changeChargingType">
+          v-model="_exposeKind">
           <dao-option
-            v-for="option in routeResources"
-            :key="option.label"
-            :value="option.value"
-            :label="option.label">
+            v-for="option in exposeKinds"
+            :key="option.name"
+            :value="option.kind"
+            :label="option.kind">
           </dao-option>
         </dao-select>
       </template>
@@ -68,10 +67,29 @@
         </dao-input>
       </div>
     </dao-setting-section>
+
+    <dao-setting-section>
+      <div slot="label">
+        <span>访问路径</span>
+      </div>
+      <div slot="content">
+        <dao-input
+          icon-inside
+          name="path"
+          v-model="_path"
+          :message="veeErrors.first('path')"
+          :status="veeErrors.has('path') ? 'error' : ''"
+          v-validate="'required|absolute_path'"
+          data-vv-as="访问路径">
+        </dao-input>
+      </div>
+    </dao-setting-section>
   </dao-setting-layout>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'RouteSection',
 
@@ -81,20 +99,14 @@ export default {
     usingRoute: { type: Boolean, default: true },
     hostname: { type: String, default: '' },
     port: { type: String, default: '80' },
+    path: { type: String },
     domain: { type: String, default: '' },
-  },
-
-  data() {
-    return {
-      routeResource: null,
-      routeResources: [
-        { label: 'Route', value: 'Route' },
-        { label: 'Ingress', value: 'Ingress' },
-      ],
-    };
+    exposeKind: { type: String },
   },
 
   computed: {
+    ...mapGetters(['exposeKinds']),
+
     autoRoute: {
       get() {
         return this.usingRoute;
@@ -119,6 +131,24 @@ export default {
       },
       set(port) {
         this.$emit('update:port', port);
+      },
+    },
+
+    _path: {
+      get() {
+        return this.path;
+      },
+      set(path) {
+        this.$emit('update:path', path);
+      },
+    },
+
+    _exposeKind: {
+      get() {
+        return this.exposeKind;
+      },
+      set(kind) {
+        this.$emit('update:exposeKind', kind);
       },
     },
   },

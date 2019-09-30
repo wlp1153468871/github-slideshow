@@ -1,26 +1,20 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import dayjs from 'dayjs';
 import { mapState } from 'vuex';
 import { chunk, nth, size } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
-import ResourceTemplateService from '@/core/services/resource.template.service';
 import ServiceResourceService from '@/core/services/service.resource.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
+import ResourceMixin from '@/view/mixins/resource';
 
 export default {
   name: 'ServiceList',
+
+  mixins: [ResourceMixin(RESOURCE_TYPE.SERVICE)],
 
   data() {
     const { create = 'false' } = this.$route.query;
 
     return {
-      resource: {
-        ...RESOURCE.SERVICE,
-        links: [
-          {
-            text: RESOURCE.SERVICE.name,
-          },
-        ],
-      },
       loadings: {
         page: true,
         table: true,
@@ -32,16 +26,7 @@ export default {
       dialogs: {
         create: JSON.parse(create),
       },
-      formModel: null,
     };
-  },
-
-  watch: {
-    // 'dialogs.create': {
-    //   handler(value) {
-    //     this.$router.push({ query: { create: value } });
-    //   },
-    // },
   },
 
   created() {
@@ -94,13 +79,6 @@ export default {
           this.loadings.page = false;
           this.loadings.table = false;
         });
-    },
-
-    getTemplate() {
-      return ResourceTemplateService.getTemplate('service').then(template => {
-        template.metadata.namespace = this.space.short_name;
-        this.formModel = template;
-      });
     },
 
     openCreateDialog() {

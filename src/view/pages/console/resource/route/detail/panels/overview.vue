@@ -96,10 +96,10 @@
               </span>
               <span class="info-item-content">
                 <template v-if="hasServiceBeenDeleted(route.spec.to.name)">
-                  <router-link
-                    :to="{ name: 'resource.services.detail', params: { name: route.spec.to.name } }">
-                  {{route.spec.to.name}}
-                </router-link>
+                  <resource-link
+                    kind="Service"
+                    :name="route.spec.to.name">
+                  </resource-link>
                 </template>
                 <template v-else>
                   <span>{{ route.spec.to.name }}</span>

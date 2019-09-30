@@ -2,7 +2,7 @@
   <tr class="dee-tr">
     <td class="dee-td">{{ form | envFromType }}</td>
     <td class="dee-td" style="flex-grow: 3;">
-      <span class="text-muted secret-value" v-if="!$can('read', RESOURCE.SECRET.key)">
+      <span class="text-muted secret-value" v-if="!$can('read', 'Secret')">
         <span
           style="width: 100%;"
           class="text-overflow-ellipsis">{{ form.secretRef.name }}</span>
@@ -40,7 +40,7 @@
         ></dao-option>
       </dao-select>
       <a
-        v-if="($can('read', RESOURCE.SECRET.key) && form.secretRef && form.secretRef.name)
+        v-if="($can('read', 'Secret') && form.secretRef && form.secretRef.name)
           || (form.configMapRef && form.configMapRef.name)"
         @click="showDetail"
         style="margin-left: 5px;"
@@ -90,7 +90,6 @@
 </template>
 
 <script>
-import { RESOURCE } from '@/core/constants/resource';
 import formTrDialog from './form-tr-dialog';
 
 export default {
@@ -108,7 +107,6 @@ export default {
           cancelText: '关闭',
         },
       },
-      RESOURCE,
     };
   },
   methods: {

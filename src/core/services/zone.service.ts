@@ -1,4 +1,5 @@
 import store from '@/core/store';
+import { gib2byte } from '@/core/utils/gib2byte';
 import StorageCache from './storage.cache';
 import { APIService } from './api';
 import api from './api';
@@ -12,6 +13,14 @@ class ZoneService {
 
   get orgId(): string {
     return store.getters.orgId;
+  }
+
+  get spaceId() {
+    return store.getters.spaceId;
+  }
+
+  get zoneId() {
+    return store.getters.zoneId;
   }
 
   get(zoneId: string): any {
@@ -33,13 +42,17 @@ class ZoneService {
     StorageCache.saveZone(zone);
   }
 
-  getZones() {
-    return this.api.get('/zones');
+  getZones(organizationId?: string) {
+    const params = {};
+    if (organizationId) {
+      Object.assign(params, { organization_id: organizationId });
+    }
+    return this.api.get('/zones', params);
   }
 
   // get available zones
-  getAvailableZones() {
-    return this.getZones().then(zones => {
+  getAvailableZones(organizationId?: string) {
+    return this.getZones(organizationId).then(zones => {
       // @ts-ignore
       return zones.filter(x => x.available);
     });
@@ -79,11 +92,6 @@ class ZoneService {
     return this.api.get(`/organizations/${orgId}/zones`);
   }
 
-  // 删除平台可用区
-  deleteZone(zoneId: string) {
-    return this.api.delete(`/zones/${zoneId}`);
-  }
-
   // 测试集群地址
   testClustersUrl(cluster: any) {
     return this.api.post('/zone/check', cluster).then(res => {
@@ -93,6 +101,31 @@ class ZoneService {
         ? Promise.resolve()
         : Promise.reject(res);
     });
+  }
+
+  updateResourceQuota(quota: any) {
+    return this.getResourceQuota().then((res: any) => {
+      res.spec.hard = {
+        'limits.cpu': gib2byte(quota.cpu, 'CPU'),
+        'limits.memory': gib2byte(quota.memory),
+        'requests.storage': gib2byte(quota.storage),
+      };
+      return this.api.put(`spaces/${this.spaceId}/resourcequota`, res, {
+        params: {
+          zone: this.zoneId,
+        },
+      });
+    });
+  }
+
+  getResourceQuota() {
+    return this.api.get(`spaces/${this.spaceId}/resourcequota`, {
+      zone: this.zoneId,
+    }, { noNotify: true });
+  }
+
+  checkRegistryAccount(data: any) {
+    return this.api.post(`/registry/check`, data);
   }
 }
 

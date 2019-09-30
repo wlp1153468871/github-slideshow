@@ -48,8 +48,39 @@ class DeploymentResourceService {
     });
   }
 
+  getEventsAndLatestHistoryEvents(spaceId: string, zone: string, name: string) {
+    return Promise.all([
+      this.getEvents(spaceId, zone, name),
+      this.getLatestHistoryEvents(spaceId, zone, name),
+    ]).then(([events, rsEvents]: any[]) => {
+      const eventsItems = events.originData.items || [];
+      const rsEventsItems = rsEvents.items || [];
+      const all = eventsItems.concat(rsEventsItems);
+      return all;
+    });
+  }
+
+
   getHistory(spaceId: string, zone: string, name: string) {
     return this.api.get(`/spaces/${spaceId}/deployments/${name}/replicasets`, {
+      zone,
+    });
+  }
+
+  getLatestHistoryEvents(spaceId: string, zone: string, name: string) {
+    return this.getHistory(spaceId, zone, name)
+      .then<any>((res: any) => {
+        try {
+          const rsname = res.items[0].metadata.name;
+          return this.getHistoryEvents(spaceId, zone, rsname);
+        } catch (error) {
+          return { items: [] };
+        }
+      });
+  }
+
+  getHistoryEvents(spaceId: string, zone: string, name: string) {
+    return this.api.get(`/spaces/${spaceId}/replicaset/${name}/events`, {
       zone,
     });
   }

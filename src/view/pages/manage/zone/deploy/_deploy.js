@@ -36,6 +36,7 @@ export default {
           type: 'harbor',
         },
         grafana: {},
+        is_alert: false,
         router_config: [],
       },
       instanceError: null,

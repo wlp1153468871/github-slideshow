@@ -124,10 +124,28 @@
           :lazy="true">
           <history-panel
             :dc="dc"
-            :spaceId="space.id"
-            :zone="zone.id"
             @rollback="loadData"
             :name="this.name"></history-panel>
+        </el-tab-pane>
+        <el-tab-pane
+          :label="TABS.OPERATING_DATA.label"
+          :name="TABS.OPERATING_DATA.name"
+          :lazy="true">
+          <operating-data
+            v-if="tab === TABS.OPERATING_DATA.name"
+            :name="name">
+          </operating-data>
+        </el-tab-pane>
+        <el-tab-pane
+          v-if="pods.length"
+          :label="TABS.MONITOR.label"
+          :name="TABS.MONITOR.name"
+          :lazy="true">
+          <monitor-panel
+            v-if="tab === TABS.MONITOR.name"
+            :pods="pods"
+            :name="name">
+          </monitor-panel>
         </el-tab-pane>
       </el-tabs>
     </template>
@@ -143,24 +161,29 @@
 <script>
 import { mapState } from 'vuex';
 import { isEmpty, get, cloneDeep, set } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import DCService from '@/core/services/deployment-config.service';
 import HPAService from '@/core/services/hpa.service';
+import { MONITOR_ALL_PODS, POLL_INTERVAL } from '@/core/constants/constants';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
-import { POLL_INTERVAL } from '@/core/constants/constants';
 
 // panels
+import OperatingData from '@/view/components/log/operating-data';
 import LogOfflinePanel from '@/view/components/log/log-offline.vue';
 import LogPanel from '@/view/components/log/log.vue';
 import InfoPanel from './panels/info';
 import PodsPanel from './panels/pods';
 import EnvPanel from './panels/env';
 import HistoryPanel from './panels/history';
+import MonitorPanel from './panels/monitor';
+
 
 export default {
   name: 'Resource-Deployment-Config',
 
   components: {
+    OperatingData,
     LogOfflinePanel,
     LogPanel,
     EditYamlDialog,
@@ -168,7 +191,10 @@ export default {
     PodsPanel,
     EnvPanel,
     HistoryPanel,
+    MonitorPanel,
   },
+
+  mixins: [ResourceMixin(RESOURCE_TYPE.DEPLOYMENT_CONFIG)],
 
   data() {
     const TABS = {
@@ -179,21 +205,13 @@ export default {
       ENV: { label: '环境变量', name: 'env' },
       EVENT: { label: '事件', name: 'event' },
       HISTORY: { label: '历史版本', name: 'history' },
+      OPERATING_DATA: { label: '操作记录', name: 'operating-data' },
+      MONITOR: { label: '查看监控', name: 'viewing-monitor' },
     };
 
     const { name } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.DEPLOYMENT_CONFIG,
-        links: [
-          {
-            text: RESOURCE.DEPLOYMENT_CONFIG.name,
-            route: { name: 'resource.deployments.list' },
-          },
-          { text: name },
-        ],
-      },
       name,
       TABS,
       tab: TABS.INFO.name,
@@ -213,6 +231,7 @@ export default {
       imagesByDockerReference: {}, // TODO: fix this
       events: [],
       autoscalers: [],
+      pods: [],
     };
   },
 
@@ -258,7 +277,7 @@ export default {
     loadData() {
       this.loading.page = true;
       this.loading.tabs = true;
-      Promise.all([this.getDeployment(), this.listHPA()]).finally(() => {
+      Promise.all([this.getDeployment(), this.listHPA(), this.fetchPods()]).finally(() => {
         this.loading.page = false;
         this.loading.tabs = false;
       });
@@ -285,6 +304,14 @@ export default {
       });
     },
 
+    async fetchPods() {
+      const res = await DCService.getPodList(this.space.id, this.zone.id, this.name);
+      this.pods = get(res, 'originData.items', []).map(({ metadata }) => metadata);
+      if (this.pods.length > 1) {
+        this.pods.unshift({ name: MONITOR_ALL_PODS });
+      }
+    },
+
     handleTabClick(tab) {
       const tabName = tab.name;
       if (tabName === this.TABS.EVENT.name) {
@@ -294,9 +321,9 @@ export default {
 
     getEvents() {
       this.loading.event = true;
-      DCService.getEventList(this.space.id, this.zone.id, this.name)
+      DCService.getEventsAndLatestHistoryEvents(this.space.id, this.zone.id, this.name)
         .then(res => {
-          this.events = res.originData.items || [];
+          this.events = res || [];
         })
         .finally(() => {
           this.loading.event = false;
@@ -360,7 +387,7 @@ export default {
       this.loading.page = true;
       DCService.delete(this.space.id, this.zone.id, this.name).then(() => {
         this.$noty.success('删除成功');
-        this.$router.push(RESOURCE.DEPLOYMENT_CONFIG.route);
+        this.goBack();
       });
     },
 

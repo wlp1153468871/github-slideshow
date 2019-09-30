@@ -1,4 +1,5 @@
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import { mapState } from 'vuex';
 import { orderBy, isEmpty } from 'lodash';
 import InstanceService from '@/core/services/instance.service';
@@ -10,6 +11,8 @@ import JobsPanel from './panels/jobs';
 
 export default {
   name: 'VolumeDetail',
+
+  mixins: [ResourceMixin(RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM)],
 
   components: {
     OverviewPanel,
@@ -23,20 +26,7 @@ export default {
       SETTING: { label: '设置', name: 'setting' },
     };
 
-    const { name } = this.$route.params;
-
     return {
-      resource: {
-        ...RESOURCE.PERSISTENT_VOLUME_CLAIM,
-        links: [
-          {
-            text: RESOURCE.PERSISTENT_VOLUME_CLAIM.name,
-            route: { name: 'resource.persistentvolumeclaims.list' },
-          },
-          { text: name },
-        ],
-      },
-      name,
       TABS,
       tab: TABS.OVERVIEW.name,
       loadings: {
@@ -49,6 +39,10 @@ export default {
         basic: {},
       },
       jobs: [],
+      dialogConfigs: {
+        yamlEdit: false,
+      },
+      objrefs: [],
     };
   },
 
@@ -56,8 +50,15 @@ export default {
     ...mapState(['space', 'zone']),
   },
 
-  created() {
-    this.getVolume();
+  async created() {
+    Promise.all([
+      this.getVolume(),
+      this.getRefs(),
+    ])
+      .finally(() => {
+        this.loadings.detail = false;
+        this.loadings.page = false;
+      });
   },
 
   methods: {
@@ -80,7 +81,7 @@ export default {
 
     getVolume() {
       this.loadings.detail = true;
-      VolumeService.getVolume(this.space.id, this.zone.id, this.name)
+      return VolumeService.getVolume(this.space.id, this.zone.id, this.name)
         .then(res => {
           this.instance = res;
           this.volume = res.originData || {};
@@ -92,10 +93,6 @@ export default {
             创建者: res.owner.name || '暂无',
           };
           this.getJobs();
-        })
-        .finally(() => {
-          this.loadings.detail = false;
-          this.loadings.page = false;
         });
     },
 
@@ -127,14 +124,23 @@ export default {
     },
 
     removeVolume(name) {
-      this.isDeleting = true;
-      this.$noty.success(`正在删除 PVC ${name} `);
       VolumeService.delete(this.space.id, this.zone.id, name).then(() => {
-        this.$router.push({
-          name: 'resource.persistentvolumeclaims.list',
-        });
         this.$noty.success(`删除 PVC ${name} 成功`);
-        this.isDeleting = false;
+        this.goBack();
+      });
+    },
+
+    updateByYaml(data) {
+      const { name } = this;
+      VolumeService.updateByYaml({ name, data }).then(() => {
+        this.$noty.success('更新成功');
+        this.getVolume();
+      });
+    },
+    getRefs() {
+      this.loadings.detail = true;
+      return VolumeService.getRefs(this.name).then(res => {
+        this.objrefs = res;
       });
     },
   },

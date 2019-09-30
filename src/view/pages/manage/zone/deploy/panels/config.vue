@@ -11,6 +11,7 @@
               icon-inside
               type="text"
               name="area"
+              ref="areaRef"
               data-vv-as="区域"
               :message="veeErrors.first('area')"
               :status="veeErrors.has('area') ? 'error' : ''"
@@ -28,6 +29,7 @@
               icon-inside
               type="text"
               name="env"
+              ref="envRef"
               data-vv-as="环境"
               :message="veeErrors.first('env')"
               :status="veeErrors.has('env') ? 'error' : ''"
@@ -50,13 +52,14 @@
               icon-inside
               type="text"
               name="clusterUrl"
+              ref="clusterUrlRef"
               data-vv-as="集群地址"
               :message="veeErrors.first('cluster.clusterUrl')"
               :status="veeErrors.has('cluster.clusterUrl') ? 'error' : ''"
               v-validate="'required|url'"
               data-vv-scope="cluster"
               v-model="form.clusterUrl"
-              @change="status = ''">
+              @change="resetClusterCheck">
             </dao-input>
           </div>
         </dao-setting-item>
@@ -70,13 +73,14 @@
               type="text"
               rows="6"
               name="certificateAuthorityData"
+              ref="certificateAuthorityDataRef"
               data-vv-as="集群授权信息"
               :message="veeErrors.first('cluster.certificateAuthorityData')"
               :class="{ error: veeErrors.has('cluster.certificateAuthorityData') }"
               v-validate="'required|base_64'"
               data-vv-scope="cluster"
               v-model="form.certificateAuthorityData"
-              @change="status = ''">
+              @change="resetClusterCheck">
             </textarea>
           </div>
         </dao-setting-item>
@@ -85,6 +89,12 @@
       <template slot="footer">
         <div class="cluster-test">
           <div class="test-message">
+            <template v-if="status===TEST_STATUS.UNTEST">
+              <svg class="icon icon-warning">
+                <use xlink:href="#icon_exclamation-bubble"></use>
+              </svg>
+              <span>集群地址暂未测试连接</span>
+            </template>
             <template v-if="status===TEST_STATUS.LOADING">
               <svg class="icon loading-icon rotating">
                 <use xlink:href="#icon_circle-rotate"></use>
@@ -221,25 +231,16 @@
               type="text"
               name="registryUrl"
               data-vv-as="镜像仓库地址"
-              :message="veeErrors.first('registryUrl')"
-              :status="veeErrors.has('registryUrl') ? 'error' : ''"
+              :message="veeErrors.first('registry.registryUrl')"
+              :status="veeErrors.has('registry.registryUrl')? 'error' : ''"
+              data-vv-scope="registry"
               v-validate="'required|url'"
-              v-model="form.registry.url">
+              v-model="form.registry.url"
+              @change="resetRegistryCheck">
             </dao-input>
           </div>
         </dao-setting-item>
       </dao-setting-section>
-      <!--<dao-setting-section>
-        <dao-setting-item>
-          <div slot="label">是否校验证书</div>
-          <div slot="content">
-            <dao-switch
-              :option="{ on: '是', off: '否' }"
-              v-model="form.registry.verify_ssl">
-            </dao-switch>
-          </div>
-        </dao-setting-item>
-      </dao-setting-section>-->
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">账号</div>
@@ -249,10 +250,12 @@
               type="text"
               name="registryUsername"
               data-vv-as="镜像仓库账号"
-              :message="veeErrors.first('registryUsername')"
+              :message="veeErrors.first('registry.registryUsername')"
               :status="veeErrors.has('registryUsername') ? 'error' : ''"
+              data-vv-scope="registry"
               v-validate="'required|alpha_num'"
-              v-model="form.registry.username">
+              v-model="form.registry.username"
+              @change="resetRegistryCheck">
             </dao-input>
           </div>
         </dao-setting-item>
@@ -267,14 +270,54 @@
               type="password"
               name="registryPassword"
               data-vv-as="镜像仓库密码"
-              :message="veeErrors.first('registryPassword')"
+              :message="veeErrors.first('registry.registryPassword')"
               :status="veeErrors.has('registryPassword') ? 'error' : ''"
+              data-vv-scope="registry"
               v-validate="'exclude_spaces|required|min:5'"
-              v-model="form.registry.password">
+              v-model="form.registry.password"
+              @change="resetRegistryCheck">
             </dao-input>
           </div>
         </dao-setting-item>
       </dao-setting-section>
+
+      <template slot="footer">
+        <div class="cluster-test">
+          <div class="test-message">
+            <template v-if="registryStatus===REGISTRY_STATUS.UNTEST">
+              <svg class="icon icon-warning">
+                <use xlink:href="#icon_exclamation-bubble"></use>
+              </svg>
+              <span>仓库地址暂未测试连接</span>
+            </template>
+            <template v-if="registryStatus===REGISTRY_STATUS.TESTING">
+              <svg class="icon loading-icon rotating">
+                <use xlink:href="#icon_circle-rotate"></use>
+              </svg>
+              <span>正在测试仓库地址...</span>
+            </template>
+            <template
+              v-if="registryStatus===REGISTRY_STATUS.SUCCESS">
+              <svg class="icon success-icon">
+                <use xlink:href="#icon_checkmark"></use>
+              </svg>
+              <span>仓库地址验证成功</span>
+            </template>
+            <template
+              v-if="registryStatus===REGISTRY_STATUS.ERROR">
+              <svg class="icon error-icon">
+                <use xlink:href="#icon_close-circled"></use>
+              </svg>
+              <span class="errorInfo">{{ registryErrorMessage }}</span>
+            </template>
+          </div>
+          <button
+            class="dao-btn blue"
+            @click="checkRegistryAccount">
+            测试
+          </button>
+        </div>
+      </template>
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -325,6 +368,21 @@
         </dao-setting-item>
       </dao-setting-section>
     </dao-setting-layout>
+    <dao-setting-layout>
+      <template #layout-title>报警配置</template>
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label>是否开启</template>
+          <template #content>
+            <dao-switch
+              size="sm"
+              v-model="form.is_alert">
+            </dao-switch>
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+
+    </dao-setting-layout>
 
   </div>
 </template>
@@ -333,6 +391,13 @@
 import { pick } from 'lodash';
 import { TEST_STATUS } from '@/core/constants/constants';
 import ZoneService from '@/core/services/zone.service';
+
+const REGISTRY_STATUS = {
+  UNTEST: 'untest',
+  TESTING: 'testing',
+  SUCCESS: 'success',
+  ERROR: 'error',
+};
 
 export default {
   name: 'config-panel',
@@ -344,8 +409,9 @@ export default {
 
   data() {
     return {
+      REGISTRY_STATUS,
       TEST_STATUS,
-      status: '',
+      status: TEST_STATUS.UNTEST,
       errorInfo: '',
       config: {
         header: ['名称', '唯一标识', '标签', '域名'],
@@ -403,6 +469,8 @@ export default {
         ],
       },
       routeValid: null,
+      registryStatus: REGISTRY_STATUS.UNTEST,
+      registryErrorMessage: '',
     };
   },
 
@@ -419,20 +487,20 @@ export default {
 
   methods: {
     validate() {
-      this.$validator.validateAll('cluster').then(clusterValid => {
-        if (clusterValid) {
-          if (this.status === '') {
-            this.$noty.error('请测试集群地址是否可用');
-          }
-          if (this.status === TEST_STATUS.ERROR) {
-            this.$noty.error('集群地址不可用');
-          }
-        }
-      });
+      if (this.status === TEST_STATUS.UNTEST) {
+        this.resetClusterErrors();
+      }
+      if (this.registryStatus === REGISTRY_STATUS.UNTEST) {
+        this.resetRegistryErrors();
+      }
       return new Promise(resolve => {
         return this.$validator.validateAll().then(valid => {
           this.$refs.EditableTable.validate();
-          resolve(this.routeValid && valid && this.status === TEST_STATUS.ACCESS);
+          this.handleValidationErrorBasic();
+          resolve(this.routeValid &&
+              valid &&
+              this.status === TEST_STATUS.ACCESS &&
+              this.registryStatus === REGISTRY_STATUS.SUCCESS);
         });
       });
     },
@@ -442,24 +510,96 @@ export default {
         if (valid) {
           ZoneService.testClustersUrl(pick(this.form, ['clusterUrl', 'certificateAuthorityData']))
             .then(() => {
+              this.veeErrors.remove({
+                field: 'clusterUrl',
+                scope: 'cluster',
+              });
               this.status = TEST_STATUS.ACCESS;
             })
             .catch(res => {
               this.status = TEST_STATUS.ERROR;
               this.errorInfo = res.status.message;
+              this.veeErrors.add({
+                field: 'clusterUrl',
+                msg: res.status.message,
+                scope: 'cluster',
+              });
             });
         }
+      });
+    },
+
+    resetClusterCheck() {
+      this.status = TEST_STATUS.UNTEST;
+    },
+
+    resetClusterErrors() {
+      this.veeErrors.add({
+        field: 'clusterUrl',
+        msg: '请测试连接',
+        scope: 'cluster',
+      });
+    },
+
+    checkRegistryAccount() {
+      this.registryStatus = REGISTRY_STATUS.TESTING;
+      this.$validator.validateAll('registry').then(valid => {
+        if (valid) {
+          ZoneService.checkRegistryAccount(this.form.registry)
+            .then(() => {
+              this.registryStatus = REGISTRY_STATUS.SUCCESS;
+              this.veeErrors.remove({
+                field: 'registryUrl',
+                scope: 'registry',
+              });
+            })
+            .catch(({ data: { error_info } }) => {
+              this.registryStatus = REGISTRY_STATUS.ERROR;
+              this.registryErrorMessage = error_info;
+              this.veeErrors.add({
+                field: 'registryUrl',
+                msg: error_info,
+                scope: 'registry',
+              });
+            });
+        }
+      });
+    },
+
+    resetRegistryCheck() {
+      this.registryStatus = REGISTRY_STATUS.UNTEST;
+    },
+
+    resetRegistryErrors() {
+      this.veeErrors.add({
+        field: 'registryUrl',
+        msg: '请测试连接',
+        scope: 'registry',
       });
     },
 
     validChange(val) {
       this.routeValid = val;
     },
+
+    handleValidationErrorBasic() {
+      this.$nextTick(() => {
+        const domRect = document
+          .querySelector('.error')
+          .getBoundingClientRect();
+        if (!domRect) return;
+        const domRectDistance =
+          domRect.top + document.documentElement.scrollTop;
+        window.scrollTo(0, domRectDistance - 175);
+      });
+    },
   },
 };
 </script>
 
 <style lang='scss'>
+@import '~daoColor';
+
 .panel-config {
   .cluster-test {
     display: flex;
@@ -476,7 +616,7 @@ export default {
 
       &.errorInfo {
         display: inline-block;
-        color: #f1483f;
+        color: $red;
         text-align: left;
       }
     }
@@ -487,11 +627,15 @@ export default {
   }
 
   .success-icon {
-    fill: #22c36a;
+    fill: $green;
   }
 
   .error-icon {
-    fill: #f1483f;
+    fill: $red;
+  }
+
+  .icon-warning {
+    fill: $yellow;
   }
 }
 </style>

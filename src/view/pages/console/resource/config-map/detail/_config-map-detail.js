@@ -1,7 +1,7 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { get as getValue, orderBy } from 'lodash';
-import { mapState } from 'vuex';
+import ResourceMixin from '@/view/mixins/resource';
 import { CONFIG_TITLE_TYPE } from '@/core/constants/constants';
-import { RESOURCE } from '@/core/constants/resource';
 import ConfigMapService from '@/core/services/config-map.service';
 import InstanceService from '@/core/services/instance.service';
 // panels
@@ -12,6 +12,8 @@ import EventPanel from '../../_panels/event';
 export default {
   name: 'ConfigMapDetail',
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.CONFIG_MAP)],
+
   components: {
     LabelsTable,
     SeniorPanel,
@@ -19,15 +21,13 @@ export default {
   },
 
   data() {
-    const { name: configMapName } = this.$route.params;
     const TABS = {
       OVERVIEW: '概览',
       EVENT: '操作记录',
-      SENIOR: '高级设置',
     };
 
     return {
-      configMapName,
+      activeName: TABS.OVERVIEW,
       CONFIG_TITLE_TYPE,
       TABS,
       configMap: {
@@ -41,37 +41,25 @@ export default {
       loadings: {
         configMap: false,
       },
+      dialogConfigs: {
+        yamlEdit: false,
+      },
+      objrefs: [],
+      kind: RESOURCE_TYPE.CONFIG_MAP,
     };
-  },
-
-  computed: {
-    ...mapState(['space', 'zone']),
-
-    resource() {
-      return {
-        ...RESOURCE.CONFIG_MAP,
-        links: [
-          { text: 'ConfigMaps', route: { name: 'resource.configmaps.list' } },
-          { text: this.configMapName },
-        ],
-      };
-    },
   },
 
   created() {
     this.loadConfigMapDetail();
+    this.getRefs();
   },
 
   methods: {
     loadConfigMapDetail() {
       this.loadings.configMap = true;
-      return ConfigMapService.getConfigMap(this.space.id, this.zone.id, this.configMapName)
+      return ConfigMapService.getConfigMap(this.space.id, this.zone.id, this.name)
         .then(instance => {
-          const {
-            originData: configMap,
-            id: instanceId,
-            status,
-          } = instance;
+          const { originData: configMap, id: instanceId, status } = instance;
 
           this.configMap = configMap;
           this.initLabelsTable(configMap);
@@ -111,14 +99,14 @@ export default {
     },
 
     parseAsConfigMap(data, labels, annotations) {
-      // const { data, labels, annotations } = this;
+      const { name } = this;
       const namespace = this.space.short_name;
       return {
         apiVersion: 'v1',
         kind: 'ConfigMap',
         data,
         metadata: {
-          name: this.configMapName,
+          name,
           namespace,
           annotations,
           labels,
@@ -129,29 +117,51 @@ export default {
     update(data, labels, annotations) {
       const configMap = this.parseAsConfigMap(data, labels, annotations);
 
-      ConfigMapService.updateConfigMap(
-        this.space.id,
-        this.zone.id,
-        this.configMapName,
-        configMap,
-      ).then(() => {
-        return this.loadConfigMapDetail();
-      }).then(() => {
-        if (this.status === 'approving') {
-          this.$noty.success('已提交审批请求...');
-        } else {
-          this.$noty.success('正在更新...');
-        }
-      });
+      ConfigMapService.updateConfigMap(this.space.id, this.zone.id, this.name, configMap)
+        .then(() => {
+          return this.loadConfigMapDetail();
+        })
+        .then(() => {
+          if (this.status === 'approving') {
+            this.$noty.success('已提交审批请求...');
+          } else {
+            this.$noty.success('正在更新...');
+          }
+        });
+    },
+
+    removeConfirm() {
+      const name = getValue(this.configMap, 'metadata.name');
+      this.$tada
+        .confirm({
+          title: '删除 ConfigMap',
+          text: `您确定要删除 ${name} 吗？`,
+        })
+        .then(ok => {
+          if (ok) {
+            this.deleteConfigMap();
+          }
+        });
     },
 
     deleteConfigMap() {
-      ConfigMapService
-        .deleteConfigMap(this.space.id, this.zone.id, this.configMapName)
-        .then(() => {
-          this.$router.push(RESOURCE.CONFIG_MAP.route);
-          this.$noty.success(`成功删除 ConfigMap ${this.configMapName}`);
-        });
+      ConfigMapService.deleteConfigMap(this.space.id, this.zone.id, this.name).then(() => {
+        this.$noty.success(`成功删除 ConfigMap ${this.name}`);
+        this.goBack();
+      });
+    },
+
+    updateByYaml(data) {
+      ConfigMapService.updateByYaml(data).then(() => {
+        this.$noty.success('更新成功');
+        this.loadConfigMapDetail();
+      });
+    },
+
+    getRefs() {
+      ConfigMapService.getRefs(this.name).then(res => {
+        this.objrefs = res;
+      });
     },
   },
 };

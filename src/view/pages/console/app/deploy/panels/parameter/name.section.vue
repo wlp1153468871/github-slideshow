@@ -70,13 +70,12 @@
       </template>
       <template #content>
         <dao-select
-          v-model="deployResource"
-          @change="changeChargingType">
+          v-model="_deploymentKind">
           <dao-option
-            v-for="option in deployResources"
-            :key="option.label"
-            :value="option.value"
-            :label="option.label">
+            v-for="option in deploymentKinds"
+            :key="option.name"
+            :value="option.kind"
+            :label="option.kind">
           </dao-option>
         </dao-select>
       </template>
@@ -86,6 +85,7 @@
 
 <script>
 import { first } from 'lodash';
+import { mapGetters } from 'vuex';
 import ApplicationService from '@/core/services/application.service';
 
 export default {
@@ -99,6 +99,7 @@ export default {
     space: { type: Object, default: () => ({}) },
     repository: { type: String, default: 'demo/app:0.0.1' },
     deployMode: { type: String, default: '' },
+    deploymentKind: { type: String },
   },
 
   data() {
@@ -108,15 +109,12 @@ export default {
         version: '',
       },
       recommendNames: [],
-      deployResource: null,
-      deployResources: [
-        { label: 'Deployment', value: 'Deployment' },
-        { label: 'Deployment Config', value: 'Deployment Config' },
-      ],
     };
   },
 
   computed: {
+    ...mapGetters(['deploymentKinds']),
+
     isDeployByMode() {
       return this.deployMode === 'image';
     },
@@ -138,15 +136,25 @@ export default {
         this.$emit('update:version', version);
       },
     },
+
+    _deploymentKind: {
+      get() {
+        return this.deploymentKind;
+      },
+      set(kind) {
+        this.$emit('update:deploymentKind', kind);
+      },
+    },
   },
 
   methods: {
     checkIsDuplicateName() {
       if (this.veeErrors.has('name')) return;
-
-      this.getRecommendedName(this._name).then(res => { // eslint-disable-line
+      // eslint-disable-next-line no-underscore-dangle
+      this.getRecommendedName(this._name).then(res => {
         if (res.is_existed) {
-          this._name = first(res.recommend_names); // eslint-disable-line
+          // eslint-disable-next-line no-underscore-dangle
+          this._name = first(res.recommend_names);
           this.recommendNames = res.recommend_names;
         }
       });

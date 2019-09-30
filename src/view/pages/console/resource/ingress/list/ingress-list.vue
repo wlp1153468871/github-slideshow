@@ -36,7 +36,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="HOSTS"
+              label="域名"
               min-width="150">
               <template slot-scope="{ row: ingress }">
                 {{ formatHost(ingress) }}
@@ -45,7 +45,9 @@
             <el-table-column
               label="创建时间"
               prop="metadata.creationTimestamp"
-              width="200">
+              sortable
+              width="200"
+              :formatter="dateFormat">
             </el-table-column>
           </x-table>
         </div>
@@ -53,46 +55,41 @@
     </template>
 
     <edit-yaml-dialog
-      :value="formModel"
+      :value="template"
       :visible.sync="dialogs.create"
-      @opened="getTemplate"
-      @update="createIngress">
+      :header="'创建 ' + kind"
+      @update="createIngress"
+    >
     </edit-yaml-dialog>
   </div>
 </template>
 
 <script>
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import Vue from 'vue';
 import { mapState } from 'vuex';
-import { isEmpty, get as getValue } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
-import ResourceTemplateService from '@/core/services/resource.template.service';
+import { get as getValue } from 'lodash';
 import IngressService from '@/core/services/ingress.service';
+import joinApproveStatus from '@/core/utils/joinApproveStatus';
+import ResourceMixin from '@/view/mixins/resource';
 
 export default {
   name: 'IngressList',
 
-  props: {},
+  mixins: [ResourceMixin(RESOURCE_TYPE.INGRESS)],
 
   data() {
     const { create = 'false' } = this.$route.query;
 
     return {
+      kind: RESOURCE_TYPE.INGRESS,
       loadings: {
-        page: false,
+        page: true,
         table: false,
-      },
-      resource: {
-        ...RESOURCE.INGRESS,
-        links: [
-          {
-            text: RESOURCE.INGRESS.name,
-          },
-        ],
       },
       ingressList: [],
       filterMethod: (data, filterKey) =>
         data.metadata.name.toLowerCase().includes(filterKey),
-      formModel: null,
       dialogs: {
         create: JSON.parse(create),
       },
@@ -105,12 +102,16 @@ export default {
 
   created() {
     this.listIngresses();
+    this.getTemplate();
   },
 
   methods: {
     listIngresses() {
-      IngressService.list().then(({ items }) => {
-        this.ingressList = items;
+      this.loadings.table = true;
+      IngressService.list().then(ingressList => {
+        this.ingressList = joinApproveStatus(ingressList);
+        this.loadings.page = false;
+        this.loadings.table = false;
       });
     },
 
@@ -123,14 +124,20 @@ export default {
       return rules.map(rule => rule.host).join();
     },
 
-    createIngress() {},
-
-    getTemplate() {
-      if (!isEmpty(this.formModel)) return;
-      ResourceTemplateService.getTemplate('ingress').then(template => {
-        template.metadata.namespace = this.space.short_name;
-        this.formModel = template;
+    createIngress(ingressModel) {
+      IngressService.create(ingressModel).then(instance => {
+        if (instance.is_need_approval) {
+          this.$noty.success('请在审批记录页面，查看审批进度');
+        } else {
+          this.$noty.success('创建 Ingress 成功');
+        }
+        this.listIngresses();
       });
+    },
+
+    dateFormat(row) {
+      const date = getValue(row, 'metadata.creationTimestamp');
+      return date ? Vue.filter('date')(date) : '-';
     },
   },
 };

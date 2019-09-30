@@ -52,7 +52,7 @@
         label="操作"
         width="180">
         <template
-          v-if="$can('update')">
+          v-if="$can('update')"
           slot-scope="{ row: replicaSet }">
           <el-button
             type="text"
@@ -64,14 +64,6 @@
       </el-table-column>
     </el-table>
 
-    <yaml-preview-dialog
-      :value="preview.history"
-      confirmText="preview.isLatest ? '确定' : '回滚'"
-      :header="preview.header"
-      :visible.sync="preview.open"
-      @confirm="onRollback(preview.formatedHistory, preview.isLatest)"
-      @close="resetPreviewDialog"
-    ></yaml-preview-dialog>
     <el-pagination
       background
       :disabled="loadings.deployment"
@@ -81,6 +73,15 @@
       layout="sizes, prev, pager, next"
       :total="totalPages">
     </el-pagination>
+
+    <yaml-preview-dialog
+      :value="preview.history"
+      confirmText="preview.isLatest ? '确定' : '回滚'"
+      :header="preview.header"
+      :visible.sync="preview.open"
+      @confirm="onRollback(preview.formatedHistory, preview.isLatest)"
+      @close="resetPreviewDialog"
+    ></yaml-preview-dialog>
   </div>
 </template>
 

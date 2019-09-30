@@ -1,22 +1,27 @@
 import { find, get as getValue, head, keys } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import PodService from '@/core/services/pod.service';
 import FileSaveInContainer from '@/view/components/resource/file-save-in-container/file-save-in-container';
 import PodLogPanel from '@/view/components/log/pod-log.vue';
 import PodLogOfflinePanel from '@/view/components/log/pod-offline-log.vue';
+import TerminalHistoryPanel from '@/view/components/log/terminal-history.vue';
+import ResourceMixin from '@/view/mixins/resource';
 
 import PodStatusPanel from './panels/pod-status';
 import PodTemplatePanel from './panels/pod-template';
+import MonitorPanel from './panels/monitor';
 
 
 const TABS = {
   OVERVIEW: { label: '容器组', name: 'overview' },
   TERMINAL: { label: '控制台', name: 'terminal' },
+  TERMINAL_HISTORY: { label: '控制台记录', name: 'terminal_history' },
   REALTIME_LOG: { label: '实时日志', name: 'realtime-log' },
   OFFLINE_LOG: { label: '离线日志', name: 'offline_log' },
   ENV: { label: '环境变量', name: 'env' },
   EVENT: { label: '事件', name: 'event' },
+  MONITOR: { label: '查看监控', name: 'viewing-monitor' },
 };
 
 export default {
@@ -28,19 +33,16 @@ export default {
     PodLogPanel,
     PodLogOfflinePanel,
     FileSaveInContainer,
+    TerminalHistoryPanel,
+    MonitorPanel,
   },
+
+  mixins: [ResourceMixin(RESOURCE_TYPE.POD)],
 
   data() {
     const { name: podName } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.POD,
-        links: [
-          { text: RESOURCE.POD.name, route: { name: 'resource.pods.list' } },
-          { text: podName },
-        ],
-      },
       TABS,
       activeTab: TABS.OVERVIEW.name,
       builds: {},
@@ -65,10 +67,10 @@ export default {
 
   created() {
     this.loading = true;
-    this.getPod().finally(() => {
+    this.getPod(true).finally(() => {
       this.loading = false;
+      this.poll();
     });
-    this.poll();
   },
 
   destroyed() {
@@ -89,11 +91,11 @@ export default {
       clearTimeout(this.pollTimer);
     },
 
-    getPod() {
+    getPod(initial = false) {
       const { podName } = this;
       return PodService.get({ podName }).then(pod => {
         this.pod = pod.originData;
-        this.containerTerminals = this.makeTerminals();
+        if (initial) this.containerTerminals = this.makeTerminals();
         this.updateContainersYet(this.pod);
       });
     },
@@ -126,7 +128,7 @@ export default {
       const { podName } = this;
       PodService.delete({ podName }).then(() => {
         this.$noty.success(`删除Pod ${this.podName} 成功`);
-        this.$router.push({ name: 'resource.pods.list' });
+        this.goBack();
       });
     },
 

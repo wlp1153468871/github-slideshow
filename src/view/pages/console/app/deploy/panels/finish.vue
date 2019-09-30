@@ -72,7 +72,7 @@ export default {
   methods: {
     gotoDetail() {
       this.$router.push({
-        name: 'console.application',
+        name: 'console.applications.detail',
         params: {
           instanceId: this.instance.id,
         },
@@ -81,7 +81,7 @@ export default {
 
     gotoList() {
       this.$router.push({
-        name: 'console.applications',
+        name: 'console.applications.list',
       });
     },
 

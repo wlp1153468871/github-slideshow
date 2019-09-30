@@ -77,7 +77,7 @@
             <div class="panel">
               <div class="panel-header">
                 <svg class="icon">
-                  <use xlink:href="#icon_pvc"></use>
+                  <use xlink:href="#icon_persistentvolumeclaims"></use>
                 </svg>
                 <span class="panel-name">存储</span>
               </div>
@@ -151,27 +151,28 @@
                   <thead>
                   <tr>
                     <th>可用区</th>
-                    <th>Deployment</th>
-                    <th>Stateful Set</th>
-                    <th>Pod</th>
-                    <th>Service</th>
-                    <th>Route</th>
-                    <th>PVC</th>
-                    <th>Secret</th>
-                    <th>Config Map</th>
+                    <th
+                      :key="index"
+                      v-for="(text, index) in headers"
+                    >
+                      <overflow-tooltip
+                        placement="top-start"
+                        :text="text"
+                      >
+                      </overflow-tooltip>
+                    </th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr v-for="(resource, index) in resources" :key="index">
                     <td>{{ resource.zone }}</td>
                     <td class="count">{{ resource.deploymentCount }}</td>
+                    <td class="count">{{ resource.deploymentConfigCount }}</td>
                     <td class="count">{{ resource.statefulSetCount }}</td>
                     <td class="count">{{ resource.podCount }}</td>
                     <td class="count">{{ resource.serviceCount }}</td>
                     <td class="count">{{ resource.routeCount }}</td>
-                    <td class="count">{{ resource.pvcCount }}</td>
-                    <td class="count">{{ resource.secretCount }}</td>
-                    <td class="count">{{ resource.configMapCount }}</td>
+                    <td class="count">{{ resource.ingressCount }}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -202,6 +203,16 @@ export default {
       resources: [],
       loading: true,
       hasData: false,
+      RESOURCE_TYPE,
+      headers: [
+        RESOURCE_TYPE.DEPLOYMENT_CONFIG,
+        RESOURCE_TYPE.DEPLOYMENT,
+        RESOURCE_TYPE.STATEFUL_SET,
+        RESOURCE_TYPE.POD,
+        RESOURCE_TYPE.SERVICE,
+        RESOURCE_TYPE.ROUTE,
+        RESOURCE_TYPE.INGRESS,
+      ],
     };
   },
 
@@ -255,7 +266,9 @@ export default {
       this.pvcs = [];
       Object.entries(res).forEach(([zone, instances]) => {
         const pvc =
-          find(instances, { service_type: RESOURCE_TYPE.VOLUME }) || {};
+          find(instances, {
+            service_type: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
+          }) || {};
         this.pvcs.push({
           zone,
           count: pvc.instanceCount || 0,
@@ -306,28 +319,20 @@ export default {
           find(instances, {
             service_type: RESOURCE_TYPE.ROUTE,
           }) || {};
-        const { instanceCount: pvcCount = 0 } =
+        const { instanceCount: ingressCount = 0 } =
           find(instances, {
-            service_type: RESOURCE_TYPE.VOLUME,
+            service_type: RESOURCE_TYPE.ROUTE,
           }) || {};
-        const { instanceCount: secretCount = 0 } =
-          find(instances, {
-            service_type: RESOURCE_TYPE.SECRET,
-          }) || {};
-        const { instanceCount: configMapCount = 0 } =
-          find(instances, {
-            service_type: RESOURCE_TYPE.CONFIG_MAP,
-          }) || {};
+
         this.resources.push({
           zone,
-          deploymentCount: deploymentCount + deploymentConfigCount,
+          deploymentCount,
+          deploymentConfigCount,
           statefulSetCount,
           podCount,
           serviceCount,
           routeCount,
-          pvcCount,
-          secretCount,
-          configMapCount,
+          ingressCount,
         });
       });
     },

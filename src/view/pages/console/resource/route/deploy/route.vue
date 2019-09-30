@@ -1,5 +1,5 @@
 <template>
-  <div class="page-deploy-router">
+  <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
         <a
@@ -53,7 +53,3 @@
 
 <script src="./_deploy.js">
 </script>
-
-<style lang="scss">
-@import "deploy";
-</style>

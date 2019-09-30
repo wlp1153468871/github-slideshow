@@ -1,9 +1,10 @@
-import getDefaultMenus from '@/core/constants/default-header-menus';
-import getDetailPath from '@/view/router/util/detail-map';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapGetters, mapState } from 'vuex';
-import SpaceService from '@/core/services/space.service';
-import getResourcePath from '@/view/router/util/router-map';
 import { find, isEmpty, includes, cloneDeep } from 'lodash';
+import getDefaultMenus from '@/core/constants/default-header-menus';
+import getDetailPath from '@/view/router/util/resource-detail-map';
+import getListPath from '@/view/router/util/resource-list-map';
+import SpaceService from '@/core/services/space.service';
 
 export default {
   name: 'GlobalNavBar',
@@ -60,10 +61,6 @@ export default {
       );
     },
 
-    isOrgView() {
-      return this.$route.name.substring(0, 4) === 'org.';
-    },
-
     availableServices() {
       return this.services.map(s => s.id);
     },
@@ -71,7 +68,24 @@ export default {
 
   created() {
     this.ensureServices().then(() => {
-      this.defaultMenus = getDefaultMenus();
+      this.$store.watch(
+        () => this.$store.state.apiResource,
+        apiResource => {
+          if (!apiResource) return;
+          const defaultMenus = getDefaultMenus();
+          defaultMenus[0].children = defaultMenus[0].children.filter(resource => {
+            if (resource.kind) {
+              if (resource.kind === RESOURCE_TYPE.APPLICATION) return true;
+              return !!apiResource[resource.kind];
+            }
+            return true;
+          });
+          this.defaultMenus = defaultMenus;
+        },
+        {
+          immediate: true,
+        },
+      );
     });
   },
 
@@ -81,7 +95,7 @@ export default {
 
   watch: {
     filteredCategory(categories) {
-      if (!categories) return;
+      if (!categories.children) return;
 
       const filterValue = cloneDeep(categories).filter(category => {
         const filterCategory = category.children.filter(child => {
@@ -112,7 +126,7 @@ export default {
 
   methods: {
     ensureServices() {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         const { helpURLDict } = this.$store.state;
         if (!isEmpty(helpURLDict)) {
           resolve(helpURLDict);
@@ -120,7 +134,6 @@ export default {
           this.$store.watch(
             () => this.$store.state.helpURLDict,
             res => {
-              if (isEmpty(res)) reject();
               resolve(res);
             },
           );
@@ -145,10 +158,15 @@ export default {
 
     onValueChanged(id) {
       if (!id) return;
-      const [service = {}, instance = {}] = this.options;
-      const allOptions = [...service.options, ...instance.options];
-      const { route } = find(allOptions, { id }) || {};
-      if (!route) return;
+      const [{ options: services }, { options: instances }] = this.options;
+      let route;
+      let resource = find(instances, { id });
+      if (resource) {
+        route = getDetailPath(resource);
+      } else {
+        resource = find(services, { id });
+        route = getListPath(resource);
+      }
       this.$router.push(route);
       this.options = [];
     },
@@ -179,26 +197,13 @@ export default {
           this.options = [
             {
               label: '服务',
-              options: res.superservices.map(superService => {
-                return {
-                  ...superService,
-                  route: getResourcePath(superService),
-                };
-              }),
+              options: res.superservices,
             },
             {
               label: '实例',
               showType: true,
               overflowHidden: true,
-              options: res.instances.map(instance => {
-                return {
-                  ...instance,
-                  route: {
-                    id: instance.id,
-                    ...getDetailPath(instance),
-                  },
-                };
-              }),
+              options: res.instances,
             },
           ];
         });
@@ -207,12 +212,7 @@ export default {
       }
     },
 
-    onSelectOrg(org) {
-      this.$store.dispatch('switchOrg', { org });
-      this.$tada(`切换租户到 ${org.name}`, {
-        buttons: false,
-        timer: 2000,
-      });
+    gotoDashboard() {
       this.$router.push({
         name: 'console.dashboard',
       });
@@ -224,9 +224,9 @@ export default {
       });
     },
 
-    gotoOrgOrManage() {
+    gotoOrg() {
       this.$router.push({
-        name: this.isOrgView ? 'console.dashboard' : 'console.org',
+        name: 'console.org',
       });
     },
 

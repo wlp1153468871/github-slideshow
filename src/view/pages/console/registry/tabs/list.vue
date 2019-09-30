@@ -1,15 +1,25 @@
 <template>
   <div class="registry-content">
-    <div class="table-actions">
-      <el-input
-        class="image-search"
-        size="medium"
-        placeholder="搜索镜像"
-        clearable
-        prefix-icon="el-icon-search"
-        @change="updateKey"
-        v-model="query.q">
-      </el-input>
+    <div class="table-toolbar">
+      <div class="table-toolbar-right">
+        <div>
+          <dao-input
+            search
+            placeholder="搜索镜像"
+            @change="updateKey"
+            v-model="query.q"
+          >
+          </dao-input>
+          <button
+            class="dao-btn"
+            style="margin-left: 10px;"
+            @click="getImages">
+            <svg class="icon">
+              <use xlink:href="#icon_update"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <el-table
@@ -17,15 +27,21 @@
       v-loading="imageTableLoading"
       @expand-change="onExpandChange">
       <el-table-column type="expand">
-        <template slot-scope="props">
+        <template #default="{ row: repository }">
           <el-table
-            v-loading="props.row.tagLoading"
-            :data="props.row.tags"
+            v-loading="repository.tagLoading"
+            :data="repository.tags"
             size="mini">
             <el-table-column
               prop="name"
               label="标签"
               width="180">
+              <template #default="{ row: tag }">
+                <router-link
+                  :to="scanDetailRouter(repository.name, tag)">
+                  {{tag.name}}
+                </router-link>
+              </template>
             </el-table-column>
             <el-table-column
               prop="author"
@@ -40,6 +56,26 @@
             <el-table-column
               prop="docker_version"
               label="Docker版本">
+            </el-table-column>
+            <el-table-column
+              prop="scan_overview"
+              label="漏洞扫描">
+              <template #default="{ row: tag }">
+                <scan-status :status="tag.scan_overview | scan_overview_status"></scan-status>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              align="center"
+              header-align="center"
+              width="80"
+            >
+              <template #default="{ row: tag }">
+                <router-link :to="scanDetailRouter(repository.name, tag)">
+                  详情
+                </router-link>
+              </template>
             </el-table-column>
           </el-table>
         </template>
@@ -91,6 +127,7 @@
 import { mapState } from 'vuex';
 import { debounce, toNumber } from 'lodash';
 import RegistryService from '@/core/services/registry.service';
+import ScanStatus from '@/view/components/scan-overview-status/scan-status';
 
 export default {
   name: 'Registry-List',
@@ -135,7 +172,7 @@ export default {
       imgUrl = imgUrl.replace(/http[s]:\/\//, '');
 
       this.$router.push({
-        name: 'deploy.app',
+        name: 'deploy.applications',
         query: { imgUrl },
       });
     },
@@ -174,6 +211,21 @@ export default {
         row.tagLoading = false;
       });
     },
+
+    scanDetailRouter(repositoryName, tag) {
+      const [project, imageName] = repositoryName.split('/');
+      return {
+        name: 'registry.registryTag',
+        params: {
+          project,
+          imageName,
+          tagName: tag.name,
+        },
+      };
+    },
+  },
+  components: {
+    ScanStatus,
   },
 };
 </script>

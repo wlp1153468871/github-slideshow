@@ -1,4 +1,3 @@
-import { toString } from 'lodash';
 import VolumeService from '@/core/services/volume.service';
 import { mapState } from 'vuex';
 import FinishPanel from './panels/finish';
@@ -27,7 +26,6 @@ export default {
       formModel: {},
       STEPS,
       stepIndex: STEPS.CONFIG,
-      volume: {},
       error: {},
       valid: true,
       purchasing: false,
@@ -43,24 +41,10 @@ export default {
     purchase() {
       this.volumeError = {};
       this.purchasing = true;
-      const data = {
-        name: this.formModel.name,
-        accessModes: this.formModel.accessModes,
-        plan: {
-          limits: [
-            {
-              name: 'storage',
-              unit: this.formModel.unit,
-              value: toString(this.formModel.storage),
-            },
-          ],
-        },
-      };
 
-      VolumeService.createVolume(this.space.id, data, this.zone.id)
-        .then(res => {
+      VolumeService.createVolume(this.space.id, this.formModel, this.zone.id)
+        .then(() => {
           this.error = {};
-          this.volume = Object.assign(res, this.formModel);
         })
         .catch(err => {
           this.error = err;

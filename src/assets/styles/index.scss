@@ -1,29 +1,19 @@
-// bootstrap grid system
+@import './resource';
 @import 'bootstrap/bootstrap';
-
-// utils
-@import 'level';
-@import 'label';
-@import 'utils';
-
-// app layout style
-@import 'layout';
-@import 'common';
-@import 'view';
-@import 'dao-style-extend';
-
-// biz style
-@import 'quota';
-@import 'swal';
-
+@import 'button';
+@import 'checkout';
 @import 'checkout-footer';
-
+@import 'common';
+@import 'dao-style-extend';
 @import 'dao-table';
-
+@import 'label';
+@import 'layout';
+@import 'level';
+@import 'quota';
 // TODO: replace with status-icon
 @import 'status-color';
-
-// related to resource detail
-@import './resource';
-
-@import 'button';
+@import 'swal';
+@import 'utils';
+@import 'variables';
+@import 'view';
+@import 'animate';

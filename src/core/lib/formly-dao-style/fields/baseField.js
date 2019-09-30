@@ -1,12 +1,7 @@
 import { get as getValue } from 'lodash';
 
 export default {
-  props: [
-    'form',
-    'field',
-    'model',
-    'to',
-  ],
+  props: ['form', 'field', 'model', 'to'],
   created() {
     const state = {
       $dirty: false,
@@ -62,14 +57,17 @@ export default {
       }
 
       return {
-        min, max,
+        min,
+        max,
       };
     },
   },
   computed: {
     hasError() {
-      if (this.form[this.field.key].$dirty === false ||
-        this.form[this.field.key].$active === true) {
+      if (
+        this.form[this.field.key].$dirty === false
+        || this.form[this.field.key].$active === true
+      ) {
         return false;
       }
       const errors = this.form.$errors[this.field.key];
@@ -81,7 +79,4 @@ export default {
       return hasErrors;
     },
   },
-  // components: {
-  //   'error-display': errorDisplay,
-  // },
 };

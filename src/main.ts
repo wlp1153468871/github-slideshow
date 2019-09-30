@@ -17,6 +17,7 @@ import App from '@/view/App';
 import router from '@/view/router';
 import AppComponents from '@/view/components';
 import store from '@/core/store';
+import SchemaForm from '@daox/schema-form';
 import VueFormlyDaoStyle from '@/core/lib/formly-dao-style';
 import validationConfig from '@/core/lib/validation-config/vee-config';
 import '@/core/lib/validation-config';
@@ -51,6 +52,7 @@ Vue.use(VeeValidate, validationConfig());
 Vue.use(VueTada);
 Vue.use(VueDaoDialog);
 Vue.use(VueFormly);
+Vue.use(SchemaForm);
 Vue.use(VueFormlyDaoStyle);
 Vue.use(AppComponents);
 Vue.use(VueNoty, {

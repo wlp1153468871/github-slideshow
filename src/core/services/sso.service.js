@@ -21,11 +21,12 @@ class SSOService {
     return this.api.post('/settings/sso/identity-provider', params);
   }
 
-  updateIdentityProvider(ssoIdentityProviderId, params) {
-    return this.api.put(
-      `/settings/sso/identity-provider/${ssoIdentityProviderId}`,
-      params,
-    );
+  updateIdentityProvider(params) {
+    return this.api.put(`/settings/sso/identity-provider/${params.id}`, params);
+  }
+
+  deleteIdentityProvider(ssoIdentityProviderId) {
+    return this.api.delete(`/settings/sso/identity-provider/${ssoIdentityProviderId}`);
   }
 }
 

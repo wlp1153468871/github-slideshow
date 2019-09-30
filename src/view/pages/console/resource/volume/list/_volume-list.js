@@ -1,24 +1,19 @@
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { chunk, nth, get as getValue } from 'lodash';
 import { mapState } from 'vuex';
 import convert from 'convert-units';
 import { INSTANCE_STATUS } from '@/core/constants/constants';
 import VolumeService from '@/core/services/volume.service';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
+import ResourceMixin from '@/view/mixins/resource';
 
 export default {
   name: 'VolumeList',
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM)],
+
   data() {
     return {
-      resource: {
-        ...RESOURCE.PERSISTENT_VOLUME_CLAIM,
-        links: [
-          {
-            text: RESOURCE.PERSISTENT_VOLUME_CLAIM.name,
-          },
-        ],
-      },
       INSTANCE_STATUS,
       volumes: [],
       loadings: {
@@ -32,7 +27,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone', 'user']),
+    ...mapState(['user']),
 
     pvcFilteredByKey() {
       const filterKey = this.filterKey.toLowerCase();
@@ -75,7 +70,7 @@ export default {
 
     createInstance() {
       this.$router.push({
-        name: 'deploy.volume',
+        name: 'deploy.persistentvolumeclaims',
       });
     },
 

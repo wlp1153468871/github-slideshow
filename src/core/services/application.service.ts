@@ -1,4 +1,5 @@
 import API, { APIService } from './api';
+import store from '@/core/store';
 
 class ApplicationService {
   api: APIService;
@@ -7,6 +8,9 @@ class ApplicationService {
     this.api = API;
   }
 
+  get zone() {
+    return store.state.zone.id;
+  }
   /**
    * get given space all instance
    * @param spaceId space id
@@ -75,10 +79,39 @@ class ApplicationService {
   async getRecommendedName(spaceId: string, instanceName = '') {
     return this.api.get(`/spaces/${spaceId}/instances/recommended_name`, {
       need_recommend: true,
-      space_id: spaceId,
       instance_name: instanceName,
+      zone: this.zone,
     });
   }
+
+  async getInstancePod(
+    spaceId: string,
+    zone: string,
+    appName: string,
+  ) {
+    return this.api.get(`/spaces/${spaceId}/monitoring/app/${appName}`, {
+      zone,
+    });
+  }
+
+  // by default get application monitor with 'jmx' type
+  async getAppMonitor(
+    podName: string,
+    spaceId: string,
+    zone: string,
+    from: string = '',
+    to: string = '',
+    type: string = 'jmx',
+    refresh: string = '30s',
+  ) {
+    return this.api.get(`spaces/${spaceId}/monitoring/service/${podName}/type/${type}`, {
+      zone,
+      from,
+      to,
+      refresh,
+    });
+  }
+
 }
 
 export default new ApplicationService();

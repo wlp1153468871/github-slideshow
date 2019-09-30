@@ -1,19 +1,18 @@
 import Vue from 'vue';
 import { get as getValue } from 'lodash';
-import { mapState } from 'vuex';
 import ConfigMapService from '@/core/services/config-map.service';
 import isApprove from '@/core/utils/is-approve';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
-
-import { RESOURCE } from '@/core/constants/resource';
 import ErrorInfo from '@/view/mixins/error-info';
+import ResourceMixin from '@/view/mixins/resource';
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 
 export default {
   name: 'configMapList',
 
-  mixins: [ErrorInfo],
+  mixins: [ErrorInfo, ResourceMixin(RESOURCE_TYPE.CONFIG_MAP)],
 
   components: {
     ErrorInfoDialog,
@@ -43,17 +42,6 @@ export default {
     this.loadInstances();
   },
 
-  computed: {
-    ...mapState(['space', 'zone']),
-
-    resource() {
-      return {
-        ...RESOURCE.CONFIG_MAP,
-        links: [{ text: 'ConfigMap' }],
-      };
-    },
-  },
-
   methods: {
     disableDelete(item) {
       return isApprove(item.approveStatus);
@@ -73,7 +61,7 @@ export default {
 
     createConfigMap() {
       this.$router.push({
-        name: 'deploy.config-map',
+        name: 'deploy.configmaps',
         query: {
           serviceId: this.brokerServiceId,
         },

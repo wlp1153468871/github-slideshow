@@ -1,4 +1,5 @@
 import { forEach, camelCase } from 'lodash';
+import DAlert from './alert/alert';
 import Annotations from './resource/annotations/annotations';
 import AppFooter from './app-footer/app-footer';
 import Breadcrumb from './breadcrumb/breadcrumb';
@@ -30,7 +31,6 @@ import LabelTip from './label-tip/label-tip';
 import LoadingStack from './loading/stack';
 import LoadingState from './loading-state/loading-state';
 import LoadingThreeBounce from './loading/three-bounce';
-import LoadingTwoPoint from './loading/two-point';
 import LogoContainer from './logo-container/logo-container';
 import LogoPlaceholder from './logo-placeholder/logo-placeholder';
 import ManageSideBar from './side-bar/manage-side-bar';
@@ -50,10 +50,17 @@ import Timeline from './timeline/timeline';
 import TruncateLongText from './truncate-long-text/truncate-long-text';
 import UploadInput from './upload-input/upload-input';
 import XTable from './x-table/x-table';
+import ResourceLink from './resource/resource-link/resource-link';
+import OverflowTooltip from './overflow-tooltip/overflow-tooltip';
+import DAside from './aside';
 import { PercentCircle, PieChart, ProgressDount } from './charts';
+import SpaceZone from './space-zone/space-zone';
 
 const components = {
   ...Daox,
+  DAside,
+  DAlert,
+  ResourceLink,
   Annotations,
   AppFooter,
   Breadcrumb,
@@ -85,7 +92,6 @@ const components = {
   LoadingStack,
   LoadingState,
   LoadingThreeBounce,
-  LoadingTwoPoint,
   LogoContainer,
   LogoPlaceholder,
   ManageSideBar,
@@ -109,6 +115,8 @@ const components = {
   TruncateLongText,
   UploadInput,
   XTable,
+  OverflowTooltip,
+  SpaceZone,
 };
 
 function install(Vue) {

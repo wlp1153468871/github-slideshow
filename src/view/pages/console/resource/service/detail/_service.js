@@ -1,6 +1,7 @@
 import { POLL_INTERVAL } from '@/core/constants/constants';
-import { each, get as getValue } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
+import { each, get as getValue, partition } from 'lodash';
 import ServiceResourceService from '@/core/services/service.resource.service';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import EndpointService from '@/core/services/endpoint.service';
@@ -16,42 +17,29 @@ const TABS = {
 export default {
   name: 'ResourceService',
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.SERVICE)],
+
   components: {
     ServiceOverviewPanel,
     PodTable,
   },
 
   data() {
-    const { name: serviceName } = this.$route.params;
     const { tab } = this.$route.query;
 
     return {
-      resource: {
-        ...RESOURCE.SERVICE,
-        links: [
-          { text: RESOURCE.SERVICE.name, route: RESOURCE.SERVICE.route },
-          { text: serviceName },
-        ],
-      },
       TABS,
       activeTab: tab || TABS.OVERVIEW.name,
-      dialogs: {
-        update: false,
-      },
+      dialogs: { update: false },
       events: [],
-      loadings: {
-        page: true,
-        pod: true,
-      },
+      loadings: { page: true, pod: true },
       pods: [],
       status: '',
       service: null,
-      serviceName,
-      routesForService: {},
-      portsByRoute: {},
-      showNodePorts: false,
       podsWithEndpoints: {},
       pollTimer: null,
+      ingresses: [],
+      routes: [],
     };
   },
 
@@ -93,41 +81,37 @@ export default {
 
     init() {
       this.loadings.page = true;
-      return Promise.all([
-        this.getService(),
-        this.getRoutes(),
-      ])
-        .then(() => {
-          this.getPortsByRoute();
-        })
-        .finally(() => {
-          this.loadings.page = false;
-        });
+      return Promise.all([this.getService(), this.getTraffic()]).finally(() => {
+        this.loadings.page = false;
+      });
     },
 
     getService() {
-      const { serviceName } = this;
-      return ServiceResourceService
-        .get({ name: serviceName })
-        .then(({ originData = null, status }) => {
-          this.service = originData;
-          this.status = status;
-        });
+      const { name } = this;
+      return ServiceResourceService.get({ name }).then(({ originData = null, status }) => {
+        this.service = originData;
+        this.status = status;
+      });
     },
 
-    getRoutes() {
-      return ServiceResourceService
-        .getRoutes({ name: this.serviceName })
-        .then(({ originData: { items = [] } }) => {
-          items.forEach(route => {
-            this.routesForService[route.metadata.name] = route;
-          });
+    getTraffic() {
+      const { name } = this;
+      return ServiceResourceService.getTraffic({ name }).then(({ originData = [] }) => {
+        const [routes, ingresses] = partition(originData, {
+          kind: RESOURCE_TYPE.ROUTE,
         });
+        if (routes.length) {
+          this.routes = routes;
+        } else {
+          this.ingresses = ingresses;
+        }
+      });
     },
 
     getEndpointsByService() {
+      const { name } = this;
       return EndpointService.getEndpointsByService({
-        name: this.serviceName,
+        name,
       }).then(svcEndpoint => {
         const newpodsWithEndpoints = {};
         each(svcEndpoint.subsets, subset => {
@@ -141,46 +125,18 @@ export default {
       });
     },
 
-    // receives routes for the current service and maps service ports to each route name
-    getPortsByRoute() {
-      this.portsByRoute = {};
-      each(this.service.spec.ports, port => {
-        let reachedByRoute = false;
-        if (port.nodePort) {
-          this.showNodePorts = true;
-        }
-
-        each(this.routesForService, route => {
-          if (
-            !route.spec.port ||
-            route.spec.port.targetPort === port.name ||
-            route.spec.port.targetPort === port.targetPort
-          ) {
-            this.portsByRoute[route.metadata.name] =
-              this.portsByRoute[route.metadata.name] || [];
-            this.portsByRoute[route.metadata.name].push(port);
-            reachedByRoute = true;
-          }
-        });
-
-        if (!reachedByRoute) {
-          this.portsByRoute[''] = this.portsByRoute[''] || [];
-          this.portsByRoute[''].push(port);
-        }
-      });
-    },
-
     getEvents() {
-      const { serviceName } = this;
+      const { name } = this;
       ServiceResourceService.getEvents({
-        name: serviceName,
+        name,
       }).then(({ originData: { items } }) => {
         this.events = items;
       });
     },
 
     getPods() {
-      return ServiceResourceService.getPods({ name: this.serviceName })
+      const { name } = this;
+      return ServiceResourceService.getPods({ name })
         .then(({ originData: { items } }) => {
           this.pods = items;
         })
@@ -192,8 +148,8 @@ export default {
     ensureRemove() {
       this.$tada
         .confirm({
-          title: `删除 ${this.serviceName}  `,
-          text: `您确定要删除Service ${this.serviceName} 吗？`,
+          title: `删除 ${this.name}  `,
+          text: `您确定要删除Service ${this.name} 吗？`,
         })
         .then(ok => {
           if (ok) {
@@ -203,10 +159,10 @@ export default {
     },
 
     removeService() {
-      const { serviceName } = this;
-      ServiceResourceService.delete({ name: serviceName }).then(() => {
-        this.$noty.success(`删除Service ${this.podName} 成功`);
-        this.$router.push({ name: 'resource.services.list' });
+      const { name } = this;
+      ServiceResourceService.delete({ name }).then(() => {
+        this.$noty.success(`删除Service ${this.name} 成功`);
+        this.goBack();
       });
     },
 
@@ -215,8 +171,8 @@ export default {
     },
 
     updateService(service) {
-      const { serviceName } = this;
-      ServiceResourceService.update({ name: serviceName, data: service })
+      const { name } = this;
+      ServiceResourceService.update({ name, data: service })
         .then(() => {
           return this.init();
         })

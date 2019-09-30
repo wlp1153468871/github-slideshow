@@ -57,11 +57,21 @@
         </el-tab-pane>
 
         <!-- Deployment -->
-        <el-tab-pane :label="TABS.DEPLOYMENT" :name="TABS.DEPLOYMENT">
-          <deployment-panel
-            :deployments="resources.Deployment"
-            :deployment-configs="resources.DeploymentConfig">
+        <el-tab-pane
+          v-if="resources.Deployment"
+          :label="TABS.DEPLOYMENT"
+          :name="TABS.DEPLOYMENT">
+          <deployment-panel :deployments="resources.Deployment">
           </deployment-panel>
+        </el-tab-pane>
+
+        <!-- Deployment Config-->
+        <el-tab-pane
+          v-if="resources.DeploymentConfig"
+          :label="TABS.DEPLOYMENT_CONFIG"
+          :name="TABS.DEPLOYMENT_CONFIG">
+          <deployment-config-panel :deployment-configs="resources.DeploymentConfig">
+          </deployment-config-panel>
         </el-tab-pane>
 
         <!-- 四层负载均衡 -->
@@ -72,14 +82,24 @@
         </el-tab-pane>
 
         <!-- 七层负载均衡 -->
-        <el-tab-pane :label="TABS.ROUTE" :name="TABS.ROUTE">
+        <el-tab-pane
+          v-if="resources.Route"
+          :label="TABS.ROUTE"
+          :name="TABS.ROUTE"
+        >
           <route-panel
             :routes="resources.Route">
           </route-panel>
         </el-tab-pane>
 
-        <el-tab-pane :label="TABS.INGRESS" :name="TABS.INGRESS">
-          INGRESS
+        <el-tab-pane
+          v-if="resources.Ingress"
+          :label="TABS.INGRESS"
+          :name="TABS.INGRESS"
+        >
+          <ingress-panel
+            :ingresses="resources.Ingress">
+          </ingress-panel>
         </el-tab-pane>
 
         <!-- 容器组 -->
@@ -108,12 +128,12 @@
         </el-tab-pane>
 
         <!-- 事件 -->
-        <el-tab-pane :label="TABS.EVENT" :name="TABS.EVENT">
+        <!--<el-tab-pane :label="TABS.EVENT" :name="TABS.EVENT">
           <event-panel
             :instance="instance"
             :zone-id="zoneId">
           </event-panel>
-        </el-tab-pane>
+        </el-tab-pane>-->
 
         <!-- 操作记录 -->
         <el-tab-pane :label="TABS.JOB" :name="TABS.JOB">

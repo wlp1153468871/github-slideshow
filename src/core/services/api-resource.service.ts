@@ -10,8 +10,7 @@ class APIResourceService {
   }
 
   list(zone: any) {
-    console.log(zone);
-    return Promise.resolve(resources);
+    return this.api.get(`/api_resources`, { zone: zone.id });
   }
 }
 

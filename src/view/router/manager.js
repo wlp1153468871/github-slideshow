@@ -16,6 +16,7 @@ const SpaceDetail = () => import(/* webpackChunkName: "management" */'@/view/pag
 const UserList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/user/user-list/user-list.vue');
 const ZoneList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/zone/zone-list/zone-list.vue');
 const ZoneDetail = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/zone/zone-detail/zone-detail.vue');
+const AlarmMetricsList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/alarm/alarm-metrics/alarm-metrics.vue');
 
 // preference
 const HomeSetting = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/preference/home/home.vue');
@@ -52,6 +53,11 @@ export default {
       path: 'service',
       name: 'manage.service.list',
       component: ServiceList,
+    },
+    {
+      path: 'alarm-metrics',
+      name: 'manage.alarm-metrics.list',
+      component: AlarmMetricsList,
     },
     {
       path: 'service/:id',
@@ -147,7 +153,7 @@ export default {
 
     {
       path: 'deploy',
-      name: 'deploy',
+      name: 'manage.deploy',
       component: DeployContainer,
       children: [
         {

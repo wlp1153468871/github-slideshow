@@ -2,15 +2,18 @@
   border: 1px solid #e4e7ed;
   color: #595f69;
   fill: #595f69;
+
   &::before {
     content: none;
   }
+
   th {
     padding: 5px;
     color: #595f69;
     font-weight: 600;
     font-size: 14px;
     background-color: #f6f7f8;
+
     &:not(:last-child)::after {
       content: '';
       position: absolute;
@@ -20,10 +23,12 @@
       top: 20.58824%;
     }
   }
+
   td {
     padding: 5px;
     border-bottom: 1px solid #f1f3f6;
   }
+
   .el-table__body {
     tbody {
       tr {
@@ -34,5 +39,26 @@
         }
       }
     }
+  }
+
+  .caret-wrapper {
+    height: 20px;
+  }
+
+  .sort-caret.ascending {
+    top: -1px;
+  }
+
+  .sort-caret.descending {
+    bottom: -1px;
+  }
+
+  th > .cell {
+    font-weight: normal;
+  }
+
+  .cell {
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }

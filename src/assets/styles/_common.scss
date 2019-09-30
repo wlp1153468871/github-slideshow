@@ -5,7 +5,6 @@
 }
 
 html {
-  overflow-x: auto !important;
   min-width: 960px !important;
   height: 100%;
 }
@@ -14,15 +13,16 @@ body {
   // 解决 tooltip、popover append to body 后小于 1280 时候错位问题
   position: relative;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Neue Haas Grotesk Text Pro',
-    'Arial Nova', 'Segoe UI', 'Helvetica Neue', '.PingFang SC', 'PingFang SC',
-    'Microsoft YaHei', 'Microsoft JhengHei', 'Source Han Sans SC',
-    'Noto Sans CJK SC', 'Source Han Sans CN', 'Noto Sans SC',
-    'Source Han Sans TC', 'Noto Sans CJK TC', 'Hiragino Sans GB', sans-serif,
+  font-family: -apple-system, BlinkMacSystemFont, 'Neue Haas Grotesk Text Pro', 'Arial Nova',
+    'Segoe UI', 'Helvetica Neue', '.PingFang SC', 'PingFang SC', 'Microsoft YaHei',
+    'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN',
+    'Noto Sans SC', 'Source Han Sans TC', 'Noto Sans CJK TC', 'Hiragino Sans GB', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 14px;
 
   -webkit-font-smoothing: antialiased;
+  line-height: 1.66667;
+  overflow-x: auto !important;
 }
 
 // 生成一堆 margin 和 padding 的 class。
@@ -55,8 +55,7 @@ $help-box-blanks: (
       #{$help-box-blank}: $help-box-size !important;
     }
     // 循环方向 上、右、下、左
-    @each $help-box-direction-class, $help-box-direction in $help-box-directions
-    {
+    @each $help-box-direction-class, $help-box-direction in $help-box-directions {
       #{$help-box-blank-class}#{$help-box-direction-class}#{$help-box-size-class} {
         #{$help-box-blank}#{$help-box-direction}: $help-box-size !important;
       }
@@ -162,7 +161,7 @@ a.disabled {
 }
 
 .table-toolbar {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   overflow: hidden;
 
   .table-toolbar-left {
@@ -211,23 +210,14 @@ a.disabled {
 
 // 全局nav-menu
 .dao-nav-menu {
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: $nav-height;
   width: 200px;
+  height: calc(100vh - #{$nav-height});
   background: rgb(55, 59, 65);
-
-  &.collapsed {
-    width: 64px;
-    transition: 0.3s;
-
-    .el-icon-d-arrow-left {
-      transform: rotate(-180deg);
-      transition: 0.4s;
-    }
-
-    .el-cascader__label {
-      white-space: unset;
-    }
-  }
+  z-index: 10;
+  transition: 0.3s;
 
   .menus {
     position: absolute;
@@ -237,7 +227,7 @@ a.disabled {
     overflow-y: auto;
 
     &::-webkit-scrollbar {
-      width: 0;
+      display: none;
     }
   }
 
@@ -318,5 +308,23 @@ a.disabled {
   &:hover {
     color: #3890ff;
     fill: #3890ff;
+  }
+}
+
+.flex-cc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+ul.text-red{
+  color: red;
+  padding: 20px;
+  li {
+    padding: 10px;
   }
 }

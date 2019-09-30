@@ -1,5 +1,5 @@
 import { mapGetters, mapState } from 'vuex';
-import { APPLICATION_CONFIG } from '@/core/constants/app';
+import { APPLICATION_CONFIG } from '@/core/constants/resource';
 import { INSTANCE_STATUS, STATUS_COLOR } from '@/core/constants/constants';
 import ApplicationService from '@/core/services/application.service';
 import InstanceService from '@/core/services/instance.service';
@@ -114,14 +114,8 @@ export default {
     },
 
     deployApplication() {
-      const { serviceId, brokerServiceId } = this;
-
       this.$router.push({
-        name: 'deploy.app',
-        query: {
-          serviceId,
-          brokerServiceId,
-        },
+        name: 'deploy.applications',
       });
     },
 
@@ -134,7 +128,7 @@ export default {
       const instanceId = instance.id;
 
       this.$router.push({
-        name: 'console.application',
+        name: 'console.applications.detail',
         params: {
           instanceId,
         },

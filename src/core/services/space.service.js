@@ -1,4 +1,6 @@
 import store from '@/core/store';
+import { gib2byte } from '@/core/utils/gib2byte';
+
 import api from './api';
 import StorageCache from './storage.cache';
 
@@ -25,6 +27,14 @@ class SpaceService {
 
   createSpace(space) {
     return this.api.post('/spaces', space);
+  }
+
+  createSpaceZone(spaceId, space) {
+    return this.api.post(`spaces/${spaceId}/zones`, space);
+  }
+
+  getSpaceZones(spaceId) {
+    return this.api.get(`spaces/${spaceId}/zones`);
   }
 
   getSpace(spaceId) {
@@ -90,6 +100,45 @@ class SpaceService {
 
   addSpaceService(spaceId, serviceId) {
     return this.api.put(`/spaces/${spaceId}/services/${serviceId}`);
+  }
+
+  getResourceQuota(spaceId) {
+    return this.api.get(`spaces/${spaceId || this.spaceId}/space_quota`);
+  }
+
+  getServiceMonitor(
+    service_name,
+    spaceId,
+    zone,
+    type,
+    from = '',
+    to = '',
+    refresh = '30s',
+  ) {
+    return this.api.get(`spaces/${spaceId}/monitoring/service/${service_name}/type/${type}`, {
+      zone,
+      from,
+      to,
+      refresh,
+    });
+  }
+
+  applyResourceQuota(quota) {
+    quota.cpu = gib2byte(quota.cpu, 'CPU');
+    quota.memory = gib2byte(quota.memory);
+    quota.storage = gib2byte(quota.storage);
+    return this.api.post('/quota/approval/space', quota, { params: { space_id: this.spaceId } });
+  }
+
+  updateResourceQuota(spaceId, quota) {
+    quota.cpu = gib2byte(quota.cpu, 'CPU');
+    quota.memory = gib2byte(quota.memory);
+    quota.storage = gib2byte(quota.storage);
+    return this.api.put(`/spaces/${spaceId || this.spaceId}/space_quota`, quota);
+  }
+
+  getResourceQuotaApprovals(type = 'apply') {
+    return this.api.get('/quota/approval/space', { space_id: this.spaceId, type });
   }
 }
 

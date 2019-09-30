@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import {
-  Alert,
   Button,
   Cascader,
   DatePicker,
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  CheckboxGroup,
+  Checkbox,
   Input,
   Loading,
   Menu,
@@ -26,11 +27,15 @@ import {
   TabPane,
   Tabs,
   Tooltip,
+  Form,
+  FormItem,
+  Card,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
 
-Vue.use(Alert);
+Vue.use(CheckboxGroup);
+Vue.use(Checkbox);
 Vue.use(Button);
 Vue.use(Cascader);
 Vue.use(DatePicker);
@@ -56,3 +61,7 @@ Vue.use(Tooltip);
 Vue.use(Radio);
 Vue.use(RadioButton);
 Vue.use(RadioGroup);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Card);
+

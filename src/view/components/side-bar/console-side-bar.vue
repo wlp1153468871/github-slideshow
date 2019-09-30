@@ -1,5 +1,5 @@
 <template>
-  <div class="dao-nav-menu" :class="{ collapsed: isCollapse }">
+  <div class="dao-nav-menu">
     <div class="menus">
       <div class="section-space">
         <template v-if="orgs.length">
@@ -65,31 +65,36 @@
         <template v-if="isPlatformAdmin || !zoneUnauthorized">
 
           <el-menu-item
-            index="console.applications"
-            :route="{ name: 'console.applications' }">
+            index="console.applications.list"
+            :route="{ name: 'console.applications.list' }">
             <svg class="icon">
               <use xlink:href="#icon_application"></use>
             </svg>
             <span slot="title">应用</span>
           </el-menu-item>
 
-          <el-submenu index="resource">
+          <el-submenu
+            index="resource">
             <template slot="title">
               <svg class="icon">
                 <use xlink:href="#icon_resource"></use>
               </svg>
-              <span slot="title">容器资源对象</span>
+              <span slot="title">资源对象</span>
             </template>
-            <template v-for="(resource, key) in RESOURCE">
+            <template v-for="resource in apiResource">
               <el-menu-item
-                v-if="!resource.hidden && $can('read', resource.key)"
-                :key="key"
+                v-if="$can('read', resource.name)"
+                :key="resource.name"
                 :index="resource.route.name"
                 :route="resource.route">
                 <svg class="icon">
                   <use :xlink:href="resource.icon"></use>
                 </svg>
-                <span>{{ resource.name }}</span>
+                <overflow-tooltip
+                  slot="title"
+                  :text="resource.kind"
+                >
+                </overflow-tooltip>
               </el-menu-item>
             </template>
 
@@ -135,6 +140,15 @@
             </svg>
             <span slot="title">监控中心</span>
           </el-menu-item>
+          <el-menu-item
+            v-if="$can('read')"
+            index="console.alarm"
+            :route="{ name: 'console.alarm' }">
+            <svg class="icon">
+              <use xlink:href="#icon_bell"></use>
+            </svg>
+            <span slot="title">告警中心</span>
+          </el-menu-item>
 
         </template>
 
@@ -153,8 +167,8 @@
             <span>用户管理</span>
           </el-menu-item>
           <el-menu-item
-            index="console.quota.used"
-            :route="{ name: 'console.quota.used' }">
+            index="console.space-quota"
+            :route="{ name: 'console.space-quota' }">
             <svg class="icon">
               <use xlink:href="#icon_quota"></use>
             </svg>
@@ -200,13 +214,13 @@
 </template>
 
 <script>
-import { RESOURCE } from '@/core/constants/resource';
 import { mapState, mapGetters } from 'vuex';
 import { find } from 'lodash';
+import * as types from '@/core/store/mutation-types';
 import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
 import ZoneSelect from './zone-select';
-import * as types from '../../../core/store/mutation-types';
+import OverflowTooltip from './overflow-tooltip';
 
 export default {
   name: 'ConsoleSideBar',
@@ -215,6 +229,7 @@ export default {
     SideBarSection,
     SideBarLogo,
     ZoneSelect,
+    OverflowTooltip,
   },
 
   updated() {
@@ -227,7 +242,6 @@ export default {
 
   data() {
     return {
-      RESOURCE,
       props: {
         value: 'id',
         label: 'name',
@@ -247,6 +261,7 @@ export default {
       'services',
       'isCollapse',
       'defaultActiveMenu',
+      'apiResource',
     ]),
 
     ...mapGetters([
@@ -268,6 +283,7 @@ export default {
         this.selectedOptions = [val.id, this.selectedOptions[1]];
       },
     },
+
     space: {
       immediate: true,
       handler(val) {
@@ -313,6 +329,17 @@ export default {
     onBottomMenuSelect() {
       this.$refs.topMenu.activeIndex = '';
     },
+  },
+
+  mounted() {
+    this.$watch(
+      () => {
+        return this.$refs.bottomMenu.openedMenus;
+      },
+      val => {
+        this.$store.commit(types.UPDATE_OPENED_MENUS, [...val]);
+      },
+    );
   },
 };
 </script>

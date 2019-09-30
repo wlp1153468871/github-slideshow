@@ -92,7 +92,7 @@ export default {
   top: 0;
   z-index: 1000;
   width: 100%;
-  height: 54px;
+  height: $nav-height;
   color: #fff;
   background-color: #1f201f;
 
@@ -104,7 +104,7 @@ export default {
       max-width: 100%;
       max-height: 100%;
       display: block;
-      padding: 16px 0;
+      padding: 10px 0;
     }
   }
 
@@ -126,7 +126,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 54px;
+      height: $nav-height;
       line-height: 45px;
 
       svg {

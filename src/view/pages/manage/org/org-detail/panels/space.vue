@@ -22,6 +22,7 @@
     <add-space-dialog
       @create="createSpace"
       :visible="dialogConfigs.addSpace.visible"
+      :orgId="orgId"
       @close="dialogConfigs.addSpace.visible = false">
     </add-space-dialog>
     <!-- dialog end -->
@@ -101,12 +102,13 @@ export default {
     },
 
     createSpace(space) {
-      const { name, short_name } = space;
+      const { name, short_name, zoneIds } = space;
       const params = {
         organization_id: this.orgId,
         name,
         short_name,
         description: '',
+        zone_ids: zoneIds,
       };
       SpaceService.createSpace(params).then(newSpace => {
         this.rows.push(newSpace);

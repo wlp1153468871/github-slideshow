@@ -1,18 +1,18 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { get as getValue } from 'lodash';
 import Vue from 'vue';
-import { mapState } from 'vuex';
 import SecretService from '@/core/services/secret.service';
 import isApprove from '@/core/utils/is-approve';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 
-import { RESOURCE } from '@/core/constants/resource';
 import ErrorInfo from '@/view/mixins/error-info';
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
+import ResourceMixin from '@/view/mixins/resource';
 
 export default {
   name: 'SecretList',
 
-  mixins: [ErrorInfo],
+  mixins: [ErrorInfo, ResourceMixin(RESOURCE_TYPE.SECRET)],
 
   components: {
     ErrorInfoDialog,
@@ -39,17 +39,6 @@ export default {
     this.loadInstances();
   },
 
-  computed: {
-    ...mapState(['space', 'zone']),
-
-    resource() {
-      return {
-        ...RESOURCE.SECRET,
-        links: [{ text: 'Secret' }],
-      };
-    },
-  },
-
   methods: {
     loadInstances() {
       this.loadings.table = true;
@@ -65,7 +54,7 @@ export default {
 
     createSecret() {
       this.$router.push({
-        name: 'deploy.secret',
+        name: 'deploy.secrets',
         query: {
           serviceId: this.brokerServiceId,
         },

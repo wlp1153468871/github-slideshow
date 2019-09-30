@@ -1,10 +1,13 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
-import { RESOURCE } from '@/core/constants/resource';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import PodService from '@/core/services/pod.service';
+import ResourceMixin from '@/view/mixins/resource';
 
 export default {
   name: 'ResourcePod',
+
+  mixins: [ResourceMixin(RESOURCE_TYPE.POD)],
 
   components: {
     PodTable,
@@ -12,14 +15,6 @@ export default {
 
   data() {
     return {
-      resource: {
-        ...RESOURCE.POD,
-        links: [
-          {
-            text: RESOURCE.POD.name,
-          },
-        ],
-      },
       loadings: {
         page: true,
         table: true,

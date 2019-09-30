@@ -64,12 +64,7 @@ export default {
       this.loadings.purchasing = true;
       this.instanceError = {};
 
-      const params = this.formModel.parameters
-        .filter(({ value }) => Boolean(value))
-        .map(({ id, value }) => ({
-          id,
-          value,
-        }));
+      const params = this.formModel.parameters;
 
       InstanceService.createInstance(this.space.id, this.brokerServiceId, {
         params,
@@ -93,6 +88,9 @@ export default {
       switch (step) {
         case STEPS.CONFIG: {
           const model = this.$refs.configPanel.formModel();
+          if (!model) {
+            return;
+          }
           this.formModel = {
             ...this.formModel,
             ...model,

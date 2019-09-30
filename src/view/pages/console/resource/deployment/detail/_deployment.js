@@ -1,13 +1,16 @@
 import { mapState } from 'vuex';
-import { isEmpty, cloneDeep, set } from 'lodash';
-import { RESOURCE } from '@/core/constants/resource';
-import { POLL_INTERVAL } from '@/core/constants/constants';
+import { isEmpty, cloneDeep, set, get } from 'lodash';
+import { RESOURCE_TYPE } from '@/core/constants/resource';
+import { POLL_INTERVAL, MONITOR_ALL_PODS } from '@/core/constants/constants';
 import DeploymentResourceService from '@/core/services/deployment.resource.service';
 import HPAService from '@/core/services/hpa.service';
+import OperatingData from '@/view/components/log/operating-data';
+import ResourceMixin from '@/view/mixins/resource';
 
 // panels
 import LogOfflinePanel from '@/view/components/log/log-offline.vue';
 import LogPanel from '@/view/components/log/log.vue';
+import MonitorPanel from '@/view/pages/console/resource/deployment-config/detail/panels/monitor';
 import PodsPanel from './panels/pods';
 import EnvPanel from './panels/env';
 import HistoryPanel from './panels/history';
@@ -21,10 +24,14 @@ const TABS = {
   HISTORY: { label: '历史版本', name: 'history' },
   EVENT: { label: '事件', name: 'event' },
   ENV: { label: '环境变量', name: 'env' },
+  OPERATING_DATA: { label: '操作记录', name: 'operating-data' },
+  MONITOR: { label: '查看监控', name: 'viewing-monitor' },
 };
 
 export default {
   name: 'Resource-Deployment',
+
+  mixins: [ResourceMixin(RESOURCE_TYPE.DEPLOYMENT)],
 
   components: {
     PodsPanel,
@@ -33,22 +40,14 @@ export default {
     InfoPanel,
     LogOfflinePanel,
     LogPanel,
+    OperatingData,
+    MonitorPanel,
   },
 
   data() {
     const { name: deploymentName } = this.$route.params;
 
     return {
-      resource: {
-        ...RESOURCE.DEPLOYMENT,
-        links: [
-          {
-            text: RESOURCE.DEPLOYMENT.name,
-            route: { name: 'resource.deployments.list' },
-          },
-          { text: deploymentName },
-        ],
-      },
       dialogs: {
         view: false,
       },
@@ -67,6 +66,8 @@ export default {
       jobs: [],
       imagesByDockerReference: {}, // TODO: fix this
       autoscalers: [],
+      name: deploymentName,
+      pods: [],
     };
   },
 
@@ -82,10 +83,9 @@ export default {
     poll() {
       this.pollTimer = setTimeout(() => {
         clearTimeout(this.pollTimer);
-        Promise.all([this.getDeployment(), this.listHPA()])
-          .then(() => {
-            this.poll();
-          });
+        Promise.all([this.getDeployment(), this.listHPA()]).then(() => {
+          this.poll();
+        });
       }, POLL_INTERVAL);
     },
     unsetPolling() {
@@ -95,7 +95,7 @@ export default {
     loadData() {
       this.loadings.page = true;
       this.loadings.table = true;
-      Promise.all([this.getDeployment(), this.listHPA()]).finally(() => {
+      Promise.all([this.getDeployment(), this.listHPA(), this.fetchPods()]).finally(() => {
         this.loadings.page = false;
         this.loadings.table = false;
       });
@@ -109,6 +109,10 @@ export default {
       ).then(deployment => {
         this.deployment = deployment.originData;
         this.status = deployment.status;
+        this.operatingData = {
+          name: this.deploymentName,
+          namespace: this.deployment.metadata.namespace,
+        };
       });
     },
 
@@ -122,6 +126,15 @@ export default {
       });
     },
 
+    async fetchPods() {
+      const res = await DeploymentResourceService
+        .getPods(this.space.id, this.zone.id, this.deploymentName);
+      this.pods = get(res, 'originData.items', []).map(({ metadata }) => metadata);
+      if (this.pods.length > 1) {
+        this.pods.unshift({ name: MONITOR_ALL_PODS });
+      }
+    },
+
     handleTabClick(tab) {
       const tabName = tab.name;
       if (tabName === TABS.EVENT.name) {
@@ -131,13 +144,13 @@ export default {
 
     getEvents() {
       this.loadings.table = true;
-      DeploymentResourceService.getEvents(
+      DeploymentResourceService.getEventsAndLatestHistoryEvents(
         this.space.id,
         this.zone.id,
         this.deploymentName,
       )
         .then(res => {
-          this.events = res.originData.items || [];
+          this.events = res || [];
         })
         .finally(() => {
           this.loadings.table = false;
@@ -166,7 +179,7 @@ export default {
       )
         .then(() => {
           this.$noty.success(`删除Deployment ${this.deploymentName} 成功`);
-          this.$router.push({ name: 'resource.deployments.list' });
+          this.goBack();
         })
         .finally(() => {
           this.loadings.page = false;

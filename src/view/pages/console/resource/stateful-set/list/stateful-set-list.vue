@@ -57,7 +57,7 @@
                 slot-scope="{ row: statefulSet }"
               >
                 {{statefulSet.status &&
-                  statefulSet.status.replicas + '/' + statefulSet.spec.replicas + ' replicas'}}
+                statefulSet.status.replicas + '/' + statefulSet.spec.replicas + ' replicas'}}
               </template>
             </el-table-column>
             <el-table-column
@@ -88,42 +88,34 @@
 
     <edit-yaml-dialog
       :visible.sync="dialog.isOpen"
-      :value="yamlTample"
+      :value="template"
       @update="onYAMLDialogUpdate"
-      @close="dialog.isOpen = false">
+      @close="dialog.isOpen = false"
+    >
     </edit-yaml-dialog>
 
   </div>
 </template>
 
 <script>
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
 import dayjs from 'dayjs';
-
-// import axios from 'axios';
 import { debounce, chunk, nth } from 'lodash';
-
-import { RESOURCE } from '@/core/constants/resource';
+import ResourceMixin from '@/view/mixins/resource';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml.vue';
 import StatefulSetService from '@/core/services/stateful-set.service.ts';
-import TemplateService from '@/core/services/resource.template.service.ts';
 import joinApproveStatus from '@/core/utils/joinApproveStatus.js';
 
 export default {
   name: 'StatefulSetList',
 
+  mixins: [ResourceMixin(RESOURCE_TYPE.STATEFUL_SET)],
+
   components: { EditYamlDialog },
 
   data() {
     return {
-      resource: {
-        ...RESOURCE.STATEFUL_SET,
-        links: [
-          {
-            text: RESOURCE.STATEFUL_SET.name,
-          },
-        ],
-      },
       loadings: {
         page: true,
         table: true,
@@ -136,14 +128,14 @@ export default {
       },
       statefulSets: [],
       filteredStatefulSets: [],
-      yamlTample: {},
       currentPage: 1,
       pageSize: 10,
     };
   },
 
   created() {
-    Promise.all([this.getStatefulSets(), this.getTemplate()]).finally(() => {
+    this.getTemplate();
+    this.getStatefulSets().finally(() => {
       this.loadings.table = false;
       this.loadings.page = false;
     });
@@ -193,13 +185,6 @@ export default {
         return inName || inLabel;
       });
     }, 200),
-
-    getTemplate() {
-      return TemplateService.getTemplate('stateful-set').then(template => {
-        template.metadata.namespace = this.space.short_name;
-        this.yamlTample = template;
-      });
-    },
 
     getStatefulSets() {
       return StatefulSetService.list(this.space.id, this.zone.id).then(res => {

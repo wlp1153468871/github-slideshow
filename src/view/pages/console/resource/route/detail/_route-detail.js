@@ -1,8 +1,9 @@
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
-import { orderBy, isEmpty, get as getValue, keyBy } from 'lodash';
+import { orderBy, get as getValue, keyBy } from 'lodash';
+import ResourceMixin from '@/view/mixins/resource';
 import ServiceService from '@/core/services/service.resource.service';
 import InstanceService from '@/core/services/instance.service';
-import { RESOURCE } from '@/core/constants/resource';
 import EditYamlDialog from '@/view/components/yaml-edit/edit-yaml';
 import RouteService from '@/core/services/route.service';
 // panels
@@ -12,6 +13,8 @@ import JobsPanel from './panels/jobs';
 
 export default {
   name: 'VolumeDetail',
+
+  mixins: [ResourceMixin(RESOURCE_TYPE.ROUTE)],
 
   components: {
     OverviewPanel,
@@ -27,23 +30,10 @@ export default {
       JOBS: { label: '操作记录', name: 'jobs' },
     };
 
-    const { name } = this.$route.params;
-
     return {
       dialogConfigs: {
         yamlEdit: false,
       },
-      resource: {
-        ...RESOURCE.ROUTE,
-        links: [
-          {
-            text: RESOURCE.ROUTE.name,
-            route: { name: 'resource.routes.list' },
-          },
-          { text: name },
-        ],
-      },
-      name,
       TABS,
       tab: TABS.OVERVIEW.name,
       loadings: {
@@ -52,7 +42,6 @@ export default {
       instance: {},
       route: {},
       status: '',
-      isEmpty,
       information: {
         basic: {},
         config: {},
@@ -93,6 +82,7 @@ export default {
           this.status = res.status;
           this.getJobs();
           this.route = res.originData || {};
+          this.cert.ref = getValue(res, 'instance_metadata.parameters.certificateRef') || {};
           this.information.basic = {
             '租户 / 项目组': `${res.organizationName ||
               this.space.name} / ${res.spaceName ||
@@ -116,33 +106,34 @@ export default {
         });
     },
 
-    openDialog() {
-      this.dialogConfigs.yamlEdit = true;
-    },
-
-    updateByYaml() {},
-
     removeConfirm() {
-      const {
-        metadata: { name },
-      } = this.route;
+      const { name } = this;
       this.$tada
         .confirm({
           title: '删除 Route ',
           text: `您确定要删除 Route ${name} 吗？`,
         })
         .then(willDelete => {
-          if (willDelete) this.removeRoute(name);
+          if (willDelete) this.removeRoute();
         });
     },
 
-    removeRoute(name) {
-      this.$noty.success(`正在删除 Route ${name} `);
+    removeRoute() {
+      const { name } = this;
       RouteService.delete(this.space.id, this.zone.id, name).then(() => {
         this.$noty.success(`删除 Route ${name} 成功`);
-        this.$router.push({
-          name: 'resource.routes.list',
-        });
+        this.goBack();
+      });
+    },
+
+    updateByYaml(data) {
+      const {
+        metadata: { name },
+      } = this.route;
+      RouteService.updateByYaml({ name, data }).then(() => {
+        this.$noty.success('更新成功');
+        this.getRoute();
+        this.getServices();
       });
     },
   },

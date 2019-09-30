@@ -1,12 +1,61 @@
 import store from '@/core/store';
 import { mapGetters, mapState } from 'vuex';
+import OrgService from '@/core/services/org.service';
+import SpaceService from '@/core/services/space.service';
+import ZoneService from '@/core/services/zone.service';
 
 export default {
   name: 'ConsoleContainer',
 
   beforeRouteEnter(to, from, next) {
-    store.dispatch('initTenantView');
-    next();
+    // 首次进入租户视图，如果路由query中有租户，项目组，可用区ID，则进行切换
+    const {
+      spaceId,
+      zoneId,
+      orgId,
+    } = to.query;
+    if (spaceId && zoneId && orgId) {
+      SpaceService.setLocalSpace({
+        id: spaceId,
+      });
+      ZoneService.setLocalZone({
+        id: zoneId,
+      });
+      OrgService.setLocalOrg({
+        id: orgId,
+      });
+    }
+    if (to.query.onInitTenantView) {
+      next();
+    } else {
+      store.dispatch('initTenantView').finally(() => {
+        next();
+      });
+    }
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    const {
+      spaceId,
+      zoneId,
+      orgId,
+    } = to.query;
+    if (spaceId && zoneId && orgId) {
+      SpaceService.setLocalSpace({
+        id: spaceId,
+      });
+      ZoneService.setLocalZone({
+        id: zoneId,
+      });
+      OrgService.setLocalOrg({
+        id: orgId,
+      });
+      store.dispatch('initTenantView').finally(() => {
+        next();
+      });
+    } else {
+      next();
+    }
   },
 
   data() {
@@ -16,7 +65,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['zoneId']),
+    ...mapGetters(['zoneId', 'spaceDescription']),
+
+    ...mapState(['isCollapse']),
 
     ...mapState({
       isInitTenantView: state => state.loadings.initTenantView,
@@ -30,7 +81,10 @@ export default {
       return (
         !this.$route.path.includes('/org') &&
         !this.$route.path.includes('/profile') &&
-        !this.$route.path.includes('/deploy/')
+        !this.$route.path.includes('/console/deploy') &&
+        !this.$route.path.includes('/audit') &&
+        !this.$route.path.includes('/platform-approval') &&
+        !this.$route.path.includes('/alarm/rule/create')
       );
     },
   },
@@ -38,12 +92,9 @@ export default {
   methods: {
     switchSpace(space) {
       this.$store.dispatch('switchSpace', { space });
-      this.$tada(`切换项目组到 ${space.name}`, {
+      this.$tada(`切换${this.spaceDescription}到 ${space.name}`, {
         buttons: false,
         timer: 2000,
-      });
-      this.$router.push({
-        name: 'console.dashboard',
       });
     },
   },

@@ -93,19 +93,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="spec.selector"
-              label="标签选择器">
-              <template slot-scope="{ row: { spec: { selector } } }">
-                <span v-if="!selector"><em>none</em></span>
-                <span
-                  v-for="(selectorValue, selectorLabel, index) in selector"
-                  :key="selectorLabel">
-                  {{selectorLabel}}={{selectorValue}}
-                  <template v-if="index !== size(selector.length)">,</template>
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column
               label="创建时间"
               sortable
               :sort-method="sortStartTime"
@@ -129,7 +116,7 @@
     </template>
 
     <edit-yaml-dialog
-      :value="formModel"
+      :value="template"
       :visible="dialogs.create"
       @update="createService"
       @close="dialogs.create = false">

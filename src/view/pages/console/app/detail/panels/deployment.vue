@@ -1,22 +1,8 @@
 <template>
   <div class="app-deployment-panel">
-    <!-- Deployment -->
     <dao-table-view
       :rows="deployments"
       :config="tConfig">
-      <div slot="tool" class="dao-table-view-left-bar">
-        <span class="table-title">Deployment</span>
-      </div>
-    </dao-table-view>
-
-    <!-- Deployment Config -->
-    <dao-table-view
-      style="margin-top: 20px;"
-      :rows="deploymentConfigs"
-      :config="tConfig">
-      <div slot="tool" class="dao-table-view-left-bar">
-        <span class="table-title">Deployment Config</span>
-      </div>
     </dao-table-view>
   </div>
 </template>
@@ -32,7 +18,6 @@ export default {
 
   props: {
     deployments: { type: Array, default: () => [] },
-    deploymentConfigs: { type: Array, default: () => [] },
   },
 
   created() {
@@ -101,12 +86,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.app-deployment-panel {
-  .table-title {
-    // because .dao-table-view-left-bar's height is 32px;
-    line-height: 32px;
-  }
-}
-</style>

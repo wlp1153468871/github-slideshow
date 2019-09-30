@@ -32,6 +32,7 @@ import humanizeTlsTermination from './resource/humanize-tls-termination.filter';
 import imageObjectRef from './resource/image-object-ref.filter';
 import imageStreamName from './resource/image-stream-name.filter';
 import imageTag from './image-tag.filter';
+import ingressWebUrl from './resource/ingress-web-url.filter';
 import instanceDetail from './instance-detail.filter';
 import instanceStatus from './instance-status.filter';
 import isApproving from './is-approving.filter';
@@ -65,7 +66,6 @@ import routeTargetPortMapping from './resource/route-target-port-mapping.filter'
 import routeWebUrl from './resource/route-web-url.filter';
 import sentenceCase from './sentence-case.filter';
 import serviceStatus from './service-status.filter';
-import serviceType from './service-type.filter';
 import shortCommit from './short-commit.filter';
 import spaceRole from './space-role.filter';
 import startCaseFilter from './start-case.filter';
@@ -78,6 +78,9 @@ import upperCase from './upper-case.filter';
 import usageWithUnits from './resource/usage-with-units.filter';
 import volumeMountMode from './resource/volume-mount-mode.filter';
 import zoneAuth from './zone-auth.filter';
+import threshold from './threshold.filter';
+import alarmScope from './alarm-scope.filter';
+import scanOverviewStatus from './resource/scan-overview-status.filter.js';
 
 const filters = {
   accessModes,
@@ -112,6 +115,7 @@ const filters = {
   imageObjectRef,
   imageStreamName,
   imageTag,
+  ingressWebUrl,
   instanceDetail,
   instanceStatus,
   isApproving,
@@ -145,7 +149,6 @@ const filters = {
   routeWebUrl,
   sentenceCase,
   serviceStatus,
-  serviceType,
   shortCommit,
   spaceRole,
   startCaseFilter,
@@ -158,6 +161,9 @@ const filters = {
   usageWithUnits,
   volumeMountMode,
   zoneAuth,
+  threshold,
+  alarmScope,
+  scanOverviewStatus,
 };
 
 Object.keys(filters).forEach(key => {

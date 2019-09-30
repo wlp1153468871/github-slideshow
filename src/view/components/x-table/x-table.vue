@@ -9,13 +9,15 @@
           <dao-input
             search
             v-model="filterKey"
-            placeholder="请输入搜索内容">
+            :placeholder="searchPlaceholder">
+          >
           </dao-input>
           <button
             v-if="showRefresh"
             class="dao-btn"
             style="margin-left: 10px;"
-            @click="$emit('refresh')">
+            @click="$emit('refresh')"
+          >
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
@@ -27,7 +29,8 @@
     <el-table
       v-bind="$attrs"
       v-loading="loading"
-      :data="dataInCurrentPage">
+      :data="dataInCurrentPage"
+    >
       <slot></slot>
     </el-table>
 
@@ -38,7 +41,8 @@
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
       :layout="small ? `prev, pager, next` : 'sizes, prev, pager, next'"
-      :total="totalPages">
+      :total="totalPages"
+    >
     </el-pagination>
   </div>
 </template>

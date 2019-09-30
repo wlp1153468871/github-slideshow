@@ -10,8 +10,13 @@ export default {
         USERS: { canShow: true, name: '用户', to: { name: 'org.user' } },
         QUOTA: {
           canShow: false,
-          name: '配额',
+          name: '配额管理',
           to: { name: 'org.quota' },
+        },
+        QUOTA_REQUEST: {
+          canShow: false,
+          name: '配额更新请求',
+          to: { name: 'org.quota-approval' },
         },
         // REGISTRY: { canShow: true, name: '镜像仓库信息', to: { name: 'org.registry' } },
       },
@@ -25,5 +30,6 @@ export default {
 
   created() {
     this.TABS.QUOTA.canShow = this.isOrganizationAdmin;
+    this.TABS.QUOTA_REQUEST.canShow = this.isOrganizationAdmin;
   },
 };

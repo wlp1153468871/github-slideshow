@@ -1,12 +1,21 @@
+import store from '@/core/store';
 import API, { APIService } from './api';
 import { Base64 } from 'js-base64';
-import { mapValues } from 'lodash';
+import { get as getValue, mapValues } from 'lodash';
 
 class SecretService {
   api: APIService;
 
   constructor() {
     this.api = API;
+  }
+
+  get space() {
+    return store.getters.spaceId;
+  }
+
+  get zone() {
+    return store.state.zone.id;
   }
 
   async listSecret(spaceId: string, zone: string) {
@@ -49,6 +58,20 @@ class SecretService {
       ...secret,
       data: decodedData,
     };
+  }
+
+  updateByYaml(data: any) {
+    const name = getValue(data, 'metadata.name');
+    if (!name) Promise.reject('缺少名称');
+    return this.api.put(`/spaces/${this.space}/secrets/${name}/yaml`, data, {
+      params: { zone: this.zone },
+    });
+  }
+
+  getRefs(name: string) {
+    return this.api.get(`/spaces/${this.space}/secrets/${name}/objrefs`, {
+      zone: this.zone,
+    });
   }
 }
 
