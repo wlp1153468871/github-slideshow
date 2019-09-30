@@ -320,3 +320,11 @@ a.disabled {
 .text-capitalize {
   text-transform: capitalize;
 }
+
+ul.text-red{
+  color: red;
+  padding: 20px;
+  li {
+    padding: 10px;
+  }
+}

@@ -49,7 +49,7 @@ export default {
     async fetchInstancesBaseService() {
       const instanceId = this.filters.servicesBroker.id;
       const items = await SpaceService.getInstances(instanceId);
-      this.instances = items ? items.map(({ name, id }) => ({ name, id })) : {};
+      this.instances = items && items.length ? items.map(({ name, id }) => ({ name, id })) : {};
       // eslint-disable-next-line prefer-destructuring
       this.filters.instance = this.instances[0];
       if (this.filters.instance.name) {

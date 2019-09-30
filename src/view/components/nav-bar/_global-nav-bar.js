@@ -95,7 +95,7 @@ export default {
 
   watch: {
     filteredCategory(categories) {
-      if (!categories) return;
+      if (!categories.children) return;
 
       const filterValue = cloneDeep(categories).filter(category => {
         const filterCategory = category.children.filter(child => {
