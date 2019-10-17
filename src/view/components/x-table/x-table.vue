@@ -30,6 +30,7 @@
       v-bind="$attrs"
       v-loading="loading"
       :data="dataInCurrentPage"
+      :empty-text="emptyText"
     >
       <slot></slot>
     </el-table>

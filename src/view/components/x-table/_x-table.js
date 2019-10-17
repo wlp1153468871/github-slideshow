@@ -11,6 +11,7 @@ export default {
     initalPageSize: { type: Number, default: 20 },
     showRefresh: { type: Boolean, default: true },
     searchPlaceholder: { type: String, default: '请输入搜索内容' },
+    emptyText: { type: String },
   },
 
   data() {
