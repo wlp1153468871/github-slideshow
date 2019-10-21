@@ -65,13 +65,13 @@
           </div>
         </div>
       </dao-tab-item>
-      <dao-tab-item :heading="SIDE_BAR.SOURCES">
-        <div class="dao-view-main">
-          <div class="dao-view-content">
-            <source-panel v-model="service"></source-panel>
-          </div>
-        </div>
-      </dao-tab-item>
+      <!--<dao-tab-item :heading="SIDE_BAR.SOURCES">-->
+        <!--<div class="dao-view-main">-->
+          <!--<div class="dao-view-content">-->
+            <!--<source-panel v-model="service"></source-panel>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</dao-tab-item>-->
       <dao-tab-item :heading="SIDE_BAR.OVERVIEW">
         <div class="dao-view-content">
           <overview-panel v-model="service"></overview-panel>
