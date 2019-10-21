@@ -78,6 +78,7 @@ export default {
         // 启动参数
         cmd: '',
         args: '',
+        monitor: false,
       },
       configMaps: [],
       secrets: [],

@@ -12,7 +12,6 @@
               query: { tab: 'app', app: instance.name, id: instance.id },
             }"
             tag="a"
-            target="_blank"
           >点击查看</router-link>
         </template>
 
