@@ -38,7 +38,7 @@
     <el-pagination
       background
       :small="small"
-      :page-sizes="[10,20,50]"
+      :page-sizes="[10,30,50]"
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
       :layout="small ? `prev, pager, next` : 'sizes, prev, pager, next'"
