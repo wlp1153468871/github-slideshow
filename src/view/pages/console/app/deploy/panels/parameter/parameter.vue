@@ -79,6 +79,21 @@
       :cmd.sync="form.cmd"
       :args.sync="form.args">
     </command-section>
+
+    <dao-setting-layout>
+      <template slot="layout-title">监控开关</template>
+      <!--监控 -->
+      <dao-setting-section>
+        <div slot="label">
+          <span>监控开关</span>
+        </div>
+        <div slot="content">
+          <dao-switch
+            v-model="form.monitor">
+          </dao-switch>
+        </div>
+      </dao-setting-section>
+    </dao-setting-layout>
   </div>
 </template>
 

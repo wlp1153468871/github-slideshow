@@ -40,9 +40,13 @@ export default {
       this.returnToPage();
     }
 
-    const { sso_token, identity_provider_id } = this.$route.query; // eslint-disable-line
-    this.sso.ssoToken = sso_token; // eslint-disable-line
-    this.sso.identityProviderId = identity_provider_id; // eslint-disable-line
+    Object.assign(
+      this.sso,
+      {
+        ssoToken: this.$route.query.sso_token,
+        identityProviderId: this.$route.query.identity_provider_id,
+      },
+    );
     if (this.sso.ssoToken && this.sso.identityProviderId) {
       this.autoLogin();
     }

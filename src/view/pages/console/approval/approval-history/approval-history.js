@@ -44,5 +44,9 @@ export default {
       item.creator = creator; // dirty changed!
       return item;
     },
+
+    filterMethod(data, filterKey) {
+      return data.owner && data.owner.name.toLowerCase().includes(filterKey.toLowerCase());
+    },
   },
 };

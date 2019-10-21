@@ -43,6 +43,9 @@ export default {
   },
 
   methods: {
+    filterMethod(data, filterKey) {
+      return data.owner && data.owner.name.toLowerCase().includes(filterKey.toLowerCase());
+    },
     doAgree(approval) {
       this.$tada
         .confirm({
