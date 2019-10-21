@@ -33,7 +33,7 @@ class AlarmService {
   }
 
   getAllAlarmRules() {
-    return this.api.get(`space/${this.space}/alert`, { zone: this.zone });
+    return this.api.get(`space/${this.space}/alert`, { zone: this.zone }, { noNotify: true });
   }
 
   postRules(rules: object) {
