@@ -47,8 +47,8 @@ const refreshToken = (params, cb) => {
   return refreshingCall;
 };
 
-const toLogin = () => {
-  notifyErrorResponse({}, '登录过期，请重新登录');
+const toLogin = (res = {}) => {
+  notifyErrorResponse(res, '登录过期，请重新登录');
   store.dispatch('clearCache').then(router => {
     router.push({
       name: 'login',
@@ -104,7 +104,8 @@ export default {
           toLogin();
         });
       }
-      toLogin();
+      // 传递初始登录错误信息
+      toLogin(response);
     } else if (response.status === 403) {
       if (getValue(response, 'headers.Authorization')) {
         notifyErrorResponse({}, '权限不足');
