@@ -27,6 +27,11 @@
 
   .nav-left-container {
     max-width: 150px;
+    height: 100%;
+    .logo-box {
+      display: block;
+      height: 100%;
+    }
   }
 
   .nav-right-container {

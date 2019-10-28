@@ -1,7 +1,7 @@
 <template>
   <nav class="g-nav">
     <div class="nav-left-container">
-      <router-link :to="{ name: 'home' }">
+      <router-link :to="{ name: 'home' }" class="logo-box">
         <logo-container></logo-container>
       </router-link>
     </div>
