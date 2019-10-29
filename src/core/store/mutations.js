@@ -86,6 +86,7 @@ export const state = {
   alarm: {
     rules: [],
   },
+  isFullscreened: false,
 };
 
 /* eslint-disable no-shadow */
@@ -671,6 +672,10 @@ export const mutations = {
 
   [types.UPDATE_OPENED_MENUS](state, openedMenus) {
     state.openedMenus = openedMenus;
+  },
+
+  [types.FUll_SCREENED](state, isFullscreened) {
+    state.isFullscreened = isFullscreened;
   },
 };
 /* eslint-enable no-shadow */

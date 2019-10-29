@@ -27,6 +27,8 @@ import * as fullscreen from 'xterm/dist/addons/fullscreen/fullscreen';
 import PodService from '@/core/services/pod.service';
 import TerminalHistoryService from '@/core/services/terminal-history.service';
 import SockJS from 'sockjs-client';
+import { FUll_SCREENED } from '@/core/store/mutation-types';
+
 
 Terminal.applyAddon(fit);
 Terminal.applyAddon(fullscreen);
@@ -51,13 +53,12 @@ export default {
       conn: null,
       terminalResponse: {},
       first: true,
-      isFullscreened: false,
       keyWords: [],
     };
   },
 
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'isFullscreened']),
   },
 
   mounted() {
@@ -149,7 +150,8 @@ export default {
     },
 
     fullScreen() {
-      this.isFullscreened = !this.isFullscreened;
+      // this.isFullscreened = !this.isFullscreened;
+      this.$store.commit(FUll_SCREENED, !this.isFullscreened);
       if (this.term) this.term.toggleFullScreen(this.isFullscreened);
     },
 
