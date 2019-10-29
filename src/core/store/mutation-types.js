@@ -37,3 +37,5 @@ export const SET_SGM_SSO = 'SET_SGM_SSO';
 
 export const LOAD_API_RESOURCE = 'LOAD_API_RESOURCE';
 export const UPDATE_OPENED_MENUS = 'UPDATE_OPENED_MENUS';
+
+export const FUll_SCREENED = 'FUll_SCREENED';

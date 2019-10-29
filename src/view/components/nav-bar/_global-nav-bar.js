@@ -40,6 +40,7 @@ export default {
       'user',
       'services',
       'filteredCategory',
+      'isFullscreened',
     ]),
 
     isDisplayOrgSelect() {

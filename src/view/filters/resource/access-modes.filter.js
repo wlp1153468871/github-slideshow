@@ -14,12 +14,12 @@ export default function accessModesFilter(value, format) {
           ? '读写(独占) (Read-Write-Once)'
           : '读写(独占)';
         break;
-      case 'ReadOnlyMany':
+      case 'ReadWriteMany':
         accessModeString = longForm
           ? '读写(共享) (Read-Only-Many)'
           : '读写(共享)';
         break;
-      case 'ReadWriteMany':
+      case 'ReadOnlyMany':
         accessModeString = longForm
           ? '只读(共享) (Read-Write-Many)'
           : '只读(共享)';

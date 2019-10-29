@@ -56,21 +56,20 @@
           <dao-setting-item>
             <p slot="label">读写模式</p>
             <template slot="content">
-              <el-checkbox-group
-                v-model="form.spec.accessModes"
-                :min="1">
-                <el-checkbox
+              <el-radio-group
+                v-model="form.spec.accessMode">
+                <el-radio
                   v-for="mode in ACCESS_MODE"
                   :label="mode.key"
                   :key="mode.key"
                 >
                   {{ mode.description }}
-                </el-checkbox>
-              </el-checkbox-group>
+                </el-radio>
+              </el-radio-group>
               <!--              <dao-radio-group class="radio-group-row">-->
               <!--                <dao-radio-->
               <!--                  v-for="mode in ACCESS_MODE"-->
-              <!--                  v-model="form.spec.accessModes"-->
+              <!--                  v-model="form.spec.accessMode"-->
               <!--                  :key="mode.key"-->
               <!--                  :label="mode.key">-->
               <!--                  {{ mode.description }}-->
@@ -151,7 +150,7 @@ export default {
           namespace: '',
         },
         spec: {
-          accessModes: ['ReadWriteMany'],
+          accessMode: 'ReadWriteMany',
           resources: {
             requests: {
               storage: '1G',

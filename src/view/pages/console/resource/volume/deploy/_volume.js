@@ -60,8 +60,16 @@ export default {
       switch (step) {
         case STEPS.CONFIG: {
           this.$refs.configPanel.$validator.validateAll().then(valid => {
+            // compatible with the accessMode {array} type of backend temporarily
             if (valid) {
-              this.formModel = this.$refs.configPanel.form;
+              const { form } = this.$refs.configPanel;
+              this.formModel = {
+                ...form,
+                spec: {
+                  ...form.spec,
+                  accessModes: [form.spec.accessMode],
+                },
+              };
               this.stepIndex = STEPS.OVERVIEW;
             }
           });
