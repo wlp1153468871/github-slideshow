@@ -41,7 +41,7 @@
               prop="metadata.name"
               label="名称"
               sortable
-              width="180">
+              >
               <template slot-scope="{ row: service }">
                 <el-table-name-cell
                   :resource="service"
@@ -52,7 +52,7 @@
             <el-table-column
               prop="spec.clusterIP"
               label="集群地址"
-              width="180">
+              >
             </el-table-column>
             <el-table-column
               label="外部地址"
@@ -77,7 +77,7 @@
             <el-table-column
               prop="spec.ports"
               label="端口"
-              width="160">
+              >
               <template slot-scope="{ row: { spec: { ports } } }">
                 <span v-if="!ports.length"><em>none</em></span>
                 <span v-for="(portMapping, index) in ports" :key="index">
@@ -96,7 +96,7 @@
               label="创建时间"
               sortable
               :sort-method="sortStartTime"
-              width="200">
+              >
               <template slot-scope="{ row: service }">
                 {{ service.metadata.creationTimestamp | date }}
               </template>
