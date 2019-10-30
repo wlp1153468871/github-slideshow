@@ -36,7 +36,8 @@
             v-validate="{
               required: true,
               dns_1123_label: true,
-              max: 63
+              max: 63,
+              min: 4
             }"
             v-model="short_name">
           </dao-input>
