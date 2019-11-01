@@ -8,20 +8,24 @@
     @before-open="init"
     @cancel="onClose"
     @confirm="onConfirm">
+    <slot name="extra"></slot>
     <dao-setting-section>
       <dao-code-mirror v-model="yamlData" :read-only="readOnly"></dao-code-mirror>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
-        取消
-      </button>
-      <button
-        class="dao-btn blue"
-        @click="tryConfirm">
-        确定
-      </button>
+      <slot name="footer">
+        <button
+          class="dao-btn ghost"
+          @click="onClose">
+          取消
+        </button>
+        <button
+          class="dao-btn blue"
+          @click="tryConfirm">
+          确定
+        </button>
+      </slot>
+
     </div>
   </dao-dialog>
 </template>
@@ -104,7 +108,6 @@ export default {
       this.$emit('close');
     },
   },
-
   watch: {
     value: {
       immediate: true,
