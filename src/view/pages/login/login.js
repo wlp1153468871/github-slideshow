@@ -21,13 +21,18 @@ export default {
         ssoToken: '',
         identityProviderId: '',
       },
+      loadings: {
+        login: false,
+      },
     };
   },
 
   computed: {
     ...mapGetters(['theme']),
     isFromValid() {
-      return this.user.username && this.user.password;
+      return this.user.username
+        && this.user.password
+        && !this.veeErrors.any();
     },
     title() {
       return this.theme.productName || 'DaoCloud Service Platform';
@@ -58,9 +63,14 @@ export default {
         this.shake();
         this.$noty.error('请输入正确的用户名和密码');
       } else {
-        AuthService.login(this.user.username, this.user.password).then(() => {
-          this.loginSuccess();
-        });
+        this.loadings.login = true;
+        AuthService.login(this.user.username, this.user.password)
+          .then(() => {
+            this.loginSuccess();
+          })
+          .finally(() => {
+            this.loadings.login = false;
+          });
       }
     },
 

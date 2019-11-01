@@ -24,12 +24,18 @@
           <label>用户名</label>
           <dao-input
             width="100%"
+            icon-inside
             block
             type="text"
             v-model="user.username"
             @keyup.enter="login"
             tabindex="1"
             autofocus
+            name="username"
+            v-validate="'required|namespace_code|min:2|max:20'"
+            :message="veeErrors.first('username')"
+            :status="veeErrors.has('username') ? 'error' : ''"
+            data-vv-as="用户名"
           ></dao-input>
         </div>
         <div class="form-group">
@@ -37,15 +43,22 @@
           <dao-input
             block
             type="password"
+            icon-inside
             v-model="user.password"
             @keyup.enter="login"
             tabindex="2"
+            name="pwd"
+            v-validate="'exclude_spaces|required|min:5'"
+            :message="veeErrors.first('pwd')"
+            :status="veeErrors.has('pwd') ? 'error' : ''"
+            data-vv-as="密码"
           >
           </dao-input>
         </div>
         <button
           class="dao-btn blue login-btn"
           tabindex="3"
+          :disabled="!isFromValid || loadings.login"
           @click="login"
         >
           登录

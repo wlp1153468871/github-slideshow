@@ -161,7 +161,7 @@ export default {
     removeService() {
       const { name } = this;
       ServiceResourceService.delete({ name }).then(() => {
-        this.$noty.success(`删除Service ${this.name} 成功`);
+        this.$noty.success(`开始执行对Service ${this.name} 的删除操作`);
         this.goBack();
       });
     },
@@ -205,7 +205,7 @@ export default {
       PodService.batchDelete({
         names: pods.map(pod => pod.metadata.name).join(','),
       }).then(() => {
-        this.$noty.success('删除成功');
+        this.$noty.success('开始执行删除操作');
         this.init();
       });
     },
