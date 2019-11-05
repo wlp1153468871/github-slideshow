@@ -192,7 +192,7 @@
             </svg>
           </div>
           <dao-dropdown-menu slot="list">
-            <dao-dropdown-item @click="gotoDashboard" v-if="isDisplayOrgSelect">
+            <dao-dropdown-item @click="gotoDashboard" v-if="isDisplayAppSelect">
               <svg>
                 <use xlink:href="#icon_app-home"></use>
               </svg>
