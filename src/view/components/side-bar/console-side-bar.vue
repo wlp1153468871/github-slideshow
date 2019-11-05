@@ -11,6 +11,7 @@
               :props="props"
               class="org-space-cascader"
               v-model="selectedOptions"
+              popper-class="space-menu-popper"
               @change="onSelectOrg">
             </el-cascader>
           </el-tooltip>
@@ -345,6 +346,13 @@ export default {
 </script>
 
 <style lang="scss">
+// compatiable with chrome version: 49.0.**
+.space-menu-popper {
+  .el-icon-check, .el-icon-arrow-right {
+    top: 50%;
+    transform: translate(0, -7px);
+  }
+}
 .dao-nav-menu {
   .section-space,
   .section-zone {
