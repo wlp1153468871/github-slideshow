@@ -39,7 +39,7 @@
               label="域名"
               min-width="150">
               <template slot-scope="{ row: ingress }">
-                {{ formatHost(ingress) }}
+                {{ ingress.approveStatus === 'approving' ? '-' : formatHost(ingress) }}
               </template>
             </el-table-column>
             <el-table-column

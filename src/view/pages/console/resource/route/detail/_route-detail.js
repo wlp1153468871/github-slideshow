@@ -82,7 +82,7 @@ export default {
           this.status = res.status;
           this.getJobs();
           this.route = res.originData || {};
-          this.cert.ref = getValue(res, 'instance_metadata.parameters.certificateRef') || {};
+          // this.cert.ref = getValue(res, 'instance_metadata.parameters.certificateRef') || {};
           this.information.basic = {
             '租户 / 项目组': `${res.organizationName ||
               this.space.name} / ${res.spaceName ||

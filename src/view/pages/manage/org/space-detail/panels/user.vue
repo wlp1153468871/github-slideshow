@@ -114,9 +114,10 @@ export default {
       ]);
     },
 
-    loadUsers() {
+    async loadUsers() {
       this.selectedUser = {};
       this.loadings.all = true;
+      await this.$store.dispatch('getUserInfo');
       Promise.all([
         OrgService.getMembers(this.orgId),
         SpaceService.getMembers(this.spaceId),

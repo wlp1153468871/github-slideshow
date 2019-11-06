@@ -47,6 +47,10 @@ export default {
       return this.orgs.length && this.isConsoleView && this.isOrganizationAdmin;
     },
 
+    isDisplayAppSelect() {
+      return this.orgs.length && this.isConsoleView;
+    },
+
     selectedServices() {
       return this.headerMenus[this.selectedIndex].children[
         this.selectedSubIndex

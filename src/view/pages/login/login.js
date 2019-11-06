@@ -62,7 +62,7 @@ export default {
       if (!this.isFromValid) {
         this.shake();
         this.$noty.error('请输入正确的用户名和密码');
-      } else {
+      } else if (!this.loadings.login) {
         this.loadings.login = true;
         AuthService.login(this.user.username, this.user.password)
           .then(() => {
