@@ -68,7 +68,7 @@ export default {
           .then(() => {
             this.loginSuccess();
           })
-          .finally(() => {
+          .catch(() => {
             this.loadings.login = false;
           });
       }
@@ -107,6 +107,8 @@ export default {
     returnToPage() {
       this.$router.push({
         name: 'console',
+      }, () => {
+        this.loadings.login = false;
       });
     },
   },
