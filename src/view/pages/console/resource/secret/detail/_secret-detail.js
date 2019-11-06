@@ -44,6 +44,7 @@ export default {
         yamlEdit: false,
       },
       objrefs: [],
+      kind: RESOURCE_TYPE.SECRET,
     };
   },
 
