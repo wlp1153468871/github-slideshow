@@ -33,14 +33,14 @@ class RegistryService {
    */
   getTags(spaceId: string, repoName: string, query: any) {
     return this.api.get(
-      `/spaces/${spaceId}/repositories/${repoName}/tags`,
+      `/spaces/${spaceId}/repositories/${encodeURIComponent(repoName)}/tags`,
       query,
     );
   }
 
   getTag(spaceId: string, registryName: string, tag: string, zone: string) {
     return this.api.get(
-      `/spaces/${spaceId}/repositories/${registryName}/tags/${tag}`, { zone },
+      `/spaces/${spaceId}/repositories/${encodeURIComponent(registryName)}/tags/${encodeURIComponent(tag)}`, { zone },
     );
   }
 
@@ -50,7 +50,7 @@ class RegistryService {
    */
   getTagDetails(spaceId: string, registryName: string, tag: string, zone: string) {
     return this.api.get(
-      `/spaces/${spaceId}/repositories/${registryName}/tags/${tag}/vulnerability/details`,
+      `/spaces/${spaceId}/repositories/${encodeURIComponent(registryName)}/tags/${encodeURIComponent(tag)}/vulnerability/details`,
       { zone },
     );
   }
