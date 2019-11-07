@@ -331,3 +331,9 @@ ul.text-red{
     padding: 10px;
   }
 }
+
+.dao-dialog-body {
+  &::-webkit-scrollbar{
+    width: 0!important;
+  }
+}
