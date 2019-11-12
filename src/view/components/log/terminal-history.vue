@@ -200,7 +200,7 @@ export default {
                 message,
               } = item._source; // eslint-disable-line no-underscore-dangle
 
-              return `dataTime:${dateTime}  podName:${podName}  user:${user}  message: ${message}`;
+              return `dateTime:${dateTime}  podName:${podName}  user:${user}  message: ${message}`;
             });
           }
           this.pagination = new Pagination(this.histories, this.limitHistories, 0);
