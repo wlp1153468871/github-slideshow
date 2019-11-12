@@ -337,3 +337,8 @@ ul.text-red{
     width: 0!important;
   }
 }
+
+// to be compatible with the windows's display effect
+.el-input--suffix .el-input__inner {
+  line-height: 32px!important;
+}
