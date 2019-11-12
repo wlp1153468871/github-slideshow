@@ -213,12 +213,10 @@ export default {
     },
 
     scanDetailRouter(repositoryName, tag) {
-      const [project, imageName] = repositoryName.split('/');
       return {
         name: 'registry.registryTag',
         params: {
-          project,
-          imageName,
+          repositoryName,
           tagName: tag.name,
         },
       };
