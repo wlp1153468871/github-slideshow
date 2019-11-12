@@ -153,7 +153,7 @@ export default {
             this.currentHistories = [];
           } else {
             // eslint-disable-next-line no-underscore-dangle
-            this.histories = logs.map(item => `dataTime:${item._source.dateTime}  podName:${item._source.podName}  user:${item._source.user}  message: ${item._source.message}`);
+            this.histories = logs.map(item => `dateTime:${item._source.dateTime}  podName:${item._source.podName}  user:${item._source.user}  message: ${item._source.message}`);
           }
           this.pagination = new Pagination(this.histories, this.limitHistories, 0);
           this.currentHistories = this.pagination.gotoPage(0);
