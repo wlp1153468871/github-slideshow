@@ -234,8 +234,7 @@ export default {
     },
   },
   data() {
-    const { tagName, project, imageName } = this.$route.params;
-    const registryName = [project, imageName].join('/');
+    const { tagName, repositoryName: registryName } = this.$route.params;
     return {
       resource: {
         logo: '#icon_image-logo',
