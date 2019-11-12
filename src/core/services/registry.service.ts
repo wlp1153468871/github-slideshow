@@ -50,7 +50,8 @@ class RegistryService {
    */
   getTagDetails(spaceId: string, registryName: string, tag: string, zone: string) {
     return this.api.get(
-      `/spaces/${spaceId}/repositories/${encodeURIComponent(registryName)}/tags/${encodeURIComponent(tag)}/vulnerability/details`,
+      `/spaces/${spaceId}/repositories/${encodeURIComponent(registryName)}
+      /tags/${encodeURIComponent(tag)}/vulnerability/details`,
       { zone },
     );
   }

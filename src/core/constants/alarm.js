@@ -1,8 +1,8 @@
 export const ALARM_CONFIG = {
   key: 'alarm',
   name: '告警',
-  icon: '#icon_application',
-  logo: '#icon_application-logo',
+  icon: '#icon_bell',
+  logo: '#icon_bell-logo',
   links: [
     {
       text: '告警中心',
