@@ -21,6 +21,7 @@ export default {
       APPROVAL_PROCESS_DONE,
       APPROVAL_PROCESS_REJECTED,
       APPROVAL_PROCESS_CANCEL,
+      APPROVAL_PROCESS_PENDING,
       loadings: {
         approvalHistory: false,
       },
