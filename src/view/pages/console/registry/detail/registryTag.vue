@@ -299,10 +299,13 @@ export default {
     background: #fff;
     border-radius: 2px;
     margin: 20px;
+    .col-md-4 {
+      display: flex;
+    }
 
     .detail-label {
-      display: inline-block;
-      width: 100px;
+      flex-basis: 100px;
+      flex-shrink: 0;
       color: rgba(0, 0, 0, 0.85);
       text-align: right;
       line-height: 22px;
