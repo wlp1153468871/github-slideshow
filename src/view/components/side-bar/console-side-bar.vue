@@ -245,7 +245,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import { find, cloneDeep, has } from 'lodash';
+import { find } from 'lodash';
 import * as types from '@/core/store/mutation-types';
 import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
@@ -327,17 +327,18 @@ export default {
      */
     orgWithSpaceSepereatedBySlash() {
       const res = [];
-      for (let i = 0; i < this.orgs.length; i++) {
+      for (let i = 0; i < this.orgs.length; i += 1) {
         const org = this.orgs[i];
         const newOrg = {
           name: org.name,
           id: org.id,
           children: [],
         };
-        for (let j = 0; j < org.children.length; j++) {
+        for (let j = 0; j < org.children.length; j += 1) {
           const space = org.children[j];
           if (space.name.indexOf('/') === -1) {
             if (space.id === this.space.id) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
               this.selectedOptions = [org.id, space.id];
             }
             newOrg.children.push({
@@ -349,9 +350,9 @@ export default {
             let curChildren = newOrg.children;
             const ids = [org.id];
             const spaceNames = space.name.split('/');
-            for (let k = 0; k < spaceNames.length; k++) {
+            for (let k = 0; k < spaceNames.length; k += 1) {
               const name = spaceNames[k];
-              const nameObj = find(curChildren, { name });
+              let nameObj = find(curChildren, { name });
               if (nameObj) {
                 curChildren = nameObj.children;
                 ids.push(nameObj.id);
@@ -371,6 +372,7 @@ export default {
               }
             }
             if (space.id === this.space.id) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
               this.selectedOptions = ids;
             }
           }
