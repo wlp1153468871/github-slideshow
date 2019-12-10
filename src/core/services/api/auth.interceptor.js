@@ -25,26 +25,19 @@ function notifyErrorResponse(response, defaultMessage) {
 }
 
 const refreshToken = (params, cb) => {
-  if (store.state.auth.isRefreshing) {
-    const chained = store.state.auth.refreshingCall.then(cb);
-    store.commit('setRefreshingCall', chained);
-    return chained;
+  if (!store.state.auth.isRefreshing) {
+    store.commit('setRefreshingState', true);
+    store.commit('setRefreshingCall', axios
+      .get('/v1/auth_token', { params })
+      .then(({ data: { token } }) => {
+        store.commit('saveToken', token);
+        store.commit('setRefreshingState', false);
+        store.commit('setRefreshingCall', null);
+        return Promise.resolve(true);
+      }));
   }
-
-  store.commit('setRefreshingState', true);
-
-  const refreshingCall = axios
-    .get('/v1/auth_token', { params })
-    .then(({ data: { token } }) => {
-      store.commit('saveToken', token);
-      store.commit('setRefreshingState', false);
-      store.commit('setRefreshingCall', undefined);
-      return Promise.resolve(true);
-    })
-    .then(cb);
-
-  store.commit('setRefreshingCall', refreshingCall);
-  return refreshingCall;
+  return store.state.auth.refreshingCall
+    .then(() => cb());
 };
 
 const toLogin = (res = {}) => {
@@ -100,8 +93,11 @@ export default {
             error.config.baseURL = undefined;
             return api.request(error.config);
           },
-        ).catch(() => {
-          toLogin();
+        ).catch(res => {
+          if (getValue(res, 'response.status') === 401) {
+            toLogin();
+          }
+          return Promise.reject(res);
         });
       }
       // 传递初始登录错误信息
