@@ -43,13 +43,14 @@ const refreshToken = (params, cb) => {
 const toLogin = (res = {}) => {
   notifyErrorResponse(res, '登录过期，请重新登录');
   store.dispatch('clearCache').then(router => {
-    router.push({
-      name: 'login',
-      query: {
-        redirect: router.currentRoute.fullPath,
-      },
-    });
-    // window.location.reload();
+    if (router.currentRoute.name !== 'login') {
+      router.push({
+        name: 'login',
+        query: {
+          redirect: router.currentRoute.fullPath,
+        },
+      });
+    }
   });
 };
 
