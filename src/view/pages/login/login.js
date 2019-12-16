@@ -1,7 +1,6 @@
 import { mapGetters, mapActions, mapState } from 'vuex';
 import { REFRESH_COUNT } from '@/core/constants/constants';
 import AuthService from '@/core/services/auth.service';
-import SSOService from '@/core/services/sso.service';
 import loginBackground from '@/assets/images/login-bg.jpg';
 
 export default {
@@ -16,7 +15,6 @@ export default {
         password: '',
       },
       identityProviders: [],
-      ableLocalLogin: '',
       sso: {
         ssoToken: '',
         identityProviderId: '',
@@ -87,15 +85,6 @@ export default {
       setTimeout(() => {
         this.loginFail = false;
       }, 400);
-    },
-
-    loadSSOInfo() {
-      SSOService.getIdentityProvider().then(providers => {
-        this.identityProviders = providers;
-      });
-      SSOService.getSSO().then(sso => {
-        this.ableLocalLogin = sso;
-      });
     },
 
     loginSuccess() {
