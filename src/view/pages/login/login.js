@@ -1,4 +1,4 @@
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import { REFRESH_COUNT } from '@/core/constants/constants';
 import AuthService from '@/core/services/auth.service';
 import SSOService from '@/core/services/sso.service';
@@ -29,6 +29,7 @@ export default {
 
   computed: {
     ...mapGetters(['theme']),
+    ...mapState(['ssoList']),
     isFromValid() {
       return this.user.username
         && this.user.password
@@ -42,7 +43,7 @@ export default {
   created() {
     this.loadSSOInfo();
     if (AuthService.isAuthed()) {
-      this.returnToPage();
+      this.toConsolePage();
     }
 
     Object.assign(
@@ -58,6 +59,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['loadSSOInfo']),
     login() {
       if (!this.isFromValid) {
         this.shake();
@@ -101,10 +103,10 @@ export default {
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
-      this.returnToPage();
+      this.toConsolePage();
     },
 
-    returnToPage() {
+    toConsolePage() {
       this.$router.push({
         name: 'console',
       }, () => {

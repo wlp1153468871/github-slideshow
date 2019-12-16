@@ -65,10 +65,10 @@
         </button>
       </div>
 
-      <div v-if="identityProviders.length">
+      <div v-if="ssoList.length">
         <div class="gap">或使用以下账号登录</div>
         <a
-          v-for="item in identityProviders"
+          v-for="item in ssoList"
           :key="item.key"
           class="dao-btn ghost sso-btn"
           style="margin:10px 0"
