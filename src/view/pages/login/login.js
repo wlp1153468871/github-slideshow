@@ -1,7 +1,6 @@
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import { REFRESH_COUNT } from '@/core/constants/constants';
 import AuthService from '@/core/services/auth.service';
-import SSOService from '@/core/services/sso.service';
 import loginBackground from '@/assets/images/login-bg.jpg';
 
 export default {
@@ -16,7 +15,6 @@ export default {
         password: '',
       },
       identityProviders: [],
-      ableLocalLogin: '',
       sso: {
         ssoToken: '',
         identityProviderId: '',
@@ -29,6 +27,7 @@ export default {
 
   computed: {
     ...mapGetters(['theme']),
+    ...mapState(['ssoList']),
     isFromValid() {
       return this.user.username
         && this.user.password
@@ -42,7 +41,7 @@ export default {
   created() {
     this.loadSSOInfo();
     if (AuthService.isAuthed()) {
-      this.returnToPage();
+      this.toConsolePage();
     }
 
     Object.assign(
@@ -58,6 +57,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['loadSSOInfo']),
     login() {
       if (!this.isFromValid) {
         this.shake();
@@ -87,24 +87,15 @@ export default {
       }, 400);
     },
 
-    loadSSOInfo() {
-      SSOService.getIdentityProvider().then(providers => {
-        this.identityProviders = providers;
-      });
-      SSOService.getSSO().then(sso => {
-        this.ableLocalLogin = sso;
-      });
-    },
-
     loginSuccess() {
       this.$noty.success('登录成功');
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
-      this.returnToPage();
+      this.toConsolePage();
     },
 
-    returnToPage() {
+    toConsolePage() {
       this.$router.push({
         name: 'console',
       }, () => {
