@@ -1,7 +1,6 @@
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import { REFRESH_COUNT } from '@/core/constants/constants';
 import AuthService from '@/core/services/auth.service';
-import SSOService from '@/core/services/sso.service';
 import loginBackground from '@/assets/images/login-bg.jpg';
 
 export default {
@@ -16,18 +15,23 @@ export default {
         password: '',
       },
       identityProviders: [],
-      ableLocalLogin: '',
       sso: {
         ssoToken: '',
         identityProviderId: '',
+      },
+      loadings: {
+        login: false,
       },
     };
   },
 
   computed: {
     ...mapGetters(['theme']),
+    ...mapState(['ssoList']),
     isFromValid() {
-      return this.user.username && this.user.password;
+      return this.user.username
+        && this.user.password
+        && !this.veeErrors.any();
     },
     title() {
       return this.theme.productName || 'DaoCloud Service Platform';
@@ -37,7 +41,7 @@ export default {
   created() {
     this.loadSSOInfo();
     if (AuthService.isAuthed()) {
-      this.returnToPage();
+      this.toConsolePage();
     }
 
     Object.assign(
@@ -53,14 +57,20 @@ export default {
   },
 
   methods: {
+    ...mapActions(['loadSSOInfo']),
     login() {
       if (!this.isFromValid) {
         this.shake();
         this.$noty.error('请输入正确的用户名和密码');
-      } else {
-        AuthService.login(this.user.username, this.user.password).then(() => {
-          this.loginSuccess();
-        });
+      } else if (!this.loadings.login) {
+        this.loadings.login = true;
+        AuthService.login(this.user.username, this.user.password)
+          .then(() => {
+            this.loginSuccess();
+          })
+          .catch(() => {
+            this.loadings.login = false;
+          });
       }
     },
 
@@ -77,26 +87,19 @@ export default {
       }, 400);
     },
 
-    loadSSOInfo() {
-      SSOService.getIdentityProvider().then(providers => {
-        this.identityProviders = providers;
-      });
-      SSOService.getSSO().then(sso => {
-        this.ableLocalLogin = sso;
-      });
-    },
-
     loginSuccess() {
       this.$noty.success('登录成功');
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
-      this.returnToPage();
+      this.toConsolePage();
     },
 
-    returnToPage() {
+    toConsolePage() {
       this.$router.push({
         name: 'console',
+      }, () => {
+        this.loadings.login = false;
       });
     },
   },

@@ -73,9 +73,7 @@ export const state = {
   filteredCategory: null,
   isCollapse: false,
   quotaDict: {},
-  sgmLoginURL: null,
-  sgmLogoutURL: null,
-  sgmSso: {},
+  ssoList: [],
   token: null,
   auth: {
     isRefreshing: false,
@@ -86,6 +84,8 @@ export const state = {
   alarm: {
     rules: [],
   },
+  isFullscreened: false,
+  localLogin: true,
 };
 
 /* eslint-disable no-shadow */
@@ -236,16 +236,15 @@ export const actions = {
   },
 
   logout({ dispatch }) {
-    return AuthService.logout().then(() => {
-      dispatch('clearCache');
+    return AuthService.logout().then(({ logout_url: url }) => {
+      dispatch('clearCache', url);
     });
   },
 
-  clearCache({ state, getters, commit }) {
+  clearCache({ commit }, url) {
     return new Promise(resolve => {
-      const willRedirect = !getters.isLocalAccount && state.sgmLogoutURL;
+      if (url) window.open(url, '_self');
       commit(types.RESET_APPLICATION);
-      if (willRedirect) window.open(state.sgmLogoutURL, '_self');
       resolve(router);
     });
   },
@@ -254,7 +253,6 @@ export const actions = {
   initTenantView({ dispatch, commit }) {
     commit(types.INIT_TENANT_VIEW_REQUEST);
     return Promise.all([
-      dispatch('loadSSOInfo'),
       dispatch('loadQuotaField'),
       dispatch('initConsoleView'),
     ]).then(() => {
@@ -282,7 +280,6 @@ export const actions = {
 
   initView({ dispatch }) {
     dispatch('loadQuotaField');
-    dispatch('loadSSOInfo');
   },
 
   loadQuotaField({ commit }) {
@@ -292,13 +289,12 @@ export const actions = {
   },
 
   loadSSOInfo({ commit }) {
-    SSOService.getIdentityProvider().then(providers => {
-      const ssoInfo = first(providers) || {};
-      const login_url = getValue(ssoInfo, 'login_url');
-      const logout_url = getValue(ssoInfo, 'logout_url');
-      commit(types.SET_SGM_SSO, ssoInfo);
-      commit(types.SET_SGM_LOGIN_URL, login_url);
-      commit(types.SET_SGM_LOGOUT_URL, logout_url);
+    Promise.all([
+      SSOService.getIdentityProvider(),
+      SSOService.getSSO(),
+    ]).then(([providers, localData]) => {
+      commit(types.SET_SSO_LIST, providers);
+      commit(types.SET_LOCAL_LOGIN, localData.enable_local_login);
     });
   },
 
@@ -534,6 +530,10 @@ export const mutations = {
     state.auth.refreshingCall = data;
   },
 
+  [types.SET_LOCAL_LOGIN](state, data) {
+    state.localLogin = data;
+  },
+
   [types.LOAD_QUOTA_FIELD](state, res = []) {
     const quotaDict = {};
     res.forEach(quota => {
@@ -653,16 +653,8 @@ export const mutations = {
     state.defaultActiveMenu = menu;
   },
 
-  [types.SET_SGM_LOGIN_URL](state, url) {
-    state.sgmLoginURL = url;
-  },
-
-  [types.SET_SGM_LOGOUT_URL](state, url) {
-    state.sgmLogoutURL = url;
-  },
-
-  [types.SET_SGM_SSO](state, sso) {
-    state.sgmSso = sso;
+  [types.SET_SSO_LIST](state, sso) {
+    state.ssoList = sso;
   },
 
   [types.LOAD_API_RESOURCE](state, resourceMap) {
@@ -671,6 +663,10 @@ export const mutations = {
 
   [types.UPDATE_OPENED_MENUS](state, openedMenus) {
     state.openedMenus = openedMenus;
+  },
+
+  [types.FUll_SCREENED](state, isFullscreened) {
+    state.isFullscreened = isFullscreened;
   },
 };
 /* eslint-enable no-shadow */

@@ -96,7 +96,9 @@ class ApplicationService {
 
   // by default get application monitor with 'jmx' type
   async getAppMonitor(
-    podName: string,
+    pod: string,
+    numberEx: number,
+    name: string,
     spaceId: string,
     zone: string,
     from: string = '',
@@ -104,14 +106,15 @@ class ApplicationService {
     type: string = 'jmx',
     refresh: string = '30s',
   ) {
-    return this.api.get(`spaces/${spaceId}/monitoring/service/${podName}/type/${type}`, {
+    return this.api.get(`spaces/${spaceId}/monitoring/service/${name}/type/${type}`, {
       zone,
+      pod,
+      number: numberEx,
       from,
       to,
       refresh,
     });
   }
-
 }
 
 export default new ApplicationService();

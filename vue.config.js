@@ -6,7 +6,7 @@ function resolve(dir) {
 
 module.exports = {
   parallel: false,
-
+  productionSourceMap: false,
   pages: {
     app: {
       entry: 'src/main.ts',

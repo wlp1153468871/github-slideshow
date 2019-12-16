@@ -46,7 +46,7 @@ export default {
                 });
               } else if (resource.kind === 'DeploymentConfig') {
                 this.$router.push({
-                  name: 'resource.deploymentconfigs.list',
+                  name: 'resource.deploymentconfigs.detail',
                   params: { name: resource.metadata.name },
                 });
               }

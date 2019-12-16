@@ -178,7 +178,7 @@ export default {
         this.deploymentName,
       )
         .then(() => {
-          this.$noty.success(`删除Deployment ${this.deploymentName} 成功`);
+          this.$noty.success(`开始执行对 ${this.deploymentName} 的删除操作`);
           this.goBack();
         })
         .finally(() => {

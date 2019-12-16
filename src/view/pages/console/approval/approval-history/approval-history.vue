@@ -60,6 +60,11 @@
                 v-if="item.process_status === APPROVAL_PROCESS_CANCEL">
                 <span>撤销</span>
               </div>
+              <div
+                class="text-info"
+                v-if="item.process_status === APPROVAL_PROCESS_PENDING">
+                <span>处理中</span>
+              </div>
             </el-table-column>
           </template>
         </x-table>

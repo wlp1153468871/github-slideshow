@@ -12,6 +12,9 @@
   height: $nav-height;
   padding: 0 20px;
   background: #2d3034;
+  .invisible {
+    visibility: 0;
+  }
 
   .logo-wrapper {
     display: inline-block;
@@ -27,6 +30,11 @@
 
   .nav-left-container {
     max-width: 150px;
+    height: 100%;
+    .logo-box {
+      display: block;
+      height: 100%;
+    }
   }
 
   .nav-right-container {

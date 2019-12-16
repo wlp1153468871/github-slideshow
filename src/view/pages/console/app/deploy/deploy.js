@@ -256,12 +256,12 @@ export default {
       const router_label = getValue(inrouter, 'label');
       return {
         name,
+        path,
         host: `${hostname}${domain}`,
         namespace,
         release_type: DEPLOYMENT_TYPE.DEFAULT,
         backend: {
           name: this.genServiceName(name, version),
-          path,
         },
         router_label,
       };
