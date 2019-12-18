@@ -27,7 +27,7 @@ export default {
 
   computed: {
     ...mapGetters(['theme']),
-    ...mapState(['ssoList']),
+    ...mapState(['ssoList', 'localLogin']),
     isFromValid() {
       return this.user.username
         && this.user.password
