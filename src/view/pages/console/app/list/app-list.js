@@ -43,7 +43,7 @@ export default {
         editYaml: { visible: false },
       },
       recommendNames: [],
-      resources: {},
+      resources: '',
       name: '',
       version: '',
     };
@@ -104,7 +104,7 @@ export default {
         this.zone.id,
         Object.assign({ resources }, pick(this, ['name', 'version'])),
       )
-        .then((res) => {
+        .then(res => {
           if (res.is_need_approval) {
             this.$noty.success('请在审批记录页面，查看审批进度');
           } else {
