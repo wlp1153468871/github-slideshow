@@ -6,6 +6,7 @@
     <svg v-show="saving" class="icon rotating">
       <use xlink:href="#icon_status-progress-circle"></use>
     </svg>
+    <slot name="icon"></slot>
     {{ text }}
   </button>
 </template>

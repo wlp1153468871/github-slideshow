@@ -71,7 +71,7 @@ export default {
           name: '容器组数量',
           value(_, deploymentConfig) {
             const { spec, status } = deploymentConfig;
-            return `${status.availableReplicas} / ${spec.replicas}`;
+            return `${status.availableReplicas || 0} / ${spec.replicas}`;
           },
         },
         {

@@ -19,7 +19,7 @@
       </h2>
       <hr class="header-line" />
 
-      <div class="login-form">
+      <div class="login-form" v-if="localLogin">
         <div class="form-group">
           <label>用户名</label>
           <dao-input
