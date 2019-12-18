@@ -111,7 +111,6 @@ export default {
             this.$noty.success('部署成功');
           }
           this.clearYamlEditor();
-          this.loadInstances();
         })
         .catch(() => {
           // 保留失败时的yaml数据
@@ -119,6 +118,7 @@ export default {
         })
         .finally(() => {
           this.loadings.updateByYaml = false;
+          this.loadInstances();
         });
     },
     checkIsDuplicateName() {
