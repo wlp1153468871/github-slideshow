@@ -1,4 +1,5 @@
 import { mapGetters, mapState } from 'vuex';
+import { first, pick } from 'lodash';
 import { APPLICATION_CONFIG } from '@/core/constants/resource';
 import { INSTANCE_STATUS, STATUS_COLOR } from '@/core/constants/constants';
 import ApplicationService from '@/core/services/application.service';
@@ -36,7 +37,15 @@ export default {
       quotas: [],
       loadings: {
         instances: false,
+        updateByYaml: false,
       },
+      dialogConfigs: {
+        editYaml: { visible: false },
+      },
+      recommendNames: [],
+      resources: '',
+      name: '',
+      version: '',
     };
   },
 
@@ -54,6 +63,16 @@ export default {
     brokerService() {
       return this.service.brokerService || {};
     },
+
+    appDeployDisabled() {
+      return this.loadings.instances || this.isZoneSyncing || this.loadings.updateByYaml;
+    },
+
+    yamlDeployEnabled() {
+      return this.name
+      && this.version
+      && !this.veeErrors.any();
+    },
   },
 
   created() {
@@ -62,6 +81,65 @@ export default {
   },
 
   methods: {
+    clearYamlEditor() {
+      this.name = '';
+      this.version = '';
+      this.recommendNames = [];
+      this.resources = {};
+    },
+    onCloseYaml() {
+      this.clearYamlEditor();
+      this.$refs.yamlEditor.onClose();
+    },
+
+    onTryConfirmYaml() {
+      this.$refs.yamlEditor.tryConfirm();
+    },
+
+    onCreateYaml(resources) {
+      this.loadings.updateByYaml = true;
+
+      ApplicationService.createInstance(
+        this.space.id,
+        this.zone.id,
+        Object.assign({ resources }, pick(this, ['name', 'version'])),
+      )
+        .then(res => {
+          if (res.is_need_approval) {
+            this.$noty.success('请在审批记录页面，查看审批进度');
+          } else {
+            this.$noty.success('部署成功');
+          }
+          this.clearYamlEditor();
+          this.loadInstances();
+        })
+        .catch(() => {
+          // 保留失败时的yaml数据
+          this.resources = resources;
+        })
+        .finally(() => {
+          this.loadings.updateByYaml = false;
+        });
+    },
+    checkIsDuplicateName() {
+      if (this.veeErrors.has('name')) return;
+      // eslint-disable-next-line no-underscore-dangle
+      this.getRecommendedName(this.name).then(res => {
+        if (res.is_existed) {
+          // eslint-disable-next-line no-underscore-dangle
+          this.name = first(res.recommend_names);
+          this.recommendNames = res.recommend_names;
+        }
+      });
+    },
+
+    getRecommendedName(name) {
+      return ApplicationService.getRecommendedName(
+        this.space.id,
+        name, // repository name
+      );
+    },
+
     loadInstances() {
       this.loadings.instances = true;
       ApplicationService.listInstance(this.space.id, this.zone.id)
@@ -177,6 +255,11 @@ export default {
         return STATUS_COLOR.STOPED;
       }
       return STATUS_COLOR.SUCCESS;
+    },
+
+    toggleYamlDialog() {
+      this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml
+        .visible;
     },
   },
 
