@@ -15,7 +15,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['zone']),
+    ...mapState(['zone', 'loadings']),
     containerRules() {
       return this.rules.filter(rule => rule.ruleType === 'container');
     },
