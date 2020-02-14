@@ -1,21 +1,12 @@
-import api from './api';
-import Rest from './api/rest';
+import { pick } from 'lodash';
+import { APIService } from './api';
+import AuthInterceptor from './api/auth.interceptor';
 
 class ResourceTemplateService {
-  api: Rest;
+  private api: APIService;
 
   constructor() {
-    this.api = api.create('./workloads', {});
-    this.configInterceptors();
-  }
-
-  configInterceptors() {
-    this.api.rest.interceptors.response.use((res: any) => {
-      if (/^20\d/.test(res.status)) {
-        return res.data;
-      }
-      return res;
-    });
+    this.api = new APIService('/workloads', pick(AuthInterceptor, ['response', 'request']));
   }
 
   getTemplate(type: string) {
