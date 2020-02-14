@@ -20,20 +20,25 @@
               </button>
             </div>
             <div class="table-toolbar-right">
-              <dao-input
-                v-model="actions.filterKey"
-                search
-                placeholder="请输入搜索内容"></dao-input>
-              <button
-                class="dao-btn"
-                style="margin-left: 10px;"
-                @click="onRefresh"
-                :disabled="loadings.table"
-              >
-                <svg class="icon">
-                  <use xlink:href="#icon_update"></use>
-                </svg>
-              </button>
+              <div style="display: flex;justify-content: center;align-items: center;">
+                <el-input
+                  style="width: 200px;"
+                  size="small"
+                  v-model="actions.filterKey"
+                  placeholder="请输入搜索内容"
+                  clearable
+                  prefix-icon="el-icon-search"></el-input>
+                <el-button
+                  @click="onRefresh"
+                  size="mini"
+                  style="margin-left: 10px;"
+                  :disabled="loadings.table"
+                  >
+                  <svg class="icon">
+                    <use xlink:href="#icon_update"></use>
+                  </svg>
+                </el-button>
+              </div>
             </div>
           </div>
 
@@ -71,7 +76,9 @@
               </template>
             </el-table-column>
           </el-table>
-
+          <span v-for="(item, index) in statefulSetsInCurrentPage" :key="index">
+            {{ item }}
+          </span>
           <el-pagination
             background
             :disabled="loadings.table"

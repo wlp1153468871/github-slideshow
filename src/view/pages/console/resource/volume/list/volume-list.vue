@@ -19,21 +19,24 @@
               </button>
             </div>
             <div class="table-toolbar-right">
-              <div>
-                <dao-input
-                  v-model="filterKey"
-                  search
-                  placeholder="请输入PVC的名称搜索">
-                </dao-input>
-                <button
-                  class="dao-btn"
+              <div style="display: flex;justify-content: center;align-items: center;">
+                <el-input
+                  style="width: 200px;"
+                  size="small"
+                  placeholder="请输入PVC的名称搜索"
+                  prefix-icon="el-icon-search"
+                  clearable
+                  v-model="filterKey"></el-input>
+                <el-button
+                  size="mini"
                   style="margin-left: 10px;"
                   :disabled="loadings.table"
-                  @click="getVolumes">
+                  @click="getVolumes"
+                  >
                   <svg class="icon">
                     <use xlink:href="#icon_update"></use>
                   </svg>
-                </button>
+                </el-button>
               </div>
             </div>
           </div>

@@ -18,19 +18,25 @@
               </button>
             </div>
             <div class="table-toolbar-right">
-              <dao-input
-                v-model="filterKey"
-                search
-                placeholder="请输入搜索内容">
-              </dao-input>
-              <button
-                class="dao-btn"
-                style="margin-left: 10px;"
-                @click="getServices">
-                <svg class="icon">
-                  <use xlink:href="#icon_update"></use>
-                </svg>
-              </button>
+              <div style="display: flex;justify-content: center;align-items: center;">
+                <el-input
+                  style="width: 200px;"
+                  size="small"
+                  v-model="filterKey"
+                  placeholder="请输入搜索内容"
+                  clearable
+                  prefix-icon="el-icon-search"
+                ></el-input>
+                <el-button
+                  size="mini"
+                  style="margin-left: 10px;"
+                  @click="getServices"
+                >
+                  <svg class="icon">
+                    <use xlink:href="#icon_update"></use>
+                  </svg>
+                </el-button>
+              </div>
             </div>
           </div>
           <el-table
