@@ -3,15 +3,6 @@
     <div class="layout-content-header">
       服务管理
     </div>
-    <!-- <div class="dao-view-main ">
-      <dao-table-view
-        ref="tableView"
-        :rows="rows"
-        :config="tConfig"
-        :loading="loadings.maps"
-        @refresh="loadService">
-      </dao-table-view>
-    </div> -->
     <div class="dao-view-main ">
       <x-table
         :loading="loadings.maps"
@@ -35,12 +26,12 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="metadata.name" label="可用区">
+        <el-table-column prop="zone.name" label="可用区">
           <template slot-scope="{ row: service }">
             {{ service.zone.name }}
           </template>
         </el-table-column>
-        <el-table-column prop="metadata.name" label="状态">
+        <el-table-column prop="available" label="状态">
           <template slot-scope="{ row: service }">
             <!-- {{ service.available }} -->
             <x-table-status

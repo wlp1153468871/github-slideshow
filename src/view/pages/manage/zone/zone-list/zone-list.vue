@@ -3,29 +3,6 @@
     <div class="layout-content-header">
       可用区设置
     </div>
-    <!-- <div class="dao-view-main">
-      <div class="dao-view-content">
-        <dao-table-view
-          :rows="rows"
-          :config="tConfig"
-          :loading="loadings.zone"
-          @refresh="loadZones"
-          @update-zone="updateZone"
-          @confirm-enable="confirmEnable"
-          @confirm-disable="confirmDisable">
-          <div slot="tool" class="dao-table-view-left-bar">
-            <button
-              class="dao-btn has-icon blue"
-              @click="deployZone">
-              <svg class="icon">
-                <use xlink:href="#icon_plus-circled"></use>
-              </svg>
-              <span class="text">创建可用区</span>
-            </button>
-          </div>
-        </dao-table-view>
-      </div>
-    </div> -->
     <div class="dao-view-main">
       <x-table
         :loading="loadings.zone"
@@ -59,7 +36,7 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="metadata.name" label="集群地址">
+        <el-table-column prop="clusterUrl" label="集群地址">
           <template slot-scope="{ row: zone }">
             <a :href="zone.clusterUrl" target="_blank">
               {{ zone.clusterUrl }}
@@ -67,14 +44,14 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="metadata.name"
+          prop="es.esUrl"
           label="ES 地址"
           :show-overflow-tooltip="true">
           <template slot-scope="{ row: zone }">
             {{ zone.es.esUrl || "-" }}
           </template>
         </el-table-column>
-        <el-table-column prop="metadata.name" label="状态">
+        <el-table-column prop="available" label="状态">
           <template slot-scope="{ row: zone }">
             <!-- {{ zone.available  }} -->
             <x-table-status

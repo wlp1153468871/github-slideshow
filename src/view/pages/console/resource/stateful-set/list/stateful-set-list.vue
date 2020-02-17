@@ -76,9 +76,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <span v-for="(item, index) in statefulSetsInCurrentPage" :key="index">
-            {{ item }}
-          </span>
           <el-pagination
             background
             :disabled="loadings.table"

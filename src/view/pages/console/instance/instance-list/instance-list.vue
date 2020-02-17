@@ -21,30 +21,6 @@
         :selfDefined="true"
         :resource="resource">
       </resource-header>
-      <!-- <div class="dao-view-main">
-        <div class="dao-view-content">
-          <dao-table-view
-            ref="tableView"
-            :rows="rows"
-            :config="tConfig"
-            :loading="loadings.instances"
-            @refresh="loadInstances"
-            @remove-confirm="ensureRemove">
-            <div slot="tool" class="dao-table-view-left-bar">
-              <button
-                class="dao-btn blue has-icon"
-                :disabled="loadings.instances || isZoneSyncing || isDeleted"
-                v-if="$can('create')"
-                @click="deployService">
-                <svg class="icon">
-                  <use xlink:href="#icon_plus-circled"></use>
-                </svg>
-                <span class="text">创建实例</span>
-              </button>
-            </div>
-          </dao-table-view>
-        </div>
-      </div> -->
       <div class="dao-view-main">
         <x-table
           :loading="loadings.instances"
@@ -75,11 +51,6 @@
               </a>
             </template>
           </el-table-column>
-          <el-table-column prop="plan" label="规格">
-            <template slot-scope="{ row: instances }">
-              {{ instances.plan.name }}
-            </template>
-          </el-table-column>
           <el-table-column
             prop="created_at"
             label="创建时间"
@@ -96,9 +67,8 @@
               {{ instances.owner.name }}
             </template>
           </el-table-column>
-          <el-table-column prop="metadata.name" label="状态">
+          <el-table-column prop="status" label="状态">
             <template slot-scope="{ row: instances }">
-              <!-- {{ instances.status | instance_status }} -->
               <x-table-status
                 :row="instances"
                 :other="other"

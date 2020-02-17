@@ -5,22 +5,6 @@
     </div>
     <div class="dao-view-main">
       <div class="dao-view-content">
-        <!-- <dao-table-view
-          :rows="rows"
-          :config="tConfig"
-          :loading="loadings.orgs"
-          @refresh="loadOrgs">
-          <div slot="tool" class="dao-table-view-left-bar">
-            <button
-              class="dao-btn has-icon blue"
-              @click="addOrgDialog()">
-              <svg class="icon">
-                <use xlink:href="#icon_plus-circled"></use>
-              </svg>
-              <span class="text">添加租户</span>
-            </button>
-          </div>
-        </dao-table-view> -->
         <x-table
           :loading="loadings.orgs"
           :data="rows"
@@ -53,13 +37,13 @@
               </router-link>
             </template>
           </el-table-column>
-          <el-table-column prop="org.short_name" label="唯一标识">
+          <el-table-column prop="short_name" label="唯一标识">
             <template slot-scope="{ row: org }">
               {{ org.short_name }}
             </template>
           </el-table-column>
           <el-table-column
-            prop="metadata.name"
+            prop="description"
             label="备注"
             :show-overflow-tooltip="true">
             <template slot-scope="{ row: org }">

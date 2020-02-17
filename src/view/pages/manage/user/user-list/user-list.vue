@@ -6,25 +6,6 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <!-- 用户列表 -->
-        <!-- <dao-table-view
-          :rows="rows"
-          :config="tConfig"
-          :loading="loadings.users"
-          @refresh="loadUsers"
-          @update-user-dialog="updateUserDialog"
-          @confirm-disable="disableConfirm"
-          @confirm-enable="enableConfirm">
-          <div slot="tool" class="dao-table-view-left-bar">
-            <button
-              class="dao-btn has-icon blue"
-              @click="openCreateUserDialog()">
-              <svg class="icon">
-                <use xlink:href="#icon_plus-circled"></use>
-              </svg>
-              <span class="text">创建用户</span>
-            </button>
-          </div>
-        </dao-table-view> -->
         <x-table
           :loading="loadings.users"
           :data="rows"

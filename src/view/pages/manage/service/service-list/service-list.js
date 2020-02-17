@@ -1,13 +1,10 @@
 import { SERVICE_STATUS } from '@/core/constants/constants';
-import tableView from '@/view/mixins/table-view';
 import ServiceService from '@/core/services/service.service';
 import Vue from 'vue';
 
 export default {
   name: 'ServiceList',
-  extends: tableView('id', 10, 'zoneName'),
   created() {
-    this.initTableView();
     this.loadService();
   },
   data() {
@@ -32,40 +29,6 @@ export default {
     renderStatus(status) {
       const filters = Vue.filter('filters');
       return filters(status, 'service_status');
-    },
-    initTableView() {
-      const onClick = item => {
-        this.$router.push({
-          name: 'manage.service.detail',
-          params: { id: item.id },
-        });
-      };
-      const getStatus = (_, item) => {
-        return item.available === SERVICE_STATUS.AVAILABLE
-          ? 'SUCCESS'
-          : 'STOPED';
-      };
-      this.setTableProps([
-        {
-          id: 'name',
-          name: '服务名',
-          type: 'goto',
-          other: { onClick },
-        },
-        {
-          id: 'zone.name',
-          name: '可用区',
-          value: 'zone.name',
-        },
-        {
-          id: 'available',
-          name: '状态',
-          filter: 'service_status',
-          type: 'status',
-          other: { status: getStatus },
-        },
-        { id: 'short_description', name: '简短描述', filter: 'otherwise' },
-      ]);
     },
 
     loadService() {
