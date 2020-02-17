@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { mapGetters, mapState } from 'vuex';
 import { first } from 'lodash';
 import SpaceService from '@/core/services/space.service';
@@ -40,6 +41,25 @@ export default {
       quotas: [],
       loadings: {
         instances: false,
+      },
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey),
+      other: {
+        status: (_, item) => {
+          const { status } = item;
+          if (/ing$/.test(status) && status !== INSTANCE_STATUS.RUNNING) {
+            return STATUS_COLOR.CONTINUE;
+          } else if (
+            /failed$/.test(status) ||
+            status === INSTANCE_STATUS.PROCESS_REJECTED ||
+            status === INSTANCE_STATUS.CREATE_PROCESS_REJECTED
+          ) {
+            return STATUS_COLOR.DANGER;
+          } else if (status === INSTANCE_STATUS.STOP) {
+            return STATUS_COLOR.STOPED;
+          }
+          return STATUS_COLOR.SUCCESS;
+        },
       },
     };
   },
@@ -245,6 +265,19 @@ export default {
       }
       return STATUS_COLOR.SUCCESS;
     },
+
+    handleOperate(command, instance) {
+      // TODO: 增加判断 是否能删除
+      if (command === 'delete') {
+        this.ensureRemove(instance);
+      }
+    },
+
+    renderStatus(status) {
+      const filters = Vue.filter('filters');
+      return filters(status, 'instance_status');
+    },
+
   },
 
   watch: {

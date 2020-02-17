@@ -20,6 +20,11 @@ export default {
         zone: false,
       },
       isCreating: false,
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey),
+      other: {
+        status: (_, item) => (!item.available ? 'STOPED' : 'SUCCESS'),
+      },
     };
   },
 
@@ -29,6 +34,9 @@ export default {
   },
 
   methods: {
+    renderStatus(status) {
+      return status ? '显示' : '隐藏';
+    },
     initTableView() {
       const onClick = zone => {
         this.$router.push({
@@ -141,6 +149,18 @@ export default {
             });
           }
         });
+    },
+
+    handleOperate(command, zone) {
+      if (command === 'enable') {
+        this.confirmEnable(zone);
+      }
+      if (command === 'disable') {
+        this.confirmDisable(zone);
+      }
+      if (command === 'edit') {
+        this.updateZone(zone);
+      }
     },
 
     openClusterUrl(item) {

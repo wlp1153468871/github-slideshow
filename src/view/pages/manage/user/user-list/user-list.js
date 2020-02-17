@@ -34,6 +34,9 @@ export default {
         users: false,
         create: false,
       },
+      filterMethod: (data, filterKey) =>
+        data.username.toLowerCase().includes(filterKey),
+      other: { status: (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER') },
     };
   },
 
@@ -44,6 +47,9 @@ export default {
   },
 
   methods: {
+    isFrozen(f) {
+      return f ? '已冻结' : '正常';
+    },
     initTableView() {
       const isFrozen = frozen => (frozen ? '已冻结' : '正常');
       const getStatus = (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER');
@@ -204,6 +210,17 @@ export default {
         .finally(() => {
           this.loadings.create = false;
         });
+    },
+    handleOperate(command, zone) {
+      if (command === 'enable') {
+        this.enableUser(zone);
+      }
+      if (command === 'disable') {
+        this.disableUser(zone);
+      }
+      if (command === 'edit') {
+        this.updateUserDialog(zone);
+      }
     },
   },
 };

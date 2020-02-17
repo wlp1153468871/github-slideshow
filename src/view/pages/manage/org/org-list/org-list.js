@@ -35,6 +35,9 @@ export default {
       dialogConfigs: {
         addOrg: { visible: false },
       },
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey)
+        || data.short_name.toLowerCase().includes(filterKey),
     };
   },
   watch: {

@@ -1,6 +1,7 @@
 import { SERVICE_STATUS } from '@/core/constants/constants';
 import tableView from '@/view/mixins/table-view';
 import ServiceService from '@/core/services/service.service';
+import Vue from 'vue';
 
 export default {
   name: 'ServiceList',
@@ -15,9 +16,23 @@ export default {
       loadings: {
         maps: false,
       },
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey) ||
+        data.short_description.toLowerCase().includes(filterKey),
+      other: {
+        status: (_, item) => {
+          return item.available === SERVICE_STATUS.AVAILABLE
+            ? 'SUCCESS'
+            : 'STOPED';
+        },
+      },
     };
   },
   methods: {
+    renderStatus(status) {
+      const filters = Vue.filter('filters');
+      return filters(status, 'service_status');
+    },
     initTableView() {
       const onClick = item => {
         this.$router.push({
