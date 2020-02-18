@@ -21,30 +21,84 @@
         :selfDefined="true"
         :resource="resource">
       </resource-header>
-
       <div class="dao-view-main">
-        <div class="dao-view-content">
-          <dao-table-view
-            ref="tableView"
-            :rows="rows"
-            :config="tConfig"
-            :loading="loadings.instances"
-            @refresh="loadInstances"
-            @remove-confirm="ensureRemove">
-            <div slot="tool" class="dao-table-view-left-bar">
-              <button
-                class="dao-btn blue has-icon"
-                :disabled="loadings.instances || isZoneSyncing || isDeleted"
-                v-if="$can('create')"
-                @click="deployService">
-                <svg class="icon">
-                  <use xlink:href="#icon_plus-circled"></use>
-                </svg>
-                <span class="text">创建实例</span>
-              </button>
-            </div>
-          </dao-table-view>
-        </div>
+        <x-table
+          :loading="loadings.instances"
+          :data="rows"
+          @refresh="loadInstances"
+          :filter-method="filterMethod"
+          style="width: 100%"
+        >
+          <template #operation>
+            <button
+              class="dao-btn blue has-icon"
+              :disabled="loadings.instances || isZoneSyncing || isDeleted"
+              v-if="$can('create')"
+              @click="deployService">
+              <svg class="icon">
+                <use xlink:href="#icon_plus-circled"></use>
+              </svg>
+              <span class="text">创建实例</span>
+            </button>
+          </template>
+          <el-table-column
+            prop="name"
+            sortable
+            label="实例">
+            <template slot-scope="{ row: instances }">
+              <a href="javascript:void(0)" @click="gotoDetail(instances)">
+                {{ instances.name }}
+              </a>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="created_at"
+            label="创建时间"
+            :show-overflow-tooltip="true">
+            <template slot-scope="{ row: instances }">
+              {{ instances.created_at | unix_date }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="owner"
+            label="创建者"
+            :show-overflow-tooltip="true">
+            <template slot-scope="{ row: instances }">
+              {{ instances.owner.name }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="状态">
+            <template slot-scope="{ row: instances }">
+              <x-table-status
+                :row="instances"
+                :other="other"
+                :text="renderStatus(instances.status)">
+              </x-table-status>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label=""
+            align="center"
+            header-align="center"
+            width="80">
+            <template slot-scope="{ row: instances}">
+              <el-dropdown @command="handleOperate($event, instances)" trigger="click">
+                <span>
+                  <svg class="icon dropdown-trigger">
+                    <use xlink:href="#icon_more"></use>
+                  </svg>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    command="delete">
+                    删除
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-table-column>
+        </x-table>
       </div>
     </div>
 
