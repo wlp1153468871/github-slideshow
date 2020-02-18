@@ -79,6 +79,7 @@ export default {
         cmd: '',
         args: '',
         monitor: false,
+        hpa: false,
       },
       configMaps: [],
       secrets: [],

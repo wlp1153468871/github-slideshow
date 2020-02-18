@@ -18,13 +18,13 @@
     </div>
 
     <dao-tab class="dao-header-tab-nav">
-      <dao-tab-item :heading="SIDE_BAR.PLANS">
+      <!-- <dao-tab-item :heading="SIDE_BAR.PLANS">
         <plans-panel
           :quota-dict="quotaDict"
           :quota-units="brokerService.quota_units"
           :service-id="brokerService.id">
         </plans-panel>
-      </dao-tab-item>
+      </dao-tab-item> -->
       <dao-tab-item :heading="SIDE_BAR.QUOTA_FIELD">
         <div class="dao-view-main">
           <div class="dao-view-content">
