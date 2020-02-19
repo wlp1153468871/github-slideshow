@@ -4,7 +4,7 @@
 
     <div class="dao-view-main">
       <div class="dao-view-content">
-        <dao-table-view
+        <!-- <dao-table-view
           ref="tableView"
           :rows="rows"
           :config="tConfig"
@@ -47,7 +47,120 @@
             </dao-dropdown>
 
           </div>
-        </dao-table-view>
+        </dao-table-view> -->
+      </div>
+    </div>
+    <div class="dao-view-main">
+      <div class="dao-view-content">
+       <x-table
+          :loading="loadings.instances"
+          :data="rows"
+          @refresh="loadInstances"
+          :filter-method="filterMethod"
+          style="width: 100%"
+        >
+          <template #operation>
+            <dao-dropdown
+              trigger="click"
+              :append-to-body="true"
+              v-if="$can('create')"
+              placement="bottom-start">
+              <save-button
+                :saving="loadings.updateByYaml"
+                :disabled="appDeployDisabled"
+                text="部署应用"
+              >
+                <template
+                  #icon
+                >
+                  <svg class="icon" :style="{ 'margin-left': loadings.updateByYaml ? '5px' : 0 }">
+                    <use xlink:href="#icon_plus-circled"></use>
+                  </svg>
+                </template>
+              </save-button>
+
+              <template #list v-if="!appDeployDisabled">
+                <dao-dropdown-menu>
+                  <dao-dropdown-item
+                    @click="toggleYamlDialog"
+                  >
+                    <span>编辑 YAML</span>
+                  </dao-dropdown-item>
+                  <dao-dropdown-item
+                    @click="deployApplication">
+                    <span>编辑 表单</span>
+                  </dao-dropdown-item>
+                </dao-dropdown-menu>
+              </template>
+            </dao-dropdown>
+          </template>
+          <el-table-column
+            prop="name"
+            sortable
+            label="实例">
+            <template slot-scope="{ row: instances }">
+              <a href="javascript:void(0)" @click="gotoDetail(instances)">
+                {{ instances.name }}
+              </a>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="created_at"
+            label="创建时间"
+            sortable
+            :show-overflow-tooltip="true">
+            <template slot-scope="{ row: instances }">
+              {{ instances.created_at | unix_date }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="owner"
+            label="创建者"
+            sortable
+            :show-overflow-tooltip="true">
+            <template slot-scope="{ row: instances }">
+              {{ instances.owner.name }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="部署状态"
+            sortable>
+            <template slot-scope="{ row: instances }">
+              <x-table-status
+                :row="instances"
+                :other="other"
+                :text="renderStatus(instances.status)">
+              </x-table-status>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label=""
+            align="center"
+            header-align="center"
+            width="56">
+            <template slot-scope="{ row: instances}">
+              <el-dropdown @command="handleOperate($event, instances)" trigger="click">
+                <span>
+                  <svg class="icon dropdown-trigger">
+                    <use xlink:href="#icon_more"></use>
+                  </svg>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    class="dropdown-item-error"
+                    v-if="$can('delete')"
+                    icon="el-icon-delete"
+                    :disabled="disableDelete(instances)"
+                    command="delete">
+                    删除
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-table-column>
+        </x-table>
       </div>
     </div>
 

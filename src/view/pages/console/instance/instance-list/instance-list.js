@@ -5,7 +5,7 @@ import SpaceService from '@/core/services/space.service';
 import InstanceService from '@/core/services/instance.service';
 
 import ErrorInfo from '@/view/mixins/error-info';
-// import isApprove from '@/core/utils/is-approve';
+import isApprove from '@/core/utils/is-approve';
 import {
   INSTANCE_STATUS,
   STATUS_COLOR,
@@ -228,7 +228,6 @@ export default {
         .then(willDelete => {
           if (willDelete) {
             this.removeInstanceFromTenant(instance);
-            this.loadInstances();
           }
         });
     },
@@ -237,6 +236,7 @@ export default {
       InstanceService.deleteInstance(instance.id).then(deletedInstance => {
         this.applyChange(deletedInstance);
         this.$noty.success(`删除实例 ${instance.name} 成功。`);
+        this.loadInstances();
       });
     },
 
@@ -246,24 +246,7 @@ export default {
       });
     },
 
-    getStatus(_, item) {
-      const { status } = item;
-      if (/ing$/.test(status) && status !== INSTANCE_STATUS.RUNNING) {
-        return STATUS_COLOR.CONTINUE;
-      } else if (
-        /failed$/.test(status) ||
-        status === INSTANCE_STATUS.PROCESS_REJECTED ||
-        status === INSTANCE_STATUS.CREATE_PROCESS_REJECTED
-      ) {
-        return STATUS_COLOR.DANGER;
-      } else if (status === INSTANCE_STATUS.STOP) {
-        return STATUS_COLOR.STOPED;
-      }
-      return STATUS_COLOR.SUCCESS;
-    },
-
     handleOperate(command, instance) {
-      // TODO: 增加判断 是否能删除
       if (command === 'delete') {
         this.ensureRemove(instance);
       }
@@ -272,6 +255,14 @@ export default {
     renderStatus(status) {
       const filters = Vue.filter('filters');
       return filters(status, 'instance_status');
+    },
+
+    disableDelete(item) {
+      return (
+        isApprove(item.status) ||
+        !this.brokerService.instances_deletable ||
+        this.isZoneSyncing
+      );
     },
 
   },

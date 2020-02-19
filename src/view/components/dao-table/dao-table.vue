@@ -23,7 +23,7 @@
         </button>
       </div>
     </div>
-    <!-- <table class="csp-table-layout" v-loading="loading">
+    <table class="csp-table-layout" v-loading="loading">
       <thead>
         <tr>
           <th
@@ -90,8 +90,8 @@
           </td>
         </tr>
       </tbody>
-    </table> -->
-    <el-table
+    </table>
+    <!-- <el-table
       v-loading="loading"
       :data="tCurrentRows"
       style="width: 100%">
@@ -128,7 +128,7 @@
           </operation-data>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
     <dao-table-pagination
       style="margin-top: 10px;"
       :pagination="tPagination"
