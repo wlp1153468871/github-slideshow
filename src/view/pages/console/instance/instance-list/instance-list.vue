@@ -91,7 +91,11 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
-                    command="delete">
+                    class="dropdown-item-error"
+                    v-if="$can('delete')"
+                    :disabled="disableDelete(instances)"
+                    command="delete"
+                    icon="el-icon-delete">
                     删除
                   </el-dropdown-item>
                 </el-dropdown-menu>
