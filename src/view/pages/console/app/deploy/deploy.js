@@ -114,6 +114,7 @@ export default {
         registrypassword = '',
         volumes,
         monitor,
+        hpa,
       } = this.form;
 
       const params = [];
@@ -202,6 +203,11 @@ export default {
       //  监控
       params.push({
         id: 'monitor', value: monitor,
+      });
+
+      // hpa
+      params.push({
+        id: 'hpa', value: hpa,
       });
 
       return params;
