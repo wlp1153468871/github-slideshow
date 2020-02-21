@@ -116,7 +116,7 @@ export default {
     loadSSOInfo() {
       this.loading = true;
       SSOService.getSSO().then(sso => {
-        this.enable_local_login = !sso;
+        this.enable_local_login = !sso.enable_local_login;
       });
       SSOService.getIdentityProvider()
         .then(providers => {
