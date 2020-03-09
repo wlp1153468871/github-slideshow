@@ -151,7 +151,10 @@ export default {
   watch: {
     visible: {
       handler(value) {
-        if (value) this.getPermissionTree();
+        if (value) {
+          this.getPermissionTree();
+          this.role = { name: '', description: '' };
+        }
       },
     },
   },
@@ -175,6 +178,8 @@ export default {
         this.highlightSelectedNode();
       } catch (error) {
         // console.error(error);
+        this.$noty.error('获取权限树失败');
+        this.onClose();
       } finally {
         this.loading = false;
       }

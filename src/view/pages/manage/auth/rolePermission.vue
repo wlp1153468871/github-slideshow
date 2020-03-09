@@ -154,7 +154,9 @@ export default {
   data() {
     return {
       treeData: { children: [] },
-      role: {},
+      role: {
+        preset: false,
+      },
       checkedKeys: [],
       actions: [],
       checkAll: false,
@@ -168,7 +170,12 @@ export default {
   watch: {
     roleId: {
       handler(value) {
-        if (value) this.getPermission();
+        if (value) {
+          this.role = {
+            preset: false,
+          };
+          this.getPermission();
+        }
       },
     },
   },
@@ -181,20 +188,26 @@ export default {
   methods: {
     async getPermission() {
       this.loading = true;
-      const [dateail, permission] = await Promise.all([
-        api.get(`/authorizations/roles/${this.roleId}`),
-        api.get(`/authorizations/roles/${this.roleId}/permission`),
-      ]);
-      this.role = dateail;
-      const treeData = permission2treeData(permission);
-      this.treeData = treeData;
-      this.checkedKeys = getCheckedKeys(permission.children);
-      const [first] = treeData.children;
-      this.selectedNode = first;
-      this.setActions(first && first.actions);
+      try {
+        const [dateail, permission] = await Promise.all([
+          api.get(`/authorizations/roles/${this.roleId}`),
+          api.get(`/authorizations/roles/${this.roleId}/permission`),
+        ]);
+        this.role = dateail;
+        const treeData = permission2treeData(permission);
+        this.treeData = treeData;
+        this.checkedKeys = getCheckedKeys(permission.children);
+        const [first] = treeData.children;
+        this.selectedNode = first;
+        this.setActions(first && first.actions);
+        this.highlightSelectedNode();
+      } catch (error) {
+        this.$noty.error('获取权限详情失败');
+        this.onClose();
+      } finally {
+        this.loading = false;
+      }
       // eslint-disable-next-line prefer-destructuring
-      this.loading = false;
-      this.highlightSelectedNode();
     },
 
     setActions(actions) {
