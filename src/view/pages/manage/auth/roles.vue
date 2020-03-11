@@ -48,6 +48,7 @@
             详情
           </button>
           <button
+            v-if="!role.preset"
             class="dao-btn btn-sm mini red"
             @click="confirmDelete(role)"
           >

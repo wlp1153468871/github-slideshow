@@ -130,6 +130,7 @@
       <button
         class="dao-btn blue"
         @click="save"
+        :disabled="loading"
         v-if="!isPreset"
       >
         更新
@@ -286,7 +287,8 @@ export default {
         this.$noty.success('更新成功');
         this.$emit('updated');
       } catch (error) {
-        this.$noty.error(`更新失败，${error}`);
+        console.error(error);
+        this.$noty.error('更新失败');
       } finally {
         this.loading = false;
       }
