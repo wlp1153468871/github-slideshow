@@ -286,9 +286,7 @@ export default {
         this.$noty.success('更新成功');
         this.$emit('updated');
       } catch (error) {
-        console.error(error);
-
-        this.$noty.error('更新失败');
+        this.$noty.error(`更新失败，${error}`);
       } finally {
         this.loading = false;
       }

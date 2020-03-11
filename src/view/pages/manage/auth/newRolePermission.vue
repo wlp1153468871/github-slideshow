@@ -266,13 +266,13 @@ export default {
             treeData2permission(cloneDeep(this.treeData)),
           );
         } catch (error) {
-          this.$noty.error('但是权限树创建失败');
+          this.$noty.error(`但是权限树创建失败，${error}`);
         }
         this.$emit('created');
       } catch (error) {
         // console.error(error);
 
-        this.$noty.error('创建失败');
+        this.$noty.error('创建失败', error);
       } finally {
         this.loading = false;
       }
