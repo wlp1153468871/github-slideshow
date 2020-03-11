@@ -270,9 +270,8 @@ export default {
         }
         this.$emit('created');
       } catch (error) {
-        // console.error(error);
-
-        this.$noty.error('创建失败', error);
+        console.error(error);
+        this.$noty.error('创建失败');
       } finally {
         this.loading = false;
       }

@@ -2,3 +2,5 @@
 /config/
 /dist/
 /src/core/**/*.ts
+/src/core/**/*.d.ts
+/src/core/**/*.resource.ts
