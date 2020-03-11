@@ -13,17 +13,18 @@ function perCompare(p1, p2) {
 export function permission2treeData(permission) {
   return {
     ...permission,
-    children: permission.children
+    children: (permission.children || [])
       .filter(p => !p.featurePoint)
       .map(permission2treeData)
       .sort(perCompare),
-    actions: permission.children.filter(p => p.featurePoint).sort(perCompare),
+    actions: (permission.children || []).filter(p => p.featurePoint).sort(perCompare),
   };
 }
 
 export function treeData2permission(treeData) {
   return {
     ...treeData,
+    access: treeData.featureCode === 'root' ? true : treeData.access,
     children: treeData.children
       .map(treeData2permission)
       // eslint-disable-next-line function-paren-newline
@@ -31,7 +32,7 @@ export function treeData2permission(treeData) {
         (treeData.actions || []).map(a => {
           return {
             ...a,
-            children: a.children.map(c => {
+            children: (a.children || []).map(c => {
               return {
                 ...c,
                 access: a.access,
@@ -45,7 +46,6 @@ export function treeData2permission(treeData) {
     actions: undefined,
   };
 }
-
 
 export const getCheckedKeys = (tree, result = []) => {
   tree.forEach(item => {

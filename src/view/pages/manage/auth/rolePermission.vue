@@ -275,19 +275,19 @@ export default {
     async save() {
       try {
         this.loading = true;
+        const permission = treeData2permission(cloneDeep(this.treeData));
         await Promise.all([
           api.put(
             `/authorizations/roles/${this.roleId}`,
             pick(this.role, ['scope', 'name', 'description']),
           ),
-          api.put(
-            `/authorizations/roles/${this.roleId}/permission`,
-            treeData2permission(cloneDeep(this.treeData)),
-          ),
+          api.put(`/authorizations/roles/${this.roleId}/permission`, permission),
         ]);
         this.$noty.success('更新成功');
         this.$emit('updated');
       } catch (error) {
+        console.error(error);
+
         this.$noty.error('更新失败');
       } finally {
         this.loading = false;

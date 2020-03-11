@@ -51,15 +51,16 @@
           <el-tree
             ref="tree"
             check-strictly
+            :show-checkbox="true"
             highlight-current
             default-expand-all
             node-key="featureCode"
             :expand-on-click-node="false"
             :data="treeData.children"
             :props="{
-            children: 'children',
-            label: 'name',
-          }"
+              children: 'children',
+              label: 'name',
+            }"
             :default-checked-keys="checkedKeys"
             @node-click="handleNodeClick"
             @check-change="handleCheckChange"
