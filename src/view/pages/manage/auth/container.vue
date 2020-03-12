@@ -39,7 +39,7 @@ export default {
         { name: '租户角色', to: '/manage/auth/organization' },
         { name: '项目组角色', to: '/manage/auth/space' },
         { name: 'Openshfit 角色', to: '/manage/auth/zone.ocp' },
-        { name: 'DCE 角色', to: '/manage/auth/zone.dce' },
+        // { name: 'DCE 角色', to: '/manage/auth/zone.dce' },
         { name: 'Kubernetes 角色', to: '/manage/auth/zone.k8s' },
       ],
     };

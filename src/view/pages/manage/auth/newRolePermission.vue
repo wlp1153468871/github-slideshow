@@ -74,8 +74,10 @@
           >全选
           </el-checkbox>
           <el-divider>
-            <i class="el-icon-set-up"></i>
-            {{ selectedNode && selectedNode.name }}
+            <div style="white-space: nowrap;max-width: 200px;overflow: hidden;">
+              <i class="el-icon-set-up"></i>
+              {{ selectedNode && selectedNode.name }}
+            </div>
           </el-divider>
 
           <!-- todo: 根据DSP现有空状态组件显示 -->
