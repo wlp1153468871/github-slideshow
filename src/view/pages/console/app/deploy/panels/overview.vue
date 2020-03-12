@@ -88,12 +88,15 @@ export default {
     ...mapState(['zone', 'org', 'space', 'quotaDict']),
 
     basic() {
-      const { repository = '', deployfile = {}, deployMode } = this.app;
+      const {
+        repository = '', deployfile = {}, deployMode, monitor,
+      } = this.app;
       const basic = [
         ['地域', this.zone.area_name],
         ['环境', this.zone.env_name],
         ['租户', this.org.name],
         ['项目组', this.space.name],
+        ['监控', monitor ? '开' : '关'],
       ];
       if (deployMode === 'image') {
         basic.unshift(['镜像地址', repository]);

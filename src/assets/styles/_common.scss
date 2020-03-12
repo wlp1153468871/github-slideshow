@@ -151,6 +151,9 @@ a.disabled {
   background-color: $error-color;
   box-shadow: inset 0 -1px 0 0 #f0c2c0, inset 0 1px 0 0 #f0c2c0;
 }
+.go-back {
+  cursor: pointer;
+}
 
 .text-lowercase {
   text-transform: lowercase !important;
@@ -327,4 +330,15 @@ ul.text-red{
   li {
     padding: 10px;
   }
+}
+
+.dao-dialog-body {
+  &::-webkit-scrollbar{
+    width: 0!important;
+  }
+}
+
+// to be compatible with the windows's display effect
+.el-input--suffix .el-input__inner {
+  line-height: 32px!important;
 }

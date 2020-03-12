@@ -33,7 +33,7 @@
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">读写模式</div>
-          <div slot="content">{{ formModel.spec.accessModes | access_modes  }}</div>
+          <div slot="content">{{ [formModel.spec.accessMode] | access_modes  }}</div>
         </dao-setting-item>
       </dao-setting-section>
     </dao-setting-layout>

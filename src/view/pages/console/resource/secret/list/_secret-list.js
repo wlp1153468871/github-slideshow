@@ -87,7 +87,7 @@ export default {
 
     deleteSecret(name) {
       SecretService.deleteSecret(this.space.id, this.zone.id, name).then(() => {
-        this.$noty.success(`删除 Config Map ${name}成功`);
+        this.$noty.success(`开始执行对Config Map ${name}的删除操作`);
         this.loadInstances();
       });
     },

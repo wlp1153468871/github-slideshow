@@ -13,6 +13,9 @@ export default function ensureHooks(router) {
   router.beforeEach((to, from, next) => {
     saveRefreshTime();
     NProgress.start(); // start progress bar
+    if (store.state.isFullscreened && to !== from) {
+      store.commit(types.FUll_SCREENED, false);
+    }
     if (AuthService.isAuthed()) {
       if (to.name === 'login') {
         next({ name: 'console.dashboard' });

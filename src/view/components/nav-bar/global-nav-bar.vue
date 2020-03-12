@@ -1,7 +1,7 @@
 <template>
-  <nav class="g-nav">
+  <nav class="g-nav" :class="{ invisible: isFullscreened }">
     <div class="nav-left-container">
-      <router-link :to="{ name: 'home' }">
+      <router-link :to="{ name: 'home' }" class="logo-box">
         <logo-container></logo-container>
       </router-link>
     </div>
@@ -192,7 +192,7 @@
             </svg>
           </div>
           <dao-dropdown-menu slot="list">
-            <dao-dropdown-item @click="gotoDashboard" v-if="isDisplayOrgSelect">
+            <dao-dropdown-item @click="gotoDashboard" v-if="isDisplayAppSelect">
               <svg>
                 <use xlink:href="#icon_app-home"></use>
               </svg>

@@ -41,6 +41,7 @@
     width: 310px;
     padding: 27px 20px 30px;
     margin: 0 auto;
+    margin-bottom: 30px;
     font-size: 14px;
     background-color: #fff;
     box-shadow: 0 15px 30px 0 rgba(0, 0, 1, 0.1);
@@ -93,16 +94,16 @@
       .dao-input-container {
         width: 100%;
       }
-      input {
-        color: #3d444f;
-        line-height: 1;
-        background-color: #fff;
-        box-shadow: none;
-        border: 1px solid #ccd1d9;
-        border-radius: 2px;
-        outline: 0;
-        transition: border 0.25s ease;
-      }
+      //input {
+      //  color: #3d444f;
+      //  line-height: 1;
+      //  background-color: #fff;
+      //  box-shadow: none;
+      //  border: 1px solid #ccd1d9;
+      //  border-radius: 2px;
+      //  outline: 0;
+      //  transition: border 0.25s ease;
+      //}
     }
   }
   .login-btn {

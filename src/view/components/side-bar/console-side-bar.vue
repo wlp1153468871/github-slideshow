@@ -5,18 +5,26 @@
         <template v-if="orgs.length">
           <el-tooltip
             :content="orgSpaceValue"
-            placement="right">
+            placement="right"
+          >
             <el-cascader
-              :options="orgs"
+              :options="orgWithSpaceSepereatedBySlash"
               :props="props"
+              :empty="'暂无项目组'"
+              filterable
               class="org-space-cascader"
               v-model="selectedOptions"
-              @change="onSelectOrg">
+              popper-class="space-menu-popper"
+              @change="onSelectOrg"
+            >
             </el-cascader>
           </el-tooltip>
         </template>
         <template v-else>
-          <el-tooltip placement="right" content="暂无项目组">
+          <el-tooltip
+            placement="right"
+            content="暂无项目组"
+          >
             <p class="empty-message">暂无项目组</p>
           </el-tooltip>
         </template>
@@ -30,11 +38,13 @@
         :default-active="defaultActiveMenu"
         :router="true"
         :collapse="isCollapse"
-        @select="onTopMenuSelect">
+        @select="onTopMenuSelect"
+      >
         <el-menu-item
           style="border-bottom: 1px solid #3c434b;"
           index="console.dashboard"
-          :route="{ name: 'console.dashboard' }">
+          :route="{ name: 'console.dashboard' }"
+        >
           <i class="el-icon-menu"></i>
           <span slot="title">总览</span>
         </el-menu-item>
@@ -43,7 +53,8 @@
       <div class="section-zone">
         <el-tooltip
           :content="zone.name ? zone.name : '暂无可用区'"
-          placement="right">
+          placement="right"
+        >
           <zone-select v-if="zones.length"></zone-select>
           <template v-else>
             <p class="empty-message">暂无可用区</p>
@@ -60,21 +71,22 @@
         :default-openeds="defaultOpeneds"
         :router="true"
         :collapse="isCollapse"
-        @select="onBottomMenuSelect">
+        @select="onBottomMenuSelect"
+      >
 
         <template v-if="isPlatformAdmin || !zoneUnauthorized">
 
           <el-menu-item
             index="console.applications.list"
-            :route="{ name: 'console.applications.list' }">
+            :route="{ name: 'console.applications.list' }"
+          >
             <svg class="icon">
               <use xlink:href="#icon_application"></use>
             </svg>
             <span slot="title">应用</span>
           </el-menu-item>
 
-          <el-submenu
-            index="resource">
+          <el-submenu index="resource">
             <template slot="title">
               <svg class="icon">
                 <use xlink:href="#icon_resource"></use>
@@ -86,7 +98,8 @@
                 v-if="$can('read', resource.name)"
                 :key="resource.name"
                 :index="resource.route.name"
-                :route="resource.route">
+                :route="resource.route"
+              >
                 <svg class="icon">
                   <use :xlink:href="resource.icon"></use>
                 </svg>
@@ -102,7 +115,8 @@
 
           <el-menu-item
             index="console.registry"
-            :route="{ name: 'console.registry' }">
+            :route="{ name: 'console.registry' }"
+          >
             <svg class="icon">
               <use xlink:href="#icon_docker-image"></use>
             </svg>
@@ -120,13 +134,18 @@
               v-for="menu in services"
               :key="menu.id"
               :index="compileIndex(menu)"
-              :route="menu.route">
-              <service-logo :src="menu.logo_url" size="small"></service-logo>
+              :route="menu.route"
+            >
+              <service-logo
+                :src="menu.logo_url"
+                size="small"
+              ></service-logo>
               <el-tooltip
                 popper-class="service-name-tooltip"
                 slot="title"
                 :content="menu.name"
-                placement="right">
+                placement="right"
+              >
                 <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
               </el-tooltip>
             </el-menu-item>
@@ -134,7 +153,8 @@
 
           <el-menu-item
             index="console.monitor"
-            :route="{ name: 'console.monitor' }">
+            :route="{ name: 'console.monitor' }"
+          >
             <svg class="icon">
               <use xlink:href="#icon_monitor"></use>
             </svg>
@@ -143,7 +163,8 @@
           <el-menu-item
             v-if="$can('read')"
             index="console.alarm"
-            :route="{ name: 'console.alarm' }">
+            :route="{ name: 'console.alarm' }"
+          >
             <svg class="icon">
               <use xlink:href="#icon_bell"></use>
             </svg>
@@ -160,7 +181,8 @@
           <el-menu-item
             v-if="isOrganizationAdmin || isSpaceAdmin"
             index="console.user.list"
-            :route="{ name: 'console.user.list' }">
+            :route="{ name: 'console.user.list' }"
+          >
             <svg class="icon">
               <use xlink:href="#icon_user"></use>
             </svg>
@@ -168,35 +190,42 @@
           </el-menu-item>
           <el-menu-item
             index="console.space-quota"
-            :route="{ name: 'console.space-quota' }">
+            :route="{ name: 'console.space-quota' }"
+          >
             <svg class="icon">
               <use xlink:href="#icon_quota"></use>
             </svg>
             <span>配额管理</span>
           </el-menu-item>
-          <el-submenu index="approve-log" popper-append-to-body>
-          <span slot="title">
-            <svg class="icon">
-              <use xlink:href="#icon_audit"></use>
-            </svg>
-            <span>
-              审批日志
+          <el-submenu
+            index="approve-log"
+            popper-append-to-body
+          >
+            <span slot="title">
+              <svg class="icon">
+                <use xlink:href="#icon_audit"></use>
+              </svg>
+              <span>
+                审批日志
+              </span>
             </span>
-          </span>
             <el-menu-item
               index="console.approval.list"
-              :route="{ name: 'console.approval.list' }">
+              :route="{ name: 'console.approval.list' }"
+            >
               <span slot="title">审批请求</span>
             </el-menu-item>
             <el-menu-item
               index="console.approval.history"
-              :route="{ name: 'console.approval.history' }">
+              :route="{ name: 'console.approval.history' }"
+            >
               <span slot="title">审批记录</span>
             </el-menu-item>
             <el-menu-item
               v-if="isSpaceAdmin"
               index="console.approval.setting"
-              :route="{ name: 'console.approval.setting' }">
+              :route="{ name: 'console.approval.setting' }"
+            >
               <span slot="title">审批设置</span>
             </el-menu-item>
           </el-submenu>
@@ -207,7 +236,8 @@
 
     <div
       class="collapse-btn"
-      @click="toggleSideBar">
+      @click="toggleSideBar"
+    >
       <i class="el-icon-d-arrow-left"></i>
     </div>
   </div>
@@ -248,6 +278,7 @@ export default {
       },
       defaultOpeneds: ['service'],
       selectedOptions: [],
+      cascaderIdMap: {},
     };
   },
 
@@ -264,31 +295,91 @@ export default {
       'apiResource',
     ]),
 
-    ...mapGetters([
-      'zoneUnauthorized',
-      'isPlatformAdmin',
-      'isOrganizationAdmin',
-      'isSpaceAdmin',
-    ]),
+    ...mapGetters(['zoneUnauthorized', 'isPlatformAdmin', 'isOrganizationAdmin', 'isSpaceAdmin']),
 
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;
     },
-  },
 
-  watch: {
-    org: {
-      immediate: true,
-      handler(val) {
-        this.selectedOptions = [val.id, this.selectedOptions[1]];
-      },
-    },
-
-    space: {
-      immediate: true,
-      handler(val) {
-        this.selectedOptions = [this.selectedOptions[0], val.id];
-      },
+    /**
+     * 会把带有 / 的 space name 分割成多个space
+     * 比如 dsp/dev, dsp/test,
+     * 会成为
+     *
+     * dsp: {
+     *    id: 'dsp',
+     *    name: 'dsp',
+     *    children: [
+     *      {
+     *        name: 'dev',
+     *        id: '1232131vdssafsfd',
+     *      },
+     *      {
+     *        name: 'test',
+     *        id: 'opuoijka2123',
+     *      }
+     *    ],
+     * }
+     *
+     * 类似的结构。
+     * 同时在比较 space id 时，如果和当前 store.space 的id一致，会更新
+     * selectedOptions 为对应的 cascader 的 model id。
+     */
+    orgWithSpaceSepereatedBySlash() {
+      const res = [];
+      for (let i = 0; i < this.orgs.length; i += 1) {
+        const org = this.orgs[i];
+        const newOrg = {
+          name: org.name,
+          id: org.id,
+          children: [],
+        };
+        for (let j = 0; j < org.children.length; j += 1) {
+          const space = org.children[j];
+          if (space.name.indexOf('/') === -1) {
+            if (space.id === this.space.id) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.selectedOptions = [org.id, space.id];
+            }
+            newOrg.children.push({
+              id: space.id,
+              name: space.name,
+            });
+          } else {
+            // 分割 /，组成 cascader 的options
+            let curChildren = newOrg.children;
+            const ids = [org.id];
+            const spaceNames = space.name.split('/');
+            for (let k = 0; k < spaceNames.length; k += 1) {
+              const name = spaceNames[k];
+              let nameObj = find(curChildren, { name });
+              if (nameObj) {
+                curChildren = nameObj.children;
+                ids.push(nameObj.id);
+              } else {
+                if (k === spaceNames.length - 1) {
+                  nameObj = {
+                    id: space.id,
+                    name,
+                  };
+                  ids.push(nameObj.id);
+                } else {
+                  nameObj = { id: name, name, children: [] };
+                  ids.push(nameObj.id);
+                }
+                curChildren.push(nameObj);
+                curChildren = nameObj.children;
+              }
+            }
+            if (space.id === this.space.id) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.selectedOptions = ids;
+            }
+          }
+        }
+        res.push(newOrg);
+      }
+      return res;
     },
   },
 
@@ -311,10 +402,16 @@ export default {
       this.$store.commit(types.IS_COLLAPSE, !this.isCollapse);
     },
 
-    onSelectOrg([orgId, spaceId]) {
+    onSelectOrg(ids) {
+      const orgId = ids[0];
+      const spaceId = ids[ids.length - 1];
       const org = find(this.orgs, { id: orgId });
       const space = find(org.children, { id: spaceId });
       this.onTopMenuSelect();
+      if (!org || !space) {
+        return;
+      }
+      this.selectedOptions = ids;
       this.$store.dispatch('switchOrg', { org, space });
       this.$tada(`切换到 ${org.name} 租户下的 ${space.name} 项目组`, {
         buttons: false,
@@ -345,6 +442,14 @@ export default {
 </script>
 
 <style lang="scss">
+// compatiable with chrome version: 49.0.**
+.space-menu-popper {
+  .el-icon-check,
+  .el-icon-arrow-right {
+    top: 50%;
+    transform: translate(0, -7px);
+  }
+}
 .dao-nav-menu {
   .section-space,
   .section-zone {

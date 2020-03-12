@@ -123,13 +123,13 @@ export default {
           const dict = quotaDict[name];
           let convertedValue = value;
           if (name === PLANKEY.MEMORY) {
-            convertedValue = convert(value, dict.unit, unit);
+            convertedValue = convert(value, dict && dict.unit, unit);
           }
           if (name === PLANKEY.CPU) convertedValue = round(value / 1000, 1);
           return {
-            name: dict.name,
+            name: dict && dict.name,
             value: convertedValue,
-            unit: dict.unit,
+            unit: dict && dict.unit,
           };
         }),
       };
@@ -268,7 +268,9 @@ export default {
       if (plan.id !== this.plan.id) {
         this.plan = this.parsePlan(plan);
       }
-      this.dialogConfigs.editPlan.visible = true;
+      this.dialogConfigs = {
+        editPlan: { visible: true },
+      };
     },
 
     updatePlan(editedPlan) {
@@ -316,13 +318,13 @@ export default {
 
       return Promise.all([...updatePlanRequires, updatePlan])
         .then(() => {
-          this.$noty.success('修改规格成功');
           const newPlan = this.mergePlan(plan, editedPlan);
           const idx = this.plans.findIndex(x => x.id === this.plan.id);
           if (idx !== -1) {
             this.plans.splice(idx, 1, newPlan);
           }
           this.showPanel([newPlan]);
+          this.$noty.success('修改规格成功');
         })
         .catch(() => {
           this.$noty.error('修改规格失败');

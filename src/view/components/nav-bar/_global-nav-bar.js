@@ -40,10 +40,15 @@ export default {
       'user',
       'services',
       'filteredCategory',
+      'isFullscreened',
     ]),
 
     isDisplayOrgSelect() {
       return this.orgs.length && this.isConsoleView && this.isOrganizationAdmin;
+    },
+
+    isDisplayAppSelect() {
+      return this.orgs.length && this.isConsoleView;
     },
 
     selectedServices() {

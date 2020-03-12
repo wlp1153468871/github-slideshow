@@ -82,7 +82,7 @@ export default {
           this.status = res.status;
           this.getJobs();
           this.route = res.originData || {};
-          this.cert.ref = getValue(res, 'instance_metadata.parameters.certificateRef') || {};
+          // this.cert.ref = getValue(res, 'instance_metadata.parameters.certificateRef') || {};
           this.information.basic = {
             '租户 / 项目组': `${res.organizationName ||
               this.space.name} / ${res.spaceName ||
@@ -121,7 +121,7 @@ export default {
     removeRoute() {
       const { name } = this;
       RouteService.delete(this.space.id, this.zone.id, name).then(() => {
-        this.$noty.success(`删除 Route ${name} 成功`);
+        this.$noty.success(`开始执行对 Route ${name} 的删除操作`);
         this.goBack();
       });
     },

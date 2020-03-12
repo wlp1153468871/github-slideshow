@@ -5,6 +5,7 @@ import {
   APPROVAL_PROCESS_DONE,
   APPROVAL_PROCESS_REJECTED,
   APPROVAL_PROCESS_CANCEL,
+  APPROVAL_PROCESS_PENDING,
 } from '@/core/constants/constants';
 
 export default {
@@ -20,6 +21,7 @@ export default {
       APPROVAL_PROCESS_DONE,
       APPROVAL_PROCESS_REJECTED,
       APPROVAL_PROCESS_CANCEL,
+      APPROVAL_PROCESS_PENDING,
       loadings: {
         approvalHistory: false,
       },
@@ -43,6 +45,10 @@ export default {
       const creator = decisions.map(user => user.name).join('，');
       item.creator = creator; // dirty changed!
       return item;
+    },
+
+    filterMethod(data, filterKey) {
+      return data.owner && data.owner.name.toLowerCase().includes(filterKey.toLowerCase());
     },
   },
 };

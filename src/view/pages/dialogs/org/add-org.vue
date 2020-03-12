@@ -36,7 +36,8 @@
             v-validate="{
               required: true,
               dns_1123_label: true,
-              max: 63
+              max: 63,
+              min: 4
             }"
             v-model="short_name">
           </dao-input>
@@ -52,7 +53,6 @@
             filterable
             remote
             ref="select1"
-            reserve-keyword
             v-model="user_ids"
             placeholder="请输入关键词"
             :remote-method="loadAdministors">
@@ -75,7 +75,6 @@
             filterable
             remote
             ref="select2"
-            reserve-keyword
             v-model="zone_ids"
             placeholder="请输入关键词"
             :remote-method="loadZones">
@@ -188,7 +187,7 @@ export default {
           this.loading = false;
           this.zones = zones.filter(zone => {
             return (
-              zone.area_name.toLowerCase().indexOf(query.toLowerCase()) > -1
+              zone.name.toLowerCase().indexOf(query.toLowerCase()) > -1
             );
           });
         });

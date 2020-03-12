@@ -127,7 +127,7 @@ export default {
     removePod() {
       const { podName } = this;
       PodService.delete({ podName }).then(() => {
-        this.$noty.success(`删除Pod ${this.podName} 成功`);
+        this.$noty.success(`开始执行对 Pod ${this.podName} 的删除操作`);
         this.goBack();
       });
     },

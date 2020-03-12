@@ -10,8 +10,8 @@
         </div>
       </template>
       <template v-if="hasData">
-        <div class="row">
-          <div class="col-md-6">
+        <div class="board-wrapper">
+          <div class="board">
             <div class="panel">
               <div class="panel-header">
                 <svg class="icon">
@@ -41,7 +41,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="board">
             <div class="panel">
               <div class="panel-header">
                 <svg class="icon">
@@ -71,9 +71,7 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
+          <div class="board">
             <div class="panel">
               <div class="panel-header">
                 <svg class="icon">
@@ -103,7 +101,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="board">
             <div class="panel">
               <div class="panel-header">
                 <svg class="icon">
@@ -133,9 +131,7 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
+          <div class="board">
             <div class="panel">
               <div class="panel-header">
                 <svg class="icon">

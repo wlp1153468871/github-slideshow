@@ -312,7 +312,7 @@ export default {
     DeleteStatefulSet() {
       this.loading.page = true;
       StatefulSetService.delete(this.space.id, this.zone.id, this.name).then(() => {
-        this.$noty.success('删除成功');
+        this.$noty.success('开始执行删除操作');
         this.goBack();
       });
     },

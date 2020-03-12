@@ -8,16 +8,17 @@ export default {
     filterMethod: { type: Function },
     loading: { type: Boolean, default: false },
     small: { type: Boolean, default: false },
-    initalPageSize: { type: Number, default: 20 },
+    initalPageSize: { type: Number, default: 10 },
     showRefresh: { type: Boolean, default: true },
     searchPlaceholder: { type: String, default: '请输入搜索内容' },
+    emptyText: { type: String },
   },
 
   data() {
     return {
       filterKey: '',
       currentPage: 1,
-      pageSize: this.initalPageSize,
+      pageSize: this.small ? 5 : this.initalPageSize,
     };
   },
 
@@ -29,7 +30,7 @@ export default {
     },
 
     paginaData() {
-      return chunk(this.dataFilteredByKey, this.small ? 5 : this.pageSize);
+      return chunk(this.dataFilteredByKey, this.pageSize);
     },
 
     dataInCurrentPage() {

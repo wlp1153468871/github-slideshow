@@ -44,6 +44,7 @@ export default {
         yamlEdit: false,
       },
       objrefs: [],
+      kind: RESOURCE_TYPE.SECRET,
     };
   },
 
@@ -128,8 +129,9 @@ export default {
         });
     },
 
-    updateByYaml(data) {
+    updateByYaml(dataPre) {
       const name = getValue(this.secret, 'metadata.name');
+      const data = SecretService.encodeSecret(dataPre);
       SecretService.updateByYaml({ name, data }).then(() => {
         this.$noty.success('更新成功');
         this.loadSecretDetail();

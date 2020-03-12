@@ -131,7 +131,7 @@ export default {
 
     deleteRouter(name) {
       RouteService.delete(this.space.id, this.zone.id, name).then(() => {
-        this.$noty.success(`删除 Route ${name} 成功`);
+        this.$noty.success(`开始执行对 Route ${name} 的删除操作`);
         this.getRoutes();
       });
     },

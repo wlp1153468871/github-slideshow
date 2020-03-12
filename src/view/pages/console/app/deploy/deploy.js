@@ -113,6 +113,7 @@ export default {
         registryuser = '',
         registrypassword = '',
         volumes,
+        monitor,
       } = this.form;
 
       const params = [];
@@ -198,6 +199,11 @@ export default {
         { id: 'containerparams', value: ShellQuote.parse(args) || [] },
       );
 
+      //  监控
+      params.push({
+        id: 'monitor', value: monitor,
+      });
+
       return params;
     },
 
@@ -250,12 +256,12 @@ export default {
       const router_label = getValue(inrouter, 'label');
       return {
         name,
+        path,
         host: `${hostname}${domain}`,
         namespace,
         release_type: DEPLOYMENT_TYPE.DEFAULT,
         backend: {
           name: this.genServiceName(name, version),
-          path,
         },
         router_label,
       };
