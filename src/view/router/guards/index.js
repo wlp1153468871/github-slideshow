@@ -13,6 +13,8 @@ export default function ensureHooks(router) {
   router.beforeEach((to, from, next) => {
     saveRefreshTime();
     NProgress.start(); // start progress bar
+
+
     if (store.state.isFullscreened && to !== from) {
       store.commit(types.FUll_SCREENED, false);
     }
@@ -50,6 +52,17 @@ export default function ensureHooks(router) {
   });
 
   router.afterEach(to => {
+    if (to.name.includes('console')) {
+      const { code } = to.meta;
+      const status = store.state.spaceMenus.indexOf(code) > -1 ||
+                     store.state.zoneMenus.indexOf(code) > -1;
+      if (!status) {
+        Vue.noty.error('无权限访问此页面');
+        // router.push({ name: 'home' });
+        NProgress.done();
+        // return;
+      }
+    }
     const routes = to.matched.concat();
     const routeName = to.name;
     const isInstanceList =
@@ -70,7 +83,9 @@ export default function ensureHooks(router) {
         activeMenu = metaActiveName;
       }
     }
+
     store.commit(types.SET_DEFAULT_ACTIVE_MENU, activeMenu);
+    
     NProgress.done(); // finish progress bar
   });
 

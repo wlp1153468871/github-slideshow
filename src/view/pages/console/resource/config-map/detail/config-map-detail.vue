@@ -17,7 +17,7 @@
 
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('delete') || $can('update')"
+            v-if="$can('configMap.delete', 'configMap') || $can('configMap.update', 'configMap')"
             trigger="click"
             :append-to-body="true"
             placement="bottom-end"
@@ -32,14 +32,14 @@
             <dao-dropdown-menu slot="list">
 
               <dao-dropdown-item
-                v-if="$can('update')"
+                v-if="$can('configMap.update', 'configMap')"
                 @click="dialogConfigs.yamlEdit = true"
               >
                 <span>Yaml 更新</span>
               </dao-dropdown-item>
 
               <dao-dropdown-item
-                v-if="$can('delete') && !objrefs.length"
+                v-if="$can('configMap.delete', 'configMap') && !objrefs.length"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >

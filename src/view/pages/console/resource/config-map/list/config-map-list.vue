@@ -15,7 +15,7 @@
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
+                v-if="$can('configMap.create', 'configMap')"
                 @click="createConfigMap">
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>

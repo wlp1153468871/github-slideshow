@@ -50,7 +50,7 @@
               class="dao-btn blue"
               slot="action"
               @click="updateDialog.visible = true"
-              v-if="isAdmin && $can('update')"
+              v-if="$can('quota.update', 'quota')"
             >更新可用区配额</button>
           </quota-cards>
           <p

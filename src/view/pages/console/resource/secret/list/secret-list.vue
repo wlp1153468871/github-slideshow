@@ -16,7 +16,7 @@
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
+                v-if="$can('secret.create', 'secret')"
                 @click="createSecret">
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>

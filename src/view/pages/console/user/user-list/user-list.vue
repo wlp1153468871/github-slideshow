@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="layout-content-header">
-      用户管理
+      项目组管理
     </div>
-    <div class="dao-view-main">
-      <div class="dao-view-content">
+    <div>
+      <div>
         <space-user-list
           :org-id="orgId"
           :space-id="spaceId">

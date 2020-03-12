@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '@/core/store';
 
+// container
+import ConsoleContainer from '@/view/pages/console/container/container.vue';
 // home
 import Home from '@/view/pages/home/home.vue';
 // login
@@ -43,7 +46,16 @@ const router = new Router({
     ProductRouters,
 
     // path: '/console'
-    ConsoleRouters,
+    // ConsoleRouters,
+    {
+      path: '/console',
+      name: 'console',
+      redirect: {
+        name: 'console.dashboard',
+      },
+      component: ConsoleContainer,
+      children: ConsoleRouters,
+    },
 
     // path: /manage'
     ManageRouters,
