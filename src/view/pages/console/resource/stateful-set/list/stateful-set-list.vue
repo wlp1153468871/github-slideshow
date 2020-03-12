@@ -11,7 +11,7 @@
             <div class="table-toolbar-left">
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
+                v-if="$can('statefulSet.create', 'statefulSet')"
                 @click="dialog.isOpen = true">
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>

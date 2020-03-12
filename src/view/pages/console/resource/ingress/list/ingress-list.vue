@@ -15,7 +15,7 @@
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
+                v-if="$can('ingress.create', 'ingress')"
                 @click="dialogs.create = true">
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>

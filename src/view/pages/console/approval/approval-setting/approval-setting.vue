@@ -1,8 +1,8 @@
 <template>
   <div class="approval-setting-module">
-    <div class="layout-content-header">
+    <!-- <div class="layout-content-header">
       审批设置
-    </div>
+    </div> -->
     <div class="dao-view-main">
       <div class="dao-view-content">
         <div class="dao-setting-layout">

@@ -11,7 +11,7 @@
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
+                v-if="$can('deployment.create', 'deployment')"
                 :disabled="loadings.table"
                 @click="dialogConfigs.yamlEdit = true">
                 <svg class="icon">

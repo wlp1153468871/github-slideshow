@@ -40,14 +40,47 @@
           <dao-select
             name="space_role"
             v-validate.immediate="'required'"
-            v-model="formModel.space_role">
+            v-model="formModel">
             <dao-option
-              v-for="(value, key) in roleOptions"
+              v-for="(value, key) in spacerole"
               :key="key"
-              :value="key"
-              :label="value">
+              :value="value"
+              :label="value.name">
             </dao-option>
           </dao-select>
+        </template>
+      </dao-setting-item>
+    </dao-setting-section>
+    <dao-setting-section>
+      <dao-setting-item>
+        <template #label>可用区权限</template>
+        <template #content>
+          <div class="dao-setting-patch role">
+            <div
+              class="sub-setting-layout role"
+              v-for="(zone, index) in zones"
+              :key="index">
+              <div class="sub-setting-section">
+                <div class="sub-setting-item">
+                  <p>可用区</p>
+                  <div class="zone">{{ zone.name }}</div>
+                </div>
+                <div class="sub-setting-item">
+                  <p>权限</p>
+                  <dao-select
+                    style="width: 157px;"
+                    v-model="result[zone.name]">
+                    <dao-option
+                      v-for="(role, key) in zonerole[zone.name]"
+                      :key="key"
+                      :value="role"
+                      :label="role.name">
+                    </dao-option>
+                  </dao-select>
+                </div>
+              </div>
+            </div>
+          </div>
         </template>
       </dao-setting-item>
     </dao-setting-section>
@@ -68,9 +101,11 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import { get as getValue, first, isEmpty } from 'lodash';
-import { SPACE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
+// import { SPACE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
 import UserService from '@/core/services/user.service';
+import RoleService from '@/core/services/role.service';
 
 export default {
   name: 'AddUserDialog',
@@ -80,19 +115,20 @@ export default {
     visible: { type: Boolean, default: false },
     users: { type: Array, default: () => [] },
     model: { type: Object, default: () => ({}) },
+    zonerole: { type: Object, default: () => ({}) },
+    spacerole: { type: Array, default: () => [] },
   },
 
   data() {
     return {
-      roleOptions,
-      formModel: {
-        user_id: null,
-        space_role: null,
-      },
+      roleOptions: [],
+      formModel: {},
+      result: {},
     };
   },
 
   computed: {
+    ...mapState(['zones', 'org', 'zone']),
     isShow: {
       set() {
         this.$emit('close');
@@ -104,6 +140,7 @@ export default {
 
     isUpdate() {
       return !isEmpty(this.model);
+      // return !isEmpty(this.roleOptions);
     },
 
     options() {
@@ -122,15 +159,15 @@ export default {
 
   methods: {
     init() {
+      // this.loadRoleOptions();
       if (this.isUpdate) {
-        this.formModel.space_role = this.model.space_role;
-        this.formModel.user_id = this.model.id;
+        // this.formModel.space_role = this.model.space_role;
+        // this.formModel.user_id = this.model.id;
       } else {
-        this.formModel.space_role = first(Object.keys(this.roleOptions));
+        this.formModel.space_role = first(Object.keys(this.spacerole));
         this.formModel.user_id = getValue(first(this.users), 'id');
       }
     },
-
     onConfirm() {
       this.$validator.validateAll().then(valid => {
         if (valid) {
@@ -140,10 +177,60 @@ export default {
     },
 
     addUser() {
-      UserService.updateSpaceUser(this.spaceId, this.formModel).then(() => {
-        this.onRefresh();
-        this.$noty.success(this.isUpdate ? '成功更新用户权限' : '添加用户成功');
+      console.log('this.formModel', this.formModel);
+      console.log('resluts', this.result);
+      const spaceParams = {
+        userId: this.model.id,
+        roleId: this.formModel.id,
+        data: {
+          // userId: this.model.id,
+          // scope: this.formModel.scope,
+          // scopeId: this.spaceId,
+          // roleId: this.formModel.id,
+          organizationId: this.org.id,
+          spaceId: this.spaceId, 
+          // zoneId: this.zone.id,
+          scope: this.formModel.scope,
+        },
+      };
+      // 3-12
+      console.log('params', spaceParams);
+      RoleService.setRole(spaceParams)
+        .then(data => {
+          console.log('data', data);
+          // this.onRefresh();
+          this.$noty.success(this.isUpdate ? '成功更新用户权限' : '添加用户成功');
+        });
+      this.zones.map(zone => {
+        const { name, id } = zone;
+        const key = name;
+        const zoneParams = {
+          userId: this.model.id,
+          roleId: this.result[key].id,
+          data: {
+            organizationId: this.org.id,
+            spaceId: this.spaceId, 
+            zoneId: id,
+            scope: this.result[key].scope,
+          },
+        };
+        console.log('zoneParams', zoneParams);
+        RoleService.setRole(zoneParams)
+          .then(data => {
+            console.log('data', data);
+            this.onRefresh();
+            this.$noty.success('成功更新可用区权限');
+          });
       });
+      if (!this.isUpdate) {
+        UserService.updateSpaceUser(this.spaceId, {
+          user_id: getValue(first(this.users), 'id'),
+          space_role: this.formModel.name,
+        }).then(() => {
+          this.onRefresh();
+          this.$noty.success('添加用户成功');
+        });
+      }
     },
 
     onClose() {

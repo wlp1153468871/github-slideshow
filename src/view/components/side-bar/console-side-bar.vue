@@ -38,7 +38,6 @@
         :default-active="defaultActiveMenu"
         :router="true"
         :collapse="isCollapse"
-        @select="onTopMenuSelect"
       >
         <el-menu-item
           style="border-bottom: 1px solid #3c434b;"
@@ -71,7 +70,6 @@
         :default-openeds="defaultOpeneds"
         :router="true"
         :collapse="isCollapse"
-        @select="onBottomMenuSelect"
       >
 
         <template v-if="isPlatformAdmin || !zoneUnauthorized">
@@ -232,6 +230,61 @@
         </el-submenu>
 
       </el-menu>
+
+      <el-menu
+        ref="bottomMenu"
+        class="side-bar-menu"
+        background-color="#373B41"
+        text-color="#e4e7ed"
+        :default-active="defaultActiveMenu"
+        :router="true"
+        :collapse="isCollapse">
+        <template v-for="(item, index) in allMenus">
+          <template v-if="item.children">
+            <el-submenu
+              :index="item.name"
+              v-if="!hiddenMenu(item)"
+              :key="index">
+              <template slot="title">
+                <svg class="icon">
+                  <use :xlink:href="item.meta.icon"></use>
+                </svg>
+                <span>{{ item.meta.title }}</span>
+              </template>
+              <el-menu-item
+                v-for="(menuItem, index) in item.children"
+                :key="index"
+                :route="{ name: menuItem.name }"
+                :index="menuItem.name"
+                v-if="!hiddenMenu(menuItem)">
+                <svg class="icon">
+                  <use :xlink:href="menuItem.meta.icon"></use>
+                </svg>
+                <span>
+                  <!-- {{ menuItem.meta.title }} -->
+                  <overflow-tooltip
+                    slot="title"
+                    :text="menuItem.meta.title"
+                  >
+                  </overflow-tooltip>
+                </span>
+              </el-menu-item>
+            </el-submenu>
+          </template>
+          <template v-else>
+            <el-menu-item
+              :key="index"
+              v-if="!hiddenMenu(item)"
+              :route="{ name: item.name }"
+              :index="item.name">
+              <svg class="icon">
+                <use :xlink:href="item.meta.icon"></use>
+              </svg>
+              <span slot="title">{{ item.meta.title }}</span>
+            </el-menu-item>
+          </template>
+        </template>
+      </el-menu>
     </div>
 
     <div
@@ -247,10 +300,13 @@
 import { mapState, mapGetters } from 'vuex';
 import { find } from 'lodash';
 import * as types from '@/core/store/mutation-types';
+import allMenus from '@/view/router/console.js';
 import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
 import ZoneSelect from './zone-select';
 import OverflowTooltip from './overflow-tooltip';
+import DMenu from '../menu';
+import hasPermission from './utils';
 
 export default {
   name: 'ConsoleSideBar',
@@ -260,18 +316,19 @@ export default {
     SideBarLogo,
     ZoneSelect,
     OverflowTooltip,
+    DMenu,
   },
 
   updated() {
     if (this.$route.name === 'console.dashboard') {
-      this.$refs.bottomMenu.activeIndex = '';
-    } else {
-      this.$refs.topMenu.activeIndex = '';
+      // this.$refs.bottomMenu.activeIndex = '';
+      // this.$refs.topMenu.activeIndex = '';
     }
   },
 
   data() {
     return {
+      allMenus,
       props: {
         value: 'id',
         label: 'name',
@@ -279,6 +336,10 @@ export default {
       defaultOpeneds: ['service'],
       selectedOptions: [],
       cascaderIdMap: {},
+      // menu: {
+      //   type: Array,
+      //   default: () => [],
+      // },
     };
   },
 
@@ -293,6 +354,7 @@ export default {
       'isCollapse',
       'defaultActiveMenu',
       'apiResource',
+      'menu',
     ]),
 
     ...mapGetters(['zoneUnauthorized', 'isPlatformAdmin', 'isOrganizationAdmin', 'isSpaceAdmin']),
@@ -301,6 +363,8 @@ export default {
       return `${this.org.name} / ${this.space.name}`;
     },
 
+    // hiddenMenu() {
+    // },
     /**
      * 会把带有 / 的 space name 分割成多个space
      * 比如 dsp/dev, dsp/test,
@@ -384,21 +448,22 @@ export default {
   },
 
   methods: {
-    compileIndex(menu) {
-      const { services } = menu;
-      if (services) {
-        const {
-          services: [{ service_type }],
-        } = menu;
-        if (service_type === '') {
-          return `${menu.route.name}/${menu.route.params.serviceId}`;
-        }
-        return menu.route.name;
-      }
-      return menu;
-    },
+    // compileIndex(menu) {
+    //   const { services } = menu;
+    //   if (services) {
+    //     const {
+    //       services: [{ service_type }],
+    //     } = menu;
+    //     if (service_type === '') {
+    //       return `${menu.route.name}/${menu.route.params.serviceId}`;
+    //     }
+    //     return menu.route.name;
+    //   }
+    //   return menu;
+    // },
 
     toggleSideBar() {
+      console.log('toggleSideBar');
       this.$store.commit(types.IS_COLLAPSE, !this.isCollapse);
     },
 
@@ -407,7 +472,7 @@ export default {
       const spaceId = ids[ids.length - 1];
       const org = find(this.orgs, { id: orgId });
       const space = find(org.children, { id: spaceId });
-      this.onTopMenuSelect();
+      // this.onTopMenuSelect();
       if (!org || !space) {
         return;
       }
@@ -419,24 +484,45 @@ export default {
       });
     },
 
-    onTopMenuSelect() {
-      this.$refs.bottomMenu.activeIndex = '';
+    // onTopMenuSelect() {
+    //   this.$refs.bottomMenu.activeIndex = '';
+    // },
+
+    // onBottomMenuSelect() {
+    //   this.$refs.topMenu.activeIndex = '';
+    // },
+
+    // hasPermission(str) {
+    //   if (this.menu.indexOf(str) !== -1) {
+    //     return true;
+    //   }
+    // },
+
+    hiddenMenu(menu) {
+      // return !menu.meta.hidden || hasPermission(menu);
+      return (menu.meta && menu.meta.hidden) || !hasPermission(menu);
     },
 
-    onBottomMenuSelect() {
-      this.$refs.topMenu.activeIndex = '';
-    },
+    // hasPermission(menu) {
+    //   // const code = menu.meta && menu.meta.code;
+    //   // if (!code) return false;
+    //   // return store.state.menus.indexOf(code) > -1;
+    //   console.log(menu);
+
+    //   return true;
+    // },
   },
 
   mounted() {
-    this.$watch(
-      () => {
-        return this.$refs.bottomMenu.openedMenus;
-      },
-      val => {
-        this.$store.commit(types.UPDATE_OPENED_MENUS, [...val]);
-      },
-    );
+    // this.getMenu(this.menus);
+    // this.$watch(
+    //   () => {
+    //     return this.$refs.bottomMenu.openedMenus;
+    //   },
+    //   val => {
+    //     this.$store.commit(types.UPDATE_OPENED_MENUS, [...val]);
+    //   },
+    // );
   },
 };
 </script>

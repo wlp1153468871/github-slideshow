@@ -9,7 +9,7 @@
             <div class="table-toolbar-left">
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
+                v-if="$can('service.create', 'service')"
                 @click="openCreateDialog">
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>
