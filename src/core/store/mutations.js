@@ -88,27 +88,6 @@ export const state = {
   isFullscreened: false,
   localLogin: true,
   roleId: '',
-  menus: [
-    'test',
-    // 'console.dashboard',
-    // 'console.applications.list',
-    // 'resource.deployments.list',
-    // 'resource.statefulsets.list',
-    // 'resource.pods.list',
-    // 'resource.services.list',
-    // 'resource.routes.list',
-    // 'resource.ingresses.list',
-    // 'resource.persistentvolumeclaims.list',
-    // 'resource.secrets.list',
-    // 'resource.configmaps.list',
-    // 'console.registry',
-    // 'console.monitor',
-    // 'console.alarm',
-    // 'approval',
-    // 'console.approval.history',
-    // 'console.space-quota',
-    // 'console.user.list',
-  ],
   zoneMenus: [],
   spaceMenus: [],
   zoneAction: {},
@@ -507,7 +486,7 @@ export const actions = {
       commit(types.SWITCH_ZONE, { zone });
       const params = {
         // userId: getters.userId,
-        scope: 'zone.k8s',
+        scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
         spaceId: getters.spaceId,
         zoneId: getters.zoneId,
       };
@@ -656,7 +635,7 @@ export const actions = {
       //       // console.log('Sorry, we are out of ' + expr + '.');
       //   }
       // },
-      scope: 'zone.k8s',
+      scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
       spaceId: getters.spaceId,
       zoneId: zone.id,
     };

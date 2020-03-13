@@ -226,7 +226,7 @@ export default {
         // console.log('areaName', name);
         const key = name;
         RoleService.getRoles({
-          scope: 'zone.k8s',
+          scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
           space: this.spaceId,
           zone: id,
         })
