@@ -81,6 +81,27 @@
                   </overflow-tooltip>
                 </span>
               </el-menu-item>
+              <!-- 这里是服务子菜单 -->
+              <el-menu-item
+                v-if="item.meta.code === 'serviceCatalog'"
+                v-for="menu in services"
+                :key="menu.id"
+                :index="compileIndex(menu)"
+                :route="menu.route"
+              >
+                <service-logo
+                  :src="menu.logo_url"
+                  size="small"
+                ></service-logo>
+                <el-tooltip
+                  popper-class="service-name-tooltip"
+                  slot="title"
+                  :content="menu.name"
+                  placement="right"
+                >
+                  <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
+                </el-tooltip>
+              </el-menu-item>
             </el-submenu>
           </template>
           <template v-else>

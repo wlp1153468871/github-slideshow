@@ -33,7 +33,7 @@
             <button
               class="dao-btn blue has-icon"
               :disabled="loadings.instances || isZoneSyncing || isDeleted"
-              v-if="$can('create')"
+              v-if="$can('service.create', 'service')"
               @click="deployService">
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>

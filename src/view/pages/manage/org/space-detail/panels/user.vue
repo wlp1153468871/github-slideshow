@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
@@ -149,20 +149,20 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        { 
+        {
           id: 'roles',
           name: '项目组权限',
           value(roles) {
             let text = '';
             roles.map(role => {
-              if (role.scope === "space") {
+              if (role.scope === 'space') {
                 text = `${role.scope}: ${role.name}`;
               }
             });
             return text;
           },
         },
-        { 
+        {
           id: 'roles',
           name: '可用区权限',
           value(roles) {
@@ -278,19 +278,6 @@ export default {
     onAddUserClose() {
       this.selectedUser = {};
       this.dialogConfigs.updateUser.visible = false;
-    },
-  },
-
-  filters: {
-    capitalize(value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
-    },
-
-    rolefilter(value) {
-      console.log('role_filter-valued', value);
-      return `abc + ${value}`;
     },
   },
 };
