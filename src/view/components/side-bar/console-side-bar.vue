@@ -305,7 +305,6 @@ import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
 import ZoneSelect from './zone-select';
 import OverflowTooltip from './overflow-tooltip';
-import DMenu from '../menu';
 import hasPermission from './utils';
 
 export default {
@@ -316,7 +315,6 @@ export default {
     SideBarLogo,
     ZoneSelect,
     OverflowTooltip,
-    DMenu,
   },
 
   updated() {
