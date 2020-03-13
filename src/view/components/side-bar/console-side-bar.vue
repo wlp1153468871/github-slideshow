@@ -30,25 +30,6 @@
         </template>
       </div>
 
-      <el-menu
-        ref="topMenu"
-        class="side-bar-menu"
-        background-color="#373B41"
-        text-color="#e4e7ed"
-        :default-active="defaultActiveMenu"
-        :router="true"
-        :collapse="isCollapse"
-      >
-        <el-menu-item
-          style="border-bottom: 1px solid #3c434b;"
-          index="console.dashboard"
-          :route="{ name: 'console.dashboard' }"
-        >
-          <i class="el-icon-menu"></i>
-          <span slot="title">总览</span>
-        </el-menu-item>
-      </el-menu>
-
       <div class="section-zone">
         <el-tooltip
           :content="zone.name ? zone.name : '暂无可用区'"
@@ -61,10 +42,86 @@
         </el-tooltip>
       </div>
 
+      <!-- 新菜单 -->
       <el-menu
         ref="bottomMenu"
         class="side-bar-menu"
         background-color="#373B41"
+        text-color="#e4e7ed"
+        :default-active="defaultActiveMenu"
+        :router="true"
+        :collapse="isCollapse">
+        <template v-for="(item, index) in allMenus">
+          <template v-if="item.children">
+            <el-submenu
+              :index="item.name"
+              v-if="!hiddenMenu(item)"
+              :key="index">
+              <template slot="title">
+                <svg class="icon">
+                  <use :xlink:href="item.meta.icon"></use>
+                </svg>
+                <span>{{ item.meta.title }}</span>
+              </template>
+              <el-menu-item
+                v-for="(menuItem, index) in item.children"
+                :key="index"
+                :route="{ name: menuItem.name }"
+                :index="menuItem.name"
+                v-if="!hiddenMenu(menuItem)">
+                <svg class="icon">
+                  <use :xlink:href="menuItem.meta.icon"></use>
+                </svg>
+                <span>
+                  <!-- {{ menuItem.meta.title }} -->
+                  <overflow-tooltip
+                    slot="title"
+                    :text="menuItem.meta.title"
+                  >
+                  </overflow-tooltip>
+                </span>
+              </el-menu-item>
+            </el-submenu>
+          </template>
+          <template v-else>
+            <el-menu-item
+              :key="index"
+              v-if="!hiddenMenu(item)"
+              :route="{ name: item.name }"
+              :index="item.name">
+              <svg class="icon">
+                <use :xlink:href="item.meta.icon"></use>
+              </svg>
+              <span slot="title">{{ item.meta.title }}</span>
+            </el-menu-item>
+          </template>
+        </template>
+      </el-menu>
+
+      <!-- 旧 -->
+      <el-menu
+        style="margin-top: 88px;"
+        ref="topMenu"
+        class="side-bar-menu"
+        background-color="#FF0000"
+        text-color="#e4e7ed"
+        :default-active="defaultActiveMenu"
+        :router="true"
+        :collapse="isCollapse"
+      >
+        <el-menu-item
+          style="border-bottom: 1px solid #FF0000;"
+          index="console.dashboard"
+          :route="{ name: 'console.dashboard' }"
+        >
+          <i class="el-icon-menu"></i>
+          <span slot="title">总览</span>
+        </el-menu-item>
+      </el-menu>
+      <el-menu
+        ref="bottomMenu"
+        class="side-bar-menu"
+        background-color="#FF0000"
         text-color="#e4e7ed"
         :default-active="defaultActiveMenu"
         :default-openeds="defaultOpeneds"
@@ -228,62 +285,6 @@
             </el-menu-item>
           </el-submenu>
         </el-submenu>
-
-      </el-menu>
-
-      <el-menu
-        ref="bottomMenu"
-        class="side-bar-menu"
-        background-color="#373B41"
-        text-color="#e4e7ed"
-        :default-active="defaultActiveMenu"
-        :router="true"
-        :collapse="isCollapse">
-        <template v-for="(item, index) in allMenus">
-          <template v-if="item.children">
-            <el-submenu
-              :index="item.name"
-              v-if="!hiddenMenu(item)"
-              :key="index">
-              <template slot="title">
-                <svg class="icon">
-                  <use :xlink:href="item.meta.icon"></use>
-                </svg>
-                <span>{{ item.meta.title }}</span>
-              </template>
-              <el-menu-item
-                v-for="(menuItem, index) in item.children"
-                :key="index"
-                :route="{ name: menuItem.name }"
-                :index="menuItem.name"
-                v-if="!hiddenMenu(menuItem)">
-                <svg class="icon">
-                  <use :xlink:href="menuItem.meta.icon"></use>
-                </svg>
-                <span>
-                  <!-- {{ menuItem.meta.title }} -->
-                  <overflow-tooltip
-                    slot="title"
-                    :text="menuItem.meta.title"
-                  >
-                  </overflow-tooltip>
-                </span>
-              </el-menu-item>
-            </el-submenu>
-          </template>
-          <template v-else>
-            <el-menu-item
-              :key="index"
-              v-if="!hiddenMenu(item)"
-              :route="{ name: item.name }"
-              :index="item.name">
-              <svg class="icon">
-                <use :xlink:href="item.meta.icon"></use>
-              </svg>
-              <span slot="title">{{ item.meta.title }}</span>
-            </el-menu-item>
-          </template>
-        </template>
       </el-menu>
     </div>
 
@@ -446,19 +447,19 @@ export default {
   },
 
   methods: {
-    // compileIndex(menu) {
-    //   const { services } = menu;
-    //   if (services) {
-    //     const {
-    //       services: [{ service_type }],
-    //     } = menu;
-    //     if (service_type === '') {
-    //       return `${menu.route.name}/${menu.route.params.serviceId}`;
-    //     }
-    //     return menu.route.name;
-    //   }
-    //   return menu;
-    // },
+    compileIndex(menu) {
+      const { services } = menu;
+      if (services) {
+        const {
+          services: [{ service_type }],
+        } = menu;
+        if (service_type === '') {
+          return `${menu.route.name}/${menu.route.params.serviceId}`;
+        }
+        return menu.route.name;
+      }
+      return menu;
+    },
 
     toggleSideBar() {
       console.log('toggleSideBar');
