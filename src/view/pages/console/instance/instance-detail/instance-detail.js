@@ -99,7 +99,7 @@ export default {
 
     canDelete() {
       return (
-        this.$can('delete') &&
+        this.$can('service.delete', 'service') &&
         !isApprove(this.instance.status) &&
         this.brokerService.instances_deletable &&
         !this.isZoneSyncing

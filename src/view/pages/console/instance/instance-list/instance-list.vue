@@ -92,7 +92,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     class="dropdown-item-error"
-                    v-if="$can('delete')"
+                    v-if="$can('service.delete', 'service')"
                     :disabled="disableDelete(instances)"
                     command="delete"
                     icon="el-icon-delete">

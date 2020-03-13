@@ -38,9 +38,10 @@
         <template #label>项目组权限</template>
         <template #content>
           <dao-select
+            placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
-            v-model="formModel">
+            v-model="formModel.space_role">
             <dao-option
               v-for="(value, key) in spacerole"
               :key="key"
@@ -62,12 +63,13 @@
               :key="index">
               <div class="sub-setting-section">
                 <div class="sub-setting-item">
-                  <p>可用区</p>
+                  <p style="font-size: 13px">可用区</p>
                   <div class="zone">{{ zone.name }}</div>
                 </div>
                 <div class="sub-setting-item">
-                  <p>权限</p>
+                  <p style="font-size: 13px">权限</p>
                   <dao-select
+                    placeholder="请选择"
                     name="zone_space_roles"
                     v-validate.immediate="'required'"
                     style="width: 157px;"
@@ -104,8 +106,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { get as getValue, first, isEmpty } from 'lodash';
-// import { SPACE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
+import { get as getValue, first, isEmpty, cloneDeep } from 'lodash';
 import UserService from '@/core/services/user.service';
 import RoleService from '@/core/services/role.service';
 import SpaceService from '@/core/services/space.service';
@@ -125,9 +126,21 @@ export default {
   data() {
     return {
       roleOptions: [],
-      formModel: {},
+      formModel: {
+        name: 1,
+      },
       result: {},
+      user: {},
     };
+  },
+
+  watch: {
+    model: {
+      immediate: true,
+      handler(model) {
+        this.user = cloneDeep(model);
+      },
+    },
   },
 
   computed: {
@@ -164,36 +177,31 @@ export default {
     init() {
       // this.loadRoleOptions();
       if (this.isUpdate) {
-        // this.formModel.space_role = this.model.space_role;
-        // this.formModel.user_id = this.model.id;
+        console.log('this.model', this.model);
+        // this.formModel.space_role = 
+        this.formModel.user_id = this.model.id;
+        console.log('this.formModel.space_role', this.formModel.space_role);
       } else {
-        this.formModel.space_role = first(Object.keys(this.spacerole));
-        this.formModel.user_id = getValue(first(this.users), 'id');
+        // this.formModel.name = '';
+        // this.formModel.user_id = getValue(first(this.users), 'id');
       }
     },
     onConfirm() {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           this.addUser();
-          this.authorizeZone();
+          // this.authorizeZone();
         }
       });
     },
 
     addUser() {
-      console.log('this.formModel', this.formModel);
-      console.log('resluts', this.result);
       const spaceParams = {
-        userId: this.model.id,
-        roleId: this.formModel.id,
+        userId: this.formModel.user_id,
+        roleId: this.formModel.space_role.id,
         data: {
-          // userId: this.model.id,
-          // scope: this.formModel.scope,
-          // scopeId: this.spaceId,
-          // roleId: this.formModel.id,
           organizationId: this.org.id,
           spaceId: this.spaceId,
-          // zoneId: this.zone.id,
           scope: this.formModel.scope,
         },
       };
@@ -209,7 +217,7 @@ export default {
         const { name, id } = zone;
         const key = name;
         const zoneParams = {
-          userId: this.model.id,
+          userId: this.formModel.user_id,
           roleId: this.result[key].id,
           data: {
             organizationId: this.org.id,
@@ -218,6 +226,12 @@ export default {
             scope: this.result[key].scope,
           },
         };
+        const zone_space_roles = [{
+          zone_id: id,
+          zone_name: name,
+          zone_role: 'zone_admin',
+        }];
+        this.authorizeZone(zone_space_roles);
         console.log('zoneParams', zoneParams);
         RoleService.setRole(zoneParams)
           .then(data => {
@@ -228,9 +242,12 @@ export default {
         return true;
       });
       if (!this.isUpdate) {
+        console.log('UserService.updateSpaceUser');
+        console.log('this.formModel', this.formModel);
+        console.log('this.formModel.space_role.name', this.formModel.space_role.name);
         UserService.updateSpaceUser(this.spaceId, {
-          user_id: getValue(first(this.users), 'id'),
-          space_role: this.formModel.name,
+          user_id: this.formModel.user_id,
+          space_role: this.formModel.space_role.name,
         }).then(() => {
           this.onRefresh();
           this.$noty.success('添加用户成功');
@@ -238,15 +255,14 @@ export default {
       }
     },
 
-    authorizeZone() {
+    authorizeZone(zone_space_roles) {
       // this.isUpdating = true;
-      const { zone_space_roles } = this.model;
-      console.log('authorizeZone this.users', this.model, 'zone_space_roles', zone_space_roles);
-      return SpaceService.authorizeZone(this.spaceId, this.model.id, {
+      // console.log('authorizeZone this.users', this.model, 'zone_space_roles', zone_space_roles);
+      console.log('this.formModel.user_id', this.formModel.user_id);
+      return SpaceService.authorizeZone(this.spaceId, this.formModel.user_id, {
         zone_space_roles,
       })
         .then(() => {
-          this.$noty.success('权限修改成功');
         })
         .finally(() => {
         });
@@ -267,7 +283,31 @@ export default {
         user_id: null,
         space_role: null,
       };
+      this.result = {};
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.dao-setting-patch.role {
+  .sub-setting-layout.role {
+    &:not(:first-child) {
+      margin-top: 10px;
+    }
+
+    .zone {
+      width: 196px;
+      height: 32px;
+      line-height: 32px;
+      margin-right: 10px;
+      padding: 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border-radius: 4px;
+      background: #f5f7fa;
+    }
+  }
+}
+</style>
