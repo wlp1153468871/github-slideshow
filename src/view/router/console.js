@@ -383,15 +383,16 @@ export default [
     path: 'alarm/rule/create',
     name: 'console.alarm.create',
     component: CreateAlarmRule,
-    beforeEnter(to, from, next) {
-      if (store.getters.alarmAdminAccessed) {
-        next();
-        return;
-      }
-      next({ name: 'console.alarm' });
-    },
+    // beforeEnter(to, from, next) {
+    //   if (store.getters.alarmAdminAccessed) {
+    //     next();
+    //     return;
+    //   }
+    //   next({ name: 'console.alarm' });
+    // },
     meta: {
       hidden: true,
+      code: 'alert.create',
     },
   },
   {

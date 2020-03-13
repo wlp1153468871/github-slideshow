@@ -68,6 +68,8 @@
                 <div class="sub-setting-item">
                   <p>权限</p>
                   <dao-select
+                    name="zone_space_roles"
+                    v-validate.immediate="'required'"
                     style="width: 157px;"
                     v-model="result[zone.name]">
                     <dao-option
@@ -106,6 +108,7 @@ import { get as getValue, first, isEmpty } from 'lodash';
 // import { SPACE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
 import UserService from '@/core/services/user.service';
 import RoleService from '@/core/services/role.service';
+import SpaceService from '@/core/services/space.service';
 
 export default {
   name: 'AddUserDialog',
@@ -172,6 +175,7 @@ export default {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           this.addUser();
+          this.authorizeZone();
         }
       });
     },
@@ -231,6 +235,20 @@ export default {
           this.$noty.success('添加用户成功');
         });
       }
+    },
+
+    authorizeZone() {
+      // this.isUpdating = true;
+      const { zone_space_roles } = this.model;
+      console.log('authorizeZone this.users', this.model, 'zone_space_roles', zone_space_roles);
+      return SpaceService.authorizeZone(this.spaceId, this.model.id, {
+        zone_space_roles,
+      })
+        .then(() => {
+          this.$noty.success('权限修改成功');
+        })
+        .finally(() => {
+        });
     },
 
     onClose() {

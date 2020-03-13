@@ -68,7 +68,6 @@ import { mapState, mapGetters } from 'vuex';
 // import { ZONE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
 import { cloneDeep } from 'lodash';
 import SpaceService from '@/core/services/space.service';
-import RoleService from '@/core/services/role.service';
 
 export default {
   name: 'ZoneAuthorizationDialog',
@@ -143,34 +142,19 @@ export default {
       //     });
       // });
     },
+
     authorizeZone() {
       this.isUpdating = true;
-      // const { zone_space_roles } = this.user;
-      // return SpaceService.authorizeZone(this.spaceId, this.model.id, {
-      //   zone_space_roles,
-      // })
-      //   .then(() => {
-      //     this.successUpdate();
-      //   })
-      //   .finally(() => {
-      //     this.isUpdating = false;
-      //   });
-      // console.log('this.formModel', this.formModel);
-      // const params = {
-      //   userId: this.model.id,
-      //   roleId: this.formModel.id,
-      //   params: {
-      //     // userId: this.model.id,
-      //     scope: this.formModel.scope,
-      //     scopeId: this.spaceId,
-      //     roleId: this.formModel.id,
-      //   },
-      // };
-      // console.log('this.formModel', this.formModel);
-      // RoleService.setRole(params)
-      //   .then(data => {
-      //     console.log('data', data);
-      //   });
+      const { zone_space_roles } = this.user;
+      return SpaceService.authorizeZone(this.spaceId, this.model.id, {
+        zone_space_roles,
+      })
+        .then(() => {
+          this.successUpdate();
+        })
+        .finally(() => {
+          this.isUpdating = false;
+        });
     },
 
     onClose() {

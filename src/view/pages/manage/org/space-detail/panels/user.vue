@@ -149,7 +149,33 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        { id: 'roles', name: '权限' },
+        { 
+          id: 'roles',
+          name: '项目组权限',
+          value(roles) {
+            let text = '';
+            roles.map(role => {
+              if (role.scope === "space") {
+                text = `${role.scope}: ${role.name}`;
+              }
+            });
+            return text;
+          },
+        },
+        { 
+          id: 'roles',
+          name: '可用区权限',
+          value(roles) {
+            let text = '';
+            roles.map(role => {
+              if (role.scope.includes('zone')) {
+                text += `${role.scope}: ${role.name}  `;
+              }
+            });
+            return text;
+          },
+        },
+        // { id: 'roles', name: '权限', value: 'roles', filter: 'role_format' },
         // { id: 'space_role', name: '项目组权限', filter: 'space_role' },
         // { id: 'zone_space_roles', name: '可用区权限', filter: 'zone_auth' },
       ]);
