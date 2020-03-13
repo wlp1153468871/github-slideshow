@@ -149,15 +149,7 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        {
-          id: 'roles',
-          name: '权限',
-          value(roles) {
-            roles.map(() => {
-              return 'abc';
-            });
-          },
-        },
+        { id: 'roles', name: '权限'},
         { id: 'space_role', name: '项目组权限', filter: 'space_role' },
         { id: 'zone_space_roles', name: '可用区权限', filter: 'zone_auth' },
       ]);
