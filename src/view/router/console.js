@@ -1,6 +1,5 @@
 import store from '@/core/store';
 import NProgress from 'nprogress';
-import Vue from 'vue';
 
 // container
 // import ConsoleContainer from '@/view/pages/console/container/container.vue';
@@ -17,7 +16,6 @@ import CreateAlarmRule from '@/view/pages/console/alarm/new-add/new-add.vue';
 // console
 import ApprovalHistory from '@/view/pages/console/approval/approval-history/approval-history.vue';
 import ApprovalList from '@/view/pages/console/approval/approval-list/approval-list.vue';
-// import ApprovalSetting from '@/view/pages/console/approval/approval-setting/approval-setting.vue';
 import InstanceDetail from '@/view/pages/console/instance/instance-detail/instance-detail.vue';
 import InstanceList from '@/view/pages/console/instance/instance-list/instance-list.vue';
 import ConfigMapList from '@/view/pages/console/resource/config-map/list/config-map-list.vue';

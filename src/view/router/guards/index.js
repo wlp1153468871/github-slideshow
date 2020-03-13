@@ -85,7 +85,7 @@ export default function ensureHooks(router) {
     }
 
     store.commit(types.SET_DEFAULT_ACTIVE_MENU, activeMenu);
-    
+
     NProgress.done(); // finish progress bar
   });
 

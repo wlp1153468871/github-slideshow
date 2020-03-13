@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import { get as getValue, first, isEmpty } from 'lodash';
 // import { SPACE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
 import UserService from '@/core/services/user.service';
@@ -192,7 +192,7 @@ export default {
           // scopeId: this.spaceId,
           // roleId: this.formModel.id,
           organizationId: this.org.id,
-          spaceId: this.spaceId, 
+          spaceId: this.spaceId,
           // zoneId: this.zone.id,
           scope: this.formModel.scope,
         },
@@ -213,7 +213,7 @@ export default {
           roleId: this.result[key].id,
           data: {
             organizationId: this.org.id,
-            spaceId: this.spaceId, 
+            spaceId: this.spaceId,
             zoneId: id,
             scope: this.result[key].scope,
           },
@@ -225,6 +225,7 @@ export default {
             this.onRefresh();
             this.$noty.success('成功更新可用区权限');
           });
+        return true;
       });
       if (!this.isUpdate) {
         UserService.updateSpaceUser(this.spaceId, {
