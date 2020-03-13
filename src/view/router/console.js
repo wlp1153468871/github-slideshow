@@ -112,7 +112,7 @@ export default [
     name: 'resource',
     component: RouteView,
     meta: {
-      title: '容器',
+      title: '资源',
       icon: '#icon_resource',
       code: 'resource',
     },

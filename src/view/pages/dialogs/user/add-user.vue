@@ -116,7 +116,7 @@ export default {
     users: { type: Array, default: () => [] },
     model: { type: Object, default: () => ({}) },
     zonerole: { type: Object, default: () => ({}) },
-    spacerole: { type: Array, default: () => [] },
+    spacerole: [Array, Object],
   },
 
   data() {
