@@ -94,6 +94,21 @@
         </div>
       </dao-setting-section>
     </dao-setting-layout>
+
+    <dao-setting-layout>
+      <template slot="layout-title">HPA开关</template>
+      <!--监控 -->
+      <dao-setting-section>
+        <div slot="label">
+          <span>HPA开关</span>
+        </div>
+        <div slot="content">
+          <dao-switch
+            v-model="form.hpa">
+          </dao-switch>
+        </div>
+      </dao-setting-section>
+    </dao-setting-layout>
   </div>
 </template>
 

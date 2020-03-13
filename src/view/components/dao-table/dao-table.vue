@@ -91,6 +91,44 @@
         </tr>
       </tbody>
     </table>
+    <!-- <el-table
+      v-loading="loading"
+      :data="tCurrentRows"
+      style="width: 100%">
+      <el-table-column
+        :show-overflow-tooltip="true"
+        v-for="(prop, index) in tProps"
+        :key="index"
+        sortable
+        :prop="prop.id"
+        :label="prop.name">
+        <template slot-scope="{ row }">
+          <span v-if="prop.type === DATA_TYPE.TEXT">
+            {{ renderText(row, prop) }}
+          </span>
+          <link-data
+            :row="row"
+            v-if="prop.type === DATA_TYPE.LINK"
+            @click="prop.other.onClick"
+            :text="renderText(row, prop)">
+          </link-data>
+          <status-data
+            :row="row"
+            v-if="prop.type === DATA_TYPE.STATUS"
+            :other="prop.other"
+            :text="renderText(row, prop)">
+          </status-data>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="tOperations.length" width="56px">
+        <template slot-scope="{ row: row }">
+          <operation-data
+            :row="item"
+            :operations="tOperations">
+          </operation-data>
+        </template>
+      </el-table-column>
+    </el-table> -->
     <dao-table-pagination
       style="margin-top: 10px;"
       :pagination="tPagination"

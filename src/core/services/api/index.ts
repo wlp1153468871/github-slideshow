@@ -1,15 +1,5 @@
-import Rest from './rest';
+import ApiService from './api.service';
 import AuthInterceptor from './auth.interceptor';
 
-export class APIService extends Rest {
-  constructor() {
-    super('/v1');
-    this.useInterceptor(AuthInterceptor);
-  }
-
-  create(url = '', config: {}) {
-    return new Rest(url, config);
-  }
-}
-
-export default new APIService();
+export default new ApiService('/v1', AuthInterceptor);
+export { ApiService as APIService };

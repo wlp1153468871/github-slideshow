@@ -8,14 +8,11 @@ import getAppStatus from '@/core/utils/instance-status';
 import isApprove from '@/core/utils/is-approve';
 import ErrorInfoMixin from '@/view/mixins/error-info';
 // mixins
-import tableView from '@/view/mixins/table-view';
 // dialogs
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
 
 export default {
   name: 'ApplicationList',
-
-  extends: tableView('id', 10, 'created_at', 'desc'),
 
   mixins: [ErrorInfoMixin],
 
@@ -46,6 +43,27 @@ export default {
       resources: '',
       name: '',
       version: '',
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey) ||
+        data.owner.name.toLowerCase().includes(filterKey) ||
+        data.status.toLowerCase().includes(filterKey),
+      other: {
+        status: (_, item) => {
+          const { status } = item;
+          if (/ing$/.test(status) && status !== INSTANCE_STATUS.RUNNING) {
+            return STATUS_COLOR.CONTINUE;
+          } else if (
+            /failed$/.test(status) ||
+            status === INSTANCE_STATUS.PROCESS_REJECTED ||
+            status === INSTANCE_STATUS.CREATE_PROCESS_REJECTED
+          ) {
+            return STATUS_COLOR.DANGER;
+          } else if (status === INSTANCE_STATUS.STOP) {
+            return STATUS_COLOR.STOPED;
+          }
+          return STATUS_COLOR.SUCCESS;
+        },
+      },
     };
   },
 
@@ -76,7 +94,6 @@ export default {
   },
 
   created() {
-    this.initTable();
     this.loadInstances();
   },
 
@@ -151,46 +168,6 @@ export default {
         });
     },
 
-    initTable() {
-      this.setTableProps([
-        {
-          id: 'name',
-          name: '实例',
-          type: 'goto',
-          other: { onClick: this.gotoDetail },
-        },
-        { id: 'created_at', name: '创建时间', filter: 'unix_date' },
-        {
-          id: 'owner',
-          name: '创建者',
-          value: 'owner.name',
-          sort: 'owner.name',
-        },
-        {
-          id: 'status',
-          name: '部署状态',
-          type: 'status',
-          value: x => getAppStatus(x, '已经部署'), // 默认值为不填
-          other: {
-            onClick: this.showErrorInfo,
-            status: this.getStatus,
-          },
-        },
-      ]);
-
-      const disableDelete = item => {
-        return !this.$can('delete') || isApprove(item.status);
-      };
-      this.setTableOperations([
-        {
-          name: '删除',
-          event: 'remove-confirm',
-          disabled: disableDelete,
-          tooltip: '您暂无权限删除应用实例',
-        },
-      ]);
-    },
-
     deployApplication() {
       this.$router.push({
         name: 'deploy.applications',
@@ -241,25 +218,23 @@ export default {
       });
     },
 
-    getStatus(_, item) {
-      const { status } = item;
-      if (/ing$/.test(status) && status !== INSTANCE_STATUS.RUNNING) {
-        return STATUS_COLOR.CONTINUE;
-      } else if (
-        /failed$/.test(status) ||
-        status === INSTANCE_STATUS.PROCESS_REJECTED ||
-        status === INSTANCE_STATUS.CREATE_PROCESS_REJECTED
-      ) {
-        return STATUS_COLOR.DANGER;
-      } else if (status === INSTANCE_STATUS.STOP) {
-        return STATUS_COLOR.STOPED;
-      }
-      return STATUS_COLOR.SUCCESS;
-    },
-
     toggleYamlDialog() {
       this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml
         .visible;
+    },
+
+    renderStatus(status) {
+      return getAppStatus(status, '已经部署');
+    },
+
+    handleOperate(command, instance) {
+      if (command === 'delete') {
+        this.ensureRemove(instance);
+      }
+    },
+
+    disableDelete(item) {
+      return isApprove(item.status);
     },
   },
 

@@ -50,6 +50,7 @@ import Timeline from './timeline/timeline';
 import TruncateLongText from './truncate-long-text/truncate-long-text';
 import UploadInput from './upload-input/upload-input';
 import XTable from './x-table/x-table';
+import XTableStatus from './x-table-status/x-table-status';
 import ResourceLink from './resource/resource-link/resource-link';
 import OverflowTooltip from './overflow-tooltip/overflow-tooltip';
 import DAside from './aside';
@@ -115,6 +116,7 @@ const components = {
   TruncateLongText,
   UploadInput,
   XTable,
+  XTableStatus,
   OverflowTooltip,
   SpaceZone,
 };

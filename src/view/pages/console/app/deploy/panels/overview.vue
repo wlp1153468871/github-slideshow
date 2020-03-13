@@ -89,7 +89,7 @@ export default {
 
     basic() {
       const {
-        repository = '', deployfile = {}, deployMode, monitor,
+        repository = '', deployfile = {}, deployMode, monitor, hpa,
       } = this.app;
       const basic = [
         ['地域', this.zone.area_name],
@@ -97,6 +97,7 @@ export default {
         ['租户', this.org.name],
         ['项目组', this.space.name],
         ['监控', monitor ? '开' : '关'],
+        ['HPA', hpa ? '开' : '关'],
       ];
       if (deployMode === 'image') {
         basic.unshift(['镜像地址', repository]);

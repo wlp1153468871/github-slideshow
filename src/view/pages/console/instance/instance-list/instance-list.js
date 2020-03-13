@@ -1,9 +1,9 @@
+import Vue from 'vue';
 import { mapGetters, mapState } from 'vuex';
 import { first } from 'lodash';
 import SpaceService from '@/core/services/space.service';
 import InstanceService from '@/core/services/instance.service';
 
-import tableView from '@/view/mixins/table-view';
 import ErrorInfo from '@/view/mixins/error-info';
 import isApprove from '@/core/utils/is-approve';
 import {
@@ -18,8 +18,6 @@ import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
 
 export default {
   name: 'InstanceList',
-
-  extends: tableView('id', 10, 'created_at', 'desc'),
 
   mixins: [ErrorInfo, planDescMixin],
 
@@ -40,6 +38,25 @@ export default {
       quotas: [],
       loadings: {
         instances: false,
+      },
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey),
+      other: {
+        status: (_, item) => {
+          const { status } = item;
+          if (/ing$/.test(status) && status !== INSTANCE_STATUS.RUNNING) {
+            return STATUS_COLOR.CONTINUE;
+          } else if (
+            /failed$/.test(status) ||
+            status === INSTANCE_STATUS.PROCESS_REJECTED ||
+            status === INSTANCE_STATUS.CREATE_PROCESS_REJECTED
+          ) {
+            return STATUS_COLOR.DANGER;
+          } else if (status === INSTANCE_STATUS.STOP) {
+            return STATUS_COLOR.STOPED;
+          }
+          return STATUS_COLOR.SUCCESS;
+        },
       },
     };
   },
@@ -92,7 +109,6 @@ export default {
 
   methods: {
     init() {
-      this.initTable();
       this.loadInstances();
     },
 
@@ -107,63 +123,63 @@ export default {
         });
     },
 
-    initTable() {
-      const statusOther = {
-        onClick: this.showErrorInfo,
-        status: this.getStatus,
-      };
-      const plan = (item, instance) => {
-        return this.getPlanDetails(item, instance.service.name);
-      };
+    // initTable() {
+    //   const statusOther = {
+    //     onClick: this.showErrorInfo,
+    //     status: this.getStatus,
+    //   };
+    //   const plan = (item, instance) => {
+    //     return this.getPlanDetails(item, instance.service.name);
+    //   };
 
-      this.setTableProps([
-        {
-          id: 'name',
-          name: '实例',
-          type: 'goto',
-          other: { onClick: this.gotoDetail },
-        },
-        {
-          id: 'plan',
-          name: '规格',
-          value: plan,
-          sort: 'plan.name',
-        },
-        { id: 'created_at', name: '创建时间', filter: 'unix_date' },
-        {
-          id: 'owner',
-          name: '创建者',
-          value: 'owner.name',
-          sort: 'owner.name',
-        },
-        {
-          id: 'status',
-          name: '状态',
-          type: 'status',
-          filter: 'instance_status',
-          other: statusOther,
-        },
-      ]);
-      const toolTips = this.brokerService.instances_deletable
-        ? '暂无权限删除实例'
-        : '无法删除实例';
-      const disableDelete = item => {
-        return (
-          !this.$can('delete') ||
-          isApprove(item.status) ||
-          !this.brokerService.instances_deletable ||
-          this.isZoneSyncing
-        );
-      };
-      this.setTableOperations([
-        {
-          name: '删除',
-          event: 'remove-confirm',
-          disabled: disableDelete,
-          tooltip: toolTips,
-        },
-      ]);
-    },
+    //   this.setTableProps([
+    //     {
+    //       id: 'name',
+    //       name: '实例',
+    //       type: 'goto',
+    //       other: { onClick: this.gotoDetail },
+    //     },
+    //     {
+    //       id: 'plan',
+    //       name: '规格',
+    //       value: plan,
+    //       sort: 'plan.name',
+    //     },
+    //     { id: 'created_at', name: '创建时间', filter: 'unix_date' },
+    //     {
+    //       id: 'owner',
+    //       name: '创建者',
+    //       value: 'owner.name',
+    //       sort: 'owner.name',
+    //     },
+    //     {
+    //       id: 'status',
+    //       name: '状态',
+    //       type: 'status',
+    //       filter: 'instance_status',
+    //       other: statusOther,
+    //     },
+    //   ]);
+    //   const toolTips = this.brokerService.instances_deletable
+    //     ? '暂无权限删除实例'
+    //     : '无法删除实例';
+    //   const disableDelete = item => {
+    //     return (
+    //       !this.$can('delete') ||
+    //       isApprove(item.status) ||
+    //       !this.brokerService.instances_deletable ||
+    //       this.isZoneSyncing
+    //     );
+    //   };
+    //   this.setTableOperations([
+    //     {
+    //       name: '删除',
+    //       event: 'remove-confirm',
+    //       disabled: disableDelete,
+    //       tooltip: toolTips,
+    //     },
+    //   ]);
+    // },
 
     deployService() {
       const { serviceId, brokerServiceId } = this;
@@ -212,7 +228,6 @@ export default {
         .then(willDelete => {
           if (willDelete) {
             this.removeInstanceFromTenant(instance);
-            this.loadInstances();
           }
         });
     },
@@ -221,6 +236,7 @@ export default {
       InstanceService.deleteInstance(instance.id).then(deletedInstance => {
         this.applyChange(deletedInstance);
         this.$noty.success(`删除实例 ${instance.name} 成功。`);
+        this.loadInstances();
       });
     },
 
@@ -230,21 +246,25 @@ export default {
       });
     },
 
-    getStatus(_, item) {
-      const { status } = item;
-      if (/ing$/.test(status) && status !== INSTANCE_STATUS.RUNNING) {
-        return STATUS_COLOR.CONTINUE;
-      } else if (
-        /failed$/.test(status) ||
-        status === INSTANCE_STATUS.PROCESS_REJECTED ||
-        status === INSTANCE_STATUS.CREATE_PROCESS_REJECTED
-      ) {
-        return STATUS_COLOR.DANGER;
-      } else if (status === INSTANCE_STATUS.STOP) {
-        return STATUS_COLOR.STOPED;
+    handleOperate(command, instance) {
+      if (command === 'delete') {
+        this.ensureRemove(instance);
       }
-      return STATUS_COLOR.SUCCESS;
     },
+
+    renderStatus(status) {
+      const filters = Vue.filter('filters');
+      return filters(status, 'instance_status');
+    },
+
+    disableDelete(item) {
+      return (
+        isApprove(item.status) ||
+        !this.brokerService.instances_deletable ||
+        this.isZoneSyncing
+      );
+    },
+
   },
 
   watch: {
