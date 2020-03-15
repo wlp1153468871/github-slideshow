@@ -42,6 +42,7 @@
             placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
+            :disabled="model.username==='admin'&&formModel.space_role.name==='space-super-admin'"
             v-model="formModel.space_role">
             <dao-option
               v-for="(value, key) in spacerole"
