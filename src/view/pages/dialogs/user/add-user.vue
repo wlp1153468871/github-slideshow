@@ -23,7 +23,7 @@
                 :key="index"
                 :value="option.id"
                 :label="option.value">
-                {{ option.text }}
+                <!-- {{ option.text }} -->
               </dao-option>
             </dao-select>
           </template>
@@ -38,6 +38,7 @@
         <template #label>项目组权限</template>
         <template #content>
           <dao-select
+            @change="$set(formModel, formModel.space_role, $event)"
             placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
@@ -69,6 +70,7 @@
                 <div class="sub-setting-item">
                   <p style="font-size: 13px">权限</p>
                   <dao-select
+                    @change="$set(result, result[zone.name], $event)"
                     placeholder="请选择"
                     name="zone_space_roles"
                     v-validate.immediate="'required'"
@@ -175,12 +177,29 @@ export default {
 
   methods: {
     init() {
-      // this.loadRoleOptions();
       if (this.isUpdate) {
-        console.log('this.model', this.model);
-        // this.formModel.space_role = 
         this.formModel.user_id = this.model.id;
-        console.log('this.formModel.space_role', this.formModel.space_role);
+        // 进入到更新 初始化角色
+        const { roles } = this.model;
+        // console.log(roles);
+        roles.map(role => {
+          // console.log('role', role);
+          if (role.scope.includes('space')) {
+            // space
+            this.$set(this.formModel, 'space_role', role);
+            // this.formModel.space_role = role;
+          } else if (role.scope.includes('k8s')) {
+            // zone k8s
+            // this.result['k8s-dev'] = role;
+            // this.$set(this.result, 'k8s-dev', role);
+            this.$set(this.result, this.getZoneName('k8s'), role);
+          } else if (role.scope.includes('ocp')) {
+            // zone ocp
+            // this.result['office-openshift-dev'] = role;
+            // this.$set(this.result, 'office-openshift-dev', role);
+            this.$set(this.result, this.getZoneName('openshift'), role);
+          }
+        });
       } else {
         // this.formModel.name = '';
         // this.formModel.user_id = getValue(first(this.users), 'id');
@@ -189,13 +208,18 @@ export default {
     onConfirm() {
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          this.addUser();
-          // this.authorizeZone();
+          this.setUserRole();
         }
       });
     },
 
-    addUser() {
+    setUserRole() {
+      this.setSpaceRole();
+      this.setZoneRole();
+    },
+
+    setSpaceRole() {
+      // 修改项目组角色（权限）
       const spaceParams = {
         userId: this.formModel.user_id,
         roleId: this.formModel.space_role.id,
@@ -205,14 +229,14 @@ export default {
           scope: this.formModel.scope,
         },
       };
-      // 3-12
-      console.log('params', spaceParams);
       RoleService.setRole(spaceParams)
         .then(data => {
           console.log('data', data);
-          // this.onRefresh();
-          this.$noty.success(this.isUpdate ? '成功更新用户权限' : '添加用户成功');
+          this.$noty.success('更新项目组权限成功');
         });
+    },
+
+    setZoneRole() {
       this.zones.map(zone => {
         const { name, id } = zone;
         const key = name;
@@ -232,33 +256,29 @@ export default {
           zone_role: 'zone_admin',
         }];
         this.authorizeZone(zone_space_roles);
-        console.log('zoneParams', zoneParams);
         RoleService.setRole(zoneParams)
           .then(data => {
             console.log('data', data);
             this.onRefresh();
-            this.$noty.success('成功更新可用区权限');
+            this.$noty.success('更新可用区权限成功');
           });
         return true;
       });
       if (!this.isUpdate) {
-        console.log('UserService.updateSpaceUser');
-        console.log('this.formModel', this.formModel);
-        console.log('this.formModel.space_role.name', this.formModel.space_role.name);
-        UserService.updateSpaceUser(this.spaceId, {
-          user_id: this.formModel.user_id,
-          space_role: this.formModel.space_role.name,
-        }).then(() => {
-          this.onRefresh();
-          this.$noty.success('添加用户成功');
-        });
+        this.addUser();
       }
     },
-
+    addUser() {
+      UserService.updateSpaceUser(this.spaceId, {
+        user_id: this.formModel.user_id,
+        space_role: this.formModel.space_role.name,
+      }).then(() => {
+        this.onRefresh();
+        this.$noty.success('添加用户成功');
+      });
+    },
     authorizeZone(zone_space_roles) {
-      // this.isUpdating = true;
-      // console.log('authorizeZone this.users', this.model, 'zone_space_roles', zone_space_roles);
-      console.log('this.formModel.user_id', this.formModel.user_id);
+      // console.log('this.formModel.user_id', this.formModel.user_id);
       return SpaceService.authorizeZone(this.spaceId, this.formModel.user_id, {
         zone_space_roles,
       })
@@ -284,6 +304,18 @@ export default {
         space_role: null,
       };
       this.result = {};
+    },
+
+    getZoneName(type) {
+      let zoneName = '';
+      // console.log('type', type);
+      this.zones.map(zone => {
+        if (zone.name.includes(type)) {
+          zoneName = zone.name;
+        }
+        return true;
+      });
+      return zoneName;
     },
   },
 };
