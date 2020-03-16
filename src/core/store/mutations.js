@@ -196,6 +196,10 @@ export const getters = {
     return state.user.id;
   },
 
+  userName(state) {
+    return state.user.username;
+  },
+
   orgSpaces(state) {
     if (!state.org || !state.org.id) return [];
     return state.spaces.filter(x => x.organization_id === state.org.id);
@@ -297,6 +301,7 @@ export const actions = {
               commit('setZoneActions', actions);
             }
           });
+        return true;
       });
   },
 
@@ -380,7 +385,9 @@ export const actions = {
     });
   },
 
-  loadSpaces({ commit, state, getters, dispatch }) {
+  loadSpaces({
+    commit, state, getters, dispatch,
+  }) {
     return new Promise((resolve, reject) => {
       Promise.all([
         OrgService.getUserOrgs(),
@@ -466,7 +473,9 @@ export const actions = {
     });
   },
 
-  loadZones({ commit, state, dispatch, getters }) {
+  loadZones({
+    commit, state, dispatch, getters,
+  }) {
     return SpaceService.getSpaceZones(state.space.id).then(zones => {
       commit(types.LOAD_ZONE_SUCCESS, { zones });
 
