@@ -42,7 +42,7 @@
             placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
-            :disabled="model.username==='admin'"
+            :disabled="model.username===userName && $can('project.manage','project')"
             v-model="formModel.space_role">
             <dao-option
               v-for="(value, key) in spacerole"
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { isEmpty, cloneDeep } from 'lodash';
 import UserService from '@/core/services/user.service';
 import RoleService from '@/core/services/role.service';
@@ -148,6 +148,7 @@ export default {
 
   computed: {
     ...mapState(['zones', 'org', 'zone']),
+    ...mapGetters(['userName']),
     isShow: {
       set() {
         this.$emit('close');
