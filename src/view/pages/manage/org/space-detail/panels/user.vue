@@ -1,47 +1,25 @@
 <template>
   <div>
-    <el-tabs v-model="activeName">
-      <el-tab-pane :label="SIDE_BAR.MEBMBER" name="mebmber">
-        <dao-table-view
-          :rows="rows"
-          :config="tConfig"
-          :loading="loadings.all"
-          @refresh="loadUsers"
-          @update-user-dialog="updateUserDialog"
-          @on-authorize-zone="onAuthorizeZone"
-          @confirm-remove-user="confirmRemoveUser">
-          <div slot="tool">
-            <button
-              :disabled="loadings.all"
-              class="dao-btn has-icon blue"
-              @click="openAddUserDialog()">
-              <svg class="icon">
-                <use xlink:href="#icon_plus-circled"></use>
-              </svg>
-              <span class="text" >添加用户</span>
-            </button>
-          </div>
-        </dao-table-view>
-      </el-tab-pane>
-      <el-tab-pane
-        :label="SIDE_BAR.ZONE"
-        name="zone"
-        lazy>可用区</el-tab-pane>
-      <el-tab-pane
-        :lazy="true"
-        :label="SIDE_BAR.SERVE"
-        name="serve">服务</el-tab-pane>
-      <el-tab-pane
-        :lazy="true"
-        :label="SIDE_BAR.APPROVE"
-        name="approve">
-        <approval-setting></approval-setting>
-      </el-tab-pane>
-      <el-tab-pane
-        :label="SIDE_BAR.ADVANCED_SETTING"
-        name="setting"
-        :lazy="true">高级设置</el-tab-pane>
-    </el-tabs>
+    <dao-table-view
+      :rows="rows"
+      :config="tConfig"
+      :loading="loadings.all"
+      @refresh="loadUsers"
+      @update-user-dialog="updateUserDialog"
+      @on-authorize-zone="onAuthorizeZone"
+      @confirm-remove-user="confirmRemoveUser">
+      <div slot="tool">
+        <button
+          :disabled="loadings.all"
+          class="dao-btn has-icon blue"
+          @click="openAddUserDialog()">
+          <svg class="icon">
+            <use xlink:href="#icon_plus-circled"></use>
+          </svg>
+          <span class="text" >添加用户</span>
+        </button>
+      </div>
+    </dao-table-view>
 
     <!-- dialog start -->
     <add-user-dialog
@@ -74,8 +52,6 @@ import OrgService from '@/core/services/org.service';
 import SpaceService from '@/core/services/space.service';
 import RoleService from '@/core/services/role.service';
 
-// ApprovalSetting
-import ApprovalSetting from '@/view/pages/console/approval/approval-setting/approval-setting.vue';
 // dialogs
 import AddUserDialog from '@/view/pages/dialogs/user/add-user';
 import zoneAuthorizationDialog from '@/view/pages/dialogs/user/zone-authorization';
@@ -91,11 +67,9 @@ export default {
     ...mapState(['zones']),
   },
 
-
   components: {
     AddUserDialog,
     zoneAuthorizationDialog,
-    ApprovalSetting,
   },
 
   props: {
@@ -121,14 +95,6 @@ export default {
         updateUser: { visible: false },
         zoneAuthorization: { visible: false },
       },
-      SIDE_BAR: {
-        MEBMBER: '成员',
-        ZONE: '可用区',
-        SERVE: '服务',
-        APPROVE: '审批',
-        ADVANCED_SETTING: '高级',
-      },
-      activeName: 'mebmber',
       zoneRoles: {},
       spaceRoles: {},
     };
