@@ -42,7 +42,7 @@
             placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
-            :disabled="model.username==='admin'&&formModel.space_role.name==='space-super-admin'"
+            :disabled="model.username==='admin'"
             v-model="formModel.space_role">
             <dao-option
               v-for="(value, key) in spacerole"
@@ -109,7 +109,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { get as getValue, first, isEmpty, cloneDeep } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 import UserService from '@/core/services/user.service';
 import RoleService from '@/core/services/role.service';
 import SpaceService from '@/core/services/space.service';
@@ -183,7 +183,7 @@ export default {
         // 进入到更新 初始化角色
         const { roles } = this.model;
         // console.log(roles);
-        roles.map(role => {
+        roles.forEach(role => {
           // console.log('role', role);
           if (role.scope.includes('space')) {
             // space

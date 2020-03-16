@@ -107,7 +107,7 @@ function flat(
     }
     // result.actions[featureCode] = access;
     if (children) {
-      children.map(action => {
+      children.forEach(action => {
         if (action.featurePoint && action.access) {
           if (result.actions[featureCode]) {
             result.actions[featureCode].push(action.featureCode);
