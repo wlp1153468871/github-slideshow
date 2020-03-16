@@ -69,6 +69,9 @@ export default {
   // global ajax success handler
   response(res) {
     if (/^20\d/.test(res.status)) {
+      if (res.headers.authorizationresult) {
+        notifyErrorResponse({}, '暂无权限, 请联系管理员');
+      }
       return res.data;
     }
     return res;

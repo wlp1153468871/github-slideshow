@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
@@ -65,6 +65,7 @@ export default {
 
   computed: {
     ...mapState(['zones']),
+    ...mapGetters(['userName']),
   },
 
   components: {
@@ -148,7 +149,19 @@ export default {
       this.setTableOperations([
         { name: '修改用户权限', event: 'update-user-dialog' },
         // { name: '可用区授权', event: 'on-authorize-zone' },
-        { name: '移除', event: 'confirm-remove-user' },
+        {
+          name: '移除',
+          event: 'confirm-remove-user',
+          visible: item => {
+            let status = '';
+            if (item.username === this.userName) {
+              status = false;
+            } else {
+              status = true;
+            }
+            return status;
+          },
+        },
       ]);
     },
 
