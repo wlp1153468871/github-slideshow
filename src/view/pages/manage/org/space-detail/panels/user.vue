@@ -154,9 +154,9 @@ export default {
           name: '项目组权限',
           value(roles) {
             let text = '';
-            roles.map(role => {
+            roles.forEach(role => {
               if (role.scope === 'space') {
-                text = `${role.scope}: ${role.name}`;
+                text = role.name;
               }
             });
             return text;
@@ -167,7 +167,7 @@ export default {
           name: '可用区权限',
           value(roles) {
             let text = '';
-            roles.map(role => {
+            roles.forEach(role => {
               if (role.scope.includes('zone')) {
                 text += `${role.scope}: ${role.name}  `;
               }
@@ -219,7 +219,7 @@ export default {
 
     loadZoneRoles() {
       // console.log('this.zones', this.zones);
-      this.zones.map(zone => {
+      this.zones.forEach(zone => {
         // console.log('zone', zone);
         const { id, name } = zone;
         // console.log('zoneId', id);
@@ -244,6 +244,7 @@ export default {
     },
 
     confirmRemoveUser(user) {
+      console.log('user', user);
       this.$tada
         .confirm({
           title: '移除用户',
@@ -266,7 +267,6 @@ export default {
 
     updateUserDialog(user) {
       this.selectedUser = user;
-      console.log('this.selectedUser', this.selectedUser);
       this.dialogConfigs.updateUser.visible = true;
     },
 
