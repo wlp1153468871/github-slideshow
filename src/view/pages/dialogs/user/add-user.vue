@@ -72,7 +72,7 @@
                   <p style="font-size: 13px">权限</p>
                   <dao-select
                     @change="$set(result, result[zone.name], $event)"
-                    placeholder="请选择"
+                    :placeholder="isUpdate?'无权限':'请选择'"
                     name="zone_space_roles"
                     v-validate.immediate="'required'"
                     style="width: 157px;"
