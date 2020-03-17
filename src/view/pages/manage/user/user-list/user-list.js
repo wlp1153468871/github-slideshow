@@ -1,6 +1,5 @@
 import { orderBy } from 'lodash';
 import { mapState } from 'vuex';
-import tableView from '@/view/mixins/table-view';
 import UserService from '@/core/services/user.service';
 // dialogs
 import UpdatePlatformUserDialog from '@/view/pages/dialogs/user/update-platform-user';
@@ -9,15 +8,12 @@ import CreateUserDialog from '@/view/pages/dialogs/user/create-user';
 export default {
   name: 'UserList',
 
-  extends: tableView('id', 10, 'username', 'asc'),
-
   components: {
     UpdatePlatformUserDialog,
     CreateUserDialog,
   },
 
   created() {
-    this.initTableView();
     this.loadUsers();
   },
 
@@ -34,6 +30,9 @@ export default {
         users: false,
         create: false,
       },
+      filterMethod: (data, filterKey) =>
+        data.username.toLowerCase().includes(filterKey),
+      other: { status: (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER') },
     };
   },
 
@@ -44,48 +43,8 @@ export default {
   },
 
   methods: {
-    initTableView() {
-      const isFrozen = frozen => (frozen ? '已冻结' : '正常');
-      const getStatus = (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER');
-      this.setTableProps([
-        { id: 'username', name: '用户名' },
-        { id: 'email', name: '邮箱' },
-        { id: 'phone_number', name: '手机号码', filter: 'otherwise' },
-        { id: 'platform_role', name: '权限', filter: 'platform_role' },
-        {
-          id: 'registry_location',
-          name: '用户类型',
-          value(location) {
-            if (location === 'local') {
-              return '本地用户';
-            }
-            return 'SSO';
-          },
-        },
-        {
-          id: 'is_frozen',
-          name: '状态',
-          value: isFrozen,
-          type: 'status',
-          other: { status: getStatus },
-        },
-      ]);
-
-      const isEnable = item => item.is_frozen;
-      const isDisable = item => !item.is_frozen;
-      const disableFrozen = item => item.id === this.self.id;
-
-      this.setTableOperations([
-        { name: '设置', event: 'update-user-dialog' },
-        {
-          name: '冻结',
-          event: 'confirm-disable',
-          visible: isDisable,
-          disabled: disableFrozen,
-          tooltip: '无法对自己操作',
-        },
-        { name: '激活', event: 'confirm-enable', visible: isEnable },
-      ]);
+    isFrozen(f) {
+      return f ? '已冻结' : '正常';
     },
 
     loadUsers() {
@@ -204,6 +163,17 @@ export default {
         .finally(() => {
           this.loadings.create = false;
         });
+    },
+    handleOperate(command, zone) {
+      if (command === 'enable') {
+        this.enableUser(zone);
+      }
+      if (command === 'disable') {
+        this.disableUser(zone);
+      }
+      if (command === 'edit') {
+        this.updateUserDialog(zone);
+      }
     },
   },
 };

@@ -1,23 +1,13 @@
-import { toPairs } from 'lodash';
+import { toPairs, pick } from 'lodash';
 import URL from 'url-parse';
 
 import InstanceService from './instance.service';
-import api from './api';
+import { APIService } from './api';
+import AuthInterceptor from './api/auth.interceptor';
 
 class AppService {
   constructor() {
-    this.api = api.create();
-    this.configInterceptors();
-  }
-
-  configInterceptors() {
-    // global ajax success handler
-    this.api.rest.interceptors.response.use(res => {
-      if (/^20\d/.test(res.status)) {
-        return res.data;
-      }
-      return res;
-    });
+    this.api = new APIService('', pick(AuthInterceptor, ['response', 'request']));
   }
 
   updateAppParameters(instanceId, params, action = {}) {

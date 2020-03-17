@@ -43,8 +43,9 @@ export default {
       this.purchasing = true;
 
       VolumeService.createVolume(this.space.id, this.formModel, this.zone.id)
-        .then(() => {
+        .then(res => {
           this.error = {};
+          this.formModel = Object.assign(res, this.formModel);
         })
         .catch(err => {
           this.error = err;

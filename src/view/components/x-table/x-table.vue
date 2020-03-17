@@ -5,8 +5,8 @@
         <slot name="operation"></slot>
       </div>
       <div class="table-toolbar-right" v-if="filterMethod">
-        <div>
-          <dao-input
+        <div style="display: flex;justify-content: center;align-items: center;">
+          <!-- <dao-input
             search
             v-model="filterKey"
             :placeholder="searchPlaceholder">
@@ -21,7 +21,24 @@
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
-          </button>
+          </button> -->
+          <el-input
+            style="width: 200px;"
+            size="small"
+            v-model="filterKey"
+            :placeholder="searchPlaceholder"
+            clearable
+            prefix-icon="el-icon-search"></el-input>
+          <el-button
+            v-if="showRefresh"
+            @click="$emit('refresh')"
+            size="mini"
+            style="margin-left: 10px;"
+            >
+            <svg class="icon">
+              <use xlink:href="#icon_update"></use>
+            </svg>
+          </el-button>
         </div>
       </div>
     </div>

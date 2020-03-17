@@ -78,7 +78,7 @@ class PodService {
   getPodShell({
     pod,
     container,
-    shell = 'bash',
+    shell = 'sh',
     space = this.space,
     zone = this.zone,
   }: {

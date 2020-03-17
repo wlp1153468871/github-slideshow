@@ -75,9 +75,9 @@ class Rest {
   }
 
   useInterceptor(interceptor: any) {
-    const { request, response, responseError } = interceptor;
-    if (request) {
-      this.rest.interceptors.request.use(request);
+    const { request, response, responseError, requestError } = interceptor;
+    if (request || requestError) {
+      this.rest.interceptors.request.use(request, requestError);
     }
     if (response || responseError) {
       this.rest.interceptors.response.use(response, responseError);
