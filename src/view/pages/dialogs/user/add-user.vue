@@ -39,7 +39,7 @@
         <template #content>
           <dao-select
             @change="$set(formModel, formModel.space_role, $event)"
-            placeholder="请选择"
+            :placeholder="isUpdate?'无权限':'请选择'"
             name="space_role"
             v-validate.immediate="'required'"
             :disabled="model.username===userName && $can('project.manage','project')"
