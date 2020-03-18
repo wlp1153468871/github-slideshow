@@ -183,21 +183,16 @@ export default {
         this.formModel.user_id = this.model.id;
         // 进入到更新 初始化角色
         const { roles } = this.model;
-        // console.log(roles);
         roles.forEach(role => {
-          // console.log('role', role);
           if (role.scope.includes('space')) {
             // space
             this.$set(this.formModel, 'space_role', role);
-            // this.formModel.space_role = role;
           } else if (role.scope.includes('k8s')) {
             // zone k8s
-            // this.result['k8s-dev'] = role;
             // this.$set(this.result, 'k8s-dev', role);
             this.$set(this.result, this.getZoneName('k8s'), role);
           } else if (role.scope.includes('ocp')) {
             // zone ocp
-            // this.result['office-openshift-dev'] = role;
             // this.$set(this.result, 'office-openshift-dev', role);
             this.$set(this.result, this.getZoneName('openshift'), role);
           }
@@ -310,12 +305,10 @@ export default {
 
     getZoneName(type) {
       let zoneName = '';
-      // console.log('type', type);
-      this.zones.map(zone => {
+      this.zones.forEach(zone => {
         if (zone.name.includes(type)) {
           zoneName = zone.name;
         }
-        return true;
       });
       return zoneName;
     },
