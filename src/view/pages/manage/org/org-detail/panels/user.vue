@@ -3,6 +3,7 @@
     <dao-table-view
       :rows="rows"
       :config="tConfig"
+      @refresh="loadOrgUsers"
       :loading="this.loadings.all"
       @update-user-dialog="updateUserDialog"
       @confirm-remove-user="confirmRemoveUser">
@@ -47,6 +48,7 @@ import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
 import UserService from '@/core/services/user.service';
+import RoleService from '@/core/services/role.service';
 // dialogs
 import AddUserDialog from '@/view/pages/dialogs/org/add-user';
 import UpdateOrgUserDialog from '@/view/pages/dialogs/user/update-org-user';
@@ -94,6 +96,7 @@ export default {
 
   created() {
     this.initTableView();
+    this.loadOrgRoles();
   },
 
   watch: {
@@ -113,7 +116,20 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        { id: 'organization_role', name: '租户权限', filter: 'org_role' },
+        // { id: 'organization_role', name: '租户权限', filter: 'org_role' },
+        {
+          id: 'roles',
+          name: '租户权限',
+          value(roles) {
+            let text = '';
+            roles.forEach(role => {
+              if (role.scope === 'organization') {
+                text = role.name;
+              }
+            });
+            return text;
+          },
+        },
       ]);
       const isSelf = item => item.id === this.user.id;
       this.setTableOperations([
@@ -142,6 +158,15 @@ export default {
         });
     },
 
+    loadOrgRoles() {
+      RoleService.getRoles({
+        scope: 'organization',
+        organizationId: this.orgId,
+      }).then(roles => {
+        this.ROLES = roles;
+      });
+    },
+
     loadAllUsers(q) {
       UserService.getUsers(q).then(users => {
         this.allUsers = users;
@@ -153,8 +178,9 @@ export default {
     },
 
     addUser({ user, role }) {
+      this.setOrgRole(role, user.id);
       const params = {
-        organization_role: role,
+        organization_role: 'organization_admin',
       };
       UserService.addOrgUser(this.orgId, user.id, params)
         .then(newUsers => {
@@ -199,10 +225,11 @@ export default {
       this.dialogConfigs.updateUser.visible = true;
     },
 
-    updateUser(role) {
+    updateUser(role, newRole) {
       const params = {
         organization_role: role,
       };
+      this.setOrgRole(newRole, this.selectedUser.id);
       return UserService.updateOrgUser(
         this.orgId,
         this.selectedUser.id,
@@ -210,8 +237,24 @@ export default {
       ).then(newUser => {
         const index = this.rows.findIndex(x => x.id === this.selectedUser.id);
         this.rows.splice(index, 1, newUser);
-        this.$noty.success('权限修改成功');
+        // this.$noty.success('权限修改成功');
       });
+    },
+
+    setOrgRole(role, userId) {
+      const orgParams = {
+        userId,
+        roleId: role.id,
+        data: {
+          organizationId: this.orgId,
+          scope: role.scope,
+        },
+      };
+      RoleService.setRole(orgParams)
+        .then(() => {
+          this.$noty.success('权限修改成功');
+          this.loadOrgUsers();
+        });
     },
 
     searchUser(keyword) {

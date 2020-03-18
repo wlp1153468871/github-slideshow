@@ -170,12 +170,12 @@
         <router-link
           v-if="!isConsoleView"
           :to="{ name: 'console' }">
-          <span>切换租户视图</span>
+          <span>退出管理员视图</span>
         </router-link>
         <router-link
           v-else
           :to="{ name: 'manage' }">
-          <span>切换管理员视图</span>
+          <span>进入管理员视图</span>
         </router-link>
       </div>
       <div class="user-operation">

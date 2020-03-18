@@ -22,12 +22,15 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select v-model="role">
+          <dao-select
+          v-model="role"
+          placeholder="请选择"
+          >
             <dao-option
               v-for="(r, index) in roles"
               :key="index"
-              :value="r.value"
-              :label="r.text">
+              :value="r"
+              :label="r.name">
             </dao-option>
           </dao-select>
         </div>
@@ -124,6 +127,7 @@ export default {
 
     onConfirm() {
       const { keyword, role } = this;
+      console.log('role', role);
       const user = this.users.find(x => x.email === keyword);
       if (!user || !user.email) {
         this.$noty.error('该用户无绑定邮箱');
