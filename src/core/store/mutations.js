@@ -269,17 +269,12 @@ export const getters = {
 export const actions = {
   // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
   getRole({ commit, getters }, params) {
-    // console.log('getRole');
-    // console.log('params', params);
-    // return RoleSrvice.getRoles(params)
     return RoleSrvice.getRolesById(params, getters.userId)
       .then(roleList => {
         if (roleList.length === 0) {
           console.log('无角色 return');
           return false;
-          // roleList.push({ id: '01E31SZF73FDCJM25QXZK3MK6M' });
         }
-        // console.log('roleList', roleList);
         RoleSrvice.getPermission(roleList[0].id)
           .then(data => {
             // console.log('permission', data);
@@ -630,20 +625,6 @@ export const actions = {
     // console.log('zone.area_name', zone.area_name);
 
     const params = {
-      // scope: zone => {
-      //   switch (zone) {
-      //     case 'Oranges':
-      //       console.log('Oranges are $0.59 a pound.');
-      //       break;
-      //     case 'Mangoes':
-      //     case 'Papayas':
-      //       // console.log('Mangoes and papayas are $2.79 a pound.');
-      //       // expected output: "Mangoes and papayas are $2.79 a pound."
-      //       break;
-      //     default:
-      //       // console.log('Sorry, we are out of ' + expr + '.');
-      //   }
-      // },
       scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
       spaceId: getters.spaceId,
       zoneId: zone.id,
