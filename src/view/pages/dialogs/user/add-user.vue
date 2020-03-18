@@ -134,6 +134,7 @@ export default {
       },
       result: {},
       user: {},
+      overtimer: null,
     };
   },
 
@@ -292,6 +293,9 @@ export default {
     onRefresh() {
       this.onClose();
       this.$emit('refresh');
+      this.overtimer = setTimeout(() => {
+        this.$router.go(0);
+      }, 1800);
     },
 
     closed() {
@@ -312,6 +316,11 @@ export default {
       });
       return zoneName;
     },
+  },
+  beforeDestroy() {
+    if (this.overtimer) {
+      this.overtimer = null;
+    }
   },
 };
 </script>
