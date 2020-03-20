@@ -26,6 +26,8 @@
       :visible="dialogConfigs.updateUser.visible"
       :users="availableUsers"
       :model="selectedUser"
+      :zonerole="zoneRoles"
+      :spacerole="spaceRoles"
       :space-id="spaceId"
       @refresh="loadUsers"
       @close="onAddUserClose">
@@ -43,10 +45,13 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
 import SpaceService from '@/core/services/space.service';
+import RoleService from '@/core/services/role.service';
+
 // dialogs
 import AddUserDialog from '@/view/pages/dialogs/user/add-user';
 import zoneAuthorizationDialog from '@/view/pages/dialogs/user/zone-authorization';
@@ -57,6 +62,11 @@ export default {
   extends: tableView('id', 10, 'username'),
 
   mixins: [userManage],
+
+  computed: {
+    ...mapState(['zones']),
+    ...mapGetters(['userName']),
+  },
 
   components: {
     AddUserDialog,
@@ -86,6 +96,8 @@ export default {
         updateUser: { visible: false },
         zoneAuthorization: { visible: false },
       },
+      zoneRoles: {},
+      spaceRoles: {},
     };
   },
 
@@ -104,31 +116,106 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        { id: 'space_role', name: '项目组权限', filter: 'space_role' },
-        { id: 'zone_space_roles', name: '可用区权限', filter: 'zone_auth' },
+        {
+          id: 'roles',
+          name: '项目组权限',
+          value(roles) {
+            let text = '';
+            roles.forEach(role => {
+              if (role.scope === 'space') {
+                text = role.name;
+              }
+            });
+            return text;
+          },
+        },
+        {
+          id: 'roles',
+          name: '可用区权限',
+          value(roles) {
+            let text = '';
+            roles.forEach(role => {
+              if (role.scope.includes('zone')) {
+                text += `${role.scope}: ${role.name}  `;
+              }
+            });
+            return text;
+          },
+        },
+        // { id: 'roles', name: '权限', value: 'roles', filter: 'role_format' },
+        // { id: 'space_role', name: '项目组权限', filter: 'space_role' },
+        // { id: 'zone_space_roles', name: '可用区权限', filter: 'zone_auth' },
       ]);
       this.setTableOperations([
         { name: '修改用户权限', event: 'update-user-dialog' },
-        { name: '可用区授权', event: 'on-authorize-zone' },
-        { name: '移除', event: 'confirm-remove-user' },
+        // { name: '可用区授权', event: 'on-authorize-zone' },
+        {
+          name: '移除',
+          event: 'confirm-remove-user',
+          visible: item => {
+            let status = '';
+            if (item.username === this.userName) {
+              status = false;
+            } else {
+              status = true;
+            }
+            return status;
+          },
+        },
       ]);
     },
 
     async loadUsers() {
+      this.loadZoneRoles();
       this.selectedUser = {};
       this.loadings.all = true;
       await this.$store.dispatch('getUserInfo');
       Promise.all([
         OrgService.getMembers(this.orgId),
         SpaceService.getMembers(this.spaceId),
+        // SpaceService.getScopeUsers(this.spaceId),
+        // get space roles传给编辑角色
+        RoleService.getRoles({
+          scope: 'space',
+          space: this.spaceId,
+        }),
+        // RoleService.getRoles({
+        //   scope: 'zone.k8s',
+        //   space: this.spaceId,
+        //   zone: this.zones.id,
+        // }),
       ])
-        .then(([orgUsers, spaceUsers]) => {
+        .then(([orgUsers, spaceUsers, spaceRoles]) => {
           this.users = spaceUsers;
           this.allUsers = orgUsers;
+          // console.log('space roles', spaceRoles);
+          this.spaceRoles = spaceRoles;
         })
         .finally(() => {
           this.loadings.all = false;
         });
+    },
+
+    loadZoneRoles() {
+      // console.log('this.zones', this.zones);
+      this.zones.forEach(zone => {
+        // console.log('zone', zone);
+        const { id, name } = zone;
+        // console.log('zoneId', id);
+        // console.log('areaName', name);
+        const key = name;
+        RoleService.getRoles({
+          scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+          space: this.spaceId,
+          zone: id,
+        })
+          .then(roleList => {
+            // console.log('zone roleList', roleList);
+            // console.log('key', key);
+            this.zoneRoles[key] = roleList;
+            // console.log(this.zoneRoles);
+          });
+      });
     },
 
     openAddUserDialog() {
@@ -136,6 +223,7 @@ export default {
     },
 
     confirmRemoveUser(user) {
+      console.log('user', user);
       this.$tada
         .confirm({
           title: '移除用户',

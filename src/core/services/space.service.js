@@ -140,6 +140,11 @@ class SpaceService {
   getResourceQuotaApprovals(type = 'apply') {
     return this.api.get('/quota/approval/space', { space_id: this.spaceId, type });
   }
+
+  // 根据scope的id，获取其所有users和与user拥有的roles。
+  getScopeUsers(spaceId) {
+    return this.api.get(`/spaces/${spaceId}/users`);
+  }
 }
 
 export default new SpaceService();

@@ -144,7 +144,7 @@ export default {
       ACCESS_MODE,
       form: {
         apiVersion: 'v1',
-        kind: this.kind,
+        kind: RESOURCE_TYPE.PERSISTENT_VOLUME_CLAIM,
         metadata: {
           name: '',
           namespace: '',

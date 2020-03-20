@@ -12,6 +12,7 @@ export default {
     showRefresh: { type: Boolean, default: true },
     searchPlaceholder: { type: String, default: '请输入搜索内容' },
     emptyText: { type: String },
+    paginate: { type: Boolean, default: true },
   },
 
   data() {

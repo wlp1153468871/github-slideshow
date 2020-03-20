@@ -19,7 +19,7 @@
               slot="action"
               :loading="true"
               @click="applyDialog.visible = true"
-              v-if="isAdmin"
+              v-if="$can('quota.update', 'quota')"
             >
               申请{{spaceDescription}}配额
             </button>
@@ -35,7 +35,7 @@
         </div>
         <div
           class="quota-section"
-          v-if="!zoneUnauthorized || isPlatformAdmin"
+          v-if="$can('quota.view', 'quota')"
         >
           <h4 class="quota-section-head"> {{ zone.name }} 可用区配额</h4>
           <quota-cards
@@ -50,7 +50,7 @@
               class="dao-btn blue"
               slot="action"
               @click="updateDialog.visible = true"
-              v-if="isAdmin && $can('update')"
+              v-if="$can('quota.update', 'quota')"
             >更新可用区配额</button>
           </quota-cards>
           <p
@@ -69,7 +69,7 @@
         </div>
         <div
           class="quota-section"
-          v-if="isAdmin"
+          v-if="$can('quota.update', 'quota')"
         >
           <h4 class="quota-section-head"> {{spaceDescription}}配额更新请求 </h4>
           <quota-approval-table

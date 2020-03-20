@@ -11,7 +11,7 @@
         </template>
 
         <template
-          v-if="$can('update') || $can('delete')"
+          v-if="$can('deployment.update', 'deployment') || $can('deployment.delete',  'deployment')"
           #action-buttons>
           <dao-dropdown
             trigger="click"
@@ -26,17 +26,17 @@
 
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
-                v-if="$can('update')"
+                v-if="$can('deployment.update', 'deployment')"
                 @click="updateDeployment">
                 <span>更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('update')"
+                v-if="$can('deployment.update', 'deployment')"
                 @click="restartDeployment">
                 <span>重启</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('delete')"
+                v-if="$can('deployment.delete',  'deployment')"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
                 @click="ensureRemove">
                 <span>删除</span>

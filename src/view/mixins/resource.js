@@ -1,4 +1,5 @@
 import Resource from '@/view/components/resource/resource-link/resource';
+// eslint-disable-next-line import/no-named-as-default-member, import/no-named-as-default
 import ResourceTemplateService from '@/core/services/resource.template.service';
 import { mapState, mapGetters } from 'vuex';
 

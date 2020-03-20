@@ -28,7 +28,7 @@
                 <span>查看 YAML</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('delete')"
+                v-if="$can('pod.delete', 'pod')"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
                 @click="ensureRemove">
                 <span>删除</span>
@@ -192,6 +192,7 @@
           </terminal-history-panel>
         </el-tab-pane>
         <el-tab-pane
+          v-if="$can('application.monitor', 'pod')"
           :label="TABS.MONITOR.label"
           :name="TABS.MONITOR.name"
           lazy>

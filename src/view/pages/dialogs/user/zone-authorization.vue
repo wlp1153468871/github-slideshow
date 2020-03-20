@@ -2,6 +2,7 @@
   <dao-dialog
     header="可用区授权"
     :visible.sync="isShow"
+    @before-open="loadRoleOptions"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose">
     <dao-setting-section>
@@ -19,23 +20,23 @@
           <div class="dao-setting-patch role">
             <div
               class="sub-setting-layout role"
-              v-for="(zone, index) in user.zone_space_roles"
+              v-for="(zone, index) in zones"
               :key="index">
               <div class="sub-setting-section">
                 <div class="sub-setting-item">
                   <p>可用区</p>
-                  <div class="zone">{{ zone.zone_name }}</div>
+                  <div class="zone">{{ zone.name }}</div>
                 </div>
                 <div class="sub-setting-item">
                   <p>权限</p>
                   <dao-select
                     style="width: 157px;"
-                    v-model="zone.zone_role">
+                    v-model="result[zone.name]">
                     <dao-option
-                      v-for="(value, key) in roleOptions"
+                      v-for="(role, key) in zone.roles"
                       :key="key"
-                      :value="key"
-                      :label="value">
+                      :value="role"
+                      :label="role.name">
                     </dao-option>
                   </dao-select>
                 </div>
@@ -63,7 +64,8 @@
 </template>
 
 <script>
-import { ZONE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
+import { mapState, mapGetters } from 'vuex';
+// import { ZONE_ROLE_LABEL as roleOptions } from '@/core/constants/role';
 import { cloneDeep } from 'lodash';
 import SpaceService from '@/core/services/space.service';
 
@@ -79,8 +81,13 @@ export default {
   data() {
     return {
       user: {},
-      roleOptions,
+      roleOptions: [],
       isUpdating: false,
+      formModel: [],
+      result: {
+        k8s: '',
+        'office-openshift': '',
+      },
     };
   },
 
@@ -94,6 +101,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['zoneId']),
+    ...mapState(['zones']),
     isShow: {
       set() {
         this.$emit('close');
@@ -105,6 +114,35 @@ export default {
   },
 
   methods: {
+    getZoneRole(params) {
+      console.log(params);
+      return [
+        {
+          id: '01E2HX431T62G21RKT97TJG73K',
+          name: 'space-super-admin',
+        },
+        {
+          id: '01E2HX431T62G21RKT97TJG73K',
+          name: 'space-super-admin',
+        },
+      ];
+    },
+    loadRoleOptions() {
+      this.formModel = [];
+      // this.zones.map(zone => {
+      //   const params = {
+      //     scope: 'zone.k8s',
+      //     spaceId: this.spaceId,
+      //     zoneId: zone.id,
+      //   };
+      //   return RoleService.getRoles(params)
+      //     .then(role => {
+      //       console.log('role', role);
+      //       return role;
+      //     });
+      // });
+    },
+
     authorizeZone() {
       this.isUpdating = true;
       const { zone_space_roles } = this.user;
@@ -132,6 +170,9 @@ export default {
     dialogWillClose() {
       this.user = {};
     },
+  },
+  created() {
+    // this.();
   },
 };
 </script>

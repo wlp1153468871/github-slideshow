@@ -8,7 +8,7 @@
         </template>
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('delete') || $can('update')"
+            v-if="$can('secret.delete', 'secret') || $can('secret.update', 'secret')"
             trigger="click"
             :append-to-body="true"
             placement="bottom-end"
@@ -21,13 +21,13 @@
             </button>
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
-                v-if="$can('update')"
+                v-if="$can('secret.update', 'secret')"
                 @click="dialogConfigs.yamlEdit = true"
               >
                 <span>Yaml 更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('delete') && !objrefs.length"
+                v-if="$can('secret.delete', 'secret') && !objrefs.length"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >

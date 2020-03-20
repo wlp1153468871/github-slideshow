@@ -1,30 +1,82 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable function-paren-newline */
 import store from '@/core/store';
 import NProgress from 'nprogress';
 import ManageContainer from '@/view/pages/manage/container/container.vue';
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
 
-const QuotaField = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/quota/quota-field/quota-field.vue');
-const OrgQuotaGroup = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/quota/org-quota-group/org-quota-group.vue');
-const SpaceQuotaGroup = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/quota/space-quota-group/space-quota-group.vue');
-const SpaceQuotaGroupDetail = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/quota/space-quota-group-detail/space-quota-group-detail.vue');
-const BrokerServiceDetail = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/broker-service/service-detail/service-detail.vue');
-const ServiceList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/service/service-list/service-list.vue');
-const ServiceDetail = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/service/service-detail/service-detail.vue');
-const OrgDetail = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/org/org-detail/org-detail.vue');
-const OrgList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/org/org-list/org-list.vue');
-const SpaceDetail = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/org/space-detail/space-detail.vue');
-const UserList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/user/user-list/user-list.vue');
-const ZoneList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/zone/zone-list/zone-list.vue');
-const ZoneDetail = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/zone/zone-detail/zone-detail.vue');
-const AlarmMetricsList = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/alarm/alarm-metrics/alarm-metrics.vue');
+const QuotaField = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/quota/quota-field/quota-field.vue'
+  );
+const OrgQuotaGroup = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/quota/org-quota-group/org-quota-group.vue'
+  );
+const SpaceQuotaGroup = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/quota/space-quota-group/space-quota-group.vue'
+  );
+const SpaceQuotaGroupDetail = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/quota/space-quota-group-detail/space-quota-group-detail.vue'
+  );
+const BrokerServiceDetail = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/broker-service/service-detail/service-detail.vue'
+  );
+const ServiceList = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/service/service-list/service-list.vue'
+  );
+const ServiceDetail = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/service/service-detail/service-detail.vue'
+  );
+const OrgDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/org/org-detail/org-detail.vue');
+const OrgList = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/org/org-list/org-list.vue');
+const SpaceDetail = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/org/space-detail/space-detail.vue'
+  );
+const UserList = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/user/user-list/user-list.vue');
+const ZoneList = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-list/zone-list.vue');
+const ZoneDetail = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-detail/zone-detail.vue'
+  );
+const AlarmMetricsList = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/alarm/alarm-metrics/alarm-metrics.vue'
+  );
+const AuthContainer = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/container.vue');
+const AuthRoles = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/roles.vue');
 
 // preference
-const HomeSetting = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/preference/home/home.vue');
-const Preference = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/preference/preference/preference.vue');
-const Appearance = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/preference/appearance/appearance.vue');
-const SSO = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/preference/sso/sso.vue');
-const HelpInfoConfig = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/preference/help-info-config/help-info-config.vue');
-const DeployZone = () => import(/* webpackChunkName: "management" */'@/view/pages/manage/zone/deploy/deploy.vue');
+const HomeSetting = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/home/home.vue');
+const Preference = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/preference/preference/preference.vue'
+  );
+const Appearance = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/preference/appearance/appearance.vue'
+  );
+const SSO = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/sso/sso.vue');
+const HelpInfoConfig = () =>
+  import(
+    /* webpackChunkName: "management" */ '@/view/pages/manage/preference/help-info-config/help-info-config.vue'
+  );
+const DeployZone = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/deploy/deploy.vue');
 
 export default {
   path: '/manage',
@@ -99,6 +151,22 @@ export default {
       meta: {
         activeMenu: 'manage.zone.list',
       },
+    },
+    {
+      path: 'auth',
+      name: 'manage.auth',
+      component: AuthContainer,
+      redirect: {
+        name: 'manage.auth.roles',
+        params: { scope: 'platform' },
+      },
+      children: [
+        {
+          path: ':scope',
+          name: 'manage.auth.roles',
+          component: AuthRoles,
+        },
+      ],
     },
     {
       path: 'quota-field',

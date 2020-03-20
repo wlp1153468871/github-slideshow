@@ -182,7 +182,7 @@ export default {
 
   computed: {
     deleteable() {
-      return this.$can('delete') && this.canSelect;
+      return this.$can('pod.delete', 'pod') && this.canSelect;
     },
 
     podsFilteredByKey() {

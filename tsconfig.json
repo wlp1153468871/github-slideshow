@@ -18,5 +18,5 @@
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": ["src/core/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/core/constatns/*.ts"]
 }

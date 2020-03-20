@@ -7,6 +7,7 @@ import {
 } from '@/core/constants/role';
 import QuotaService from '@/core/services/quota.service';
 import SSOService from '@/core/services/sso.service';
+import RoleSrvice from '@/core/services/role.service';
 import StorageCache from '@/core/services/storage.cache';
 import router from '@/view/router';
 import {
@@ -86,7 +87,40 @@ export const state = {
   },
   isFullscreened: false,
   localLogin: true,
+  roleId: '',
+  zoneMenus: [],
+  spaceMenus: [],
+  zoneAction: {},
+  spaceAction: {},
 };
+
+function flat(
+  tree,
+  result = {
+    menus: [],
+    actions: {},
+  },
+) {
+  tree.forEach(({ featureCode, children, access }) => {
+    if (access) {
+      result.menus.push(featureCode);
+    }
+    // result.actions[featureCode] = access;
+    if (children) {
+      children.forEach(action => {
+        if (action.featurePoint && action.access) {
+          if (result.actions[featureCode]) {
+            result.actions[featureCode].push(action.featureCode);
+          } else {
+            (result.actions[featureCode] = [...[action.featureCode]]);
+          }
+        }
+      });
+      flat(children, result);
+    }
+  });
+  return result;
+}
 
 /* eslint-disable no-shadow */
 export const getters = {
@@ -158,6 +192,14 @@ export const getters = {
     return state.space.id;
   },
 
+  userId(state) {
+    return state.user.id;
+  },
+
+  userName(state) {
+    return state.user.username;
+  },
+
   orgSpaces(state) {
     if (!state.org || !state.org.id) return [];
     return state.spaces.filter(x => x.organization_id === state.org.id);
@@ -218,9 +260,46 @@ export const getters = {
     if (!apiResource) return [];
     return ['Ingress', 'Route'].map(kind => apiResource[kind]).filter(Boolean);
   },
+
+  // getMenus(state) {
+  //   return [...state.zoneMenus, ...state.spaceMenus];
+  // },
 };
 
 export const actions = {
+  // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
+  getRole({ commit, getters }, params) {
+    return RoleSrvice.getRolesById(params, getters.userId)
+      .then(roleList => {
+        if (roleList.length === 0) {
+          console.log('无角色 return');
+          return false;
+        }
+        RoleSrvice.getPermission(roleList[0].id)
+          .then(data => {
+            // console.log('permission', data);
+            const { menus, actions } = flat(data.children);
+            // const { actions } =f
+            // console.log('menus', menus);
+            // console.log('actions', actions);
+            const { scope } = params;
+            // console.log('scope', scope);
+            if (scope === 'space') {
+              // space
+              // console.log('进入了space');
+              commit('setSpaceMenus', menus);
+              commit('setSpaceActions', actions);
+            } else if (scope.includes('zone')) {
+              // zone
+              // console.log('进入了zone');
+              commit('setZoneMenus', menus);
+              commit('setZoneActions', actions);
+            }
+          });
+        return true;
+      });
+  },
+
   loadTheme({ commit }) {
     return SystemService.getTheme().then(theme => {
       commit(types.LOAD_THEME_SUCCESS, { theme });
@@ -271,6 +350,9 @@ export const actions = {
         return dispatch('getUserInfo');
       })
       .then(() => {
+        // return dispatch('getRole');
+      })
+      .then(() => {
         if (state.zones.length) {
           return dispatch('initPortal');
         }
@@ -298,7 +380,9 @@ export const actions = {
     });
   },
 
-  loadSpaces({ commit, state, getters }) {
+  loadSpaces({
+    commit, state, getters, dispatch,
+  }) {
     return new Promise((resolve, reject) => {
       Promise.all([
         OrgService.getUserOrgs(),
@@ -365,6 +449,13 @@ export const actions = {
         if (space) {
           SpaceService.setLocalSpace(space);
           commit(types.SWITCH_SPACE, { space });
+          const params = {
+            // userId: getters.userId,
+            scope: 'space',
+            spaceId: getters.spaceId,
+            // zoneId: getters.zoneId,
+          };
+          dispatch('getRole', params);
         } else {
           // 不会出现，以防万一
           Vue.noty.error('出错了');
@@ -377,7 +468,9 @@ export const actions = {
     });
   },
 
-  loadZones({ commit, state }) {
+  loadZones({
+    commit, state, dispatch, getters,
+  }) {
     return SpaceService.getSpaceZones(state.space.id).then(zones => {
       commit(types.LOAD_ZONE_SUCCESS, { zones });
 
@@ -395,6 +488,14 @@ export const actions = {
       ZoneService.setLocalZone(zone);
 
       commit(types.SWITCH_ZONE, { zone });
+      const params = {
+        // userId: getters.userId,
+        scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+        spaceId: getters.spaceId,
+        zoneId: getters.zoneId,
+      };
+      // const scope = 'zone';
+      dispatch('getRole', params);
     });
   },
 
@@ -493,6 +594,13 @@ export const actions = {
     commit(types.SWITCH_SPACE, { space });
     SpaceService.setLocalSpace(space);
 
+    // console.log('switchSpace => space', space);
+    const params = {
+      scope: 'space',
+      spaceId: space.id,
+    };
+    dispatch('getRole', params);
+
     dispatch('loadZones').then(() => {
       if (state.zones.length) {
         const zone = first(state.zones);
@@ -507,9 +615,22 @@ export const actions = {
   },
 
   // 切换可用区
-  switchZone({ dispatch, commit }, { zone }) {
+  switchZone({ dispatch, commit, getters }, { zone }) {
     commit(types.SWITCH_ZONE, { zone });
     ZoneService.setLocalZone(zone);
+
+    // 切换可用区也需要重新加载菜单权限
+    // console.log('switchZone');
+    // console.log('zone', zone);
+    // console.log('zone.area_name', zone.area_name);
+
+    const params = {
+      scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+      spaceId: getters.spaceId,
+      zoneId: zone.id,
+    };
+    dispatch('getRole', params);
+
     dispatch('getUserInfo').then(() => {
       dispatch('initPortal');
     });
@@ -667,6 +788,18 @@ export const mutations = {
 
   [types.FUll_SCREENED](state, isFullscreened) {
     state.isFullscreened = isFullscreened;
+  },
+  setZoneMenus(state, menus) {
+    state.zoneMenus = menus;
+  },
+  setSpaceMenus(state, menus) {
+    state.spaceMenus = menus;
+  },
+  setZoneActions(state, actions) {
+    state.zoneAction = actions;
+  },
+  setSpaceActions(state, actions) {
+    state.spaceAction = actions;
   },
 };
 /* eslint-enable no-shadow */

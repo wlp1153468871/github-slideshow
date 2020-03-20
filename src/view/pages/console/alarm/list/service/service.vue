@@ -23,7 +23,7 @@
         <button
           class="dao-btn blue has-icon add-rules"
           @click="onAddRules"
-          v-if="adminAccessed"
+          v-if="$can('alert.create', 'alert')"
         >
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>

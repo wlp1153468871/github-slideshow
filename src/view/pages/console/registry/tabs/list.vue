@@ -100,7 +100,7 @@
         :formatter="formatUpdateTime"
         label="更新时间">
       </el-table-column>
-      <el-table-column label="操作" v-if="$can('create')">
+      <el-table-column label="操作" v-if="$can('image.deploy', 'image.center')">
         <template slot-scope="scope">
           <button
             class="dao-btn btn-sm mini blue"

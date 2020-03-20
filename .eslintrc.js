@@ -59,7 +59,7 @@ module.exports = {
         singleline: 2,
         multiline: {
           max: 1,
-          allowFirstLine: false,
+          allowFirstLine: true,
         },
       },
     ],
