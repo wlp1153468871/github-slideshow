@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import store from '@/core/store';
 import NProgress from 'nprogress';
 
@@ -624,8 +625,9 @@ export default [
       if (store.getters.isOrganizationAdmin) {
         next();
       } else {
+        Vue.noty.error('无权限访问此页面');
         next({
-          name: 'console.dashboard',
+          // name: 'console.dashboard',
         });
         NProgress.done();
       }
@@ -636,6 +638,7 @@ export default [
     component: OrgContainer,
     meta: {
       hidden: true,
+      code: 'organization',
     },
     children: [
       {
@@ -644,6 +647,7 @@ export default [
         component: SpaceList,
         meta: {
           hidden: true,
+          code: 'organization.manage',
         },
       },
       {

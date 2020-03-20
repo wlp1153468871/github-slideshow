@@ -44,7 +44,7 @@
               {{ user.phone_number | otherwise}}
             </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             prop="platform_role"
             sortable
             label="权限"
@@ -52,7 +52,7 @@
             <template slot-scope="{ row: user }" prop="platform_role">
               {{ user.platform_role | platform_role}}
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             prop="platform_role"
             sortable
@@ -99,6 +99,7 @@
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
+                    :disabled="user.username===userName && $can('platform.manage', 'platform')"
                     command="edit"
                   >
                     设置

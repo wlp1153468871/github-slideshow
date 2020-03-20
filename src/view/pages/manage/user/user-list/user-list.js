@@ -1,5 +1,5 @@
 import { orderBy } from 'lodash';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import UserService from '@/core/services/user.service';
 import RoleService from '@/core/services/role.service';
 // dialogs
@@ -43,6 +43,7 @@ export default {
     ...mapState({
       self: 'user',
     }),
+    ...mapGetters(['userName']),
   },
 
   methods: {
@@ -66,6 +67,7 @@ export default {
     loadPlatformRoles() {
       RoleService.getRoles({
         scope: 'platform',
+        platformId: 'dsp',
       }).then(roles => {
         this.ROLES = roles;
       });
@@ -136,6 +138,7 @@ export default {
         data: {
           // organizationId: this.orgId,
           scope: role.scope,
+          platformId: 'dsp',
         },
       };
       RoleService.setRole(orgParams)
@@ -154,7 +157,7 @@ export default {
         .then(newUser => {
           try {
             this.applyUserChange(newUser);
-            this.$noty.success('设置用户权限成功');
+            // this.$noty.success('设置用户权限成功');
           } catch (err) {
             const { data = {} } = err;
             this.$noty.error(data.error_info);

@@ -43,7 +43,7 @@
 
 <script>
 import { ORG_ROLE } from '@/core/constants/role';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
@@ -92,6 +92,7 @@ export default {
 
   computed: {
     ...mapState(['user']),
+    ...mapGetters(['userName']),
   },
 
   created() {
@@ -131,7 +132,8 @@ export default {
           },
         },
       ]);
-      const isSelf = item => item.id === this.user.id;
+      const isSelf = item => item.username === this.userName && this.$can('organization.manage', 'organization');
+      // const isSelf = true;
       this.setTableOperations([
         {
           name: '修改权限',

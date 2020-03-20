@@ -93,7 +93,9 @@ export const state = {
   zoneAction: {},
   spaceAction: {},
   orgAction: {},
-  orgMenu: {},
+  orgMenu: [],
+  platformMenu: [],
+  platformAction: {},
 };
 
 function flat(
@@ -150,13 +152,15 @@ export const getters = {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
 
-  isPlatformAdmin(state) {
-    return state.user.platform_role === PLATFORM_ROLE.ADMIN;
+  isPlatformAdmin() {
+    // return state.user.platform_role === PLATFORM_ROLE.ADMIN;
+    return Vue.prototype.$ability.can('platform.manage', 'platform');
   },
 
   isOrganizationAdmin(state, getters) {
     return (
-      getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
+      // getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
+      getters.isPlatformAdmin || Vue.prototype.$ability.can('organization.manage', 'organization')
     );
   },
 
@@ -277,30 +281,22 @@ export const actions = {
           console.log('无角色 return');
           return false;
         }
-        console.log('roleList', roleList);
         RoleSrvice.getPermission(roleList[0].id)
           .then(data => {
-            console.log('permission', data);
             const { menus, actions } = flat(data.children);
-            // const { actions } =f
-            // console.log('menus', menus);
-            // console.log('actions', actions);
             const { scope } = params;
-            // console.log('scope', scope);
             if (scope === 'space') {
-              // space
-              // console.log('进入了space');
               commit('setSpaceMenus', menus);
               commit('setSpaceActions', actions);
             } else if (scope.includes('zone')) {
-              // zone
-              // console.log('进入了zone');
               commit('setZoneMenus', menus);
               commit('setZoneActions', actions);
             } else if (scope === 'organization') {
-              console.log(actions);
               commit('setOrgMenus', menus);
               commit('setOrgActions', actions);
+            } else if (scope === 'platform') {
+              commit('setPlatformMenus', menus);
+              commit('setPlatformActions', actions);
             }
           });
         return true;
@@ -357,7 +353,10 @@ export const actions = {
         return dispatch('getUserInfo');
       })
       .then(() => {
-        // return dispatch('getRole');
+        // return dispatch('getRole', {
+        //   scope: 'platform',
+        //   platformId: 'dsp',
+        // });
       })
       .then(() => {
         if (state.zones.length) {
@@ -390,7 +389,6 @@ export const actions = {
   loadSpaces({
     commit, state, getters, dispatch,
   }) {
-    console.log('loadSpaces');
     return new Promise((resolve, reject) => {
       Promise.all([
         OrgService.getUserOrgs(),
@@ -434,7 +432,6 @@ export const actions = {
         if (org) {
           commit(types.SWITCH_ORG, { org });
           OrgService.setLocalOrg(org);
-          console.log('org', org);
           // 获取org权限
           dispatch('getRole', {
             scope: 'organization',
@@ -513,11 +510,15 @@ export const actions = {
     });
   },
 
-  getUserInfo({ commit }) {
+  getUserInfo({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
       AuthService.getUserInfo()
         .then(user => {
           commit('LOAD_USER_SUCCESS', { user });
+          dispatch('getRole', {
+            scope: 'platform',
+            platformId: 'dsp',
+          });
           resolve(user);
         })
         .catch(error => {
@@ -824,6 +825,12 @@ export const mutations = {
   },
   setOrgMenus(state, menus) {
     state.orgMenu = menus;
+  },
+  setPlatformMenus(state, menus) {
+    state.platformMenu = menus;
+  },
+  setPlatformActions(state, actions) {
+    state.platformAction = actions;
   },
 };
 /* eslint-enable no-shadow */
