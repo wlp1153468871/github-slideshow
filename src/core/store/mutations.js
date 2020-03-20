@@ -92,6 +92,10 @@ export const state = {
   spaceMenus: [],
   zoneAction: {},
   spaceAction: {},
+  orgAction: {},
+  orgMenu: [],
+  platformMenu: [],
+  platformAction: {},
 };
 
 function flat(
@@ -148,13 +152,15 @@ export const getters = {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
 
-  isPlatformAdmin(state) {
-    return state.user.platform_role === PLATFORM_ROLE.ADMIN;
+  isPlatformAdmin() {
+    // return state.user.platform_role === PLATFORM_ROLE.ADMIN;
+    return Vue.prototype.$ability.can('platform.manage', 'platform');
   },
 
   isOrganizationAdmin(state, getters) {
     return (
-      getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
+      // getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
+      getters.isPlatformAdmin || Vue.prototype.$ability.can('organization.manage', 'organization')
     );
   },
 
@@ -277,23 +283,20 @@ export const actions = {
         }
         RoleSrvice.getPermission(roleList[0].id)
           .then(data => {
-            // console.log('permission', data);
             const { menus, actions } = flat(data.children);
-            // const { actions } =f
-            // console.log('menus', menus);
-            // console.log('actions', actions);
             const { scope } = params;
-            // console.log('scope', scope);
             if (scope === 'space') {
-              // space
-              // console.log('进入了space');
               commit('setSpaceMenus', menus);
               commit('setSpaceActions', actions);
             } else if (scope.includes('zone')) {
-              // zone
-              // console.log('进入了zone');
               commit('setZoneMenus', menus);
               commit('setZoneActions', actions);
+            } else if (scope === 'organization') {
+              commit('setOrgMenus', menus);
+              commit('setOrgActions', actions);
+            } else if (scope === 'platform') {
+              commit('setPlatformMenus', menus);
+              commit('setPlatformActions', actions);
             }
           });
         return true;
@@ -350,7 +353,10 @@ export const actions = {
         return dispatch('getUserInfo');
       })
       .then(() => {
-        // return dispatch('getRole');
+        // return dispatch('getRole', {
+        //   scope: 'platform',
+        //   platformId: 'dsp',
+        // });
       })
       .then(() => {
         if (state.zones.length) {
@@ -426,6 +432,11 @@ export const actions = {
         if (org) {
           commit(types.SWITCH_ORG, { org });
           OrgService.setLocalOrg(org);
+          // 获取org权限
+          dispatch('getRole', {
+            scope: 'organization',
+            organizationId: org.id,
+          });
         } else {
           // 如果org为空，也就是org没有space，则跳转到profile页面，onInitTenantView设为true防止循环调用
           Vue.noty.error(`您暂未加入任何${getters.spaceDescription}`);
@@ -499,11 +510,15 @@ export const actions = {
     });
   },
 
-  getUserInfo({ commit }) {
+  getUserInfo({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
       AuthService.getUserInfo()
         .then(user => {
           commit('LOAD_USER_SUCCESS', { user });
+          dispatch('getRole', {
+            scope: 'platform',
+            platformId: 'dsp',
+          });
           resolve(user);
         })
         .catch(error => {
@@ -587,6 +602,10 @@ export const actions = {
     commit(types.SWITCH_ORG, { org });
     OrgService.setLocalOrg(org);
     dispatch('switchSpace', { space });
+    dispatch('getRole', {
+      scope: 'organization',
+      organizationId: org.id,
+    });
   },
 
   // 切换项目组
@@ -594,7 +613,7 @@ export const actions = {
     commit(types.SWITCH_SPACE, { space });
     SpaceService.setLocalSpace(space);
 
-    // console.log('switchSpace => space', space);
+    console.log('switchSpace => space', space);
     const params = {
       scope: 'space',
       spaceId: space.id,
@@ -800,6 +819,18 @@ export const mutations = {
   },
   setSpaceActions(state, actions) {
     state.spaceAction = actions;
+  },
+  setOrgActions(state, actions) {
+    state.orgAction = actions;
+  },
+  setOrgMenus(state, menus) {
+    state.orgMenu = menus;
+  },
+  setPlatformMenus(state, menus) {
+    state.platformMenu = menus;
+  },
+  setPlatformActions(state, actions) {
+    state.platformAction = actions;
   },
 };
 /* eslint-enable no-shadow */
