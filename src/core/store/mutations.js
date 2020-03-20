@@ -92,6 +92,8 @@ export const state = {
   spaceMenus: [],
   zoneAction: {},
   spaceAction: {},
+  orgAction: {},
+  orgMenu: {},
 };
 
 function flat(
@@ -275,9 +277,10 @@ export const actions = {
           console.log('无角色 return');
           return false;
         }
+        console.log('roleList', roleList);
         RoleSrvice.getPermission(roleList[0].id)
           .then(data => {
-            // console.log('permission', data);
+            console.log('permission', data);
             const { menus, actions } = flat(data.children);
             // const { actions } =f
             // console.log('menus', menus);
@@ -294,6 +297,10 @@ export const actions = {
               // console.log('进入了zone');
               commit('setZoneMenus', menus);
               commit('setZoneActions', actions);
+            } else if (scope === 'organization') {
+              console.log(actions);
+              commit('setOrgMenus', menus);
+              commit('setOrgActions', actions);
             }
           });
         return true;
@@ -383,6 +390,7 @@ export const actions = {
   loadSpaces({
     commit, state, getters, dispatch,
   }) {
+    console.log('loadSpaces');
     return new Promise((resolve, reject) => {
       Promise.all([
         OrgService.getUserOrgs(),
@@ -426,6 +434,12 @@ export const actions = {
         if (org) {
           commit(types.SWITCH_ORG, { org });
           OrgService.setLocalOrg(org);
+          console.log('org', org);
+          // 获取org权限
+          dispatch('getRole', {
+            scope: 'organization',
+            organizationId: org.id,
+          });
         } else {
           // 如果org为空，也就是org没有space，则跳转到profile页面，onInitTenantView设为true防止循环调用
           Vue.noty.error(`您暂未加入任何${getters.spaceDescription}`);
@@ -587,6 +601,10 @@ export const actions = {
     commit(types.SWITCH_ORG, { org });
     OrgService.setLocalOrg(org);
     dispatch('switchSpace', { space });
+    dispatch('getRole', {
+      scope: 'organization',
+      organizationId: org.id,
+    });
   },
 
   // 切换项目组
@@ -594,7 +612,7 @@ export const actions = {
     commit(types.SWITCH_SPACE, { space });
     SpaceService.setLocalSpace(space);
 
-    // console.log('switchSpace => space', space);
+    console.log('switchSpace => space', space);
     const params = {
       scope: 'space',
       spaceId: space.id,
@@ -800,6 +818,12 @@ export const mutations = {
   },
   setSpaceActions(state, actions) {
     state.spaceAction = actions;
+  },
+  setOrgActions(state, actions) {
+    state.orgAction = actions;
+  },
+  setOrgMenus(state, menus) {
+    state.orgMenu = menus;
   },
 };
 /* eslint-enable no-shadow */

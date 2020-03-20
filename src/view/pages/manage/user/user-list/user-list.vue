@@ -54,6 +54,15 @@
             </template>
           </el-table-column>
           <el-table-column
+            prop="platform_role"
+            sortable
+            label="权限"
+          >
+            <template slot-scope="{ row: user }">
+              {{ user.roles | roleFormat }}
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="user.registry_location"
             sortable
             label="用户类型"
@@ -117,6 +126,7 @@
     <!-- dialogs start -->
     <update-platform-user-dialog
       ref="updateUser"
+      :platformroles="ROLES"
       :user="selectedUser"
       @update="updateUser"
       :visible="dialogConfigs.updateUser.visible"
@@ -126,6 +136,7 @@
     <create-user-dialog
       ref="createUser"
       :loading="loadings.create"
+      :platformroles="ROLES"
       @create="createUser"
       :visible="dialogConfigs.createUser.visible"
       @close="dialogConfigs.createUser.visible = false">
