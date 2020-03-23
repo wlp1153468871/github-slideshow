@@ -77,7 +77,7 @@
                     </el-dropdown-item>
                     <el-dropdown-item
                       class="dropdown-item-error"
-                      v-if="$can('delete')"
+                      v-if="$can('secret.delete', 'secret')"
                       :disabled="disableDelete(secret)"
                       command="delete"
                       icon="el-icon-delete">

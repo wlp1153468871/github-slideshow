@@ -166,7 +166,7 @@
       </template>
       <div
         class="goto-new-tab"
-        v-if="isPlatformAdmin">
+        v-if="$can('platform.manage', 'platform')">
         <router-link
           v-if="!isConsoleView"
           :to="{ name: 'console' }">

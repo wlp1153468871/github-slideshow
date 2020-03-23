@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import {
-  ORG_ROLE,
-  PLATFORM_ROLE,
   SPACE_ROLE,
   ZONE_ROLE,
 } from '@/core/constants/role';
