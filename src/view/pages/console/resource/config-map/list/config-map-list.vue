@@ -76,7 +76,7 @@
                     </el-dropdown-item>
                     <el-dropdown-item
                       class="dropdown-item-error"
-                      v-if="$can('delete')"
+                      v-if="$can('configMap.delete', 'configMap')"
                       :disabled="disableDelete(configMap)"
                       command="delete"
                       icon="el-icon-delete">

@@ -74,7 +74,7 @@
               <dt>Routes:</dt>
               <dd>
                 <router-link
-                  v-if="$can('create')"
+                  v-if="$can('service.create', 'service')"
                   :to="{ name: 'deploy.routes', query: { service: service.metadata.name} }">
                   创建 Route
                 </router-link>
