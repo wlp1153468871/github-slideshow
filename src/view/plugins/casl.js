@@ -72,7 +72,7 @@ function defineAbilitiesFor(actions) {
 function updateVueUsedCaslPluginWeWillInjectWatcher(Vue) {
   store.watch(
     x => {
-      const action = Object.assign(x.zoneAction, x.spaceAction);
+      const action = Object.assign(x.zoneAction, x.spaceAction, x.orgAction, x.platformAction);
       // console.log(action);
       return action;
     },

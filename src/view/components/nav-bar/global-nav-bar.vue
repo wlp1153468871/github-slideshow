@@ -170,12 +170,12 @@
         <router-link
           v-if="!isConsoleView"
           :to="{ name: 'console' }">
-          <span>切换租户视图</span>
+          <span>退出管理员视图</span>
         </router-link>
         <router-link
           v-else
           :to="{ name: 'manage' }">
-          <span>切换管理员视图</span>
+          <span>进入管理员视图</span>
         </router-link>
       </div>
       <div class="user-operation">
@@ -198,7 +198,7 @@
               </svg>
               <span class="text">应用管理</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="gotoOrg" v-if="isDisplayOrgSelect">
+            <dao-dropdown-item @click="gotoOrg" v-if="$can('organization.manage', 'organization')">
               <svg class="icon">
                 <use xlink:href="#icon_city"></use>
               </svg>

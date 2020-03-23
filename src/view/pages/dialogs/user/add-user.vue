@@ -63,7 +63,10 @@
               class="sub-setting-layout role"
               v-for="(zone, index) in zones"
               :key="index">
-              <div class="sub-setting-section">
+              <div
+                class="sub-setting-section"
+                v-if="zone.name==='k8s-dev'"
+              >
                 <div class="sub-setting-item">
                   <p style="font-size: 13px">可用区</p>
                   <div class="zone">{{ zone.name }}</div>
@@ -134,6 +137,7 @@ export default {
       },
       result: {},
       user: {},
+      overtimer: null,
     };
   },
 
@@ -292,6 +296,9 @@ export default {
     onRefresh() {
       this.onClose();
       this.$emit('refresh');
+      this.overtimer = setTimeout(() => {
+        this.$router.go(0);
+      }, 1800);
     },
 
     closed() {
@@ -312,6 +319,11 @@ export default {
       });
       return zoneName;
     },
+  },
+  beforeDestroy() {
+    if (this.overtimer) {
+      this.overtimer = null;
+    }
   },
 };
 </script>

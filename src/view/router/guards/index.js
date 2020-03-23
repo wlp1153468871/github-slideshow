@@ -60,7 +60,6 @@ export default function ensureHooks(router) {
         Vue.noty.error('无权限访问此页面');
         // router.push({ name: 'home' });
         NProgress.done();
-        // return;
       }
     }
     const routes = to.matched.concat();
