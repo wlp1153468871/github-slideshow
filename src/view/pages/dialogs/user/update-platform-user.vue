@@ -88,14 +88,12 @@ export default {
   },
   methods: {
     onConfirm() {
-      console.log(this.role);
       this.$emit('update', {
         id: this.user.id,
         role: 'platform_admin',
       }, this.role);
     },
     init() {
-      console.log('user', this.user);
       if (this.user.roles) {
         const [role] = this.user.roles;
         this.role = role;
