@@ -316,7 +316,7 @@ export default [
     meta: {
       title: '服务',
       icon: '#icon_service-category',
-      code: 'serviceCatalog',
+      code: 'serviceBroker',
     },
     children: [
       {
@@ -325,7 +325,7 @@ export default [
         component: InstanceList,
         meta: {
           hidden: true,
-          code: 'serviceCatalog',
+          code: 'serviceBroker',
         },
       },
       {
@@ -418,7 +418,7 @@ export default [
     meta: {
       title: '审批',
       icon: '#icon_audit',
-      code: 'approve',
+      code: 'approval',
     },
     children: [
       {
@@ -427,7 +427,7 @@ export default [
         component: ApprovalList,
         meta: {
           title: '审批请求',
-          code: 'approve.view',
+          code: 'approval.view',
           icon: '#icon_outgoing',
         },
       },
@@ -437,7 +437,7 @@ export default [
         component: ApprovalHistory,
         meta: {
           title: '审批记录',
-          code: 'approve.log',
+          code: 'approval.log',
           icon: '#icon_log',
         },
       },
@@ -468,7 +468,7 @@ export default [
     meta: {
       title: '管理',
       icon: '#icon_user',
-      code: 'project',
+      code: 'space.manage',
     },
   },
   // deploy
