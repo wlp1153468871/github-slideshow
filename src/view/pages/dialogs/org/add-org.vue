@@ -185,11 +185,12 @@ export default {
         this.loading = true;
         ZoneService.getAvailableZones().then(zones => {
           this.loading = false;
-          this.zones = zones.filter(zone => {
+          const [currentZone] = zones.filter(zone => {
             return (
               zone.name.toLowerCase().indexOf(query.toLowerCase()) > -1
             );
           });
+          this.zones.push(currentZone);
         });
       }
     },
@@ -215,6 +216,7 @@ export default {
       this.user_ids = [];
       this.zone_ids = [];
       this.description = '';
+      this.zones = [];
     },
 
     bopen() {

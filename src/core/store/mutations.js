@@ -150,16 +150,21 @@ export const getters = {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
 
-  isPlatformAdmin() {
-    // return state.user.platform_role === PLATFORM_ROLE.ADMIN;
-    return Vue.prototype.$ability.can('platform.manage', 'platform');
+  isPlatformAdmin(state) {
+    if (state.platformAction && state.platformAction.platform && state.platformAction.platform.indexOf('platform.manage') > -1) {
+      return true;
+    }
+    return false;
   },
 
-  isOrganizationAdmin(state, getters) {
-    return (
-      // getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
-      getters.isPlatformAdmin || Vue.prototype.$ability.can('organization.manage', 'organization')
-    );
+  isOrganizationAdmin(state) {
+    // return (
+    //   getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
+    // );
+    if (state.orgAction && state.orgAction.organization && state.orgAction.organization.indexOf('organization.manage') > -1) {
+      return true;
+    }
+    return false;
   },
 
   isSpaceAdmin(state, getters) {
