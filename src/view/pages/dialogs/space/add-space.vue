@@ -141,6 +141,7 @@ export default {
       this.short_name = '';
       this.description = '';
       this.zoneIds = [];
+      this.zones = [];
     },
 
     loadZones(query) {
@@ -148,10 +149,11 @@ export default {
         this.loading = true;
         ZoneService.getAvailableZones(this.orgId).then(zones => {
           this.loading = false;
-          this.zones = zones.filter(zone => {
+          const [currentZone] = zones.filter(zone => {
             return zone.name.toLowerCase()
               .indexOf(query.toLowerCase()) > -1;
           });
+          this.zones.push(currentZone);
         });
       }
     },
