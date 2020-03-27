@@ -14,10 +14,10 @@ export function permission2treeData(permission) {
   return {
     ...permission,
     children: (permission.children || [])
-      .filter(p => !p.featurePoint)
+      .filter(p => p.type !== 'feature')
       .map(permission2treeData)
       .sort(perCompare),
-    actions: (permission.children || []).filter(p => p.featurePoint).sort(perCompare),
+    actions: (permission.children || []).filter(p => p.type === 'feature').sort(perCompare),
   };
 }
 
