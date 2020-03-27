@@ -91,8 +91,8 @@ export const state = {
   zoneAction: {},
   spaceAction: {},
   orgAction: {},
-  orgMenu: [],
-  platformMenu: [],
+  orgMenus: [],
+  platformMenus: [],
   platformAction: {},
 };
 
@@ -103,18 +103,20 @@ function flat(
     actions: {},
   },
 ) {
-  tree.forEach(({ featureCode, children, access }) => {
-    if (access) {
+  tree.forEach(({
+    featureCode, type, children, access,
+  }) => {
+    if (type === 'page' && access) {
       result.menus.push(featureCode);
     }
     // result.actions[featureCode] = access;
     if (children) {
       children.forEach(action => {
-        if (action.featurePoint && action.access) {
+        if (action.type === 'feature' && action.access) {
           if (result.actions[featureCode]) {
             result.actions[featureCode].push(action.featureCode);
           } else {
-            (result.actions[featureCode] = [...[action.featureCode]]);
+            result.actions[featureCode] = [...[action.featureCode]];
           }
         }
       });
@@ -151,7 +153,11 @@ export const getters = {
   },
 
   isPlatformAdmin(state) {
-    if (state.platformAction && state.platformAction.platform && state.platformAction.platform.indexOf('platform.manage') > -1) {
+    if (
+      state.platformAction &&
+      state.platformAction.platform &&
+      state.platformAction.platform.indexOf('platform.manage') > -1
+    ) {
       return true;
     }
     return false;
@@ -161,22 +167,22 @@ export const getters = {
     // return (
     //   getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
     // );
-    if (state.orgAction && state.orgAction.organization && state.orgAction.organization.indexOf('organization.manage') > -1) {
+    if (
+      state.orgAction &&
+      state.orgAction.organization &&
+      state.orgAction.organization.indexOf('organization.manage') > -1
+    ) {
       return true;
     }
     return false;
   },
 
   isSpaceAdmin(state, getters) {
-    return (
-      getters.isPlatformAdmin || state.user.space_role === SPACE_ROLE.ADMIN
-    );
+    return getters.isPlatformAdmin || state.user.space_role === SPACE_ROLE.ADMIN;
   },
 
   alarmAdminAccessed(state, getters) {
-    return (
-      getters.isPlatformAdmin || getters.isOrganizationAdmin || getters.isSpaceAdmin
-    );
+    return getters.isPlatformAdmin || getters.isOrganizationAdmin || getters.isSpaceAdmin;
   },
 
   zoneUnauthorized(state) {
@@ -259,9 +265,7 @@ export const getters = {
   deploymentKinds(state) {
     const { apiResource } = state;
     if (!apiResource) return [];
-    return ['DeploymentConfig', 'Deployment']
-      .map(kind => apiResource[kind])
-      .filter(Boolean);
+    return ['DeploymentConfig', 'Deployment'].map(kind => apiResource[kind]).filter(Boolean);
   },
 
   exposeKinds(state) {
@@ -270,40 +274,55 @@ export const getters = {
     return ['Ingress', 'Route'].map(kind => apiResource[kind]).filter(Boolean);
   },
 
-  // getMenus(state) {
-  //   return [...state.zoneMenus, ...state.spaceMenus];
-  // },
+  actinos(state) {
+    const {
+      zoneAction,
+      spaceAction,
+      orgAction,
+      platformAction,
+    } = state;
+    return Object.assign({}, zoneAction, spaceAction, orgAction, platformAction);
+  },
+
+  menus(state) {
+    const {
+      zoneMenus,
+      spaceMenus,
+      orgMenus,
+      platformMenus,
+    } = state;
+    console.log({ zoneMenus }, { spaceMenus }, { orgMenus }, { platformMenus });
+    return [...zoneMenus, ...spaceMenus, ...orgMenus, ...platformMenus];
+  },
 };
 
 export const actions = {
   // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
   getRole({ commit, getters }, params) {
-    return RoleSrvice.getRolesById(params, getters.userId)
-      .then(roleList => {
-        if (roleList.length === 0) {
-          console.log('无角色 return');
-          return false;
+    return RoleSrvice.getRolesById(params, getters.userId).then(roleList => {
+      if (roleList.length === 0) {
+        console.log('无角色 return');
+        return false;
+      }
+      RoleSrvice.getPermission(roleList[0].id).then(data => {
+        const { menus, actions } = flat(data.children);
+        const { scope } = params;
+        if (scope === 'space') {
+          commit('setSpaceMenus', menus);
+          commit('setSpaceActions', actions);
+        } else if (scope.includes('zone')) {
+          commit('setZoneMenus', menus);
+          commit('setZoneActions', actions);
+        } else if (scope === 'organization') {
+          commit('setOrgMenus', menus);
+          commit('setOrgActions', actions);
+        } else if (scope === 'platform') {
+          commit('setPlatformMenus', menus);
+          commit('setPlatformActions', actions);
         }
-        RoleSrvice.getPermission(roleList[0].id)
-          .then(data => {
-            const { menus, actions } = flat(data.children);
-            const { scope } = params;
-            if (scope === 'space') {
-              commit('setSpaceMenus', menus);
-              commit('setSpaceActions', actions);
-            } else if (scope.includes('zone')) {
-              commit('setZoneMenus', menus);
-              commit('setZoneActions', actions);
-            } else if (scope === 'organization') {
-              commit('setOrgMenus', menus);
-              commit('setOrgActions', actions);
-            } else if (scope === 'platform') {
-              commit('setPlatformMenus', menus);
-              commit('setPlatformActions', actions);
-            }
-          });
-        return true;
       });
+      return true;
+    });
   },
 
   loadTheme({ commit }) {
@@ -827,10 +846,10 @@ export const mutations = {
     state.orgAction = actions;
   },
   setOrgMenus(state, menus) {
-    state.orgMenu = menus;
+    state.orgMenus = menus;
   },
   setPlatformMenus(state, menus) {
-    state.platformMenu = menus;
+    state.platformMenus = menus;
   },
   setPlatformActions(state, actions) {
     state.platformAction = actions;
