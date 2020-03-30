@@ -80,9 +80,7 @@ export default {
   },
   methods: {
     init() {
-      // console.log('this.user', this.user);
       const [role] = this.user.roles;
-      // console.log('role', role);
       this.role = role;
     },
 

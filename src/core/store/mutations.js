@@ -291,7 +291,6 @@ export const getters = {
       orgMenus,
       platformMenus,
     } = state;
-    console.log({ zoneMenus }, { spaceMenus }, { orgMenus }, { platformMenus });
     return [...zoneMenus, ...spaceMenus, ...orgMenus, ...platformMenus];
   },
 };
@@ -635,7 +634,6 @@ export const actions = {
     commit(types.SWITCH_SPACE, { space });
     SpaceService.setLocalSpace(space);
 
-    console.log('switchSpace => space', space);
     const params = {
       scope: 'space',
       spaceId: space.id,
@@ -659,11 +657,6 @@ export const actions = {
   switchZone({ dispatch, commit, getters }, { zone }) {
     commit(types.SWITCH_ZONE, { zone });
     ZoneService.setLocalZone(zone);
-
-    // 切换可用区也需要重新加载菜单权限
-    // console.log('switchZone');
-    // console.log('zone', zone);
-    // console.log('zone.area_name', zone.area_name);
 
     const params = {
       scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
