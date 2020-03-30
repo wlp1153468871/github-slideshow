@@ -127,7 +127,6 @@ export default {
 
     onConfirm() {
       const { keyword, role } = this;
-      console.log('role', role);
       const user = this.users.find(x => x.email === keyword);
       if (!user || !user.email) {
         this.$noty.error('该用户无绑定邮箱');

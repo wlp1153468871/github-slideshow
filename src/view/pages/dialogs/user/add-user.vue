@@ -230,8 +230,7 @@ export default {
         },
       };
       RoleService.setRole(spaceParams)
-        .then(data => {
-          console.log('data', data);
+        .then(() => {
           this.$noty.success('更新项目组权限成功');
         });
     },
@@ -257,8 +256,7 @@ export default {
         }];
         this.authorizeZone(zone_space_roles);
         RoleService.setRole(zoneParams)
-          .then(data => {
-            console.log('data', data);
+          .then(() => {
             this.onRefresh();
             this.$noty.success('更新可用区权限成功');
           });
@@ -278,7 +276,6 @@ export default {
       });
     },
     authorizeZone(zone_space_roles) {
-      // console.log('this.formModel.user_id', this.formModel.user_id);
       return SpaceService.authorizeZone(this.spaceId, this.formModel.user_id, {
         zone_space_roles,
       })
