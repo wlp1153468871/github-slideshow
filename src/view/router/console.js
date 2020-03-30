@@ -468,7 +468,7 @@ export default [
     meta: {
       title: '管理',
       icon: '#icon_user',
-      code: 'space.manage',
+      code: 'space',
     },
   },
   // deploy
