@@ -14,14 +14,23 @@ const notyErrorOption = {
   layout: 'topCenter',
   type: 'error',
 };
+const debug = process.env.NODE_ENV !== 'production';
 
 function notifyErrorResponse(response, defaultMessage) {
   const msg =
     getValue(response, 'data.error_info') || getValue(response, 'data');
-  new Noty({
-    ...notyErrorOption,
-    text: msg || defaultMessage,
-  }).show();
+  if (debug) {
+    new Noty({
+      ...notyErrorOption,
+      text: msg || defaultMessage,
+    }).show();
+  } else {
+    new Noty({
+      ...notyErrorOption,
+      text: '服务器错误，请联系管理员',
+    }).show();
+    console.error('error', msg || defaultMessage);
+  }
 }
 
 const refreshToken = (params, cb) => {
@@ -70,7 +79,6 @@ export default {
   response(res) {
     if (/^20\d/.test(res.status)) {
       if (res.headers.authorizationresult) {
-        // console.log(res);
         notifyErrorResponse({}, `后端无权限, 请联系管理员 ${res.request.responseURL}`);
       }
       return res.data;

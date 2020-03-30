@@ -188,7 +188,6 @@ export default {
         .then(([orgUsers, spaceUsers, spaceRoles]) => {
           this.users = spaceUsers;
           this.allUsers = orgUsers;
-          // console.log('space roles', spaceRoles);
           this.spaceRoles = spaceRoles;
         })
         .finally(() => {
@@ -197,12 +196,8 @@ export default {
     },
 
     loadZoneRoles() {
-      // console.log('this.zones', this.zones);
       this.zones.forEach(zone => {
-        // console.log('zone', zone);
         const { id, name } = zone;
-        // console.log('zoneId', id);
-        // console.log('areaName', name);
         const key = name;
         RoleService.getRoles({
           scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
@@ -210,10 +205,7 @@ export default {
           zone: id,
         })
           .then(roleList => {
-            // console.log('zone roleList', roleList);
-            // console.log('key', key);
             this.zoneRoles[key] = roleList;
-            // console.log(this.zoneRoles);
           });
       });
     },
@@ -223,7 +215,6 @@ export default {
     },
 
     confirmRemoveUser(user) {
-      console.log('user', user);
       this.$tada
         .confirm({
           title: '移除用户',

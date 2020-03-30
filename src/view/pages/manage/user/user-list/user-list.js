@@ -131,7 +131,6 @@ export default {
     },
 
     setPlatformRole(role, userId) {
-      console.log(role);
       const orgParams = {
         userId,
         roleId: role.id,
@@ -213,7 +212,6 @@ export default {
     roleFormat: val => {
       let text = '';
       if (val) {
-        // console.log(val);
         val.forEach(role => {
           if (role.scope === 'platform') {
             text = role.name;
