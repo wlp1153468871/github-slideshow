@@ -92,7 +92,7 @@ export default [
     meta: {
       title: '应用',
       icon: '#icon_application',
-      code: 'application',
+      code: 'serviceInstance',
     },
   },
   /**

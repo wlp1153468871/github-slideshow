@@ -80,8 +80,10 @@ export default {
   },
   methods: {
     init() {
-      const [role] = this.user.roles;
-      this.role = role;
+      if (this.user.roles) {
+        const [role] = this.user.roles;
+        this.role = role;
+      }
     },
 
     onConfirm() {
