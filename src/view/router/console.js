@@ -409,6 +409,7 @@ export default [
     meta: {
       activeMenu: 'console.applications.list',
       hidden: true,
+      code: 'serviceInstance',
     },
   },
   {
