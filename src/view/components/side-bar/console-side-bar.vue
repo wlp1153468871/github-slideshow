@@ -120,7 +120,7 @@
       </el-menu>
 
       <!-- 旧 -->
-      <el-menu
+      <!-- <el-menu
         style="margin-top: 88px;"
         ref="topMenu"
         class="side-bar-menu"
@@ -149,7 +149,6 @@
         :router="true"
         :collapse="isCollapse"
       >
-
         <template v-if="isPlatformAdmin || !zoneUnauthorized">
 
           <el-menu-item
@@ -306,7 +305,7 @@
             </el-menu-item>
           </el-submenu>
         </el-submenu>
-      </el-menu>
+      </el-menu> -->
     </div>
 
     <div
