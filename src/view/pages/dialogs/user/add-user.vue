@@ -236,32 +236,35 @@ export default {
     },
 
     setZoneRole() {
-      this.zones.map(zone => {
-        const { name, id } = zone;
-        const key = name;
-        const zoneParams = {
-          userId: this.formModel.user_id,
-          roleId: this.result[key].id,
-          data: {
-            organizationId: this.org.id,
-            spaceId: this.spaceId,
-            zoneId: id,
-            scope: this.result[key].scope,
-          },
-        };
-        const zone_space_roles = [{
-          zone_id: id,
-          zone_name: name,
-          zone_role: 'zone_admin',
-        }];
-        this.authorizeZone(zone_space_roles);
-        RoleService.setRole(zoneParams)
-          .then(() => {
-            this.onRefresh();
-            this.$noty.success('更新可用区权限成功');
-          });
-        return true;
-      });
+      this.zones
+        .filter(zone => zone.name.includes('k8s'))
+        .map(zone => {
+          console.log(zone);
+          const { name, id } = zone;
+          const key = name;
+          const zoneParams = {
+            userId: this.formModel.user_id,
+            roleId: this.result[key].id,
+            data: {
+              organizationId: this.org.id,
+              spaceId: this.spaceId,
+              zoneId: id,
+              scope: this.result[key].scope,
+            },
+          };
+          const zone_space_roles = [{
+            zone_id: id,
+            zone_name: name,
+            zone_role: 'zone_admin',
+          }];
+          this.authorizeZone(zone_space_roles);
+          RoleService.setRole(zoneParams)
+            .then(() => {
+              this.onRefresh();
+              this.$noty.success('更新可用区权限成功');
+            });
+          return true;
+        });
       if (!this.isUpdate) {
         this.addUser();
       }
