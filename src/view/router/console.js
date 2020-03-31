@@ -365,7 +365,7 @@ export default [
     meta: {
       title: '监控',
       icon: '#icon_monitor',
-      code: 'metric',
+      code: 'monitor',
     },
   },
   {
