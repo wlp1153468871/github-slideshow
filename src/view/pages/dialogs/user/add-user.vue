@@ -252,12 +252,6 @@ export default {
               scope: this.result[key].scope,
             },
           };
-          const zone_space_roles = [{
-            zone_id: id,
-            zone_name: name,
-            zone_role: 'zone_admin',
-          }];
-          this.authorizeZone(zone_space_roles);
           RoleService.setRole(zoneParams)
             .then(() => {
               this.onRefresh();
@@ -277,15 +271,6 @@ export default {
         this.onRefresh();
         this.$noty.success('添加用户成功');
       });
-    },
-    authorizeZone(zone_space_roles) {
-      return SpaceService.authorizeZone(this.spaceId, this.formModel.user_id, {
-        zone_space_roles,
-      })
-        .then(() => {
-        })
-        .finally(() => {
-        });
     },
 
     onClose() {
