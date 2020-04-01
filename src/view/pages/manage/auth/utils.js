@@ -21,6 +21,17 @@ export function permission2treeData(permission) {
   };
 }
 
+function setTreeDataActionChildAccess(children, actionAccess) {
+  if (!children || children.length === 0) {
+    return children;
+  }
+  return children.map(c => ({
+    ...c,
+    children: setTreeDataActionChildAccess(c.children, actionAccess),
+    access: actionAccess,
+  }));
+}
+
 export function treeData2permission(treeData) {
   return {
     ...treeData,
@@ -32,12 +43,7 @@ export function treeData2permission(treeData) {
         (treeData.actions || []).map(a => {
           return {
             ...a,
-            children: (a.children || []).map(c => {
-              return {
-                ...c,
-                access: a.access,
-              };
-            }),
+            children: setTreeDataActionChildAccess(a.children, a.access),
           };
         }),
         // eslint-disable-next-line function-paren-newline
