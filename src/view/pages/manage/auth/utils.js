@@ -24,7 +24,7 @@ export function permission2treeData(permission) {
 export function treeData2permission(treeData) {
   return {
     ...treeData,
-    access: treeData.featureCode === 'root' ? true : treeData.access,
+    access: treeData.type === 'root' ? true : treeData.access,
     children: (treeData.children || [])
       .map(treeData2permission)
       // eslint-disable-next-line function-paren-newline
