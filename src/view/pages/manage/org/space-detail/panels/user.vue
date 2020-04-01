@@ -128,6 +128,7 @@ export default {
             });
             return text;
           },
+          filter: 'role_format',
         },
         {
           id: 'roles',
@@ -141,6 +142,7 @@ export default {
             });
             return text;
           },
+          filter: 'role_format',
         },
         // { id: 'roles', name: '权限', value: 'roles', filter: 'role_format' },
         // { id: 'space_role', name: '项目组权限', filter: 'space_role' },
