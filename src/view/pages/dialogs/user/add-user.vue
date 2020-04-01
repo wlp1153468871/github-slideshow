@@ -115,7 +115,6 @@ import { mapState, mapGetters } from 'vuex';
 import { isEmpty, cloneDeep } from 'lodash';
 import UserService from '@/core/services/user.service';
 import RoleService from '@/core/services/role.service';
-import SpaceService from '@/core/services/space.service';
 
 export default {
   name: 'AddUserDialog',

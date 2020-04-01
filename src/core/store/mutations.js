@@ -106,7 +106,7 @@ function flat(
   tree.forEach(({
     featureCode, type, children, access,
   }) => {
-    if (type === 'page' && access) {
+    if ((type === 'page' || type === 'feature') && access) {
       result.menus.push(featureCode);
     }
     // result.actions[featureCode] = access;
@@ -296,32 +296,59 @@ export const getters = {
 };
 
 export const actions = {
-  // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
-  getRole({ commit, getters }, params) {
-    return RoleSrvice.getRolesById(params, getters.userId).then(roleList => {
-      if (roleList.length === 0) {
-        console.log('无角色 return');
-        return false;
+  getPermissionById({ commit }, { role, params }) {
+    const { id, scope } = role;
+    RoleSrvice.getPermission(
+      id,
+      params,
+    ).then(data => {
+      const { menus, actions } = flat(data.children);
+      if (scope === 'space') {
+        commit('setSpaceMenus', menus);
+        commit('setSpaceActions', actions);
+      } else if (scope.includes('zone')) {
+        commit('setZoneMenus', menus);
+        commit('setZoneActions', actions);
+      } else if (scope === 'organization') {
+        commit('setOrgMenus', menus);
+        commit('setOrgActions', actions);
+      } else if (scope === 'platform') {
+        commit('setPlatformMenus', menus);
+        commit('setPlatformActions', actions);
       }
-      RoleSrvice.getPermission(roleList[0].id).then(data => {
-        const { menus, actions } = flat(data.children);
-        const { scope } = params;
-        if (scope === 'space') {
-          commit('setSpaceMenus', menus);
-          commit('setSpaceActions', actions);
-        } else if (scope.includes('zone')) {
-          commit('setZoneMenus', menus);
-          commit('setZoneActions', actions);
-        } else if (scope === 'organization') {
-          commit('setOrgMenus', menus);
-          commit('setOrgActions', actions);
-        } else if (scope === 'platform') {
-          commit('setPlatformMenus', menus);
-          commit('setPlatformActions', actions);
-        }
-      });
-      return true;
     });
+  },
+  // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
+  getRole({ getters, dispatch }, params) {
+    return RoleSrvice.getRolesById(params, getters.userId)
+      .then(roleList => {
+        if (roleList.length === 0) {
+          return false;
+        }
+        const role = roleList[0];
+        const { scope } = role;
+        if (scope === 'space') {
+          dispatch('getPermissionById', {
+            role,
+            params: {
+              spaceId: getters.spaceId,
+            },
+          });
+        } else if (scope === 'organization') {
+          dispatch('getPermissionById', {
+            role,
+            params: {
+              organizationId: getters.orgId,
+            },
+          });
+        } else {
+          dispatch('getPermissionById', {
+            role,
+            params: null,
+          });
+        }
+        return true;
+      });
   },
 
   loadTheme({ commit }) {
