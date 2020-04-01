@@ -65,7 +65,7 @@
               :key="index">
               <div
                 class="sub-setting-section"
-                v-if="zone.name==='k8s-dev'"
+                v-if="zone.name.includes('k8s')"
               >
                 <div class="sub-setting-item">
                   <p style="font-size: 13px">可用区</p>
