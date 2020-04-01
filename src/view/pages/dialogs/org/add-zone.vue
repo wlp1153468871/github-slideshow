@@ -71,10 +71,11 @@ export default {
         ZoneService.getAvailableZones().then(zones => {
           this.loading = false;
           const diffZones = differenceBy(zones, this.zoneList, 'id');
-          this.zones = diffZones.filter(zone => {
+          const [currentZone] = diffZones.filter(zone => {
             return zone.area_name.toLowerCase()
               .indexOf(query.toLowerCase()) > -1;
           });
+          this.zones.push(currentZone);
         });
       }
     },
@@ -84,8 +85,9 @@ export default {
       this.onClose();
     },
 
-    dialogWillClose() {
+    onClose() {
       this.zoneIds = [];
+      this.zones = [];
     },
   },
 };

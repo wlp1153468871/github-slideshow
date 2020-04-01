@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import store from '@/core/store';
 import NProgress from 'nprogress';
 
@@ -91,7 +92,7 @@ export default [
     meta: {
       title: '应用',
       icon: '#icon_application',
-      code: 'application',
+      code: 'serviceInstance',
     },
   },
   /**
@@ -315,7 +316,7 @@ export default [
     meta: {
       title: '服务',
       icon: '#icon_service-category',
-      code: 'serviceCatalog',
+      code: 'serviceBroker',
     },
     children: [
       {
@@ -324,7 +325,7 @@ export default [
         component: InstanceList,
         meta: {
           hidden: true,
-          code: 'serviceCatalog',
+          code: 'serviceBroker',
         },
       },
       {
@@ -364,7 +365,7 @@ export default [
     meta: {
       title: '监控',
       icon: '#icon_monitor',
-      code: 'metric',
+      code: 'monitor',
     },
   },
   {
@@ -408,6 +409,7 @@ export default [
     meta: {
       activeMenu: 'console.applications.list',
       hidden: true,
+      code: 'serviceInstance',
     },
   },
   {
@@ -417,7 +419,7 @@ export default [
     meta: {
       title: '审批',
       icon: '#icon_audit',
-      code: 'approve',
+      code: 'approval',
     },
     children: [
       {
@@ -426,7 +428,7 @@ export default [
         component: ApprovalList,
         meta: {
           title: '审批请求',
-          code: 'approve.view',
+          code: 'approval.view',
           icon: '#icon_outgoing',
         },
       },
@@ -436,7 +438,7 @@ export default [
         component: ApprovalHistory,
         meta: {
           title: '审批记录',
-          code: 'approve.log',
+          code: 'approval.log',
           icon: '#icon_log',
         },
       },
@@ -467,7 +469,7 @@ export default [
     meta: {
       title: '管理',
       icon: '#icon_user',
-      code: 'project',
+      code: 'space',
     },
   },
   // deploy
@@ -624,8 +626,9 @@ export default [
       if (store.getters.isOrganizationAdmin) {
         next();
       } else {
+        Vue.noty.error('无权限访问此页面');
         next({
-          name: 'console.dashboard',
+          // name: 'console.dashboard',
         });
         NProgress.done();
       }
@@ -636,6 +639,7 @@ export default [
     component: OrgContainer,
     meta: {
       hidden: true,
+      code: 'organization',
     },
     children: [
       {
@@ -644,6 +648,7 @@ export default [
         component: SpaceList,
         meta: {
           hidden: true,
+          code: 'organization.manage',
         },
       },
       {

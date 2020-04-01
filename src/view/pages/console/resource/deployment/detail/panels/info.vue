@@ -30,7 +30,7 @@
                   </span>
                   <template v-else>
                     <button
-                      v-if="$can('update')"
+                      v-if="$can('deployment.update', 'deployment')"
                       class="dao-btn mini blue"
                       @click="visible = true">弹性扩展
                     </button>
@@ -53,13 +53,13 @@
                     {{ hpa.metadata.name }}
                     <button
                       style="margin-left: 3px;"
-                      v-if="$can('update')"
+                      v-if="$can('deployment.update', 'deployment')"
                       class="dao-btn btn-sm mini blue"
                       @click="updateHPA(hpa)">编辑
                     </button>
                     <button
                       style="margin-left: 0;"
-                      v-if="$can('delete')"
+                      v-if="$can('deployment.delete', 'deployment')"
                       class="dao-btn btn-sm mini red"
                       @click="confirmDeleteHPA(hpa.metadata.name)">删除
                     </button>

@@ -2,6 +2,7 @@
   <dao-dialog
     :config="config"
     :visible.sync="isShow"
+    @before-open="init"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose">
     <dao-setting-section>
@@ -16,8 +17,10 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select v-model="role">
-            <dao-option
+          <dao-select
+            placeholder="无权限"
+            v-model="role">
+            <!-- <dao-option
               :value="PLATFORM_ROLE.ADMIN"
               :label="PLATFORM_ROLE.ADMIN | platform_role">
             </dao-option>
@@ -25,7 +28,13 @@
               :disabled="user.username === 'admin'"
               :value="PLATFORM_ROLE.MEMBER"
               :label="PLATFORM_ROLE.MEMBER | platform_role">
-            </dao-option>
+            </dao-option> -->
+            <dao-option
+              v-for="(r, index) in platformroles"
+              :key="index"
+              :value="r"
+              :label="r.name"
+              ></dao-option>
           </dao-select>
         </div>
       </dao-setting-item>
@@ -56,6 +65,7 @@ export default {
   extends: dialog('设置用户权限'),
   props: {
     user: { type: Object, default: () => ({}) },
+    platformroles: [Object, Array],
   },
   data() {
     return {
@@ -80,8 +90,14 @@ export default {
     onConfirm() {
       this.$emit('update', {
         id: this.user.id,
-        role: this.role,
-      });
+        role: 'platform_admin',
+      }, this.role);
+    },
+    init() {
+      if (this.user.roles) {
+        const [role] = this.user.roles;
+        this.role = role;
+      }
     },
   },
 };

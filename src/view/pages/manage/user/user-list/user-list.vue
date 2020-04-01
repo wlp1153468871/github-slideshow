@@ -44,13 +44,22 @@
               {{ user.phone_number | otherwise}}
             </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             prop="platform_role"
             sortable
             label="权限"
           >
             <template slot-scope="{ row: user }" prop="platform_role">
               {{ user.platform_role | platform_role}}
+            </template>
+          </el-table-column> -->
+          <el-table-column
+            prop="platform_role"
+            sortable
+            label="权限"
+          >
+            <template slot-scope="{ row: user }">
+              {{ user.roles | roleFormat }}
             </template>
           </el-table-column>
           <el-table-column
@@ -90,6 +99,7 @@
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
+                    :disabled="user.username===userName && $can('platform.manage', 'platform')"
                     command="edit"
                   >
                     设置
@@ -117,6 +127,7 @@
     <!-- dialogs start -->
     <update-platform-user-dialog
       ref="updateUser"
+      :platformroles="ROLES"
       :user="selectedUser"
       @update="updateUser"
       :visible="dialogConfigs.updateUser.visible"
@@ -126,6 +137,7 @@
     <create-user-dialog
       ref="createUser"
       :loading="loadings.create"
+      :platformroles="ROLES"
       @create="createUser"
       :visible="dialogConfigs.createUser.visible"
       @close="dialogConfigs.createUser.visible = false">

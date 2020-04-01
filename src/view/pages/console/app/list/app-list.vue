@@ -63,7 +63,7 @@
             <dao-dropdown
               trigger="click"
               :append-to-body="true"
-              v-if="$can('application.create', 'application')"
+              v-if="$can('serviceInstance.create', 'serviceInstance')"
               placement="bottom-start">
               <save-button
                 :saving="loadings.updateByYaml"
@@ -150,7 +150,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     class="dropdown-item-error"
-                    v-if="$can('application.delete', 'application')"
+                    v-if="$can('serviceInstance.delete', 'serviceInstance')"
                     icon="el-icon-delete"
                     :disabled="disableDelete(instances)"
                     command="delete">

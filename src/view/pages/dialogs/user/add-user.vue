@@ -63,7 +63,10 @@
               class="sub-setting-layout role"
               v-for="(zone, index) in zones"
               :key="index">
-              <div class="sub-setting-section">
+              <div
+                class="sub-setting-section"
+                v-if="zone.name==='k8s-dev'"
+              >
                 <div class="sub-setting-item">
                   <p style="font-size: 13px">可用区</p>
                   <div class="zone">{{ zone.name }}</div>
@@ -134,6 +137,7 @@ export default {
       },
       result: {},
       user: {},
+      overtimer: null,
     };
   },
 
@@ -227,40 +231,35 @@ export default {
         },
       };
       RoleService.setRole(spaceParams)
-        .then(data => {
-          console.log('data', data);
+        .then(() => {
           this.$noty.success('更新项目组权限成功');
         });
     },
 
     setZoneRole() {
-      this.zones.map(zone => {
-        const { name, id } = zone;
-        const key = name;
-        const zoneParams = {
-          userId: this.formModel.user_id,
-          roleId: this.result[key].id,
-          data: {
-            organizationId: this.org.id,
-            spaceId: this.spaceId,
-            zoneId: id,
-            scope: this.result[key].scope,
-          },
-        };
-        const zone_space_roles = [{
-          zone_id: id,
-          zone_name: name,
-          zone_role: 'zone_admin',
-        }];
-        this.authorizeZone(zone_space_roles);
-        RoleService.setRole(zoneParams)
-          .then(data => {
-            console.log('data', data);
-            this.onRefresh();
-            this.$noty.success('更新可用区权限成功');
-          });
-        return true;
-      });
+      this.zones
+        .filter(zone => zone.name.includes('k8s'))
+        .map(zone => {
+          console.log(zone);
+          const { name, id } = zone;
+          const key = name;
+          const zoneParams = {
+            userId: this.formModel.user_id,
+            roleId: this.result[key].id,
+            data: {
+              organizationId: this.org.id,
+              spaceId: this.spaceId,
+              zoneId: id,
+              scope: this.result[key].scope,
+            },
+          };
+          RoleService.setRole(zoneParams)
+            .then(() => {
+              this.onRefresh();
+              this.$noty.success('更新可用区权限成功');
+            });
+          return true;
+        });
       if (!this.isUpdate) {
         this.addUser();
       }
@@ -274,16 +273,6 @@ export default {
         this.$noty.success('添加用户成功');
       });
     },
-    authorizeZone(zone_space_roles) {
-      // console.log('this.formModel.user_id', this.formModel.user_id);
-      return SpaceService.authorizeZone(this.spaceId, this.formModel.user_id, {
-        zone_space_roles,
-      })
-        .then(() => {
-        })
-        .finally(() => {
-        });
-    },
 
     onClose() {
       this.$emit('close');
@@ -292,6 +281,9 @@ export default {
     onRefresh() {
       this.onClose();
       this.$emit('refresh');
+      this.overtimer = setTimeout(() => {
+        this.$router.go(0);
+      }, 1800);
     },
 
     closed() {
@@ -312,6 +304,11 @@ export default {
       });
       return zoneName;
     },
+  },
+  beforeDestroy() {
+    if (this.overtimer) {
+      this.overtimer = null;
+    }
   },
 };
 </script>

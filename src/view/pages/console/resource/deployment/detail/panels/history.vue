@@ -52,7 +52,7 @@
         label="操作"
         width="180">
         <template
-          v-if="$can('update')"
+          v-if="$can('deployment.update', 'deployment')"
           slot-scope="{ row: replicaSet }">
           <el-button
             type="text"

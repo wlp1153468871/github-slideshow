@@ -54,13 +54,11 @@ export default function ensureHooks(router) {
   router.afterEach(to => {
     if (to.name.includes('console')) {
       const { code } = to.meta;
-      const status = store.state.spaceMenus.indexOf(code) > -1 ||
-                     store.state.zoneMenus.indexOf(code) > -1;
+      const status = store.getters.menus.indexOf(code) > -1;
       if (!status) {
         Vue.noty.error('无权限访问此页面');
         // router.push({ name: 'home' });
         NProgress.done();
-        // return;
       }
     }
     const routes = to.matched.concat();

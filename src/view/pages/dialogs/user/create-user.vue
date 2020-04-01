@@ -63,14 +63,23 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select v-model="user.role">
-            <dao-option
+          <dao-select
+            v-model="user.role"
+            placeholder="请选择"
+            >
+            <!-- <dao-option
               :value="PLATFORM_ROLE.MEMBER"
               :label="PLATFORM_ROLE.MEMBER | platform_role">
             </dao-option>
             <dao-option
               :value="PLATFORM_ROLE.ADMIN"
               :label="PLATFORM_ROLE.ADMIN | platform_role">
+            </dao-option> -->
+            <dao-option
+              v-for="(r, index) in platformroles"
+              :key="index"
+              :value="r"
+              :label="r.name">
             </dao-option>
           </dao-select>
         </div>
@@ -155,15 +164,16 @@ export default {
   extends: dialog('创建用户'),
   props: {
     loading: { type: Boolean, default: false },
+    platformroles: [Object, Array],
   },
   data() {
-    const role = PLATFORM_ROLE.MEMBER;
+    // const role = PLATFORM_ROLE.MEMBER;
     return {
       PLATFORM_ROLE,
       user: {
         username: '',
         email: '',
-        role,
+        role: {},
         pwd: '',
         confirmpwd: '',
         phone: '',
@@ -190,11 +200,11 @@ export default {
     },
 
     dialogWillClose() {
-      const role = PLATFORM_ROLE.MEMBER;
+      // const role = PLATFORM_ROLE.MEMBER;
       this.user = {
         username: '',
         email: '',
-        role,
+        role: {},
         pwd: '',
         confirmpwd: '',
         phone: '',

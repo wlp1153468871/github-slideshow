@@ -2,6 +2,7 @@
   <dao-dialog
     :config="config"
     :visible.sync="isShow"
+    @before-open="init"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose">
     <dao-setting-section>
@@ -16,14 +17,16 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select v-model="role">
+          <dao-select
+            placeholder="请选择"
+            v-model="role">
             <dao-option
               v-for="(r, index) in roles"
               :disabled="user.username === 'admin'
                 && r.value === 'organization_member'"
               :key="index"
-              :value="r.value"
-              :label="r.text">
+              :value="r"
+              :label="r.name">
             </dao-option>
           </dao-select>
         </div>
@@ -76,8 +79,17 @@ export default {
     },
   },
   methods: {
+    init() {
+      if (this.user.roles) {
+        const [role] = this.user.roles;
+        this.role = role;
+      }
+    },
+
     onConfirm() {
-      this.$emit('update', this.role);
+      // this.$emit('update', this.role);
+      // 之前传的role 管理员对应的 organization_admin
+      this.$emit('update', 'organization_admin', this.role);
       this.onClose();
     },
   },
