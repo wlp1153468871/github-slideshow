@@ -27,8 +27,8 @@ class RoleService {
   }
 
   // getPermission() {
-  getPermission(roleId: string) {
-    return this.api.get(`/authorizations/roles/${roleId}/permission`);
+  getPermission(roleId: string, params: object) {
+    return this.api.get(`/authorizations/roles/${roleId}/permission`, params);
   }
 
   getUserById(roleId: string) {
