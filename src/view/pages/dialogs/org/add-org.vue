@@ -76,6 +76,7 @@
           <el-select
             multiple
             filterable
+            size="small"
             ref="select2"
             v-model="zone_ids"
             placeholder="请输入关键词"
