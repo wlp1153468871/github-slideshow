@@ -14,23 +14,15 @@ const notyErrorOption = {
   layout: 'topCenter',
   type: 'error',
 };
-const debug = process.env.NODE_ENV !== 'production';
+// const debug = process.env.NODE_ENV !== 'production';
 
 function notifyErrorResponse(response, defaultMessage) {
   const msg =
     getValue(response, 'data.error_info') || getValue(response, 'data');
-  if (debug) {
-    new Noty({
-      ...notyErrorOption,
-      text: msg || defaultMessage,
-    }).show();
-  } else {
-    new Noty({
-      ...notyErrorOption,
-      text: '服务器错误，请联系管理员',
-    }).show();
-    console.error('error', msg || defaultMessage);
-  }
+  new Noty({
+    ...notyErrorOption,
+    text: msg || defaultMessage,
+  }).show();
 }
 
 const refreshToken = (params, cb) => {
@@ -89,10 +81,9 @@ export default {
   // global ajax error handler
   responseError(error) {
     const { response = {} } = error;
-
     if (response.status === 502) {
       notifyErrorResponse({}, '后端出问题了, 请联系管理员');
-    } else if (response.status === 401) {
+    } else if (response.status === 401 && response.data.message === 'token has expired') {
       const nowTime = new Date();
       const refreshTime = new Date(Date.parse(Vue.ls.get('refreshTime')));
       // 在用户操作的活跃期内
