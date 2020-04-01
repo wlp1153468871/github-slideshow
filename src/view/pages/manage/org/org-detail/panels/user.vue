@@ -130,6 +130,7 @@ export default {
             });
             return text;
           },
+          filter: 'role_format',
         },
       ]);
       const isSelf = item => item.username === this.userName && this.$can('organization.manage', 'organization');

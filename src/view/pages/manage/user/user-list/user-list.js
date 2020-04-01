@@ -210,6 +210,9 @@ export default {
   },
   filters: {
     roleFormat: val => {
+      if (!val) {
+        return '无权限';
+      }
       let text = '';
       if (val) {
         val.forEach(role => {
