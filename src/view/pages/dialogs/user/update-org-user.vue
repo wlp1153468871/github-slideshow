@@ -83,6 +83,9 @@ export default {
       if (this.user.roles) {
         const [role] = this.user.roles;
         this.role = role;
+      } else {
+        const [role] = this.roles.filter(r => r.name === '无权限');
+        this.role = role;
       }
     },
 
