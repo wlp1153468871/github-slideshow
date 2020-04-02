@@ -71,7 +71,9 @@ export default {
   response(res) {
     if (/^20\d/.test(res.status)) {
       if (res.headers.authorizationresult) {
-        notifyErrorResponse({}, `后端无权限, 请联系管理员 ${res.request.responseURL}`);
+        console.error(res.headers.authorizationresult);
+        console.error(res.request.responseURL);
+        notifyErrorResponse({}, '后端无权限, 请联系管理员');
       }
       return res.data;
     }
