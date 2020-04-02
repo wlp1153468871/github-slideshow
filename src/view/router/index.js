@@ -8,6 +8,11 @@ import Home from '@/view/pages/home/home.vue';
 // login
 import Login from '@/view/pages/login/login.vue';
 
+import store from '@/core/store';
+import OrgService from '@/core/services/org.service';
+import SpaceService from '@/core/services/space.service';
+import ZoneService from '@/core/services/zone.service';
+
 import ProductRouters from './product';
 import ConsoleRouters from './console';
 import ManageRouters from './manager';
@@ -54,6 +59,27 @@ const router = new Router({
       },
       component: ConsoleContainer,
       children: ConsoleRouters,
+      beforeEnter(to, from, next) {
+        const { spaceId, zoneId, orgId } = to.query;
+        if (spaceId && zoneId && orgId) {
+          SpaceService.setLocalSpace({
+            id: spaceId,
+          });
+          ZoneService.setLocalZone({
+            id: zoneId,
+          });
+          OrgService.setLocalOrg({
+            id: orgId,
+          });
+        }
+        if (to.query.onInitTenantView) {
+          next();
+        } else {
+          store.dispatch('initTenantView').finally(() => {
+            next();
+          });
+        }
+      },
     },
 
     // path: /manage'
@@ -62,14 +88,12 @@ const router = new Router({
     {
       path: '/403',
       name: '403',
-      component: () =>
-        import(/* webpackChunkName: "fail" */ '@/view/pages/exception/403.vue'),
+      component: () => import(/* webpackChunkName: "fail" */ '@/view/pages/exception/403.vue'),
     },
 
     {
       path: '*',
-      component: () =>
-        import(/* webpackChunkName: "fail" */ '@/view/pages/exception/404.vue'),
+      component: () => import(/* webpackChunkName: "fail" */ '@/view/pages/exception/404.vue'),
     },
   ],
 });
