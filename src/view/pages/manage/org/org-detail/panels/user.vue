@@ -134,12 +134,12 @@ export default {
         },
       ]);
       const isSelf = item => item.username === this.userName && this.$can('organization.manage', 'organization');
-      // const isSelf = true;
+      const isManageView = this.$route.path.includes('manage/org');
       this.setTableOperations([
         {
           name: '修改权限',
           event: 'update-user-dialog',
-          disabled: isSelf,
+          disabled: isManageView ? false : isSelf,
           tooltip: '无法对自己操作',
         },
         {
