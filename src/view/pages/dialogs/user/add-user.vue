@@ -185,20 +185,30 @@ export default {
         this.formModel.user_id = this.model.id;
         // 进入到更新 初始化角色
         const { roles } = this.model;
-        roles.forEach(role => {
-          if (role.scope.includes('space')) {
-            // space
-            this.$set(this.formModel, 'space_role', role);
-          } else if (role.scope.includes('k8s')) {
-            // zone k8s
-            // this.$set(this.result, 'k8s-dev', role);
-            this.$set(this.result, this.getZoneName('k8s'), role);
-          } else if (role.scope.includes('ocp')) {
-            // zone ocp
-            // this.$set(this.result, 'office-openshift-dev', role);
-            this.$set(this.result, this.getZoneName('openshift'), role);
-          }
+        // spacerole
+        const [space_role] = this.spacerole.filter(role => role.name === '无权限');
+        this.$set(this.formModel, 'space_role', space_role);
+        // zonrole
+        Object.keys(this.zonerole).forEach(z => {
+          const [zone_role] = this.zonerole[z].filter(x => x.name === '无权限');
+          this.$set(this.result, this.getZoneName(z), zone_role);
         });
+        if (roles) {
+          roles.forEach(role => {
+            if (role.scope.includes('space')) {
+              // space
+              this.$set(this.formModel, 'space_role', role);
+            } else if (role.scope.includes('k8s')) {
+              // zone k8s
+              // this.$set(this.result, 'k8s-dev', role);
+              this.$set(this.result, this.getZoneName('k8s'), role);
+            } else if (role.scope.includes('ocp')) {
+              // zone ocp
+              // this.$set(this.result, 'office-openshift-dev', role);
+              this.$set(this.result, this.getZoneName('openshift'), role);
+            }
+          });
+        }
       } else {
         // this.formModel.name = '';
         // this.formModel.user_id = getValue(first(this.users), 'id');
@@ -230,15 +240,17 @@ export default {
       };
       RoleService.setRole(spaceParams)
         .then(() => {
-          this.$noty.success('更新项目组权限成功');
+          this.$noty.success(this.isUpdate ? '更新项目组权限成功' : '初始化项目组权限成功');
+        })
+        .catch(() => {
+          this.$noty.error(this.isUpdate ? '更新项目组权限失败' : '初始化项目组权限失败');
         });
     },
 
     setZoneRole() {
       this.zones
         .filter(zone => zone.name.includes('k8s'))
-        .map(zone => {
-          console.log(zone);
+        .forEach(zone => {
           const { name, id } = zone;
           const key = name;
           const zoneParams = {
@@ -254,13 +266,17 @@ export default {
           RoleService.setRole(zoneParams)
             .then(() => {
               this.onRefresh();
-              this.$noty.success('更新可用区权限成功');
+              this.$noty.success(this.isUpdate ? '更新可用区权限成功' : '初始化可用区权限成功');
+            })
+            .catch(() => {
+              this.$noty.error(this.isUpdate ? '更新可用区权限失败' : '初始化可用区权限失败');
+            })
+            .finally(() => {
+              if (!this.isUpdate) {
+                this.addUser();
+              }
             });
-          return true;
         });
-      if (!this.isUpdate) {
-        this.addUser();
-      }
     },
     addUser() {
       UserService.updateSpaceUser(this.spaceId, {

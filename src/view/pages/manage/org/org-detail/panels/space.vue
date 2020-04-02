@@ -59,7 +59,6 @@ export default {
         },
       });
     };
-    const renderAdmin = (admins = []) => admins.map(x => x.username).join(',');
     this.setTableProps([
       {
         id: 'name',
@@ -68,7 +67,6 @@ export default {
         other: { onClick: gotoDetail },
       },
       { id: 'short_name', name: '唯一标识' },
-      { id: 'admins', name: '管理员', value: renderAdmin },
       { id: 'created_at', name: '创建日期', filter: 'unix_date' },
     ]);
     this.setTableOperations([
