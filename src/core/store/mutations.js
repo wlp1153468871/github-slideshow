@@ -563,11 +563,13 @@ export const actions = {
       AuthService.getUserInfo()
         .then(user => {
           commit('LOAD_USER_SUCCESS', { user });
-          dispatch('getRole', {
+          return dispatch('getRole', {
             scope: 'platform',
             platformId: 'dsp',
           });
-          resolve(user);
+        })
+        .then(() => {
+          resolve();
         })
         .catch(error => {
           reject(error);
