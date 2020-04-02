@@ -180,8 +180,9 @@ export default {
       this.dialogConfigs.addUser.visible = true;
     },
 
-    addUser({ user, role }) {
-      this.setOrgRole(role, user.id);
+    addUser({ user, role }, isNewUser) {
+      console.log(isNewUser);
+      this.setOrgRole(role, user.id, isNewUser);
       const params = {
         organization_role: 'organization_admin',
       };
@@ -244,7 +245,7 @@ export default {
       });
     },
 
-    setOrgRole(role, userId) {
+    setOrgRole(role, userId, isNewUser) {
       const orgParams = {
         userId,
         roleId: role.id,
@@ -255,8 +256,11 @@ export default {
       };
       RoleService.setRole(orgParams)
         .then(() => {
-          this.$noty.success('权限修改成功');
+          this.$noty.success(isNewUser ? '权限初始化成功' : '权限修改成功');
           this.loadOrgUsers();
+        })
+        .catch(() => {
+          this.$noty.error(isNewUser ? '权限初始化失败' : '添加用户失败');
         });
     },
 

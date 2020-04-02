@@ -141,6 +141,7 @@
     <div slot="footer">
       <button
         class="dao-btn ghost"
+        @before-close="dialogWillClose"
         @click="onClose">
         取消
       </button>
@@ -195,7 +196,8 @@ export default {
   methods: {
     onConfirm() {
       if (!this.loading) {
-        this.$emit('create', this.user);
+        const isNewUser = true;
+        this.$emit('create', this.user, isNewUser);
       }
     },
 

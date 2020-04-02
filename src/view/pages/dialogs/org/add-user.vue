@@ -135,7 +135,7 @@ export default {
       this.$emit('add', {
         user,
         role,
-      });
+      }, true);
       this.onClose();
     },
 
