@@ -121,194 +121,6 @@
           </template>
         </template>
       </el-menu>
-
-      <!-- 旧 -->
-      <!-- <el-menu
-        style="margin-top: 88px;"
-        ref="topMenu"
-        class="side-bar-menu"
-        background-color="#FF0000"
-        text-color="#e4e7ed"
-        :default-active="defaultActiveMenu"
-        :router="true"
-        :collapse="isCollapse"
-      >
-        <el-menu-item
-          style="border-bottom: 1px solid #FF0000;"
-          index="console.dashboard"
-          :route="{ name: 'console.dashboard' }"
-        >
-          <i class="el-icon-menu"></i>
-          <span slot="title">总览</span>
-        </el-menu-item>
-      </el-menu>
-      <el-menu
-        ref="bottomMenu"
-        class="side-bar-menu"
-        background-color="#FF0000"
-        text-color="#e4e7ed"
-        :default-active="defaultActiveMenu"
-        :default-openeds="defaultOpeneds"
-        :router="true"
-        :collapse="isCollapse"
-      >
-        <template v-if="isPlatformAdmin || !zoneUnauthorized">
-
-          <el-menu-item
-            index="console.applications.list"
-            :route="{ name: 'console.applications.list' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_application"></use>
-            </svg>
-            <span slot="title">应用</span>
-          </el-menu-item>
-
-          <el-submenu index="resource">
-            <template slot="title">
-              <svg class="icon">
-                <use xlink:href="#icon_resource"></use>
-              </svg>
-              <span slot="title">资源对象</span>
-            </template>
-            <template v-for="resource in apiResource">
-              <el-menu-item
-                v-if="$can('read', resource.name)"
-                :key="resource.name"
-                :index="resource.route.name"
-                :route="resource.route"
-              >
-                <svg class="icon">
-                  <use :xlink:href="resource.icon"></use>
-                </svg>
-                <overflow-tooltip
-                  slot="title"
-                  :text="resource.kind"
-                >
-                </overflow-tooltip>
-              </el-menu-item>
-            </template>
-
-          </el-submenu>
-
-          <el-menu-item
-            index="console.registry"
-            :route="{ name: 'console.registry' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_docker-image"></use>
-            </svg>
-            <span slot="title">镜像中心</span>
-          </el-menu-item>
-
-          <el-submenu index="service">
-            <template slot="title">
-              <svg class="icon">
-                <use xlink:href="#icon_service-category"></use>
-              </svg>
-              <span slot="title">服务目录</span>
-            </template>
-            <el-menu-item
-              v-for="menu in services"
-              :key="menu.id"
-              :index="compileIndex(menu)"
-              :route="menu.route"
-            >
-              <service-logo
-                :src="menu.logo_url"
-                size="small"
-              ></service-logo>
-              <el-tooltip
-                popper-class="service-name-tooltip"
-                slot="title"
-                :content="menu.name"
-                placement="right"
-              >
-                <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
-              </el-tooltip>
-            </el-menu-item>
-          </el-submenu>
-
-          <el-menu-item
-            index="console.monitor"
-            :route="{ name: 'console.monitor' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_monitor"></use>
-            </svg>
-            <span slot="title">监控中心</span>
-          </el-menu-item>
-          <el-menu-item
-            v-if="$can('read')"
-            index="console.alarm"
-            :route="{ name: 'console.alarm' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_bell"></use>
-            </svg>
-            <span slot="title">告警中心</span>
-          </el-menu-item>
-
-        </template>
-
-        <el-submenu index="management">
-          <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span slot="title">管理</span>
-          </template>
-          <el-menu-item
-            v-if="isOrganizationAdmin || isSpaceAdmin"
-            index="console.user.list"
-            :route="{ name: 'console.user.list' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_user"></use>
-            </svg>
-            <span>用户管理</span>
-          </el-menu-item>
-          <el-menu-item
-            index="console.space-quota"
-            :route="{ name: 'console.space-quota' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_quota"></use>
-            </svg>
-            <span>配额管理</span>
-          </el-menu-item>
-          <el-submenu
-            index="approve-log"
-            popper-append-to-body
-          >
-            <span slot="title">
-              <svg class="icon">
-                <use xlink:href="#icon_audit"></use>
-              </svg>
-              <span>
-                审批日志
-              </span>
-            </span>
-            <el-menu-item
-              index="console.approval.list"
-              :route="{ name: 'console.approval.list' }"
-            >
-              <span slot="title">审批请求</span>
-            </el-menu-item>
-            <el-menu-item
-              index="console.approval.history"
-              :route="{ name: 'console.approval.history' }"
-            >
-              <span slot="title">审批记录</span>
-            </el-menu-item>
-            <el-menu-item
-              v-if="isSpaceAdmin"
-              index="console.approval.setting"
-              :route="{ name: 'console.approval.setting' }"
-            >
-              <span slot="title">审批设置</span>
-            </el-menu-item>
-          </el-submenu>
-        </el-submenu>
-      </el-menu> -->
     </div>
 
     <div
@@ -321,7 +133,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import { find } from 'lodash';
 import * as types from '@/core/store/mutation-types';
 import allMenus from '@/view/router/console.js';
@@ -378,8 +190,6 @@ export default {
       'apiResource',
       'menu',
     ]),
-
-    ...mapGetters(['zoneUnauthorized', 'isPlatformAdmin', 'isOrganizationAdmin', 'isSpaceAdmin']),
 
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;
