@@ -42,7 +42,7 @@
             :placeholder="isUpdate?'无权限':'请选择'"
             name="space_role"
             v-validate.immediate="'required'"
-            :disabled="model.username===userName && $can('project.manage','project')"
+            :disabled="model.username===userName && $can('space.base','space')"
             v-model="formModel.space_role">
             <dao-option
               v-for="(value, key) in spacerole"
@@ -281,7 +281,8 @@ export default {
     addUser() {
       UserService.updateSpaceUser(this.spaceId, {
         user_id: this.formModel.user_id,
-        space_role: this.formModel.space_role.name,
+        // 删除space_role
+        // space_role: this.formModel.space_role.name,
       }).then(() => {
         this.onRefresh();
         this.$noty.success('添加用户成功');

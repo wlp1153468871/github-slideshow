@@ -64,7 +64,7 @@
         <div slot="label">权限</div>
         <div slot="content">
           <dao-select
-            v-model="user.role"
+            v-model="role"
             placeholder="请选择"
             >
             <!-- <dao-option
@@ -141,7 +141,6 @@
     <div slot="footer">
       <button
         class="dao-btn ghost"
-        @before-close="dialogWillClose"
         @click="onClose">
         取消
       </button>
@@ -157,7 +156,7 @@
 </template>
 
 <script>
-import { PLATFORM_ROLE } from '@/core/constants/role';
+// import { PLATFORM_ROLE } from '@/core/constants/role';
 import dialog from '@/view/mixins/dialog';
 
 export default {
@@ -170,11 +169,11 @@ export default {
   data() {
     // const role = PLATFORM_ROLE.MEMBER;
     return {
-      PLATFORM_ROLE,
+      // PLATFORM_ROLE,
+      role: '',
       user: {
         username: '',
         email: '',
-        role: {},
         pwd: '',
         confirmpwd: '',
         phone: '',
@@ -186,7 +185,7 @@ export default {
     isValidForm() {
       return this.user.username === ''
         || this.user.email === ''
-        || this.user.role === ''
+        || this.role === ''
         || this.user.pwd === ''
         || this.user.confirmpwd === ''
         || this.user.phone === ''
@@ -197,7 +196,7 @@ export default {
     onConfirm() {
       if (!this.loading) {
         const isNewUser = true;
-        this.$emit('create', this.user, isNewUser);
+        this.$emit('create', this.user, this.role, isNewUser);
       }
     },
 
@@ -206,12 +205,12 @@ export default {
       this.user = {
         username: '',
         email: '',
-        role: {},
         pwd: '',
         confirmpwd: '',
         phone: '',
         company_name: '',
       };
+      this.role = '';
     },
   },
 };
