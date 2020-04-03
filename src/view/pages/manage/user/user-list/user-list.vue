@@ -99,6 +99,15 @@
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
+                    v-if="user.username===userName && $can('platform.manage', 'platform')">
+                    <dao-tooltip
+                      content="无法对自己操作"
+                      placement="top">
+                      <span style="color: #bbb;">设置</span>
+                    </dao-tooltip>
+                  </el-dropdown-item>
+                  <el-dropdown-item
+                    v-else
                     :disabled="user.username===userName && $can('platform.manage', 'platform')"
                     command="edit"
                   >

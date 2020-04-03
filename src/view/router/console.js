@@ -623,12 +623,12 @@ export default [
     path: 'org',
     name: 'console.org',
     beforeEnter(to, from, next) {
-      if (store.getters.isOrganizationAdmin) {
+      if (store.getters.isPlatformAdmin || store.getters.isOrganizationAdmin) {
         next();
       } else {
         Vue.noty.error('无权限访问此页面');
         next({
-          // name: 'console.dashboard',
+          name: 'console.dashboard',
         });
         NProgress.done();
       }

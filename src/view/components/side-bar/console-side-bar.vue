@@ -83,7 +83,7 @@
               </el-menu-item>
               <!-- 这里是服务子菜单 -->
               <el-menu-item
-                v-if="item.meta.code === 'serviceCatalog'"
+                v-if="item.meta.code === 'serviceBroker'"
                 v-for="menu in services"
                 :key="menu.id"
                 :index="compileIndex(menu)"
@@ -101,6 +101,9 @@
                 >
                   <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
                 </el-tooltip>
+              </el-menu-item>
+              <el-menu-item v-if="item.meta.code === 'serviceBroker' && services.length === 0">
+                <span class="service-menu-name text-overflow-ellipsis">无服务</span>
               </el-menu-item>
             </el-submenu>
           </template>

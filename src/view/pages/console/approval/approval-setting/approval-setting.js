@@ -22,12 +22,12 @@ export default {
         {
           name: APPROVAL_TYPES.PASS_TYPE_ANYOF,
           headline: '任意一个管理员同意审批',
-          description: '只需要任意一个项目组管理员同意即可通过审批',
+          description: '只需要任意一个项目组管理员（或有审批权限）同意即可通过审批',
         },
         {
           name: APPROVAL_TYPES.PASS_TYPE_ALLOF,
           headline: '所有管理员同意审批',
-          description: '需要所有项目组管理员同意即可通过审批',
+          description: '需要所有项目组管理员（或有审批权限）同意即可通过审批',
         },
         {
           name: APPROVAL_TYPES.PASS_TYPE_CUSTOM,

@@ -130,7 +130,7 @@ export default {
       });
     },
 
-    setPlatformRole(role, userId) {
+    setPlatformRole(role, userId, isNewUser) {
       const orgParams = {
         userId,
         roleId: role.id,
@@ -142,8 +142,11 @@ export default {
       };
       RoleService.setRole(orgParams)
         .then(() => {
-          this.$noty.success('权限修改成功');
+          this.$noty.success(isNewUser ? '权限初始化成功' : '权限修改成功');
           this.loadUsers();
+        })
+        .catch(() => {
+          this.$noty.error(isNewUser ? '权限初始化失败' : '添加用户失败');
         });
     },
 
@@ -177,7 +180,7 @@ export default {
       });
     },
 
-    createUser(vars) {
+    createUser(vars, isNewUser) {
       const {
         pwd, confirm_pwd, phone, ...user
       } = vars;
@@ -185,9 +188,9 @@ export default {
       user.phone_number = phone;
 
       this.loadings.create = true;
-      UserService.createUser(user)
+      UserService.createUser(user, isNewUser)
         .then(newUser => {
-          this.setPlatformRole(user.role, newUser.id);
+          this.setPlatformRole(user.role, newUser.id, isNewUser);
           this.rows.push(newUser);
           this.$refs.createUser.onClose();
           this.$noty.success('创建用户成功');
@@ -210,6 +213,9 @@ export default {
   },
   filters: {
     roleFormat: val => {
+      if (!val) {
+        return '无权限';
+      }
       let text = '';
       if (val) {
         val.forEach(role => {

@@ -82,14 +82,16 @@ export default {
   path: '/manage',
   name: 'manage',
   beforeEnter(to, from, next) {
-    if (store.getters.isPlatformAdmin) {
-      next();
-    } else {
-      next({
-        name: 'console.dashboard',
-      });
-      NProgress.done();
-    }
+    store.dispatch('getUserInfo').finally(() => {
+      if (store.getters.isPlatformAdmin) {
+        next();
+      } else {
+        next({
+          name: 'console.dashboard',
+        });
+        NProgress.done();
+      }
+    });
   },
   redirect: {
     name: 'manage.org.list',
