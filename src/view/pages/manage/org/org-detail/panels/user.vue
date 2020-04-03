@@ -31,7 +31,6 @@
 
     <update-org-user-dialog
       :user="selectedUser"
-      :user-role="selectedUser.organization_role"
       :roles="ROLES"
       @update="updateUser"
       :visible="dialogConfigs.updateUser.visible"
@@ -181,12 +180,12 @@ export default {
     },
 
     addUser({ user, role }, isNewUser) {
-      console.log(isNewUser);
       this.setOrgRole(role, user.id, isNewUser);
-      const params = {
-        organization_role: 'organization_admin',
-      };
-      UserService.addOrgUser(this.orgId, user.id, params)
+      // 删除organization_role
+      // const params = {
+      //   organization_role: 'organization_admin',
+      // };
+      UserService.addOrgUser(this.orgId, user.id)
         .then(newUsers => {
           this.rows.push(newUsers);
           this.$noty.success('添加用户成功');
@@ -229,20 +228,8 @@ export default {
       this.dialogConfigs.updateUser.visible = true;
     },
 
-    updateUser(role, newRole) {
-      const params = {
-        organization_role: role,
-      };
-      this.setOrgRole(newRole, this.selectedUser.id);
-      return UserService.updateOrgUser(
-        this.orgId,
-        this.selectedUser.id,
-        params,
-      ).then(newUser => {
-        const index = this.rows.findIndex(x => x.id === this.selectedUser.id);
-        this.rows.splice(index, 1, newUser);
-        // this.$noty.success('权限修改成功');
-      });
+    updateUser(role) {
+      this.setOrgRole(role, this.selectedUser.id);
     },
 
     setOrgRole(role, userId, isNewUser) {
