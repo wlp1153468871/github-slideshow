@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import {
   SPACE_ROLE,
-  ZONE_ROLE,
 } from '@/core/constants/role';
 import QuotaService from '@/core/services/quota.service';
 import SSOService from '@/core/services/sso.service';
@@ -169,14 +168,8 @@ export const getters = {
     return getters.isPlatformAdmin || getters.isOrganizationAdmin || getters.isSpaceAdmin;
   },
 
-  zoneUnauthorized(state) {
-    return (
-      getValue(
-        find(state.user.zone_space_roles, { zone_id: state.zone.id }),
-        'zone_role',
-        ZONE_ROLE.UNAUTHORIZED,
-      ) === ZONE_ROLE.UNAUTHORIZED
-    );
+  zoneUnauthorized(state, getters) {
+    return getters.menus.indexOf('serviceBroker') === -1;
   },
 
   isZoneSyncing(state) {
