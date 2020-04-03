@@ -335,6 +335,7 @@ export default [
         meta: {
           activeMenu: 'console.instances',
           hidden: true,
+          code: 'serviceBroker',
         },
       },
     ],

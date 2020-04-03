@@ -66,7 +66,6 @@ export default {
     ...mapGetters([
       'isZoneSyncing',
       'getService',
-      'zoneUnauthorized',
       'isPlatformAdmin',
       'isOrganizationAdmin',
       'isSpaceAdmin',
