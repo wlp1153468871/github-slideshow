@@ -153,28 +153,12 @@ export const getters = {
   },
 
   isPlatformAdmin(state) {
-    if (
-      state.platformAction &&
-      state.platformAction.platform &&
-      state.platformAction.platform.indexOf('platform.manage') > -1
-    ) {
-      return true;
-    }
-    return false;
+    return getValue(state, 'platformAction.platform', []).indexOf('platform.manage') > -1;
   },
 
-  isOrganizationAdmin(state) {
-    // return (
-    //   getters.isPlatformAdmin || state.user.organization_role === ORG_ROLE.ADMIN
-    // );
-    if (
-      state.orgAction &&
-      state.orgAction.organization &&
-      state.orgAction.organization.indexOf('organization.manage') > -1
-    ) {
-      return true;
-    }
-    return false;
+  isOrganizationAdmin(state, getters) {
+    return getters.isPlatformAdmin ||
+      getValue(state, 'orgAction.organization', []).indexOf('organization.manage') > -1;
   },
 
   isSpaceAdmin(state, getters) {
