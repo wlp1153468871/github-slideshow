@@ -12,10 +12,12 @@
         </space-user-list>
       </el-tab-pane>
       <el-tab-pane
+        v-if="flase"
         :label="SIDE_BAR.ZONE"
         name="zone"
         lazy>可用区</el-tab-pane>
       <el-tab-pane
+        v-if="flase"
         :lazy="true"
         :label="SIDE_BAR.SERVE"
         name="serve">服务</el-tab-pane>
@@ -26,6 +28,7 @@
         <approval-setting></approval-setting>
       </el-tab-pane>
       <el-tab-pane
+        v-if="flase"
         :label="SIDE_BAR.ADVANCED_SETTING"
         name="setting"
         :lazy="true">高级设置</el-tab-pane>
