@@ -6,11 +6,13 @@
       @refresh="loadOrgUsers"
       :loading="this.loadings.all"
       @update-user-dialog="updateUserDialog"
-      @confirm-remove-user="confirmRemoveUser">
+      @confirm-remove-user="confirmRemoveUser"
+    >
       <div slot="tool">
         <div
           class="dao-btn has-icon white"
-          @click="openAddUserDialog()">
+          @click="openAddUserDialog()"
+        >
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -21,20 +23,22 @@
 
     <!--dialog start -->
     <add-user-dialog
-      :roles="ROLES"
+      :roles="roles"
       :users="availableUsers"
       @add="addUser"
       @search="searchUser"
       :visible="dialogConfigs.addUser.visible"
-      @close="dialogConfigs.addUser.visible = false">
+      @close="dialogConfigs.addUser.visible = false"
+    >
     </add-user-dialog>
 
     <update-org-user-dialog
       :user="selectedUser"
-      :roles="ROLES"
+      :roles="roles"
       @update="updateUser"
       :visible="dialogConfigs.updateUser.visible"
-      @close="dialogConfigs.updateUser.visible = false">
+      @close="dialogConfigs.updateUser.visible = false"
+    >
     </update-org-user-dialog>
     <!-- dialog end -->
   </div>
@@ -82,10 +86,7 @@ export default {
         updateUser: { visible: false },
       },
       // TODO: replace with ORG_ROLE_LABEL
-      ROLES: [
-        { value: ORG_ROLE.MEMBER, text: '租户普通用户' },
-        { value: ORG_ROLE.ADMIN, text: '租户管理员' },
-      ],
+      roles: [],
     };
   },
 
@@ -132,7 +133,8 @@ export default {
           filter: 'role_format',
         },
       ]);
-      const isSelf = item => item.username === this.userName && this.$can('organization.manage', 'organization');
+      const isSelf = item =>
+        item.username === this.userName && this.$can('organization.manage', 'organization');
       const isManageView = this.$route.path.includes('manage/org');
       this.setTableOperations([
         {
@@ -165,7 +167,7 @@ export default {
         scope: 'organization',
         organizationId: this.orgId,
       }).then(roles => {
-        this.ROLES = roles;
+        this.roles = roles;
       });
     },
 
@@ -180,15 +182,11 @@ export default {
     },
 
     addUser({ user, role }, isNewUser) {
-      this.setOrgRole(role, user.id, isNewUser);
-      // 删除organization_role
-      // const params = {
-      //   organization_role: 'organization_admin',
-      // };
       UserService.addOrgUser(this.orgId, user.id)
         .then(newUsers => {
           this.rows.push(newUsers);
           this.$noty.success('添加用户成功');
+          this.setOrgRole(role, user.id, isNewUser);
         })
         .catch(() => {
           this.$noty.error('添加用户失败');
@@ -247,7 +245,7 @@ export default {
           this.loadOrgUsers();
         })
         .catch(() => {
-          this.$noty.error(isNewUser ? '权限初始化失败' : '添加用户失败');
+          this.$noty.error(isNewUser ? '权限初始化失败' : '权限修改失败');
         });
     },
 
