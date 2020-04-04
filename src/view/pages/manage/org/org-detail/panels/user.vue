@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { ORG_ROLE } from '@/core/constants/role';
 import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
@@ -85,7 +84,6 @@ export default {
         addUser: { visible: false },
         updateUser: { visible: false },
       },
-      // TODO: replace with ORG_ROLE_LABEL
       roles: [],
     };
   },
@@ -117,7 +115,6 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        // { id: 'organization_role', name: '租户权限', filter: 'org_role' },
         {
           id: 'roles',
           name: '租户权限',

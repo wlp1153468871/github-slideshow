@@ -3,11 +3,17 @@
     <dao-table-view
       :rows="rows"
       :config="tConfig"
-      :loading="loading">
-      <div slot="tool" class="dao-table-view-left-bar">
+      @refresh="loadSpaceZones"
+      :loading="loading"
+    >
+      <div
+        slot="tool"
+        class="dao-table-view-left-bar"
+      >
         <button
           class="dao-btn white has-icon"
-          @click="openAddZoneDialog()">
+          @click="openAddZoneDialog()"
+        >
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -20,7 +26,8 @@
       :zone-list="rows"
       @add="addZone"
       :visible="dialogConfigs.addZone.visible"
-      @close="dialogConfigs.addZone.visible = false">
+      @close="dialogConfigs.addZone.visible = false"
+    >
     </add-zone-dialog>
     <!-- dialog end -->
   </div>
@@ -107,10 +114,11 @@ export default {
 
     loadSpaceZones() {
       this.loading = true;
-      SpaceService.getSpaceZones(this.spaceId).then(zones => {
-        this.rows = zones;
-        return zones;
-      })
+      SpaceService.getSpaceZones(this.spaceId)
+        .then(zones => {
+          this.rows = zones;
+          return zones;
+        })
         .finally(() => {
           this.loading = false;
         });
@@ -121,11 +129,10 @@ export default {
     },
 
     addZone(zoneIds) {
-      SpaceService.createSpaceZone(this.spaceId, { zone_ids: zoneIds })
-        .then(() => {
-          this.$noty.success('添加可用区成功');
-          this.loadSpaceZones();
-        });
+      SpaceService.createSpaceZone(this.spaceId, { zone_ids: zoneIds }).then(() => {
+        this.$noty.success('添加可用区成功');
+        this.loadSpaceZones();
+      });
     },
 
     openAddZoneDialog() {
