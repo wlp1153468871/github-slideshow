@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">可用区</div>
@@ -15,12 +16,14 @@
             multiple
             v-model="zoneIds"
             placeholder="请输入关键词"
-            :remote-method="loadZones">
+            :remote-method="loadZones"
+          >
             <el-option
               v-for="zone in zones"
               :key="zone.id"
               :label="zone.name"
-              :value="zone.id">
+              :value="zone.id"
+            >
             </el-option>
           </el-select>
         </div>
@@ -29,13 +32,15 @@
     <div slot="footer">
       <button
         class="dao-btn ghost"
-        @click="onClose">
+        @click="onClose"
+      >
         取消
       </button>
       <button
         class="dao-btn blue"
         :disabled="!zoneIds.length"
-        @click="onConfirm">
+        @click="onConfirm"
+      >
         确定
       </button>
     </div>
@@ -72,8 +77,7 @@ export default {
           this.loading = false;
           const diffZones = differenceBy(zones, this.zoneList, 'id');
           const [currentZone] = diffZones.filter(zone => {
-            return zone.area_name.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1;
+            return zone.area_name.toLowerCase().indexOf(query.toLowerCase()) > -1;
           });
           this.zones.push(currentZone);
         });
@@ -88,6 +92,7 @@ export default {
     onClose() {
       this.zoneIds = [];
       this.zones = [];
+      this.$emit('close');
     },
   },
 };
