@@ -89,7 +89,7 @@ export default {
       },
       zones: [],
       zoneRoles: {},
-      spaceRoles: {},
+      spaceRoles: [],
     };
   },
 
@@ -130,13 +130,10 @@ export default {
           id: 'roles',
           name: '可用区权限',
           value(roles) {
-            let text = '';
-            roles.forEach(role => {
-              if (role.scope.includes('zone')) {
-                text += `${role.scope}: ${role.name}  `;
-              }
-            });
-            return text;
+            return roles
+              .filter(r => r.scope.includes('zone'))
+              .map(r => `${r.scope}: ${r.name || '无权限'}`)
+              .join(';');
           },
           filter: 'role_format',
         },

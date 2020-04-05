@@ -44,7 +44,7 @@
             placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
-            :disabled="model.username===userName && $can('space.base','space')"
+            :disabled="!isPlatformView &&model.username===userName && $can('space.base','space')"
             v-model="formModel.space_role"
           >
             <dao-option
@@ -78,7 +78,6 @@
                   <dao-select
                     placeholder="请选择"
                     name="zone_space_roles"
-                    v-validate.immediate="'required'"
                     style="width: 157px;"
                     v-model="formModel.zoneRoles[zone.name]"
                   >
@@ -126,12 +125,13 @@ export default {
 
   props: {
     spaceId: { type: String, default: '' },
+    isPlatformView: { type: Boolean, default: true },
     visible: { type: Boolean, default: false },
     users: { type: Array, default: () => [] },
     zones: { type: Array, default: () => [] },
     model: { type: Object, default: () => ({}) },
     zonerole: { type: Object, default: () => ({}) },
-    spacerole: [Array, Object],
+    spacerole: { type: Array, default: () => [] },
   },
 
   data() {
@@ -190,11 +190,17 @@ export default {
   methods: {
     init() {
       if (this.isUpdate) {
-        // this.formModel.user_id = this.model.id;
-        // // 进入到更新 初始化角色
-        // const { roles } = this.model;
-        // // spacerole
-        // const [space_role] = this.spacerole.filter(role => role.name === '无权限');
+        // 进入到更新 初始化角色
+        this.formModel.user_id = this.user.id;
+
+        // 设置项目组权限
+        this.formModel.space_role = this.user.roles.find(r => r.scope === 'space');
+
+        // 设置可用区权限
+        // this.zones.forEach(z => {
+        //   const userZoneRole = this.user.roles.find(r => r.name === z.name);
+        //   this.formModel.zoneRoles[z.name];
+        // });
         // this.$set(this.formModel, 'space_role', space_role);
         // // zonrole
         // Object.keys(this.zonerole).forEach(z => {
@@ -266,24 +272,30 @@ export default {
     setUserZoneRole() {
       this.zones.forEach(zone => {
         const { name, id } = zone;
-        const zoneParams = {
-          userId: this.formModel.user_id,
-          roleId: this.formModel.zoneRoles[name].id,
-          data: {
-            organizationId: this.org.id,
-            spaceId: this.spaceId,
-            zoneId: id,
-            scope: this.formModel.zoneRoles[name].scope,
-          },
-        };
-        RoleService.setRole(zoneParams)
-          .then(() => {
-            this.onRefresh();
-            this.$noty.success(this.isUpdate ? '更新可用区权限成功' : '初始化可用区权限成功');
-          })
-          .catch(() => {
-            this.$noty.error(this.isUpdate ? '更新可用区权限失败' : '初始化可用区权限失败');
-          });
+        if (this.formModel.zoneRoles[name]) {
+          const zoneParams = {
+            userId: this.formModel.user_id,
+            roleId: this.formModel.zoneRoles[name].id,
+            data: {
+              organizationId: this.org.id,
+              spaceId: this.spaceId,
+              zoneId: id,
+              scope: this.formModel.zoneRoles[name].scope,
+            },
+          };
+          RoleService.setRole(zoneParams)
+            .then(() => {
+              this.onRefresh();
+              this.$noty.success(
+                this.isUpdate ? `更新可用区${name}权限成功` : `初始化可用区${name}权限成功`,
+              );
+            })
+            .catch(() => {
+              this.$noty.error(
+                this.isUpdate ? `更新可用区${name}权限失败` : `初始化可用区${name}权限失败`,
+              );
+            });
+        }
       });
     },
     addUser() {

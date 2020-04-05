@@ -63,6 +63,7 @@ module.exports = {
         },
       },
     ],
+    'function-paren-newline': ['off'],
     camelcase: ['off'],
   },
   parserOptions: {
