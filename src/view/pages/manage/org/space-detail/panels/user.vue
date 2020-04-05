@@ -127,13 +127,12 @@ export default {
           filter: 'role_format',
         },
         {
-          id: 'roles',
+          id: 'zone_space_roles',
           name: '可用区权限',
-          value(roles) {
-            return roles
-              .filter(r => r.scope.includes('zone'))
-              .map(r => `${r.scope}: ${r.name || '无权限'}`)
-              .join(';');
+          value(zone_space_roles) {
+            return zone_space_roles
+              .map(r => `${r.zone_name}:\t ${r.zone_role || '无权限'}`)
+              .join(';\n');
           },
           filter: 'role_format',
         },
@@ -183,7 +182,7 @@ export default {
     loadZoneRoles() {
       SpaceService.getSpaceZones(this.spaceId)
         .then(zones => {
-          this.zones = zones;
+          this.zones = zones.sort((a, b) => a.createdAt - b.createdAt);
         })
         .then(() => {
           this.zones.forEach(zone => {

@@ -197,32 +197,15 @@ export default {
         this.formModel.space_role = this.user.roles.find(r => r.scope === 'space');
 
         // 设置可用区权限
-        // this.zones.forEach(z => {
-        //   const userZoneRole = this.user.roles.find(r => r.name === z.name);
-        //   this.formModel.zoneRoles[z.name];
-        // });
-        // this.$set(this.formModel, 'space_role', space_role);
-        // // zonrole
-        // Object.keys(this.zonerole).forEach(z => {
-        //   const [zone_role] = this.zonerole[z].filter(x => x.name === '无权限');
-        //   this.$set(this.result, this.getZoneName(z), zone_role);
-        // });
-        // if (roles) {
-        //   roles.forEach(role => {
-        //     if (role.scope.includes('space')) {
-        //       // space
-        //       this.$set(this.formModel, 'space_role', role);
-        //     } else if (role.scope.includes('k8s')) {
-        //       // zone k8s
-        //       // this.$set(this.result, 'k8s-dev', role);
-        //       this.$set(this.result, this.getZoneName('k8s'), role);
-        //     } else if (role.scope.includes('ocp')) {
-        //       // zone ocp
-        //       // this.$set(this.result, 'office-openshift-dev', role);
-        //       this.$set(this.result, this.getZoneName('openshift'), role);
-        //     }
-        //   });
-        // }
+        const zoneRoles = {};
+        this.zones.forEach(z => {
+          const userZoneRoleName = this.user.zone_space_roles.find(r => r.zone_name === z.name);
+          const userZoneRole = this.zonerole[userZoneRoleName.zone_name].find(
+            r => r.name === userZoneRoleName.zone_role,
+          );
+          zoneRoles[z.name] = userZoneRole;
+        });
+        this.formModel.zoneRoles = zoneRoles;
       } else {
         // this.formModel.name = '';
         // this.formModel.user_id = getValue(first(this.users), 'id');
