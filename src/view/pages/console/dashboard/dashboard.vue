@@ -4,7 +4,10 @@
     <template v-else>
       <template v-if="!hasData">
         <div class="empty-data">
-          <img src="@/assets/images/dashboard.png" alt=""/>
+          <img
+            src="@/assets/images/dashboard.png"
+            alt=""
+          />
           <p class="empty-title">这里空空如也~</p>
           <p class="empty-content">您还未创建任何实例。</p>
         </div>
@@ -22,20 +25,23 @@
               <div class="panel-content">
                 <table>
                   <colgroup>
-                    <col width="40%"/>
-                    <col width="60%"/>
+                    <col width="40%" />
+                    <col width="60%" />
                   </colgroup>
                   <thead>
-                  <tr>
-                    <th>可用区</th>
-                    <th>应用数</th>
-                  </tr>
+                    <tr>
+                      <th>可用区</th>
+                      <th>应用数</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(application, index) in applications" :key="index">
-                    <td>{{ application.zone }}</td>
-                    <td class="count">{{ application.count }}</td>
-                  </tr>
+                    <tr
+                      v-for="(application, index) in applications"
+                      :key="index"
+                    >
+                      <td>{{ application.zone }}</td>
+                      <td class="count">{{ application.count }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -52,20 +58,23 @@
               <div class="panel-content">
                 <table>
                   <colgroup>
-                    <col width="40%"/>
-                    <col width="60%"/>
+                    <col width="40%" />
+                    <col width="60%" />
                   </colgroup>
                   <thead>
-                  <tr>
-                    <th>可用区</th>
-                    <th>服务实例数</th>
-                  </tr>
+                    <tr>
+                      <th>可用区</th>
+                      <th>服务实例数</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(instance, index) in instances" :key="index">
-                    <td>{{ instance.zone }}</td>
-                    <td class="count">{{ instance.count }}</td>
-                  </tr>
+                    <tr
+                      v-for="(instance, index) in instances"
+                      :key="index"
+                    >
+                      <td>{{ instance.zone }}</td>
+                      <td class="count">{{ instance.count }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -82,20 +91,23 @@
               <div class="panel-content">
                 <table>
                   <colgroup>
-                    <col width="40%"/>
-                    <col width="60%"/>
+                    <col width="40%" />
+                    <col width="60%" />
                   </colgroup>
                   <thead>
-                  <tr>
-                    <th>可用区</th>
-                    <th>PVC</th>
-                  </tr>
+                    <tr>
+                      <th>可用区</th>
+                      <th>PVC</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(pvc, index) in pvcs" :key="index">
-                    <td>{{ pvc.zone }}</td>
-                    <td class="count">{{ pvc.count }}</td>
-                  </tr>
+                    <tr
+                      v-for="(pvc, index) in pvcs"
+                      :key="index"
+                    >
+                      <td>{{ pvc.zone }}</td>
+                      <td class="count">{{ pvc.count }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -112,20 +124,23 @@
               <div class="panel-content">
                 <table>
                   <colgroup>
-                    <col width="40%"/>
-                    <col width="60%"/>
+                    <col width="40%" />
+                    <col width="60%" />
                   </colgroup>
                   <thead>
-                  <tr>
-                    <th>可用区</th>
-                    <th>镜像数量</th>
-                  </tr>
+                    <tr>
+                      <th>可用区</th>
+                      <th>镜像数量</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(image, index) in images" :key="index">
-                    <td>{{ image.zone }}</td>
-                    <td class="count">{{ image.count }}</td>
-                  </tr>
+                    <tr
+                      v-for="(image, index) in images"
+                      :key="index"
+                    >
+                      <td>{{ image.zone }}</td>
+                      <td class="count">{{ image.count }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -142,34 +157,37 @@
               <div class="panel-content">
                 <table class="resource-table">
                   <colgroup>
-                    <col width="15%"/>
+                    <col width="15%" />
                   </colgroup>
                   <thead>
-                  <tr>
-                    <th>可用区</th>
-                    <th
-                      :key="index"
-                      v-for="(text, index) in headers"
-                    >
-                      <overflow-tooltip
-                        placement="top-start"
-                        :text="text"
+                    <tr>
+                      <th>可用区</th>
+                      <th
+                        :key="index"
+                        v-for="(text, index) in headers"
                       >
-                      </overflow-tooltip>
-                    </th>
-                  </tr>
+                        <overflow-tooltip
+                          placement="top-start"
+                          :text="text"
+                        >
+                        </overflow-tooltip>
+                      </th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(resource, index) in resources" :key="index">
-                    <td>{{ resource.zone }}</td>
-                    <td class="count">{{ resource.deploymentCount }}</td>
-                    <td class="count">{{ resource.deploymentConfigCount }}</td>
-                    <td class="count">{{ resource.statefulSetCount }}</td>
-                    <td class="count">{{ resource.podCount }}</td>
-                    <td class="count">{{ resource.serviceCount }}</td>
-                    <td class="count">{{ resource.routeCount }}</td>
-                    <td class="count">{{ resource.ingressCount }}</td>
-                  </tr>
+                    <tr
+                      v-for="(resource, index) in resources"
+                      :key="index"
+                    >
+                      <td>{{ resource.zone }}</td>
+                      <td class="count">{{ resource.deploymentCount }}</td>
+                      <td class="count">{{ resource.deploymentConfigCount }}</td>
+                      <td class="count">{{ resource.statefulSetCount }}</td>
+                      <td class="count">{{ resource.podCount }}</td>
+                      <td class="count">{{ resource.serviceCount }}</td>
+                      <td class="count">{{ resource.routeCount }}</td>
+                      <td class="count">{{ resource.ingressCount }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -186,9 +204,20 @@ import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
 import { find, isEmpty, toPairs, get as getValue } from 'lodash';
 import DashboardService from '@/core/services/dashboard.service';
+import store from '@/core/store';
 
 export default {
   name: 'dashboard',
+  beforeRouteEnter(to, from, next) {
+    if (
+      !store.getters.menus.some(m => m === 'overview') &&
+      store.getters.menus.some(m => m === 'organization.space')
+    ) {
+      next({ name: 'console.space-settings' });
+      return;
+    }
+    next();
+  },
 
   data() {
     return {

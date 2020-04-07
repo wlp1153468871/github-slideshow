@@ -2,6 +2,7 @@
   <dao-dialog
     :config="config"
     :visible.sync="isShow"
+    @before-open="bopen"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
     @dao-dialog-confirm="onConfirm"
@@ -11,12 +12,12 @@
         <div slot="label">可用区</div>
         <div slot="content">
           <el-select
-            remote
+            ref="select"
+            size="small"
             filterable
             multiple
             v-model="zoneIds"
             placeholder="请输入关键词"
-            :remote-method="loadZones"
           >
             <el-option
               v-for="zone in zones"
@@ -70,18 +71,11 @@ export default {
   },
 
   methods: {
-    loadZones(query) {
-      if (query !== '') {
-        this.loading = true;
-        ZoneService.getAvailableZones().then(zones => {
-          this.loading = false;
-          const diffZones = differenceBy(zones, this.zoneList, 'id');
-          const [currentZone] = diffZones.filter(zone => {
-            return zone.area_name.toLowerCase().indexOf(query.toLowerCase()) > -1;
-          });
-          this.zones.push(currentZone);
-        });
-      }
+    loadZones() {
+      ZoneService.getAvailableZones().then(zones => {
+        this.zones = differenceBy(zones, this.zoneList, 'id');
+        this.loading = false;
+      });
     },
 
     onConfirm() {
@@ -93,6 +87,16 @@ export default {
       this.zoneIds = [];
       this.zones = [];
       this.$emit('close');
+    },
+
+    bopen() {
+      this.loadZones();
+      setTimeout(() => {
+        // this.$refs.select1.initialInputHeight = 32;
+        // this.$refs.select1.resetInputHeight();
+        this.$refs.select.initialInputHeight = 32;
+        this.$refs.select.resetInputHeight();
+      }, 10);
     },
   },
 };

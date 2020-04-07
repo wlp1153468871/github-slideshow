@@ -60,7 +60,6 @@
                           <td>用户名</td>
                           <td>手机号</td>
                           <td>邮箱</td>
-                          <td>项目权限</td>
                         </tr>
                       </thead>
                       <tbody>
@@ -70,7 +69,6 @@
                           <td>{{ user.username }}</td>
                           <td>{{ user.phone_number }}</td>
                           <td>{{ user.email }}</td>
-                          <td>{{ user.space_role | space_role }}</td>
                         </tr>
                       </tbody>
                     </table>

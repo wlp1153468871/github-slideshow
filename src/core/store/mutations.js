@@ -81,18 +81,22 @@ export const state = {
   isFullscreened: false,
   localLogin: true,
   roleId: '',
+  zoneRole: {},
   zoneMenus: [],
-  spaceMenus: [],
   zoneAction: {},
+  spaceRole: {},
+  spaceMenus: [],
   spaceAction: {},
-  orgAction: {},
+  orgRole: {},
   orgMenus: [],
+  orgAction: {},
+  platformRole: {},
   platformMenus: [],
   platformAction: {},
 };
 
 function flat(
-  tree,
+  tree = [],
   result = {
     menus: [],
     actions: {},
@@ -157,9 +161,7 @@ export const getters = {
   },
 
   isSpaceAdmin(state, getters) {
-    return (
-      getters.isPlatformAdmin || getValue(state, 'spaceAction.space', []).indexOf('space.base') > -1
-    );
+    return getters.isPlatformAdmin || getValue(state, 'menus', []).some(m => m === 'space');
   },
 
   alarmAdminAccessed(state, getters) {
@@ -261,54 +263,79 @@ export const getters = {
 };
 
 export const actions = {
-  getPermissionById({ commit }, { role, params }) {
+  async getPermissionById({ commit }, { role, params }) {
     const { id, scope } = role;
-    RoleSrvice.getPermission(id, params).then(data => {
-      const { menus, actions } = flat(data.children);
-      if (scope === 'space') {
-        commit('setSpaceMenus', menus);
-        commit('setSpaceActions', actions);
-      } else if (scope.includes('zone')) {
-        commit('setZoneMenus', menus);
-        commit('setZoneActions', actions);
-      } else if (scope === 'organization') {
-        commit('setOrgMenus', menus);
-        commit('setOrgActions', actions);
-      } else if (scope === 'platform') {
-        commit('setPlatformMenus', menus);
-        commit('setPlatformActions', actions);
-      }
+    const data = await RoleSrvice.getPermission(id, params);
+
+    if (scope === 'space') {
+      commit('setSpaceRole', data);
+    } else if (scope.includes('zone')) {
+      commit('setZoneRole', data);
+    } else if (scope === 'organization') {
+      commit('setOrgRole', data);
+    } else if (scope === 'platform') {
+      commit('setPlatformRole', data);
+    }
+    return Promise.resolve();
+  },
+  loadPlatformRole({ dispatch }) {
+    return dispatch('loadRole', {
+      scope: 'platform',
+      platformId: 'dsp',
+    });
+  },
+  loadOrgRole({ dispatch, getters }) {
+    return dispatch('loadRole', {
+      scope: 'organization',
+      organizationId: getters.orgId,
+    });
+  },
+  loadSpaceRole({ dispatch, getters }) {
+    return dispatch('loadRole', { scope: 'space', spaceId: getters.spaceId });
+  },
+  loadZoneRole({ dispatch, getters, state }) {
+    return dispatch('loadRole', {
+      scope: state.zone.name && state.zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+      spaceId: getters.spaceId,
+      zoneId: getters.zoneId,
     });
   },
   // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
-  getRole({ getters, dispatch }, params) {
+  loadRole({ getters, dispatch, commit }, params) {
     return RoleSrvice.getRolesById(params, getters.userId).then(roleList => {
+      const { scope } = params;
       if (roleList.length === 0) {
-        return false;
+        if (scope === 'space') {
+          commit('setSpaceRole', {});
+        } else if (scope === 'organization') {
+          commit('setOrgRole', {});
+        } else if (scope === 'platform') {
+          commit('setPlatformRole', {});
+        } else {
+          commit('setZoneRole', {});
+        }
+        return Promise.resolve();
       }
       const role = roleList[0];
-      const { scope } = role;
       if (scope === 'space') {
-        dispatch('getPermissionById', {
+        return dispatch('getPermissionById', {
           role,
           params: {
             spaceId: getters.spaceId,
           },
         });
       } else if (scope === 'organization') {
-        dispatch('getPermissionById', {
+        return dispatch('getPermissionById', {
           role,
           params: {
             organizationId: getters.orgId,
           },
         });
-      } else {
-        dispatch('getPermissionById', {
-          role,
-          params: null,
-        });
       }
-      return true;
+      return dispatch('getPermissionById', {
+        role,
+        params: null,
+      });
     });
   },
 
@@ -353,18 +380,16 @@ export const actions = {
   },
 
   initConsoleView({ dispatch, state }) {
-    return dispatch('loadSpaces')
+    return dispatch('loadOrgsAndSpaces')
       .then(() => {
         return dispatch('loadZones');
       })
       .then(() => {
-        return dispatch('getUserInfo');
-      })
-      .then(() => {
-        // return dispatch('getRole', {
-        //   scope: 'platform',
-        //   platformId: 'dsp',
-        // });
+        return Promise.all([
+          dispatch('loadSpaceRole'),
+          dispatch('loadOrgRole'),
+          dispatch('loadZoneRole'),
+        ]);
       })
       .then(() => {
         if (state.zones.length) {
@@ -393,7 +418,7 @@ export const actions = {
     );
   },
 
-  loadSpaces({ commit, state, getters, dispatch }) {
+  loadOrgsAndSpaces({ commit, state, getters }) {
     return new Promise((resolve, reject) => {
       Promise.all([OrgService.getUserOrgs(), SpaceService.getUserSpaces()]).then(
         ([orgs, spaces]) => {
@@ -436,12 +461,6 @@ export const actions = {
 
           if (org) {
             commit(types.SWITCH_ORG, { org });
-            OrgService.setLocalOrg(org);
-            // 获取org权限
-            dispatch('getRole', {
-              scope: 'organization',
-              organizationId: org.id,
-            });
           } else {
             // 如果org为空，也就是org没有space，则跳转到profile页面，onInitTenantView设为true防止循环调用
             Vue.noty.error(`您暂未加入任何${getters.spaceDescription}`);
@@ -463,15 +482,7 @@ export const actions = {
           }
 
           if (space) {
-            SpaceService.setLocalSpace(space);
             commit(types.SWITCH_SPACE, { space });
-            const params = {
-              // userId: getters.userId,
-              scope: 'space',
-              spaceId: getters.spaceId,
-              // zoneId: getters.zoneId,
-            };
-            dispatch('getRole', params);
           } else {
             // 不会出现，以防万一
             Vue.noty.error('出错了');
@@ -485,33 +496,19 @@ export const actions = {
     });
   },
 
-  loadZones({ commit, state, dispatch, getters }) {
-    return SpaceService.getSpaceZones(state.space.id).then(zones => {
-      commit(types.LOAD_ZONE_SUCCESS, { zones });
-
-      // get localStorage saved zone;
-      let zone = ZoneService.getLocalZone();
-
-      if (zone && zone.id) {
-        // in case localStorage tenant info is expired.
-        zone = zones.find(x => x.id === zone.id);
-      }
-
-      if (!zone || !Object.keys(zone).length) {
-        zone = first(zones) || {};
-      }
-      ZoneService.setLocalZone(zone);
-
-      commit(types.SWITCH_ZONE, { zone });
-      const params = {
-        // userId: getters.userId,
-        scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
-        spaceId: getters.spaceId,
-        zoneId: getters.zoneId,
-      };
-      // const scope = 'zone';
-      dispatch('getRole', params);
-    });
+  async loadZones({ commit, state }) {
+    const zones = await SpaceService.getSpaceZones(state.space.id);
+    commit(types.LOAD_ZONE_SUCCESS, { zones });
+    // get localStorage saved zone;
+    let zone = ZoneService.getLocalZone();
+    if (zone && zone.id) {
+      // in case localStorage tenant info is expired.
+      zone = zones.find(x => x.id === zone.id);
+    }
+    if (!zone || !Object.keys(zone).length) {
+      zone = first(zones) || {};
+    }
+    commit(types.SWITCH_ZONE, { zone });
   },
 
   getUserInfo({ commit, dispatch }) {
@@ -519,10 +516,7 @@ export const actions = {
       AuthService.getUserInfo()
         .then(user => {
           commit('LOAD_USER_SUCCESS', { user });
-          return dispatch('getRole', {
-            scope: 'platform',
-            platformId: 'dsp',
-          });
+          return dispatch('loadPlatformRole');
         })
         .then(() => {
           resolve();
@@ -601,51 +595,38 @@ export const actions = {
 
   switchOrg({ dispatch, commit }, { org, space }) {
     commit(types.SWITCH_ORG, { org });
-    OrgService.setLocalOrg(org);
-    dispatch('switchSpace', { space });
-    dispatch('getRole', {
-      scope: 'organization',
-      organizationId: org.id,
+
+    return dispatch('loadOrgRole').then(() => {
+      return dispatch('switchSpace', { space });
     });
   },
 
   // 切换项目组
   switchSpace({ dispatch, commit }, { space }) {
     commit(types.SWITCH_SPACE, { space });
-    SpaceService.setLocalSpace(space);
 
-    const params = {
-      scope: 'space',
-      spaceId: space.id,
-    };
-    dispatch('getRole', params);
-
-    dispatch('loadZones').then(() => {
-      if (state.zones.length) {
-        const zone = first(state.zones);
-        dispatch('switchZone', { zone });
-        router.push({
-          name: 'console.dashboard',
-        });
-      } else {
-        Vue.noty.error('暂无可用区');
-      }
-    });
+    return dispatch('loadSpaceRole')
+      .then(() => {
+        return dispatch('loadZones');
+      })
+      .then(() => {
+        if (state.zones.length) {
+          const zone = first(state.zones);
+          dispatch('switchZone', { zone }).then(() => {
+            router.push({
+              name: 'console',
+            });
+          });
+        } else {
+          Vue.noty.error('暂无可用区');
+        }
+      });
   },
 
   // 切换可用区
-  switchZone({ dispatch, commit, getters }, { zone }) {
+  switchZone({ dispatch, commit }, { zone }) {
     commit(types.SWITCH_ZONE, { zone });
-    ZoneService.setLocalZone(zone);
-
-    const params = {
-      scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
-      spaceId: getters.spaceId,
-      zoneId: zone.id,
-    };
-    dispatch('getRole', params);
-
-    dispatch('getUserInfo').then(() => {
+    return dispatch('loadZoneRole').then(() => {
       dispatch('initPortal');
     });
   },
@@ -702,14 +683,17 @@ export const mutations = {
   },
 
   [types.SWITCH_ZONE](state, { zone }) {
+    ZoneService.setLocalZone(zone);
     state.zone = zone;
   },
 
   [types.SWITCH_ORG](state, { org }) {
+    OrgService.setLocalOrg(org);
     state.org = org;
   },
 
   [types.SWITCH_SPACE](state, { space }) {
+    SpaceService.setLocalSpace(space);
     state.space = space;
   },
 
@@ -803,28 +787,28 @@ export const mutations = {
   [types.FUll_SCREENED](state, isFullscreened) {
     state.isFullscreened = isFullscreened;
   },
-  setZoneMenus(state, menus) {
+  setZoneRole(state, role) {
+    state.zoneRole = role;
+    const { menus, actions } = flat(role.children);
     state.zoneMenus = menus;
-  },
-  setSpaceMenus(state, menus) {
-    state.spaceMenus = menus;
-  },
-  setZoneActions(state, actions) {
     state.zoneAction = actions;
   },
-  setSpaceActions(state, actions) {
+  setSpaceRole(state, role) {
+    state.spaceRole = role;
+    const { menus, actions } = flat(role.children);
+    state.spaceMenus = menus;
     state.spaceAction = actions;
   },
-  setOrgActions(state, actions) {
+  setOrgRole(state, role) {
+    state.orgRole = role;
+    const { menus, actions } = flat(role.children);
+    state.orgMenus = menus;
     state.orgAction = actions;
   },
-  setOrgMenus(state, menus) {
-    state.orgMenus = menus;
-  },
-  setPlatformMenus(state, menus) {
+  setPlatformRole(state, role) {
+    state.platformRole = role;
+    const { menus, actions } = flat(role.children);
     state.platformMenus = menus;
-  },
-  setPlatformActions(state, actions) {
     state.platformAction = actions;
   },
 };

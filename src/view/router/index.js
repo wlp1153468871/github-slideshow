@@ -54,11 +54,11 @@ const router = new Router({
     {
       path: '/console',
       name: 'console',
+      component: ConsoleContainer,
+      children: ConsoleRouters,
       redirect: {
         name: 'console.dashboard',
       },
-      component: ConsoleContainer,
-      children: ConsoleRouters,
       beforeEnter(to, from, next) {
         const { spaceId, zoneId, orgId } = to.query;
         if (spaceId && zoneId && orgId) {
@@ -72,6 +72,7 @@ const router = new Router({
             id: orgId,
           });
         }
+
         if (to.query.onInitTenantView) {
           next();
         } else {

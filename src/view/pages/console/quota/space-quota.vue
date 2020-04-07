@@ -163,7 +163,7 @@ export default {
   },
   created() {
     this.getSpaceQuota();
-    if (!this.zoneUnauthorized || this.isPlatformAdmin) this.getZoneQuota();
+    if (this.$can('quota.view', 'quota')) this.getZoneQuota();
     this.getSpaceQuotaApplyList();
   },
   components: {
@@ -208,22 +208,24 @@ export default {
       });
     },
     getZoneQuota() {
-      zoneService.getResourceQuota().then(res => {
-        const hard = gatValue(res, 'status.hard', {});
-        const used = gatValue(res, 'status.used', {});
-        this.zoneQuota = {
-          hard: {
-            cpu: hard['limits.cpu'],
-            memory: hard['limits.memory'],
-            storage: hard['requests.storage'],
-          },
-          subHard: {
-            cpu: used['limits.cpu'],
-            memory: used['limits.memory'],
-            storage: used['requests.storage'],
-          },
-        };
-      })
+      zoneService
+        .getResourceQuota()
+        .then(res => {
+          const hard = gatValue(res, 'status.hard', {});
+          const used = gatValue(res, 'status.used', {});
+          this.zoneQuota = {
+            hard: {
+              cpu: hard['limits.cpu'],
+              memory: hard['limits.memory'],
+              storage: hard['requests.storage'],
+            },
+            subHard: {
+              cpu: used['limits.cpu'],
+              memory: used['limits.memory'],
+              storage: used['requests.storage'],
+            },
+          };
+        })
         .catch(err => {
           if (err.status === 404) {
             this.noZoneQuota = true;

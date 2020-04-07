@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable function-paren-newline */
+import Vue from 'vue';
 import store from '@/core/store';
 import NProgress from 'nprogress';
 import ManageContainer from '@/view/pages/manage/container/container.vue';
@@ -86,6 +87,7 @@ export default {
       if (store.getters.isPlatformAdmin) {
         next();
       } else {
+        Vue.noty.error('无平台管理权限');
         next({
           name: 'console.dashboard',
         });

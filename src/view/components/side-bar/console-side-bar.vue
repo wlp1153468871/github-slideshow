@@ -30,7 +30,7 @@
         </template>
       </div>
 
-      <div class="section-zone">
+      <div class="section-zone" v-if="spaceRole.id">
         <el-tooltip
           :content="zone.name ? zone.name : '暂无可用区'"
           placement="right"
@@ -50,58 +50,64 @@
         text-color="#e4e7ed"
         :default-active="defaultActiveMenu"
         :router="true"
-        :collapse="isCollapse">
+        :collapse="isCollapse"
+      >
         <template v-for="(item, index) in allMenus">
           <template v-if="item.children">
             <el-submenu
               :index="item.name"
               v-if="!hiddenMenu(item)"
-              :key="index">
+              :key="index"
+            >
               <template slot="title">
                 <svg class="icon">
                   <use :xlink:href="item.meta.icon"></use>
                 </svg>
                 <span>{{ item.meta.title }}</span>
               </template>
-              <el-menu-item
-                v-for="(menuItem, index) in item.children"
-                :key="index"
-                :route="{ name: menuItem.name }"
-                :index="menuItem.name"
-                v-if="!hiddenMenu(menuItem)">
-                <svg class="icon">
-                  <use :xlink:href="menuItem.meta.icon"></use>
-                </svg>
-                <span>
-                  <!-- {{ menuItem.meta.title }} -->
-                  <overflow-tooltip
-                    slot="title"
-                    :text="menuItem.meta.title"
-                  >
-                  </overflow-tooltip>
-                </span>
-              </el-menu-item>
-              <!-- 这里是服务子菜单 -->
-              <el-menu-item
-                v-if="item.meta.code === 'serviceBroker'"
-                v-for="menu in services"
-                :key="menu.id"
-                :index="compileIndex(menu)"
-                :route="menu.route"
-              >
-                <service-logo
-                  :src="menu.logo_url"
-                  size="small"
-                ></service-logo>
-                <el-tooltip
-                  popper-class="service-name-tooltip"
-                  slot="title"
-                  :content="menu.name"
-                  placement="right"
+              <template v-for="(menuItem, index) in item.children">
+                <el-menu-item
+                  :key="index"
+                  :route="{ name: menuItem.name }"
+                  :index="menuItem.name"
+                  v-if="!hiddenMenu(menuItem)"
                 >
-                  <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
-                </el-tooltip>
-              </el-menu-item>
+                  <svg class="icon">
+                    <use :xlink:href="menuItem.meta.icon"></use>
+                  </svg>
+                  <span>
+                    <overflow-tooltip
+                      slot="title"
+                      :text="menuItem.meta.title"
+                    >
+                    </overflow-tooltip>
+                  </span>
+                </el-menu-item>
+              </template>
+
+              <!-- 这里是服务子菜单 -->
+              <template v-for="menu in services">
+                <el-menu-item
+                  v-if="item.meta.code === 'serviceBroker'"
+                  :key="menu.id"
+                  :index="compileIndex(menu)"
+                  :route="menu.route"
+                >
+                  <service-logo
+                    :src="menu.logo_url"
+                    size="small"
+                  ></service-logo>
+                  <el-tooltip
+                    popper-class="service-name-tooltip"
+                    slot="title"
+                    :content="menu.name"
+                    placement="right"
+                  >
+                    <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
+                  </el-tooltip>
+                </el-menu-item>
+              </template>
+
               <el-menu-item v-if="item.meta.code === 'serviceBroker' && services.length === 0">
                 <span class="service-menu-name text-overflow-ellipsis">无服务</span>
               </el-menu-item>
@@ -112,7 +118,8 @@
               :key="index"
               v-if="!hiddenMenu(item)"
               :route="{ name: item.name }"
-              :index="item.name">
+              :index="item.name"
+            >
               <svg class="icon">
                 <use :xlink:href="item.meta.icon"></use>
               </svg>
@@ -137,11 +144,11 @@ import { mapState } from 'vuex';
 import { find } from 'lodash';
 import * as types from '@/core/store/mutation-types';
 import allMenus from '@/view/router/console.js';
+import hasPermission from '@/core/utils/hasPermission';
 import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
 import ZoneSelect from './zone-select';
 import OverflowTooltip from './overflow-tooltip';
-import hasPermission from './utils';
 
 export default {
   name: 'ConsoleSideBar',
@@ -181,6 +188,7 @@ export default {
     ...mapState([
       'orgs',
       'space',
+      'spaceRole',
       'org',
       'zone',
       'zones',
@@ -304,7 +312,6 @@ export default {
       const spaceId = ids[ids.length - 1];
       const org = find(this.orgs, { id: orgId });
       const space = find(org.children, { id: spaceId });
-      // this.onTopMenuSelect();
       if (!org || !space) {
         return;
       }
@@ -316,45 +323,9 @@ export default {
       });
     },
 
-    // onTopMenuSelect() {
-    //   this.$refs.bottomMenu.activeIndex = '';
-    // },
-
-    // onBottomMenuSelect() {
-    //   this.$refs.topMenu.activeIndex = '';
-    // },
-
-    // hasPermission(str) {
-    //   if (this.menu.indexOf(str) !== -1) {
-    //     return true;
-    //   }
-    // },
-
     hiddenMenu(menu) {
-      // return !menu.meta.hidden || hasPermission(menu);
       return (menu.meta && menu.meta.hidden) || !hasPermission(menu);
     },
-
-    // hasPermission(menu) {
-    //   // const code = menu.meta && menu.meta.code;
-    //   // if (!code) return false;
-    //   // return store.state.menus.indexOf(code) > -1;
-    //   console.log(menu);
-
-    //   return true;
-    // },
-  },
-
-  mounted() {
-    // this.getMenu(this.menus);
-    // this.$watch(
-    //   () => {
-    //     return this.$refs.bottomMenu.openedMenus;
-    //   },
-    //   val => {
-    //     this.$store.commit(types.UPDATE_OPENED_MENUS, [...val]);
-    //   },
-    // );
   },
 };
 </script>

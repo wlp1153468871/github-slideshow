@@ -23,7 +23,6 @@
             <p class="item-username">{{ item.username }}</p>
             <div class="user-info">
               <span>{{ item.email }}</span>
-              <span>{{ item.space_role|space_role }}</span>
             </div>
           </el-option>
         </el-select>
@@ -55,7 +54,6 @@
             <th class="td-name">用户名</th>
             <th>手机号</th>
             <th>邮箱</th>
-            <th>权限</th>
             <th>操作</th>
           </tr>
           </thead>
@@ -71,7 +69,6 @@
               <td class="td-name">{{ user.username }}</td>
               <td>{{ user.phone_number }}</td>
               <td>{{ user.email }}</td>
-              <td>{{ user.space_role | space_role }}</td>
               <td>
                 <a href="javascript:void(0);" @click="remove(index)">
                   <svg class="icon">

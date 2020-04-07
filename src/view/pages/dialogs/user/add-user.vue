@@ -44,7 +44,6 @@
             placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
-            :disabled="!isPlatformView &&model.username===userName && $can('space.base','space')"
             v-model="formModel.space_role"
           >
             <dao-option
@@ -125,7 +124,6 @@ export default {
 
   props: {
     spaceId: { type: String, default: '' },
-    isPlatformView: { type: Boolean, default: true },
     visible: { type: Boolean, default: false },
     users: { type: Array, default: () => [] },
     zones: { type: Array, default: () => [] },

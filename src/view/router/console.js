@@ -107,7 +107,7 @@ export default [
    * 资源对象类型: Pod
    */
   {
-    path: '/',
+    path: '/resource',
     name: 'resource',
     component: RouteView,
     meta: {
@@ -310,8 +310,8 @@ export default [
     ],
   },
   {
-    path: '',
-    name: '',
+    path: '/instances',
+    name: 'serviceBroker',
     component: RouteView,
     meta: {
       title: '服务',
@@ -464,13 +464,13 @@ export default [
     },
   },
   {
-    path: 'user',
-    name: 'console.user.list',
+    path: 'space-settings',
+    name: 'console.space-settings',
     component: UserList,
     meta: {
       title: '管理',
-      icon: '#icon_user',
-      code: 'space',
+      icon: '#icon_setting',
+      code: 'space;organization.space',
     },
   },
   // deploy
