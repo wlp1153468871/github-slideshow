@@ -1,7 +1,6 @@
 /* eslint-disable function-paren-newline */
 /* eslint-disable object-curly-newline */
 import Vue from 'vue';
-import { SPACE_ROLE } from '@/core/constants/role';
 import QuotaService from '@/core/services/quota.service';
 import SSOService from '@/core/services/sso.service';
 import RoleSrvice from '@/core/services/role.service';
@@ -110,7 +109,7 @@ function flat(
           if (result.actions[featureCode]) {
             result.actions[featureCode].push(action.featureCode);
           } else {
-            result.actions[featureCode] = [...[action.featureCode]];
+            result.actions[featureCode] = [action.featureCode];
           }
         }
       });
@@ -158,7 +157,9 @@ export const getters = {
   },
 
   isSpaceAdmin(state, getters) {
-    return getters.isPlatformAdmin || state.user.space_role === SPACE_ROLE.ADMIN;
+    return (
+      getters.isPlatformAdmin || getValue(state, 'spaceAction.space', []).indexOf('space.base') > -1
+    );
   },
 
   alarmAdminAccessed(state, getters) {
@@ -552,7 +553,7 @@ export const actions = {
   },
 
   loadAPIResource({ commit, state }) {
-    return APIResourceService.list(state.zone).then(resources => {
+    return APIResourceService.list(state.zone, state.space.id).then(resources => {
       const simplifiedResourceList = uniqBy(
         flatten(resources.map(resourceList => resourceList.resources)),
         'kind',

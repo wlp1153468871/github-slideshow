@@ -9,8 +9,16 @@ class APIResourceService {
     this.api = api;
   }
 
-  list(zone: any) {
-    return this.api.get(`/api_resources`, { zone: zone.id });
+  list(zone: any, spaceId: any) {
+    return this.api.get(
+      `/api_resources`,
+      { zone: zone.id },
+      {
+        headers: {
+          spaceId,
+        },
+      },
+    );
   }
 }
 
