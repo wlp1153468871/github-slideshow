@@ -30,7 +30,10 @@
         </template>
       </div>
 
-      <div class="section-zone" v-if="spaceRole.id">
+      <div
+        class="section-zone"
+        v-if="menus.some(m => m==='space')"
+      >
         <el-tooltip
           :content="zone.name ? zone.name : '暂无可用区'"
           placement="right"
@@ -140,7 +143,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { find } from 'lodash';
 import * as types from '@/core/store/mutation-types';
 import allMenus from '@/view/router/console.js';
@@ -181,7 +184,6 @@ export default {
     ...mapState([
       'orgs',
       'space',
-      'spaceRole',
       'org',
       'zone',
       'zones',
@@ -189,8 +191,8 @@ export default {
       'isCollapse',
       'defaultActiveMenu',
       'apiResource',
-      'menu',
     ]),
+    ...mapGetters(['menus']),
 
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;

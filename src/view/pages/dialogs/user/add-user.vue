@@ -213,21 +213,25 @@ export default {
       this.$validator.validateAll().then(valid => {
         if (valid) {
           if (this.isUpdate) {
-            this.setUserZoneRole();
-            this.setUserSpaceRole();
+            this.setUserRole();
           } else {
-            this.addUser().then(() => {
-              this.setUserZoneRole();
-              this.setUserSpaceRole();
-            });
+            this.addUser()
+              .then(() => {
+                return this.setUserRole();
+              })
+              .then(() => {
+                this.$store.dispatch('loadSpaceRole');
+                this.$store.dispatch('loadZoneRole');
+              });
           }
         }
       });
     },
 
     setUserRole() {
-      this.setUserSpaceRole();
-      this.setUserZoneRole();
+      return Promise.all([this.setUserSpaceRole(), this.setUserZoneRole()]).then(() => {
+        this.onRefresh();
+      });
     },
 
     setUserSpaceRole() {
@@ -241,7 +245,7 @@ export default {
           scope: this.formModel.scope,
         },
       };
-      RoleService.setRole(spaceParams)
+      return RoleService.setRole(spaceParams)
         .then(() => {
           this.$noty.success(this.isUpdate ? '更新项目组权限成功' : '初始化项目组权限成功');
         })
@@ -251,33 +255,35 @@ export default {
     },
 
     setUserZoneRole() {
-      this.zones.forEach(zone => {
-        const { name, id } = zone;
-        if (this.formModel.zoneRoles[name]) {
-          const zoneParams = {
-            userId: this.formModel.user_id,
-            roleId: this.formModel.zoneRoles[name].id,
-            data: {
-              organizationId: this.org.id,
-              spaceId: this.spaceId,
-              zoneId: id,
-              scope: this.formModel.zoneRoles[name].scope,
-            },
-          };
-          RoleService.setRole(zoneParams)
-            .then(() => {
-              this.onRefresh();
-              this.$noty.success(
-                this.isUpdate ? `更新可用区${name}权限成功` : `初始化可用区${name}权限成功`,
-              );
-            })
-            .catch(() => {
-              this.$noty.error(
-                this.isUpdate ? `更新可用区${name}权限失败` : `初始化可用区${name}权限失败`,
-              );
-            });
-        }
-      });
+      return Promise.all(
+        this.zones.map(zone => {
+          const { name, id } = zone;
+          if (this.formModel.zoneRoles[name]) {
+            const zoneParams = {
+              userId: this.formModel.user_id,
+              roleId: this.formModel.zoneRoles[name].id,
+              data: {
+                organizationId: this.org.id,
+                spaceId: this.spaceId,
+                zoneId: id,
+                scope: this.formModel.zoneRoles[name].scope,
+              },
+            };
+            return RoleService.setRole(zoneParams)
+              .then(() => {
+                this.$noty.success(
+                  this.isUpdate ? `更新可用区${name}权限成功` : `初始化可用区${name}权限成功`,
+                );
+              })
+              .catch(() => {
+                this.$noty.error(
+                  this.isUpdate ? `更新可用区${name}权限失败` : `初始化可用区${name}权限失败`,
+                );
+              });
+          }
+          return Promise.resolve();
+        }),
+      );
     },
     addUser() {
       return UserService.updateSpaceUser(this.spaceId, {

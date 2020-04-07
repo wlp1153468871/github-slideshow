@@ -161,7 +161,7 @@ export const getters = {
   },
 
   isSpaceAdmin(state, getters) {
-    return getters.isPlatformAdmin || getValue(state, 'menus', []).some(m => m === 'space');
+    return getters.isPlatformAdmin || getValue(state, 'menus', []).some(m => m === 'space.base');
   },
 
   zoneUnauthorized(state, getters) {
