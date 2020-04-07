@@ -2,8 +2,6 @@ import Vue from 'vue';
 import store from '@/core/store';
 import NProgress from 'nprogress';
 
-// container
-// import ConsoleContainer from '@/view/pages/console/container/container.vue';
 
 import RouteView from '@/view/layout/route-view';
 
@@ -52,6 +50,8 @@ import OrgRegistry from '@/view/pages/org/registry/registry.vue';
 // product
 import ProductCheckout from '@/view/pages/console/product/checkout/checkout.vue';
 
+import Gateway from '@/view/pages/console/gateway/gateway';
+
 import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
 import Registry from '@/view/pages/console/registry/registry.vue';
 import RegistryTag from '@/view/pages/console/registry/detail/registryTag.vue';
@@ -75,6 +75,14 @@ import IngressList from '@/view/pages/console/resource/ingress/list/ingress-list
 import IngressDetail from '@/view/pages/console/resource/ingress/detail/ingress-detail';
 
 export default [
+  {
+    path: 'gateway',
+    name: 'console.gateway',
+    component: Gateway,
+    meta: {
+      hidden: true,
+    },
+  },
   {
     path: 'dashboard',
     name: 'console.dashboard',
@@ -218,7 +226,8 @@ export default [
         component: RouteList,
         meta: {
           title: 'Route',
-          icon: '#icon_route',
+          icon: '#icon_routes',
+          code: 'router',
         },
       },
       {
@@ -228,6 +237,7 @@ export default [
         meta: {
           activeMenu: 'resource.routes.list',
           hidden: true,
+          code: 'router',
         },
       },
       {
@@ -383,13 +393,6 @@ export default [
     path: 'alarm/rule/create',
     name: 'console.alarm.create',
     component: CreateAlarmRule,
-    // beforeEnter(to, from, next) {
-    //   if (store.getters.alarmAdminAccessed) {
-    //     next();
-    //     return;
-    //   }
-    //   next({ name: 'console.alarm' });
-    // },
     meta: {
       hidden: true,
       code: 'alert.create',
@@ -401,6 +404,7 @@ export default [
     component: AlarmDetail,
     meta: {
       hidden: true,
+      code: 'alert',
     },
   },
   {
@@ -443,14 +447,6 @@ export default [
           icon: '#icon_log',
         },
       },
-      // {
-      //   path: 'approval/setting',
-      //   name: 'console.approval.setting',
-      //   component: ApprovalSetting,
-      //   meta: {
-      //     title: '审批设置',
-      //   },
-      // },
     ],
   },
   {
@@ -477,21 +473,6 @@ export default [
   {
     path: 'deploy',
     name: 'deploy',
-    // beforeEnter(to, from, next) {
-    //   // 每次经过 console 都会经过这个函数, 所以, 需要注意执行效率;
-    //   // 目前的过滤条件是前端写死的, 能够集中处理呢?
-    //   if (/deploy\./.test(to.name)) {
-    //     const yes = Vue.prototype.$ability.can('create');
-    //     if (yes) {
-    //       next();
-    //     } else {
-    //       // can't create!
-    //       next({ name: 'console' });
-    //     }
-    //   } else {
-    //     next();
-    //   }
-    // },
     component: DeployContainer,
     meta: {
       hidden: true,
@@ -629,7 +610,7 @@ export default [
       } else {
         Vue.noty.error('无权限访问此页面');
         next({
-          name: 'console.dashboard',
+          name: 'console.gateway',
         });
         NProgress.done();
       }

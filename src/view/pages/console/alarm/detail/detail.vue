@@ -6,7 +6,6 @@
         <template #action-buttons>
           <dao-dropdown
             trigger="click"
-            v-if="adminAccessed"
             :append-to-body="true"
             placement="bottom-end">
             <button class="dao-btn ghost has-icon">
@@ -32,7 +31,7 @@
           </dao-dropdown>
         </template>
       </resource-header>
-      <div class="btn-group" v-if="adminAccessed">
+      <div class="btn-group">
         <button
           class="dao-btn has-icon blue"
           id="confirmed"
@@ -54,7 +53,6 @@
                 type="text"
                 @click="onClickDetail"
                 v-show="!detail.changeView"
-                v-if="adminAccessed"
               >编辑</button>
             </div>
           </template>
@@ -167,7 +165,6 @@
                 class="dao-btn mini blue"
                 type="text"
                 @click="onClickScope"
-                v-if="adminAccessed"
                 v-show="!scope.changeView"
               >编辑</button>
             </div>
@@ -240,7 +237,6 @@
                 class="dao-btn mini blue"
                 @click="onClickEmail"
                 v-show="!email.changeView"
-                v-if="adminAccessed"
               >添加</button>
             </div>
           </template>

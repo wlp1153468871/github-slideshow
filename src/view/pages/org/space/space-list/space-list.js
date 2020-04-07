@@ -41,9 +41,6 @@ export default {
 
     gotoSpace(space) {
       this.$store.dispatch('switchSpace', { space });
-      this.$router.push({
-        name: 'console.dashboard',
-      });
     },
   },
 };

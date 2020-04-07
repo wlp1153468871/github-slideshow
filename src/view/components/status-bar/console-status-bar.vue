@@ -71,7 +71,7 @@ export default {
     updateRouter() {
       // network
       this.$router.push({
-        name: 'console.dashboard',
+        name: 'console.gateway',
       });
     },
   },

@@ -158,7 +158,7 @@ export default {
 
     linkToDashboard() {
       this.$router.push({
-        name: 'console.dashboard',
+        name: 'console.gateway',
       });
     },
   },

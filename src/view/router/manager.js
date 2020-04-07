@@ -89,7 +89,7 @@ export default {
       } else {
         Vue.noty.error('无平台管理权限');
         next({
-          name: 'console.dashboard',
+          name: 'console.gateway',
         });
         NProgress.done();
       }

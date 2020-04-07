@@ -164,10 +164,6 @@ export const getters = {
     return getters.isPlatformAdmin || getValue(state, 'menus', []).some(m => m === 'space');
   },
 
-  alarmAdminAccessed(state, getters) {
-    return getters.isPlatformAdmin || getters.isOrganizationAdmin || getters.isSpaceAdmin;
-  },
-
   zoneUnauthorized(state, getters) {
     return getters.menus.indexOf('serviceBroker') === -1;
   },
@@ -314,7 +310,8 @@ export const actions = {
         } else {
           commit('setZoneRole', {});
         }
-        return Promise.resolve();
+        return null;
+        // return Promise.resolve();
       }
       const role = roleList[0];
       if (scope === 'space') {
@@ -512,18 +509,9 @@ export const actions = {
   },
 
   getUserInfo({ commit, dispatch }) {
-    return new Promise((resolve, reject) => {
-      AuthService.getUserInfo()
-        .then(user => {
-          commit('LOAD_USER_SUCCESS', { user });
-          return dispatch('loadPlatformRole');
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+    return AuthService.getUserInfo().then(user => {
+      commit('LOAD_USER_SUCCESS', { user });
+      return dispatch('loadPlatformRole');
     });
   },
 
@@ -604,22 +592,20 @@ export const actions = {
   // 切换项目组
   switchSpace({ dispatch, commit }, { space }) {
     commit(types.SWITCH_SPACE, { space });
-
     return dispatch('loadSpaceRole')
       .then(() => {
         return dispatch('loadZones');
       })
       .then(() => {
-        if (state.zones.length) {
-          const zone = first(state.zones);
-          dispatch('switchZone', { zone }).then(() => {
-            router.push({
-              name: 'console',
-            });
-          });
-        } else {
-          Vue.noty.error('暂无可用区');
-        }
+        return dispatch('loadZoneRole');
+      })
+      .then(() => {
+        return dispatch('initPortal');
+      })
+      .then(() => {
+        router.push({
+          name: 'console.gateway',
+        });
       });
   },
 

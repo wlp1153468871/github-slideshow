@@ -77,7 +77,7 @@ export default {
       } catch (e) {
         console.error(e);
         this.$router.push({
-          name: 'console.dashboard',
+          name: 'console.gateway',
         });
       }
       return {};

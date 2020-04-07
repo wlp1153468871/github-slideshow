@@ -17,8 +17,7 @@ const notyErrorOption = {
 // const debug = process.env.NODE_ENV !== 'production';
 
 function notifyErrorResponse(response, defaultMessage) {
-  const msg =
-    getValue(response, 'data.error_info') || getValue(response, 'data');
+  const msg = JSON.stringify(getValue(response, 'data.error_info') || getValue(response, 'data'));
   new Noty({
     ...notyErrorOption,
     text: msg || defaultMessage,
@@ -28,17 +27,17 @@ function notifyErrorResponse(response, defaultMessage) {
 const refreshToken = (params, cb) => {
   if (!store.state.auth.isRefreshing) {
     store.commit('setRefreshingState', true);
-    store.commit('setRefreshingCall', axios
-      .get('/v1/auth_token', { params })
-      .then(({ data: { token } }) => {
+    store.commit(
+      'setRefreshingCall',
+      axios.get('/v1/auth_token', { params }).then(({ data: { token } }) => {
         store.commit('saveToken', token);
         store.commit('setRefreshingState', false);
         store.commit('setRefreshingCall', null);
         return Promise.resolve(true);
-      }));
+      }),
+    );
   }
-  return store.state.auth.refreshingCall
-    .then(() => cb());
+  return store.state.auth.refreshingCall.then(() => cb());
 };
 
 const toLogin = (res = {}) => {

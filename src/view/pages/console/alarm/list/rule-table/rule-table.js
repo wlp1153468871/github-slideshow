@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 import AlarmService from '@/core/services/alarm.service.ts';
 
@@ -18,9 +18,6 @@ export default {
   computed: {
     ...mapState({
       loading: state => state.loadings.alarmListView,
-    }),
-    ...mapGetters({
-      adminAccessed: 'alarmAdminAccessed',
     }),
     currentRulesBasedPage() {
       const from = (this.currentPage - 1) * this.pageSize;

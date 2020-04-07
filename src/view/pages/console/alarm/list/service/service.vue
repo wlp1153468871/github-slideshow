@@ -22,7 +22,7 @@
         </el-select>
         <button
           class="dao-btn blue has-icon add-rules"
-          @click="onAddRules"
+          @click.prevent="onAddRules"
           v-if="$can('alert.create', 'alert')"
         >
           <svg class="icon">

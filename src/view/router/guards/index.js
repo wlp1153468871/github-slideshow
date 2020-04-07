@@ -20,7 +20,7 @@ export default function ensureHooks(router) {
     }
     if (AuthService.isAuthed()) {
       if (to.name === 'login') {
-        next({ name: 'console.dashboard' });
+        next({ name: 'console.gateway' });
         NProgress.done();
       } else if (!store.state.user.id) {
         store

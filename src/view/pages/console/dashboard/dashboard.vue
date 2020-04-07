@@ -200,24 +200,14 @@
 </template>
 
 <script>
-import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { mapState } from 'vuex';
 import { find, isEmpty, toPairs, get as getValue } from 'lodash';
+
+import { RESOURCE_TYPE } from '@/core/constants/resource';
 import DashboardService from '@/core/services/dashboard.service';
-import store from '@/core/store';
 
 export default {
   name: 'dashboard',
-  beforeRouteEnter(to, from, next) {
-    if (
-      !store.getters.menus.some(m => m === 'overview') &&
-      store.getters.menus.some(m => m === 'organization.space')
-    ) {
-      next({ name: 'console.space-settings' });
-      return;
-    }
-    next();
-  },
 
   data() {
     return {

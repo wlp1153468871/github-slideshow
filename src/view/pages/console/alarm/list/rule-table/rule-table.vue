@@ -63,7 +63,6 @@
       <el-table-column
         label="操作"
         v-slot="{ row }"
-        v-if="adminAccessed"
       >
         <span class="action">
           <dao-dropdown

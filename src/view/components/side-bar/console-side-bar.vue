@@ -160,13 +160,6 @@ export default {
     OverflowTooltip,
   },
 
-  updated() {
-    if (this.$route.name === 'console.dashboard') {
-      // this.$refs.bottomMenu.activeIndex = '';
-      // this.$refs.topMenu.activeIndex = '';
-    }
-  },
-
   data() {
     return {
       allMenus,
@@ -202,9 +195,6 @@ export default {
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;
     },
-
-    // hiddenMenu() {
-    // },
     /**
      * 会把带有 / 的 space name 分割成多个space
      * 比如 dsp/dev, dsp/test,

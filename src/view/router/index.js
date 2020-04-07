@@ -57,7 +57,7 @@ const router = new Router({
       component: ConsoleContainer,
       children: ConsoleRouters,
       redirect: {
-        name: 'console.dashboard',
+        name: 'console.gateway',
       },
       beforeEnter(to, from, next) {
         const { spaceId, zoneId, orgId } = to.query;
