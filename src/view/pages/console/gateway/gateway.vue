@@ -13,7 +13,7 @@ export default {
     } else if (store.getters.menus.some(m => m === 'organization.space')) {
       next({ name: 'console.space-settings' });
     } else {
-      next('console.profile');
+      next({ name: 'console.profile' });
     }
     NProgress.done();
   },
