@@ -177,7 +177,7 @@
           <div class="row">
             <label for="">类型</label>
             <div class="content" v-if="rule.ruleType && subScope">
-              {{ rule.ruleType | alarmScope }}/{{ subScope }}
+              {{ rule.ruleType | alarm_scope }}/{{ subScope }}
             </div>
             <div class="content" v-else></div>
           </div>
