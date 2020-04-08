@@ -75,7 +75,7 @@ export default {
 
   computed: {
     canEdit() {
-      return this.$can('update') && this.editable;
+      return this.editable;
     },
   },
 

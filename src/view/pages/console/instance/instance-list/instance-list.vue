@@ -33,7 +33,7 @@
             <button
               class="dao-btn blue has-icon"
               :disabled="loadings.instances || isZoneSyncing || isDeleted"
-              v-if="$can('service.create', 'service')"
+              v-if="$can('serviceBroker.create', 'serviceBroker')"
               @click="deployService">
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>
@@ -92,7 +92,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     class="dropdown-item-error"
-                    v-if="$can('service.delete', 'service')"
+                    v-if="$can('serviceBroker.delete', 'serviceBroker')"
                     :disabled="disableDelete(instances)"
                     command="delete"
                     icon="el-icon-delete">

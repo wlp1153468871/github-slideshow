@@ -4,54 +4,6 @@
 
     <div class="dao-view-main">
       <div class="dao-view-content">
-        <!-- <dao-table-view
-          ref="tableView"
-          :rows="rows"
-          :config="tConfig"
-          :loading="loadings.instances"
-          @refresh="loadInstances"
-          @remove-confirm="ensureRemove">
-          <div slot="tool" class="dao-table-view-left-bar">
-            <dao-dropdown
-              trigger="click"
-              :append-to-body="true"
-              v-if="$can('create')"
-              placement="bottom-start">
-              <save-button
-                :saving="loadings.updateByYaml"
-                :disabled="appDeployDisabled"
-                text="部署应用"
-              >
-                <template
-                  #icon
-                >
-                  <svg class="icon" :style="{ 'margin-left': loadings.updateByYaml ? '5px' : 0 }">
-                    <use xlink:href="#icon_plus-circled"></use>
-                  </svg>
-                </template>
-              </save-button>
-
-              <template #list v-if="!appDeployDisabled">
-                <dao-dropdown-menu>
-                  <dao-dropdown-item
-                    @click="toggleYamlDialog"
-                  >
-                    <span>编辑 YAML</span>
-                  </dao-dropdown-item>
-                  <dao-dropdown-item
-                    @click="deployApplication">
-                    <span>编辑 表单</span>
-                  </dao-dropdown-item>
-                </dao-dropdown-menu>
-              </template>
-            </dao-dropdown>
-
-          </div>
-        </dao-table-view> -->
-      </div>
-    </div>
-    <div class="dao-view-main">
-      <div class="dao-view-content">
        <x-table
           :loading="loadings.instances"
           :data="rows"

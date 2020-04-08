@@ -18,6 +18,7 @@
                   <inline-extend
                     :autoscalers="autoscalers"
                     :data="dc"
+                    :updateable="$can('update')"
                     @extend="(replicas) => $emit('extend', replicas)"
                   >
                   </inline-extend>

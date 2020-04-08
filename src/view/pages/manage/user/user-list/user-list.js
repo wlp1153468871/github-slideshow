@@ -139,7 +139,6 @@ export default {
           platformId: 'dsp',
         },
       };
-      // console.log(platformParams);
       RoleService.setRole(platformParams)
         .then(() => {
           this.$noty.success(isNewUser ? '权限初始化成功' : '权限修改成功');

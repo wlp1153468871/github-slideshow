@@ -6,7 +6,7 @@
       </template>
       <template slot="layout-setting">
         <button
-          v-if="$can('update')"
+          v-if="$can('route.update', 'route')"
           class="dao-btn btn-sm mini blue"
           @click="openUpdateDialog">
           更改

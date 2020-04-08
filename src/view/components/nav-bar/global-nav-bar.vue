@@ -59,7 +59,7 @@
                     <template v-if="item.isDefault">
                       <div class="operation-line">
                         <router-link
-                          v-if="$can('create')"
+                          v-if="isEmpty(zoneRole)"
                           class="operation-link"
                           :to="item.deployRoute"
                           @click.native="expand = false">
@@ -82,7 +82,7 @@
                     <template v-else>
                       <div class="operation-line">
                         <router-link
-                          v-if="$can('create')"
+                          v-if="isEmpty(zoneRole)"
                           class="operation-link"
                           @click.native="expand = false"
                           :to="item.deployRoute">

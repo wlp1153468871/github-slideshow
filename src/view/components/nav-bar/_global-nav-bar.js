@@ -41,6 +41,7 @@ export default {
       'services',
       'filteredCategory',
       'isFullscreened',
+      'zoneRole',
     ]),
 
     isDisplayOrgSelect() {

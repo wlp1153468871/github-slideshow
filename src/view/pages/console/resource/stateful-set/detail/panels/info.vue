@@ -14,6 +14,7 @@
                 <dt>实例数:</dt>
                 <dd>
                   <inline-extend
+                    :updateable="$can('statefulSet.update', 'statefulSet')"
                     :data="statefulset"
                     @extend="(replicas) => $emit('extend', replicas)"
                   ></inline-extend>

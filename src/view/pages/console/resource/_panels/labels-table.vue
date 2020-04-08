@@ -38,7 +38,6 @@
             <empty-state v-if="isDateEmpty"></empty-state>
             <div slot="footer" style="margin-top: 10px;">
               <button
-                v-if="$can('create')"
                 class="dao-btn blue"
                 @click="openEditDialog()">
                 编辑

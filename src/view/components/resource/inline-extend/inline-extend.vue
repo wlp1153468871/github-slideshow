@@ -10,7 +10,7 @@
         <span v-if="data.spec.replicas !== 1">s</span>
         <a
           @click="toggleForm()"
-          v-if="$can('update') && !autoscalers.length"
+          v-if="updateable && !autoscalers.length"
           style="margin-left: 5px;">扩展</a>
       </span>
       <span v-else class="form">
@@ -35,6 +35,10 @@ export default {
   props: {
     data: Object,
     autoscalers: { type: Array, default: () => [] },
+    updateable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
