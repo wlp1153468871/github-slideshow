@@ -143,7 +143,7 @@ export default {
   },
   watch: {
     kinds() {
-      this.init();
+      this.initAll();
     },
   },
 };
