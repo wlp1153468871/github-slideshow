@@ -295,7 +295,6 @@ export default {
     },
 
     toggleSideBar() {
-      console.log('toggleSideBar');
       this.$store.commit(types.IS_COLLAPSE, !this.isCollapse);
     },
 

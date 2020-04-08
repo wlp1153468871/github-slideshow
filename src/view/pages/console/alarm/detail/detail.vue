@@ -16,6 +16,7 @@
             </button>
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
+                v-if="$can('alert.delete', 'alert')"
                 id="remove"
                 @click="onRemove"
                 :disabled="loadings.submitRemove"
@@ -23,6 +24,7 @@
                 <span>删除</span>
               </dao-dropdown-item>
               <dao-dropdown-item
+                v-if="$can('alert.update', 'alert')"
                 @click="onConfirm"
                 :disabled="loadings.submitUpdate">
                 <span>修改</span>
