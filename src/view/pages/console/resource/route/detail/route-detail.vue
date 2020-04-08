@@ -17,7 +17,7 @@
 
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('delete')"
+            v-if="$can('route.delete', 'route')"
             trigger="click"
             :append-to-body="true"
             placement="bottom-end">

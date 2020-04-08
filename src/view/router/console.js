@@ -141,6 +141,7 @@ export default [
         meta: {
           activeMenu: 'resource.deployments.list',
           hidden: true,
+          code: 'deployment',
         },
       },
       {
@@ -218,6 +219,7 @@ export default [
         meta: {
           activeMenu: 'resource.services.list',
           hidden: true,
+          code: 'service',
         },
       },
       {
@@ -257,6 +259,7 @@ export default [
         meta: {
           activeMenu: 'resource.ingresses.list',
           hidden: true,
+          code: 'ingress',
         },
       },
 
@@ -277,6 +280,7 @@ export default [
         meta: {
           activeMenu: 'resource.configmaps.list',
           hidden: true,
+          code: 'configMap',
         },
       },
       {
@@ -296,6 +300,7 @@ export default [
         meta: {
           activeMenu: 'resource.secrets.list',
           hidden: true,
+          code: 'secret',
         },
       },
       {
@@ -315,6 +320,7 @@ export default [
         meta: {
           activeMenu: 'resource.persistentvolumeclaims.list',
           hidden: true,
+          code: 'pvc',
         },
       },
     ],
@@ -367,6 +373,7 @@ export default [
     meta: {
       activeMenu: 'console.registry',
       hidden: true,
+      code: 'image.center',
     },
   },
   {
@@ -484,6 +491,7 @@ export default [
         component: DeployApp,
         meta: {
           hidden: true,
+          code: 'serviceInstance.create',
         },
       },
       {
@@ -500,6 +508,7 @@ export default [
         component: Deployments,
         meta: {
           hidden: true,
+          code: 'deployment',
         },
       },
       {
@@ -508,6 +517,7 @@ export default [
         component: StatefulSetList,
         meta: {
           hidden: true,
+          code: 'statefulSet',
         },
       },
       {
@@ -516,6 +526,7 @@ export default [
         component: ServiceList,
         meta: {
           hidden: true,
+          code: 'service',
         },
       },
       {
@@ -524,6 +535,8 @@ export default [
         component: DeployRoute,
         meta: {
           hidden: true,
+          code: 'route.create',
+          // TODO: route还需要和配置文件确认
         },
       },
       {
@@ -532,7 +545,7 @@ export default [
         component: IngressList,
         meta: {
           hidden: true,
-          code: 'configMap.create',
+          code: 'ingress.create',
         },
       },
       {
@@ -541,6 +554,7 @@ export default [
         component: DeployConfigMap,
         meta: {
           hidden: true,
+          code: 'configMap.create',
         },
       },
       {
@@ -549,6 +563,7 @@ export default [
         component: DeploySecret,
         meta: {
           hidden: true,
+          code: 'secret.create',
         },
       },
       {
@@ -566,6 +581,7 @@ export default [
         component: ProductCheckout,
         meta: {
           hidden: true,
+          code: 'service',
         },
       },
     ],

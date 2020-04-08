@@ -3,6 +3,7 @@
     :initEnvs="deployment.spec.template.spec.containers"
     :secrets="secrets"
     :configMaps="configMaps"
+    :editable="$can('deployment.update', 'deployment')"
     @envUpdate="(newEnv) => $emit('envUpdate', newEnv)">
   </env-editor>
 </template>
