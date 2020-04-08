@@ -73,6 +73,7 @@
             </slot>
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
+                v-if="$can('alert.delete', 'alert')"
                 @click="onClickRemove(row)">删除</dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>

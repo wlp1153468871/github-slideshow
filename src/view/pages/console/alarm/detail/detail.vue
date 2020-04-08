@@ -35,6 +35,7 @@
       </resource-header>
       <div class="btn-group">
         <button
+          v-if="$can('alert.update', 'alert')"
           class="dao-btn has-icon blue"
           id="confirmed"
           @click="onConfirm"
@@ -51,6 +52,7 @@
             <div class="card-header">
               <span>规则详情</span>
               <button
+                v-if="$can('alert.update', 'alert')"
                 class="dao-btn mini blue"
                 type="text"
                 @click="onClickDetail"
@@ -164,6 +166,7 @@
             <div class="card-header">
               <span>作用范围</span>
               <button
+                v-if="$can('alert.update', 'alert')"
                 class="dao-btn mini blue"
                 type="text"
                 @click="onClickScope"
@@ -236,6 +239,7 @@
             <div class="card-header">
               <span>收件人</span>
               <button
+                v-if="$can('alert.update', 'alert')"
                 class="dao-btn mini blue"
                 @click="onClickEmail"
                 v-show="!email.changeView"
