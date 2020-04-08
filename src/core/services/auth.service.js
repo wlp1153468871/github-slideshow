@@ -25,6 +25,8 @@ class AuthService {
       .post('/login', {
         username,
         password,
+      }, {
+        noNotify: true,
       })
       .then(res => {
         const { token, refresh_token } = res;
