@@ -10,15 +10,7 @@ class APIResourceService {
   }
 
   list(zone: any, spaceId: any) {
-    return this.api.get(
-      `/api_resources`,
-      { zone: zone.id },
-      {
-        headers: {
-          spaceId,
-        },
-      },
-    );
+    return this.api.get(`/api_resources`, { zone: zone.id, space_id: spaceId });
   }
 }
 
