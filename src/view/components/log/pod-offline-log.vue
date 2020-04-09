@@ -152,7 +152,11 @@ export default {
       const query = Object.entries(this.getSearchQuery())
         .map(pair => pair.join('='))
         .join('&');
-      return `/app-server/api/v1/zones/${this.zone.id}/namespaces/${this.pod.metadata.namespace}/pods/${this.pod.metadata.name}/containers/${this.logOptions.container}/log/download?${query}`;
+      return `/app-server/api/v1/zones/${
+        this.zone.id
+      }/namespaces/${
+        this.pod.metadata.namespace
+      }/pods/${this.pod.metadata.name}/containers/${this.logOptions.container}/log/download?${query}`;
     },
   },
 
