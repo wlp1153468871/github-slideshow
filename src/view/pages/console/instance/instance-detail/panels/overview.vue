@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      class="instance-overview"
-      v-if="informations.length || basicInformations.length"
-      >
+    <div class="instance-overview" v-if="informations.length || basicInformations.length">
       <div class="info-column" v-if="basicInformations.length">
         <!-- 基本信息 -->
         <div class="ins-setting-card">
@@ -11,10 +8,7 @@
             基本信息
           </div>
           <div class="ins-card-body">
-            <div
-              class="ins-info-item"
-              v-for="info in basicInformations"
-              :key="info.name">
+            <div class="ins-info-item" v-for="info in basicInformations" :key="info.name">
               <span class="info-item-label text-uppercase">
                 {{ info.name }}
               </span>
@@ -30,23 +24,19 @@
             配置信息
           </div>
           <div class="ins-card-body">
-            <div
-              class="ins-info-item"
-              v-for="info in informations"
-              :key="info.name">
+            <div class="ins-info-item" v-for="info in informations" :key="info.name">
               <span class="info-item-label text-uppercase">
                 {{ info.name | instance_detail }}
               </span>
-              <span
-                class="info-item-content"
-                v-if="info.type === INFO_TYPE.STRING">
+              <span class="info-item-content" v-if="info.type === INFO_TYPE.STRING">
                 {{ info.value }}
               </span>
               <a
                 class="info-item-content"
                 v-if="info.type === INFO_TYPE.LINK"
                 target="_blank"
-                :href="info.value">
+                :href="info.value"
+              >
                 {{ info.value }}
               </a>
             </div>
@@ -58,9 +48,7 @@
           <div class="ins-card-title">
             <span>操作记录</span>
             <span>
-              <a
-                href="javascript:void(0)"
-                @click="$emit('more', 'events')">
+              <a href="javascript:void(0)" @click="$emit('more', 'events')">
                 查看更多 >
               </a>
             </span>
@@ -73,7 +61,8 @@
     </div>
     <empty-state
       v-if="!informations.length && !basicInformations.length"
-      :title="this.status | instance_status">
+      :title="this.status | instance_status"
+    >
     </empty-state>
   </div>
 </template>

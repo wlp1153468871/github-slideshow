@@ -4,11 +4,10 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-layout>
-      <dao-setting-section
-        v-for="(config, index) in configs"
-        :key="index">
+      <dao-setting-section v-for="(config, index) in configs" :key="index">
         <dao-setting-item>
           <div slot="label">{{ config[0] }}</div>
           <div slot="content">
@@ -24,12 +23,9 @@
           </div>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
     </div>

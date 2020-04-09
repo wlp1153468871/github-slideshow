@@ -200,14 +200,16 @@ export default {
       // we have a promise
       if (isPromise(promiseFn)) {
         this.setLoading(true);
-        promiseFn.then(res => {
-          this.setLoading(false);
-          const validationResult = res === true;
-          this.executeBeforeChange(validationResult, callback);
-        }).catch(error => {
-          this.setLoading(false);
-          this.setValidationError(error);
-        });
+        promiseFn
+          .then(res => {
+            this.setLoading(false);
+            const validationResult = res === true;
+            this.executeBeforeChange(validationResult, callback);
+          })
+          .catch(error => {
+            this.setLoading(false);
+            this.setValidationError(error);
+          });
         // we have a simple function
       } else {
         const validationResult = promiseFn === true;

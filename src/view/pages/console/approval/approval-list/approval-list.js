@@ -2,10 +2,7 @@ import { mapGetters } from 'vuex';
 import { findIndex } from 'lodash';
 import table from '@/view/mixins/table';
 import ApprovalService from '@/core/services/approval.service';
-import {
-  APPROVAL_PROCESS_DONE,
-  APPROVAL_PROCESS_REJECTED,
-} from '@/core/constants/constants';
+import { APPROVAL_PROCESS_DONE, APPROVAL_PROCESS_REJECTED } from '@/core/constants/constants';
 
 import ApprovalDetailDialog from '@/view/pages/dialogs/approval/approval-detail.vue';
 
@@ -83,10 +80,7 @@ export default {
       this.$tada
         .confirm({
           title: '撤销审批',
-          text: [
-            `创建者: ${approval.owner.name}`,
-            `服务类型: ${approval.service.name}`,
-          ].join('\n'),
+          text: [`创建者: ${approval.owner.name}`, `服务类型: ${approval.service.name}`].join('\n'),
           primaryText: '撤销',
         })
         .then(ok => {

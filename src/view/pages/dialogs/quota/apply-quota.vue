@@ -4,14 +4,13 @@
     :config="config"
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <div class="dao-setting-warning">
       <svg class="tip-icon icon"><use xlink:href="#icon_bell"></use></svg>
       提示: 只有修改了配额值，才能提交。
     </div>
-    <dao-setting-section
-      v-for="(q, index) in quotas"
-      :key="q.code">
+    <dao-setting-section v-for="(q, index) in quotas" :key="q.code">
       <dao-setting-item>
         <div slot="label">{{ q.name }} 配额</div>
         <div slot="content">
@@ -25,10 +24,9 @@
             placeholder="不填, 表示不限制"
             :message="veeErrors.first(q.id)"
             :status="veeErrors.has(q.id) ? 'error' : ''"
-            v-validate="'decimal:3|max:12|min_value:0|max_value:999999'">
-            <span
-              v-if="q.unit"
-              slot="append">
+            v-validate="'decimal:3|max:12|min_value:0|max_value:999999'"
+          >
+            <span v-if="q.unit" slot="append">
               {{ q.unit }}
             </span>
           </dao-input>
@@ -36,15 +34,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm()">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm()">
         确定
       </button>
     </div>

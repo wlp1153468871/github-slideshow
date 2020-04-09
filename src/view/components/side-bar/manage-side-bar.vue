@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="dao-nav-menu"
-    :class="{ collapsed: isCollapse }"
-  >
+  <div class="dao-nav-menu" :class="{ collapsed: isCollapse }">
     <div class="menus">
       <el-menu
         class="side-bar-menu"
@@ -18,19 +15,13 @@
             <i class="el-icon-document"></i>
             <span slot="title">账号与管理</span>
           </template>
-          <el-menu-item
-            index="manage.org.list"
-            :route="{ name: 'manage.org.list' }"
-          >
+          <el-menu-item index="manage.org.list" :route="{ name: 'manage.org.list' }">
             <svg class="icon">
               <use xlink:href="#icon_users"></use>
             </svg>
             <span>租户管理</span>
           </el-menu-item>
-          <el-menu-item
-            index="manage.user.list"
-            :route="{ name: 'manage.user.list' }"
-          >
+          <el-menu-item index="manage.user.list" :route="{ name: 'manage.user.list' }">
             <svg class="icon">
               <use xlink:href="#icon_user"></use>
             </svg>
@@ -38,7 +29,7 @@
           </el-menu-item>
           <el-menu-item
             index="manage.auth.roles"
-            :route="{ name: 'manage.auth.roles',  params: { scope: 'platform' }, }"
+            :route="{ name: 'manage.auth.roles', params: { scope: 'platform' } }"
           >
             <svg class="icon">
               <use xlink:href="#icon_users"></use>
@@ -51,19 +42,13 @@
             <i class="el-icon-menu"></i>
             <span slot="title">全局设置</span>
           </template>
-          <el-menu-item
-            index="manage.service.list"
-            :route="{ name: 'manage.service.list' }"
-          >
+          <el-menu-item index="manage.service.list" :route="{ name: 'manage.service.list' }">
             <svg class="icon">
               <use xlink:href="#icon_stack-alt"></use>
             </svg>
             <span>服务管理</span>
           </el-menu-item>
-          <el-menu-item
-            index="manage.zone.list"
-            :route="{ name: 'manage.zone.list' }"
-          >
+          <el-menu-item index="manage.zone.list" :route="{ name: 'manage.zone.list' }">
             <svg class="icon">
               <use xlink:href="#icon_globe-alt"></use>
             </svg>
@@ -79,20 +64,14 @@
             <span>告警指标</span>
           </el-menu-item>
         </el-submenu>
-        <el-menu-item
-          index="manage.preference.home"
-          :route="{ name: 'manage.preference.home' }"
-        >
+        <el-menu-item index="manage.preference.home" :route="{ name: 'manage.preference.home' }">
           <i class="el-icon-setting"></i>
           <span slot="title">设置</span>
         </el-menu-item>
       </el-menu>
     </div>
 
-    <div
-      class="collapse-btn"
-      @click="toggleSideBar"
-    >
+    <div class="collapse-btn" @click="toggleSideBar">
       <i class="el-icon-d-arrow-left"></i>
     </div>
   </div>

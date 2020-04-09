@@ -1,13 +1,13 @@
 <template>
   <dao-dialog
     class="sync-catalog-dialog"
-    :header="type === 'catalog'? '同步服务目录' : '同步Broker'"
+    :header="type === 'catalog' ? '同步服务目录' : '同步Broker'"
     :closeOnPressEscape="false"
     :visible.sync="isShow"
     @before-open="init"
     @opened="sync"
-    @before-close="destroyed">
-
+    @before-close="destroyed"
+  >
     <div class="sync-progress" v-if="syncStatus === SYNC_STATUS.SYNCING">
       <dao-progress-pulsing :progress="syncProgress"></dao-progress-pulsing>
       <span>{{ Math.round(syncProgress * 100) }}%</span>
@@ -17,18 +17,17 @@
       class="sync-log-panel"
       v-if="syncStatus === SYNC_STATUS.SYNCING"
       ref="logPanel"
-      @mousewheel.passive="toggleScrollWheel">
-      <p
-        v-for="(log, index) in logs"
-        :key="index">
-        {{log.actionTime | unix_date}} | {{log.message}}
+      @mousewheel.passive="toggleScrollWheel"
+    >
+      <p v-for="(log, index) in logs" :key="index">
+        {{ log.actionTime | unix_date }} | {{ log.message }}
       </p>
       <i class="reverse-video terminal-cursor"></i>
     </div>
 
     <div class="sync-success" v-if="syncStatus === SYNC_STATUS.SUCCESS">
-      <img :src="successImg" alt="服务同步成功"/>
-      <p class="hint-title">{{type === 'catalog'? '服务同步已完成' : 'Broker同步已完成'}}</p>
+      <img :src="successImg" alt="服务同步成功" />
+      <p class="hint-title">{{ type === 'catalog' ? '服务同步已完成' : 'Broker同步已完成' }}</p>
       <p class="hint-desc">
         你现在可以前往
         <span @click="$emit('close')" class="router-link">
@@ -39,10 +38,7 @@
     </div>
 
     <div slot="footer">
-      <button
-        :disabled="!canClose"
-        class="dao-btn white"
-        @click="$emit('close')">
+      <button :disabled="!canClose" class="dao-btn white" @click="$emit('close')">
         关闭
       </button>
     </div>
@@ -106,10 +102,7 @@ export default {
       if (this.type === 'catalog') {
         this.syncService = CatalogService.syncCatalog(this.zone.id);
       } else {
-        this.syncService = BrokerService.syncBroker(
-          this.zone.id,
-          this.broker.id,
-        );
+        this.syncService = BrokerService.syncBroker(this.zone.id, this.broker.id);
       }
     },
 

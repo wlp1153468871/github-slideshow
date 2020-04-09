@@ -1,4 +1,3 @@
-
 import isNamespaceName from '@/core/utils/is-k8-namespace';
 
 export default {

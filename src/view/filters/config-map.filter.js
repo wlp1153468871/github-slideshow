@@ -12,9 +12,7 @@ export default function configMapFilter({ type, name, value }) {
       return value;
     } else if ([ENV_SOURCE.CONFIG, ENV_SOURCE.SECRET].indexOf(type) > -1) {
       return `${dict[type]}: ${value.name}, 键: ${value.value}`;
-    } else if (
-      [ENV_SOURCE.CONFIG_FILE, ENV_SOURCE.SECRET_FILE].indexOf(type) > -1
-    ) {
+    } else if ([ENV_SOURCE.CONFIG_FILE, ENV_SOURCE.SECRET_FILE].indexOf(type) > -1) {
       return `${name}(${dict[type]})`;
     }
   } catch (e) {

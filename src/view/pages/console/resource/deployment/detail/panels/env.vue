@@ -4,7 +4,8 @@
     :secrets="secrets"
     :configMaps="configMaps"
     :editable="$can('deployment.update', 'deployment')"
-    @envUpdate="(newEnv) => $emit('envUpdate', newEnv)">
+    @envUpdate="newEnv => $emit('envUpdate', newEnv)"
+  >
   </env-editor>
 </template>
 

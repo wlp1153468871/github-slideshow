@@ -1,15 +1,15 @@
 <template>
   <div class="page-manage">
-
     <circle-loading v-if="loading"></circle-loading>
 
     <template v-else>
       <div class="layout-content-header bg-white">
         <breadcrumb
           :links="[
-          { text: '可用区列表', route: { name: 'manage.zone.list' } },
-          { text: zone.name },
-      ]">
+            { text: '可用区列表', route: { name: 'manage.zone.list' } },
+            { text: zone.name },
+          ]"
+        >
         </breadcrumb>
       </div>
 
@@ -20,18 +20,15 @@
             :loading="loading"
             v-model="selectedBroker"
             @refresh="loadCatalog"
-            @syncService="syncService">
+            @syncService="syncService"
+          >
           </manage-panel>
         </el-tab-pane>
         <el-tab-pane :label="TABS.OVERVIEW" :name="TABS.OVERVIEW">
-          <overview-panel
-            :zone="zone"
-            @syncService="syncService"
-            @update="updateZone">
+          <overview-panel :zone="zone" @syncService="syncService" @update="updateZone">
           </overview-panel>
         </el-tab-pane>
       </el-tabs>
-
     </template>
     <!--dialog start-->
     <sync-service-dialog
@@ -41,11 +38,11 @@
       :type="syncType"
       :isSyncing="isSyncing"
       @close="syncComplete"
-      @error="syncError">
+      @error="syncError"
+    >
     </sync-service-dialog>
     <!--dialog end-->
   </div>
 </template>
 
-<script src="./zone-detail.js">
-</script>
+<script src="./zone-detail.js"></script>

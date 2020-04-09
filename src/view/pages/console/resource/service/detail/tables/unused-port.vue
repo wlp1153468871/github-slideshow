@@ -2,7 +2,7 @@
   <tr>
     <td>
       <span v-if="!port.nodePort" class="text-muted">暂无</span>
-      <span v-if="port.nodePort">{{port.nodePort}}</span>
+      <span v-if="port.nodePort">{{ port.nodePort }}</span>
     </td>
 
     <td role="presentation" class="text-muted text-center">
@@ -12,8 +12,8 @@
     </td>
 
     <td data-title="Service Port">
-      {{port.port}}/{{port.protocol}}
-      <span v-if="port.name">({{port.name}})</span>
+      {{ port.port }}/{{ port.protocol }}
+      <span v-if="port.name">({{ port.name }})</span>
     </td>
 
     <td role="presentation" class="text-muted text-center">
@@ -23,7 +23,7 @@
     </td>
 
     <td data-title="Target Port">
-      {{port.targetPort}}
+      {{ port.targetPort }}
     </td>
 
     <td data-title="Hostname"><span class="text-muted">暂无</span></td>

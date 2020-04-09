@@ -1,15 +1,13 @@
 <template>
   <div class="dao-list-group-container">
-    <ul
-      class="dao-list-group"
-      v-for="(group, index) in groups"
-      :key="index">
+    <ul class="dao-list-group" v-for="(group, index) in groups" :key="index">
       <li
         class="dao-list-item"
         v-for="item in group"
         :key="item"
         @click="onSelectItem(item)"
-        :class="{'active': content === item }">
+        :class="{ active: content === item }"
+      >
         {{ item }}
         <span class="icon">
           <svg>

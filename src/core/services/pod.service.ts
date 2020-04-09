@@ -29,13 +29,7 @@ class PodService {
     return this.api.get(`/spaces/${space}/pods/${podName}`, { zone });
   }
 
-  list({
-    space = this.space,
-    zone = this.zone,
-  }: {
-    space?: string;
-    zone?: string;
-  }) {
+  list({ space = this.space, zone = this.zone }: { space?: string; zone?: string }) {
     return this.api.get(`/spaces/${space}/pods`, { zone });
   }
 
@@ -141,15 +135,15 @@ class PodService {
   }
 
   fetchContainerMonitorUrl({
-     pod,
-     instance,
-     numberEx,
-     space = this.space,
-     zone = this.zone,
-     from = '',
-     to = '',
-     refresh = '',
-   }: {
+    pod,
+    instance,
+    numberEx,
+    space = this.space,
+    zone = this.zone,
+    from = '',
+    to = '',
+    refresh = '',
+  }: {
     pod: string;
     instance: string;
     numberEx: string;
@@ -159,12 +153,14 @@ class PodService {
     to?: string;
     refresh?: string;
   }) {
-    return this.api.get(
-      `/spaces/${space}/monitoring/instance/${instance}/number/${numberEx}`,
-      { zone, pod, from, to, refresh },
-    );
+    return this.api.get(`/spaces/${space}/monitoring/instance/${instance}/number/${numberEx}`, {
+      zone,
+      pod,
+      from,
+      to,
+      refresh,
+    });
   }
-
 }
 
 export default new PodService();

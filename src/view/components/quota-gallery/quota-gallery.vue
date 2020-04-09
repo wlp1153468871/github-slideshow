@@ -5,18 +5,16 @@
         <div class="quota-summary-head">
           <p>使用情况</p>
           <div v-if="chunkQuotas.length > 1">
-            <button
-              class="dao-btn mini caret"
-              :disabled="idx === 0"
-              @click="prev()">
+            <button class="dao-btn mini caret" :disabled="idx === 0" @click="prev()">
               <svg class="icon">
                 <use xlink:href="#icon_caret-left"></use>
               </svg>
             </button>
             <button
               class="dao-btn mini caret"
-              :disabled="idx === chunkQuotas.length-1"
-              @click="next()">
+              :disabled="idx === chunkQuotas.length - 1"
+              @click="next()"
+            >
               <svg class="icon">
                 <use xlink:href="#icon_caret-right"></use>
               </svg>
@@ -24,10 +22,7 @@
           </div>
         </div>
         <ul class="quota-summary-body">
-          <quota-card
-            v-for="(item, index) in chunkQuotas[idx]"
-            :key="index"
-            :item="item">
+          <quota-card v-for="(item, index) in chunkQuotas[idx]" :key="index" :item="item">
           </quota-card>
         </ul>
       </div>

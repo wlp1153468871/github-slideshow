@@ -20,7 +20,6 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -43,7 +42,6 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -66,7 +64,6 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -88,7 +85,6 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -99,26 +95,22 @@
             <template v-if="!zone.router_config.length">
               <p class="text-muted">暂无配置信息</p>
             </template>
-            <table
-              v-else
-              class="dao-table row">
+            <table v-else class="dao-table row">
               <thead>
-              <tr>
-                <th>名称</th>
-                <th>Key</th>
-                <th>标签</th>
-                <th>域名</th>
-              </tr>
+                <tr>
+                  <th>名称</th>
+                  <th>Key</th>
+                  <th>标签</th>
+                  <th>域名</th>
+                </tr>
               </thead>
               <tbody>
-              <tr
-                v-for="row in zone.router_config"
-                :key="row.key">
-                <td>{{row.title}}</td>
-                <td>{{row.key}}</td>
-                <td>{{row.label}}</td>
-                <td>{{row.domain}}</td>
-              </tr>
+                <tr v-for="row in zone.router_config" :key="row.key">
+                  <td>{{ row.title }}</td>
+                  <td>{{ row.key }}</td>
+                  <td>{{ row.label }}</td>
+                  <td>{{ row.domain }}</td>
+                </tr>
               </tbody>
             </table>
           </template>
@@ -136,7 +128,6 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -145,11 +136,7 @@
         <dao-setting-item>
           <template #label>是否开启</template>
           <template #content>
-            <dao-switch
-              size="sm"
-              :disabled="true"
-              v-model="zone.is_alert">
-            </dao-switch>
+            <dao-switch size="sm" :disabled="true" v-model="zone.is_alert"> </dao-switch>
           </template>
         </dao-setting-item>
       </dao-setting-section>
@@ -193,13 +180,9 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
 
-    <button
-      style="margin-top: 20px;"
-      class="dao-btn blue has-icon pull-right"
-      @click="updateZone">
+    <button style="margin-top: 20px;" class="dao-btn blue has-icon pull-right" @click="updateZone">
       <svg class="icon">
         <use xlink:href="#icon_pencil-edit"></use>
       </svg>

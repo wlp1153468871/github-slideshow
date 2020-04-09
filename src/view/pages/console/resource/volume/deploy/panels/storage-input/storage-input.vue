@@ -9,20 +9,14 @@
       :message="message"
     >
     </dao-input>
-    <el-select
-      disabled
-      size="small"
-      style="width: 120px;"
-      v-model="unit">
-      <el-option-group
-        v-for="group in units"
-        :key="group.label"
-        :label="group.label">
+    <el-select disabled size="small" style="width: 120px;" v-model="unit">
+      <el-option-group v-for="group in units" :key="group.label" :label="group.label">
         <el-option
           v-for="item in group.options"
           :key="item.value"
           :label="item.label"
-          :value="item.value">
+          :value="item.value"
+        >
         </el-option>
       </el-option-group>
     </el-select>

@@ -13,12 +13,7 @@ function dockerParseImage(image: string) {
     registry = '';
   }
 
-  return new DockerImage(
-    registry,
-    namespace,
-    repository,
-    tag,
-  );
+  return new DockerImage(registry, namespace, repository, tag);
 }
 
 export default dockerParseImage;

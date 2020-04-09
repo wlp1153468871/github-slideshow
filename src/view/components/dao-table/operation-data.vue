@@ -1,8 +1,5 @@
 <template>
-  <dao-dropdown
-    trigger="click"
-    :append-to-body="true"
-    placement="bottom-end">
+  <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
     <svg class="icon dropdown-trigger">
       <use xlink:href="#icon_more"></use>
     </svg>
@@ -12,14 +9,16 @@
         :key="o.name"
         :v-if="o.visible"
         :is-disabled="o.disabled"
-        @click="operate(o.event)">
+        @click="operate(o.event)"
+      >
         <span>{{ o.name }}</span>
         <svg
           v-if="o.disabled"
           v-dao-tooltip="{
             content: o.tooltip,
-            disabled: !o.disabled
-        }">
+            disabled: !o.disabled,
+          }"
+        >
           <use xlink:href="#icon_key"></use>
         </svg>
       </dao-dropdown-item>

@@ -40,7 +40,10 @@ class RegistryService {
 
   getTag(spaceId: string, registryName: string, tag: string, zone: string) {
     return this.api.get(
-      `/spaces/${spaceId}/repositories/${encodeURIComponent(registryName)}/tags/${encodeURIComponent(tag)}`, { zone },
+      `/spaces/${spaceId}/repositories/${encodeURIComponent(
+        registryName,
+      )}/tags/${encodeURIComponent(tag)}`,
+      { zone },
     );
   }
 
@@ -55,7 +58,6 @@ class RegistryService {
       { zone },
     );
   }
-
 }
 
 export default new RegistryService();

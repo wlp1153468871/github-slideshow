@@ -20,16 +20,8 @@ class BrokerService {
     return this.api.patch(`/services/${serviceId}/plans/${planId}`, params);
   }
 
-  updateServicePlanQuota(
-    serviceId: string,
-    planId: string,
-    quotaId: string,
-    params: any,
-  ) {
-    return this.api.patch(
-      `/services/${serviceId}/plans/${planId}/quotas/${quotaId}`,
-      params,
-    );
+  updateServicePlanQuota(serviceId: string, planId: string, quotaId: string, params: any) {
+    return this.api.patch(`/services/${serviceId}/plans/${planId}/quotas/${quotaId}`, params);
   }
 }
 

@@ -1,4 +1,3 @@
-
 const joinApproveStatus = (data = {}, newItemPrototype = {}) => {
   const { items = [] } = data;
   const { approvingItems = [] } = data;
@@ -14,7 +13,10 @@ const joinApproveStatus = (data = {}, newItemPrototype = {}) => {
 
   set.forEach(name => {
     items.push({
-      ...newItemPrototype, metadata: { name }, approveStatus: 'approving', isNew: true,
+      ...newItemPrototype,
+      metadata: { name },
+      approveStatus: 'approving',
+      isNew: true,
     });
   });
   return items;

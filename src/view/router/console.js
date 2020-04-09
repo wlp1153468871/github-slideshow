@@ -2,7 +2,6 @@ import Vue from 'vue';
 import store from '@/core/store';
 import NProgress from 'nprogress';
 
-
 import RouteView from '@/view/layout/route-view';
 
 // monitor

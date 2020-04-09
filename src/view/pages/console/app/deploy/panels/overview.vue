@@ -9,13 +9,10 @@
               <h3 class="ins-card-title">基本配置</h3>
               <table class="ins-card-body">
                 <tbody>
-                <tr
-                  class="ins-info-item"
-                  v-for="(item, index) in basic"
-                  :key="index">
-                  <td class="info-item-label">{{ item[0] }}</td>
-                  <td class="info-item-content">{{ item[1] }}</td>
-                </tr>
+                  <tr class="ins-info-item" v-for="(item, index) in basic" :key="index">
+                    <td class="info-item-label">{{ item[0] }}</td>
+                    <td class="info-item-content">{{ item[1] }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -23,46 +20,43 @@
               <h3 class="ins-card-title">参数设置</h3>
               <table class="ins-card-body">
                 <tbody>
-                <tr
-                  class="ins-info-item"
-                  v-for="(item, index) in advance"
-                  :key="index">
-                  <td class="info-item-label">{{ item[0] }}</td>
-                  <td class="info-item-content">{{ item[1] }}</td>
-                </tr>
-                <tr class="ins-info-item">
-                  <td class="info-item-label">
-                    <div>环境变量</div>
-                  </td>
-                  <td class="info-item-content">
-                    <div v-if="!envs.length">暂无</div>
-                    <table class="envs-table" v-if="envs.length">
-                      <thead>
-                      <tr>
-                        <th style="width: 25%;">键</th>
-                        <th style="width: 25%;">值</th>
-                        <th>来源</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr v-for="(env, index) in envs" :key="index">
-                        <td>{{ env.key }}</td>
-                        <td>{{ env.value }}</td>
-                        <td>{{ env.source }}</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr class="ins-info-item">
-                  <td class="info-item-label">
-                    <div>Config Map</div>
-                  </td>
-                  <td class="info-item-content">
-                    <div v-if="!configFiles.length">暂无</div>
-                    <p v-for="(config, index) in configFiles" :key="index">{{config}}</p>
-                  </td>
-                </tr>
+                  <tr class="ins-info-item" v-for="(item, index) in advance" :key="index">
+                    <td class="info-item-label">{{ item[0] }}</td>
+                    <td class="info-item-content">{{ item[1] }}</td>
+                  </tr>
+                  <tr class="ins-info-item">
+                    <td class="info-item-label">
+                      <div>环境变量</div>
+                    </td>
+                    <td class="info-item-content">
+                      <div v-if="!envs.length">暂无</div>
+                      <table class="envs-table" v-if="envs.length">
+                        <thead>
+                          <tr>
+                            <th style="width: 25%;">键</th>
+                            <th style="width: 25%;">值</th>
+                            <th>来源</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(env, index) in envs" :key="index">
+                            <td>{{ env.key }}</td>
+                            <td>{{ env.value }}</td>
+                            <td>{{ env.source }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr class="ins-info-item">
+                    <td class="info-item-label">
+                      <div>Config Map</div>
+                    </td>
+                    <td class="info-item-content">
+                      <div v-if="!configFiles.length">暂无</div>
+                      <p v-for="(config, index) in configFiles" :key="index">{{ config }}</p>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -88,9 +82,7 @@ export default {
     ...mapState(['zone', 'org', 'space', 'quotaDict']),
 
     basic() {
-      const {
-        repository = '', deployfile = {}, deployMode, monitor, hpa,
-      } = this.app;
+      const { repository = '', deployfile = {}, deployMode, monitor, hpa } = this.app;
       const basic = [
         ['地域', this.zone.area_name],
         ['环境', this.zone.env_name],
@@ -115,9 +107,7 @@ export default {
 
     advance() {
       const { quotaDict } = this;
-      const {
-        name, version, port, plan = {}, cmd, args, affinity,
-      } = this.app;
+      const { name, version, port, plan = {}, cmd, args, affinity } = this.app;
       const affinityObj = {
         none: '无',
         affinity: '亲和性',

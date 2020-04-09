@@ -23,13 +23,7 @@ class AppService {
     return InstanceService.doInstanceUpdate(instanceId, params);
   }
 
-  listAllPodLogs(
-    zoneId,
-    namespace,
-    applicationName,
-    applicationId,
-    offset = {},
-  ) {
+  listAllPodLogs(zoneId, namespace, applicationName, applicationId, offset = {}) {
     offset.applicationid = applicationId;
     return this.listPodLogs(zoneId, namespace, '_all', applicationName, offset);
   }
@@ -42,9 +36,7 @@ class AppService {
   }
 
   listOnlinePodLogs(zoneId, namespace, podName, applicationName) {
-    return `ws://${
-      window.location.host
-    }/api/v1/zones/${zoneId}/namespaces/${namespace}/pods/${podName}/containers/${applicationName}/log`;
+    return `ws://${window.location.host}/api/v1/zones/${zoneId}/namespaces/${namespace}/pods/${podName}/containers/${applicationName}/log`;
   }
 
   openTerminal(namespace = '', pod = '') {

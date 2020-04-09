@@ -32,7 +32,9 @@ export default function entrypoint(container, image) {
   }
 
   if (image) {
-    entrypoint = toShellForm(get(image, 'dockerImageMetadata.Config.Entrypoint') || ['/bin/sh', '-c']);
+    entrypoint = toShellForm(
+      get(image, 'dockerImageMetadata.Config.Entrypoint') || ['/bin/sh', '-c'],
+    );
 
     // If `container.args` is supplied without `container.command`,
     // use container args with the image entrypoint.

@@ -1,21 +1,9 @@
 <template>
   <transition name="fade">
-    <div
-      class="aside"
-      v-show="isActive"
-      :class="[{ 'is-active': isActive }, placementClass]"
-    >
-      <div
-        class="modal-background"
-        v-if="backdrop"
-        @click="backdropClose"
-      ></div>
+    <div class="aside" v-show="isActive" :class="[{ 'is-active': isActive }, placementClass]">
+      <div class="modal-background" v-if="backdrop" @click="backdropClose"></div>
       <transition :name="transitionName">
-        <div
-          class="modal-card"
-          :style="modalWidth"
-          v-if="isActive"
-        >
+        <div class="modal-card" :style="modalWidth" v-if="isActive">
           <slot name="header">
             <header class="modal-card-head aside-header" v-if="showHeader">
               <p class="modal-card-title">{{ title }}</p>
@@ -23,25 +11,18 @@
             </header>
           </slot>
           <slot>
-            <section class="modal-card-body aside-body">
-            </section>
+            <section class="modal-card-body aside-body"></section>
           </slot>
-          <footer
-            class="modal-card-foot aside-footer"
-            v-if="showFooter"
-          >
+          <footer class="modal-card-foot aside-footer" v-if="showFooter">
             <slot name="footer">
-              <a
-                class="button"
-                @click="handleCancel"
-                v-if="showCancel"
-              >{{ cancelText }}</a>
+              <a class="button" @click="handleCancel" v-if="showCancel">{{ cancelText }}</a>
               <a
                 class="button is-primary"
-                :class="{'is-loading': isLoading}"
+                :class="{ 'is-loading': isLoading }"
                 @click="handleOk"
                 v-if="showOk"
-              >{{ okText }}</a>
+                >{{ okText }}</a
+              >
             </slot>
           </footer>
         </div>
@@ -89,5 +70,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./aside.scss">
-</style>
+<style lang="scss" src="./aside.scss"></style>

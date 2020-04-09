@@ -59,9 +59,7 @@ export default {
     },
 
     alertCls() {
-      const {
-        prefixCls, type, showIcon, description,
-      } = this;
+      const { prefixCls, type, showIcon, description } = this;
       return {
         [prefixCls]: true,
         [`${prefixCls}-${type}`]: true,
@@ -73,5 +71,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./_alert.scss">
-</style>
+<style lang="scss" src="./_alert.scss"></style>

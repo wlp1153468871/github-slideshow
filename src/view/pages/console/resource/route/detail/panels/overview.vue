@@ -3,43 +3,40 @@
     <div class="resource-details">
       <div v-if="!route.status.ingress" class="route-status">
         <span class="h3">
-          {{route | route_label(null, true)}}
+          {{ route | route_label(null, true) }}
         </span>
         <div class="meta">
           <status-icon :status="'Pending'"></status-icon>
           The route is not accepting traffic yet because it has not been admitted by a router.
         </div>
       </div>
-      <div
-        :key="index"
-        v-for="(ingress, index) in route.status.ingress"
-        class="route-status">
+      <div :key="index" v-for="(ingress, index) in route.status.ingress" class="route-status">
         <div class="h3">
           <span v-if="isWebRouteFilter(route)">
             {{ 'hostname' | translate }}:&nbsp;
             <a :href="route | route_web_url(ingress.host)" target="_blank">
-              {{route | route_label(ingress.host, true)}}
+              {{ route | route_label(ingress.host, true) }}
               <svg class="icon">
                 <use xlink:href="#icon_link"></use>
               </svg>
             </a>
           </span>
           <span v-if="!isWebRouteFilter(route)">
-            {{route | route_label(ingress.host)}}
+            {{ route | route_label(ingress.host) }}
           </span>
         </div>
         <div class="meta">
           <span v-if="!admittedCondition(ingress)">
-            负载均衡器 '{{ingress.routerName}}' 的准入状态未知
+            负载均衡器 '{{ ingress.routerName }}' 的准入状态未知
           </span>
           <span v-if="admittedCondition(ingress).status === 'True'">
             <status-icon :status="'Succeeded'"></status-icon>
-            通过负载均衡器 '{{ingress.routerName}}' 暴露于
-            <span>{{admittedCondition(ingress).lastTransitionTime | date_from(null, true)}}</span>
+            通过负载均衡器 '{{ ingress.routerName }}' 暴露于
+            <span>{{ admittedCondition(ingress).lastTransitionTime | date_from(null, true) }}</span>
           </span>
           <span v-if="admittedCondition(ingress).status === 'False'">
             <status-icon :status="'Error'"></status-icon>
-            负载均衡器 '{{ingress.routerName}}' 拒绝访问
+            负载均衡器 '{{ ingress.routerName }}' 拒绝访问
           </span>
         </div>
         <!--TODO-->
@@ -62,16 +59,13 @@
             基本信息
           </div>
           <div class="ins-card-body">
-            <div
-              class="ins-info-item"
-              v-for="(value, key) in information.basic"
-              :key="key">
-            <span class="info-item-label text-lowercase">
-              {{ key }}
-            </span>
+            <div class="ins-info-item" v-for="(value, key) in information.basic" :key="key">
+              <span class="info-item-label text-lowercase">
+                {{ key }}
+              </span>
               <span class="info-item-content">
-              {{ value }}
-            </span>
+                {{ value }}
+              </span>
             </div>
           </div>
         </div>
@@ -86,27 +80,19 @@
                 访问路径
               </span>
               <span class="info-item-content">
-                <span v-if="route.spec.path">{{route.spec.path}}</span>
+                <span v-if="route.spec.path">{{ route.spec.path }}</span>
                 <span v-else><em>暂无</em></span>
               </span>
             </div>
             <div class="ins-info-item">
-              <span class="info-item-label">
-                {{route.spec.to.kind || 'Routes To'}}:
-              </span>
+              <span class="info-item-label"> {{ route.spec.to.kind || 'Routes To' }}: </span>
               <span class="info-item-content">
                 <template v-if="hasServiceBeenDeleted(route.spec.to.name)">
-                  <resource-link
-                    kind="Service"
-                    :name="route.spec.to.name">
-                  </resource-link>
+                  <resource-link kind="Service" :name="route.spec.to.name"> </resource-link>
                 </template>
                 <template v-else>
                   <span>{{ route.spec.to.name }}</span>
-                  <el-popover
-                    placement="top-start"
-                    width="300"
-                    trigger="hover">
+                  <el-popover placement="top-start" width="300" trigger="hover">
                     <span v-html="serviceDeletedMessage(route.spec.to.name)"></span>
                     <span slot="reference">
                       <svg class="icon" style="color: #f1483f; margin-left: 5px;">
@@ -119,18 +105,19 @@
             </div>
             <div class="ins-info-item" v-if="route.spec.port">
               <span class="info-item-label">
-               Target Port
+                Target Port
               </span>
               <span class="info-item-content">
                 <span v-if="route.spec.port.targetPort">
-                 {{route.spec.port.targetPort}}
+                  {{ route.spec.port.targetPort }}
                 </span>
                 <span v-if="!route.spec.port.targetPort"><em>any</em></span>
               </span>
             </div>
             <div v-if="helpBlock" class="help-block ins-info-item">
-              This target port will route to
-              &nbsp;{{route | route_target_port_mapping(services[route.spec.to.name])}}.
+              This target port will route to &nbsp;{{
+                route | route_target_port_mapping(services[route.spec.to.name])
+              }}.
             </div>
           </div>
         </div>
@@ -146,22 +133,21 @@
                   Termination Type
                 </span>
                 <span class="info-item-content">
-                  {{route.spec.tls.termination | humanize_tls_termination }}
+                  {{ route.spec.tls.termination | humanize_tls_termination }}
                 </span>
               </div>
               <div class="ins-info-item">
                 <span class="info-item-label">证书</span>
                 <button
                   class="dao-btn btn-sm mini blue"
-                  @click="showTLS(route.spec.tls.certificate)">
+                  @click="showTLS(route.spec.tls.certificate)"
+                >
                   显示
                 </button>
               </div>
               <div class="ins-info-item">
                 <span class="info-item-label">私钥</span>
-                <button
-                  class="dao-btn btn-sm mini blue"
-                  @click="showTLS(route.spec.tls.key)">
+                <button class="dao-btn btn-sm mini blue" @click="showTLS(route.spec.tls.key)">
                   显示
                 </button>
               </div>
@@ -169,15 +155,13 @@
                 <span class="info-item-label">CA证书</span>
                 <button
                   class="dao-btn btn-sm mini blue"
-                  @click="showTLS(route.spec.tls.caCertificate)">
+                  @click="showTLS(route.spec.tls.caCertificate)"
+                >
                   显示
                 </button>
               </div>
             </template>
-            <div
-              v-else
-              class="ins-info-item">TLS is not enabled.
-            </div>
+            <div v-else class="ins-info-item">TLS is not enabled.</div>
           </div>
         </div>
       </div>
@@ -186,9 +170,7 @@
         <div class="ins-setting-card">
           <div class="ins-card-title">
             <span>操作记录</span>
-            <button
-              class="dao-btn btn-sm blue mini"
-              @click="$emit('change-tab', 'jobs')">
+            <button class="dao-btn btn-sm blue mini" @click="$emit('change-tab', 'jobs')">
               查看更多 >
             </button>
           </div>
@@ -203,7 +185,6 @@
           {{ selectedTLS }}
         </div>
       </dao-dialog>
-
     </div>
   </div>
 </template>
@@ -243,10 +224,7 @@ export default {
       return (
         route.spec.port.targetPort &&
         route.spec.to.kind === 'Service' &&
-        Vue.filter('route_target_port_mapping')(
-          this.route,
-          this.services[route.spec.to.name],
-        )
+        Vue.filter('route_target_port_mapping')(this.route, this.services[route.spec.to.name])
       );
     },
   },
@@ -264,9 +242,7 @@ export default {
     // multiple routers and we have more than one alert.
     routerHostnameAlertKey(ingress) {
       const uid = getValue(this.route, 'metadata.uid');
-      return `router-host-${uid}-${ingress.host}-${
-        ingress.routerCanonicalHostname
-      }`;
+      return `router-host-${uid}-${ingress.host}-${ingress.routerCanonicalHostname}`;
     },
 
     // isCustomHost() {

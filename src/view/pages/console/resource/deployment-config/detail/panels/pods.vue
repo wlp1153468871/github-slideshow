@@ -4,7 +4,8 @@
     :pods="pods"
     :loading="loading"
     @remove="removePods"
-    @refresh="getPods">
+    @refresh="getPods"
+  >
   </pod-table>
 </template>
 
@@ -48,9 +49,10 @@ export default {
     poll() {
       this.pollTimer = setTimeout(() => {
         clearTimeout(this.pollTimer);
-        DCService.getPodList(this.spaceId, this.zone, this.name).then(res => {
-          this.pods = res.originData.items || [];
-        })
+        DCService.getPodList(this.spaceId, this.zone, this.name)
+          .then(res => {
+            this.pods = res.originData.items || [];
+          })
           .then(() => {
             this.poll();
           });
@@ -61,11 +63,13 @@ export default {
     },
     getPods() {
       this.loading = true;
-      return DCService.getPodList(this.spaceId, this.zone, this.name).then(res => {
-        this.pods = res.originData.items || [];
-      }).finally(() => {
-        this.loading = false;
-      });
+      return DCService.getPodList(this.spaceId, this.zone, this.name)
+        .then(res => {
+          this.pods = res.originData.items || [];
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     onRefresh() {
@@ -95,5 +99,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

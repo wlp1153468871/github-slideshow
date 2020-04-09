@@ -20,7 +20,10 @@ export default {
     return {
       hasDrawn: false,
       margin: {
-        left: 32, top: 14, right: 0, bottom: 14,
+        left: 32,
+        top: 14,
+        right: 0,
+        bottom: 14,
       },
       bgCircle: undefined,
       fillCircle: undefined,
@@ -37,19 +40,18 @@ export default {
       return this.el.parentElement.clientHeight;
     },
     r() {
-      return Math.min(
-        this.width - this.margin.left,
-        this.height - this.margin.top - this.margin.bottom,
-      ) / 2;
+      return (
+        Math.min(
+          this.width - this.margin.left,
+          this.height - this.margin.top - this.margin.bottom,
+        ) / 2
+      );
     },
     circumference() {
       return Math.PI * this.r * 2;
     },
     svg() {
-      return d3.select(this.el)
-        .append('svg')
-        .attr('width', this.width)
-        .attr('height', this.height);
+      return d3.select(this.el).append('svg').attr('width', this.width).attr('height', this.height);
     },
   },
   watch: {
@@ -59,7 +61,8 @@ export default {
   },
   methods: {
     draw() {
-      this.bgCircle = this.svg.append('circle')
+      this.bgCircle = this.svg
+        .append('circle')
         .attr('fill', 'none')
         .attr('cx', this.margin.left + this.r)
         .attr('cy', this.height / 2)
@@ -67,7 +70,8 @@ export default {
         .attr('stroke-width', 12)
         .attr('stroke', '#e4e7ed');
 
-      this.fillCircle = this.svg.append('circle')
+      this.fillCircle = this.svg
+        .append('circle')
         .attr('fill', 'none')
         .attr('cx', this.margin.left + this.r)
         .attr('cy', this.height / 2)
@@ -83,14 +87,15 @@ export default {
       this.hasDrawn = true;
     },
     redraw() {
-      this.svg.attr('width', this.width)
-        .attr('height', this.height);
+      this.svg.attr('width', this.width).attr('height', this.height);
 
-      this.bgCircle.attr('cx', this.margin.left + this.r)
+      this.bgCircle
+        .attr('cx', this.margin.left + this.r)
         .attr('cy', this.height / 2)
         .attr('r', this.r);
 
-      this.fillCircle.attr('cx', this.margin.left + this.r)
+      this.fillCircle
+        .attr('cx', this.margin.left + this.r)
         .attr('cy', this.height / 2)
         .attr('r', this.r)
         .style('stroke-dasharray', this.circumference)

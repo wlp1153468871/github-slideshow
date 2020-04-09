@@ -25,14 +25,7 @@ export default {
       return originBullets.filter(bullet => rule.indexOf(bullet.name) > -1);
     },
 
-    generatePlanDesc(
-      {
-        bullets,
-        description,
-        meta_data: { need_quota },
-      },
-      name,
-    ) {
+    generatePlanDesc({ bullets, description, meta_data: { need_quota } }, name) {
       if (!need_quota) {
         return [
           {
@@ -76,14 +69,7 @@ export default {
       return [...configDetails, ...restDetails];
     },
 
-    getPlanDetails(
-      {
-        bullets,
-        description,
-        meta_data: { need_quota },
-      },
-      name,
-    ) {
+    getPlanDetails({ bullets, description, meta_data: { need_quota } }, name) {
       if (!need_quota) {
         return bullets.join();
       }

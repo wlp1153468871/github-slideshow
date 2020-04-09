@@ -4,21 +4,16 @@
       <span
         v-for="(tab, index) in tabs"
         :key="index"
-        :class="{ 'active': index === selected }"
-        @click="selectBalance(index)">
+        :class="{ active: index === selected }"
+        @click="selectBalance(index)"
+      >
         {{ tab }}
       </span>
     </div>
 
-    <service-panel
-      v-if="selected === 'fourLayer'"
-      :services="services">
-    </service-panel>
+    <service-panel v-if="selected === 'fourLayer'" :services="services"> </service-panel>
 
-    <route-panel
-      v-else
-      :routes="routes">
-    </route-panel>
+    <route-panel v-else :routes="routes"> </route-panel>
   </div>
 </template>
 
@@ -81,11 +76,11 @@ export default {
         margin-right: 10px;
       }
 
-      &:hover, &.active {
+      &:hover,
+      &.active {
         background: rgb(204, 209, 217);
       }
     }
   }
 }
 </style>
-

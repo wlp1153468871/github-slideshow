@@ -21,7 +21,6 @@ import { mapState } from 'vuex';
 import QuotaApprovalTable from '@/view/components/resource-quota/quota-approval-table.vue';
 import orgService from '@/core/services/org.service';
 
-
 export default {
   name: 'org-quota-approval',
   computed: {

@@ -9,10 +9,7 @@
       @confirm-remove-user="confirmRemoveUser"
     >
       <div slot="tool">
-        <div
-          class="dao-btn has-icon white"
-          @click="openAddUserDialog()"
-        >
+        <div class="dao-btn has-icon white" @click="openAddUserDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>

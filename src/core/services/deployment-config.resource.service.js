@@ -12,11 +12,15 @@ class DeploymentConfigResourceService {
   }
 
   create(spaceId, zone, value) {
-    return this.api.post(`/spaces/${spaceId}/deployments`, { value }, {
-      params: {
-        zone,
+    return this.api.post(
+      `/spaces/${spaceId}/deployments`,
+      { value },
+      {
+        params: {
+          zone,
+        },
       },
-    });
+    );
   }
 
   getResourceReports(spaceId, zone) {

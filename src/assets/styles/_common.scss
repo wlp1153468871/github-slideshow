@@ -324,7 +324,7 @@ a.disabled {
   text-transform: capitalize;
 }
 
-ul.text-red{
+ul.text-red {
   color: red;
   padding: 20px;
   li {
@@ -333,12 +333,12 @@ ul.text-red{
 }
 
 .dao-dialog-body {
-  &::-webkit-scrollbar{
-    width: 0!important;
+  &::-webkit-scrollbar {
+    width: 0 !important;
   }
 }
 
 // to be compatible with the windows's display effect
 .el-input--suffix .el-input__inner {
-  line-height: 32px!important;
+  line-height: 32px !important;
 }

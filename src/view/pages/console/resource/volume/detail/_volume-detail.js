@@ -51,14 +51,10 @@ export default {
   },
 
   async created() {
-    Promise.all([
-      this.getVolume(),
-      this.getRefs(),
-    ])
-      .finally(() => {
-        this.loadings.detail = false;
-        this.loadings.page = false;
-      });
+    Promise.all([this.getVolume(), this.getRefs()]).finally(() => {
+      this.loadings.detail = false;
+      this.loadings.page = false;
+    });
   },
 
   methods: {
@@ -81,19 +77,18 @@ export default {
 
     getVolume() {
       this.loadings.detail = true;
-      return VolumeService.getVolume(this.space.id, this.zone.id, this.name)
-        .then(res => {
-          this.instance = res;
-          this.volume = res.originData || {};
-          this.information.basic = {
-            '租户 / 项目组': `${res.spaceName ||
-              this.space.name} / ${res.organizationName ||
-              this.space.organization.name}`,
-            '区域 / 环境': res.zoneName || this.zone.name,
-            创建者: res.owner.name || '暂无',
-          };
-          this.getJobs();
-        });
+      return VolumeService.getVolume(this.space.id, this.zone.id, this.name).then(res => {
+        this.instance = res;
+        this.volume = res.originData || {};
+        this.information.basic = {
+          '租户 / 项目组': `${res.spaceName || this.space.name} / ${
+            res.organizationName || this.space.organization.name
+          }`,
+          '区域 / 环境': res.zoneName || this.zone.name,
+          创建者: res.owner.name || '暂无',
+        };
+        this.getJobs();
+      });
     },
 
     handleAction(actionId) {

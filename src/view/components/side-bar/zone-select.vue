@@ -4,16 +4,10 @@
     v-model="zoneId"
     @change="switchZone"
     placeholder="可用区"
-    no-data-text="无选项">
-    <el-option-group
-      v-for="zones in zoneList"
-      :key="zones.text"
-      :label="zones.text + ' 数据中心'">
-      <el-option
-        v-for="item in zones.children"
-        :key="item.id"
-        :value="item.id"
-        :label="item.name">
+    no-data-text="无选项"
+  >
+    <el-option-group v-for="zones in zoneList" :key="zones.text" :label="zones.text + ' 数据中心'">
+      <el-option v-for="item in zones.children" :key="item.id" :value="item.id" :label="item.name">
       </el-option>
     </el-option-group>
   </el-select>

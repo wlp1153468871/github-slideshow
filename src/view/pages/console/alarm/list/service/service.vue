@@ -1,9 +1,6 @@
 <template>
   <div id="alarm-list-container">
-    <el-form
-      :inline="true"
-      class="demo-form-inline form-panel"
-    >
+    <el-form :inline="true" class="demo-form-inline form-panel">
       <el-form-item label="类型">
         <el-select
           filterable
@@ -14,11 +11,7 @@
           placeholder="请选择"
           @change="onChooseType"
         >
-          <el-option
-            :value="s"
-            :label="s.name"
-            v-for="s in serviceList"
-            :key="s.id"></el-option>
+          <el-option :value="s" :label="s.name" v-for="s in serviceList" :key="s.id"></el-option>
         </el-select>
         <button
           class="dao-btn blue has-icon add-rules"
@@ -32,13 +25,7 @@
         </button>
       </el-form-item>
     </el-form>
-    <rule-table
-      #addRule
-      :rules="currentRules"
-      @updateRulesLayer="updateRulesLayer"
-    >
-    </rule-table>
+    <rule-table #addRule :rules="currentRules" @updateRulesLayer="updateRulesLayer"> </rule-table>
   </div>
-
 </template>
 <script src="./service.js"></script>

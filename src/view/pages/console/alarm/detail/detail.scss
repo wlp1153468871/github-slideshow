@@ -1,6 +1,6 @@
 #alarm-detail {
   .desc-input {
-    width: calc( 80% + 15px );
+    width: calc(80% + 15px);
   }
   .card-wrapper {
     display: flex;
@@ -40,7 +40,8 @@
     display: flex;
     justify-content: center;
     margin: 20px;
-    label, .content {
+    label,
+    .content {
     }
     label {
       //display: block;

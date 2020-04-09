@@ -5,15 +5,9 @@
         {{ to.label }}
       </div>
       <div slot="content">
-        <div
-          class="dao-checkbox"
-          v-for="item in to.options"
-          :key="item.key">
+        <div class="dao-checkbox" v-for="item in to.options" :key="item.key">
           <label>
-            <input
-              type="checkbox"
-              :value="item.value"
-              v-model="model[field.key]"/>
+            <input type="checkbox" :value="item.value" v-model="model[field.key]" />
             {{ item.text }}
           </label>
         </div>

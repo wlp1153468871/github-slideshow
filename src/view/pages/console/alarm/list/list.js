@@ -1,7 +1,11 @@
 import { ALARM_CONFIG } from '@/core/constants/alarm';
 import AlarmService from '@/core/services/alarm.service.ts';
 import { mapMutations, mapState } from 'vuex';
-import { ALARM_LIST_VIEW_REQUEST, ALARM_LIST_VIEW_SUCCESS, ALARM_RULES } from '@/core/store/mutation-types';
+import {
+  ALARM_LIST_VIEW_REQUEST,
+  ALARM_LIST_VIEW_SUCCESS,
+  ALARM_RULES,
+} from '@/core/store/mutation-types';
 
 import Container from './container/container.vue';
 import App from './app/app.vue';
@@ -41,11 +45,7 @@ export default {
     Service,
   },
   methods: {
-    ...mapMutations([
-      ALARM_LIST_VIEW_REQUEST,
-      ALARM_LIST_VIEW_SUCCESS,
-      ALARM_RULES,
-    ]),
+    ...mapMutations([ALARM_LIST_VIEW_REQUEST, ALARM_LIST_VIEW_SUCCESS, ALARM_RULES]),
 
     async getAllRules() {
       try {

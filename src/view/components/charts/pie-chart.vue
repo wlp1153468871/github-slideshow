@@ -26,7 +26,10 @@ export default {
     return {
       hasDrawn: false,
       margin: {
-        left: 32, top: 14, right: 0, bottom: 14,
+        left: 32,
+        top: 14,
+        right: 0,
+        bottom: 14,
       },
       color: ['#3890ff', '#e4e7ed'],
       path: undefined,
@@ -39,10 +42,12 @@ export default {
     },
     // 外圆半径
     outerRadius() {
-      return Math.min(
-        this.width - this.margin.left,
-        this.height - this.margin.top - this.margin.bottom,
-      ) / 2;
+      return (
+        Math.min(
+          this.width - this.margin.left,
+          this.height - this.margin.top - this.margin.bottom,
+        ) / 2
+      );
     },
     // 内圆半径
     innerRadius() {
@@ -58,7 +63,10 @@ export default {
     },
     // 饼图
     pie() {
-      return d3.pie().value(d => d).sort(null);
+      return d3
+        .pie()
+        .value(d => d)
+        .sort(null);
     },
     // 弧度
     arc() {
@@ -68,18 +76,19 @@ export default {
       return d3.select(this.el).attr('width', this.width).attr('height', this.height);
     },
     group() {
-      return this.svg.append('g')
-        .attr(
-          'transform',
-          `translate(${(this.margin.left + this.outerRadius)},
+      return this.svg.append('g').attr(
+        'transform',
+        `translate(${this.margin.left + this.outerRadius},
           ${this.height / 2})`,
-        );
+      );
     },
   },
   methods: {
     // 绘制
     draw() {
-      this.path = this.group.datum(this.data).selectAll('path')
+      this.path = this.group
+        .datum(this.data)
+        .selectAll('path')
         .data(this.pie)
         .enter()
         .append('path')
@@ -91,14 +100,14 @@ export default {
     },
     // 重绘
     redraw() {
-      this.arc.innerRadius(this.innerRadius)
-        .outerRadius(this.outerRadius);
+      this.arc.innerRadius(this.innerRadius).outerRadius(this.outerRadius);
 
-      this.svg.attr('width', this.width)
-        .attr('height', this.height);
+      this.svg.attr('width', this.width).attr('height', this.height);
 
-      this.group
-        .attr('transform', `translate(${this.margin.left + this.outerRadius},${this.height / 2})`);
+      this.group.attr(
+        'transform',
+        `translate(${this.margin.left + this.outerRadius},${this.height / 2})`,
+      );
 
       this.path.attr('d', this.arc);
     },

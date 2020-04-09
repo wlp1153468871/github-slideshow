@@ -20,20 +20,16 @@ class ConfigService {
    * 创建（加密） Config Map
    */
   createConfigMap(serviceId: string, configMap: any) {
-    return this.api.post(
-      `/spaces/${this.spaceId}/services/${serviceId}/instances`,
-      configMap,
-    );
+    return this.api.post(`/spaces/${this.spaceId}/services/${serviceId}/instances`, configMap);
   }
 
   /**
    * （加密） Config Map 列表
    */
   listConfigMaps(serviceId: string) {
-    return this.api.get(
-      `spaces/${this.spaceId}/services/${serviceId}/instances`,
-      { zoneId: this.zoneId },
-    );
+    return this.api.get(`spaces/${this.spaceId}/services/${serviceId}/instances`, {
+      zoneId: this.zoneId,
+    });
   }
 
   /**

@@ -1,9 +1,6 @@
 <template>
   <div class="app-deployment-panel">
-    <dao-table-view
-      :rows="deployments"
-      :config="tConfig">
-    </dao-table-view>
+    <dao-table-view :rows="deployments" :config="tConfig"> </dao-table-view>
   </div>
 </template>
 
@@ -57,8 +54,7 @@ export default {
           id: 'image',
           name: '镜像',
           value(_, deploymentConfig) {
-            const containers =
-              getValue(deploymentConfig, 'spec.template.spec.containers') || [];
+            const containers = getValue(deploymentConfig, 'spec.template.spec.containers') || [];
             return containers
               .map(x => x.image)
               .filter(Boolean)

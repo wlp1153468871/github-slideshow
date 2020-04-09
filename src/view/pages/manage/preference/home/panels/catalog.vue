@@ -5,32 +5,29 @@
         <!-- 租户 -->
         <div class="dao-view-sidebar pri">
           <div class="dao-list-group-container">
-            <button
-              class="dao-btn mini blue"
-              @click="openAddCatalogDialog()">
+            <button class="dao-btn mini blue" @click="openAddCatalogDialog()">
               <svg class="icon" style="vertical-align: middle;">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
               <span style="vertical-align: middle;">&nbsp;创建分类</span>
             </button>
-            <draggable
-              class="dao-list-group catalog-list"
-              v-model="categoryList"
-              element="ul">
+            <draggable class="dao-list-group catalog-list" v-model="categoryList" element="ul">
               <li
                 class="dao-list-item drag-drop-list-item pri"
                 v-for="tab in categoryList"
                 :key="tab.name"
-                :class="{ 'active': selectedCategory.name === tab.name }"
-                @click="switchCatalog(tab)">
+                :class="{ active: selectedCategory.name === tab.name }"
+                @click="switchCatalog(tab)"
+              >
                 <span class="icon icon-prepend">
                   <svg><use xlink:href="#icon_drag-point"></use></svg>
                 </span>
                 <div>{{ tab.name }}</div>
                 <span
                   class="icon editable"
-                  style="right: 30px"
-                  @click.stop="openEditCatalogDialog(tab)">
+                  style="right: 30px;"
+                  @click.stop="openEditCatalogDialog(tab)"
+                >
                   <svg><use xlink:href="#icon_pencil"></use></svg>
                 </span>
                 <span class="icon" @click.stop="confirmRemoveCategory(tab)">
@@ -45,7 +42,8 @@
             <button
               :disabled="isEmpty(selectedCategory)"
               class="dao-btn mini blue"
-              @click="openAddSubCatalogDialog()">
+              @click="openAddSubCatalogDialog()"
+            >
               <svg class="icon" style="vertical-align: middle;">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
@@ -54,21 +52,24 @@
             <draggable
               class="dao-list-group catalog-list"
               v-model="selectedCategory.children"
-              element="ul">
+              element="ul"
+            >
               <li
                 class="dao-list-item drag-drop-list-item"
                 v-for="tab in selectedCategory.children"
                 :key="tab.name"
-                :class="{ 'active': selectedSubCategory.name === tab.name }"
-                @click="switchSubCatalog(tab)">
+                :class="{ active: selectedSubCategory.name === tab.name }"
+                @click="switchSubCatalog(tab)"
+              >
                 <span class="icon icon-prepend">
                   <svg><use xlink:href="#icon_drag-point"></use></svg>
                 </span>
                 <div>{{ tab.name }}</div>
                 <span
                   class="icon editable"
-                  style="right: 30px"
-                  @click.stop="openSubEditCatalogDialog(tab)">
+                  style="right: 30px;"
+                  @click.stop="openSubEditCatalogDialog(tab)"
+                >
                   <svg><use xlink:href="#icon_pencil"></use></svg>
                 </span>
                 <span class="icon" @click.stop="confirmRemoveSubCategory(tab)">
@@ -84,7 +85,8 @@
             <button
               :disabled="isEmpty(selectedSubCategory)"
               class="dao-btn mini blue"
-              @click="openAddServiceDialog(selectedSubCategory.services)">
+              @click="openAddServiceDialog(selectedSubCategory.services)"
+            >
               <svg class="icon" style="vertical-align: middle;">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
@@ -95,32 +97,28 @@
           <draggable
             class="dao-sequare-warpper"
             v-model="selectedSubCategory.services"
-            element="div">
+            element="div"
+          >
             <div
               class="dao-sequare-item"
               v-for="item in selectedSubCategory.services"
-              :key="item.id">
+              :key="item.id"
+            >
               <a
                 class="dao-sequare-item-close"
                 href="javascript:void(0)"
-                @click="confirmDeleteService(item)">
+                @click="confirmDeleteService(item)"
+              >
                 <svg class="icon">
                   <use xlink:href="#icon_close-circled"></use>
                 </svg>
               </a>
               <div class="box-wrap">
-                <div
-                  class="logo-box"
-                  v-if="item.logo_url"
-                  v-bg-image="item.logo_url">
-                </div>
-                <logo-placeholder size="medium" v-if="!item.logo_url">
-                </logo-placeholder>
+                <div class="logo-box" v-if="item.logo_url" v-bg-image="item.logo_url"></div>
+                <logo-placeholder size="medium" v-if="!item.logo_url"> </logo-placeholder>
               </div>
               <div class="service-name">{{ item.name }}</div>
-              <div
-                class="service-content"
-                v-if="item.short_description">
+              <div class="service-content" v-if="item.short_description">
                 {{ item.short_description }}
               </div>
               <div class="zone-info">{{ getZone(item) }}</div>
@@ -128,18 +126,15 @@
           </draggable>
           <div
             class="dao-setting-section"
-            v-show="selectedSubCategory.services&&!selectedSubCategory.services.length">
-            <empty-state
-              style="margin-left: 0"
-              title="暂无服务, 该分类将不会展示在租户的导航栏中">
+            v-show="selectedSubCategory.services && !selectedSubCategory.services.length"
+          >
+            <empty-state style="margin-left: 0;" title="暂无服务, 该分类将不会展示在租户的导航栏中">
             </empty-state>
           </div>
         </div>
       </div>
       <template slot="footer">
-        <button
-          class="dao-btn blue"
-          @click="onSave()">
+        <button class="dao-btn blue" @click="onSave()">
           保存
         </button>
       </template>
@@ -149,27 +144,31 @@
     <add-catalog-dialog
       @create="addCatalog"
       :visible="dialogConfigs.addCatalog.visible"
-      @close="dialogConfigs.addCatalog.visible = false">
+      @close="dialogConfigs.addCatalog.visible = false"
+    >
     </add-catalog-dialog>
 
     <add-sub-catalog-dialog
       @create="addSubCategory"
       :visible="dialogConfigs.addSubCatalog.visible"
-      @close="dialogConfigs.addSubCatalog.visible = false">
+      @close="dialogConfigs.addSubCatalog.visible = false"
+    >
     </add-sub-catalog-dialog>
 
     <edit-catalog-dialog
       :catalog="selectedCategory"
       @update="editCatalog"
       :visible="dialogConfigs.editCatalog.visible"
-      @close="dialogConfigs.editCatalog.visible = false">
+      @close="dialogConfigs.editCatalog.visible = false"
+    >
     </edit-catalog-dialog>
 
     <edit-sub-catalog-dialog
       :catalog="selectedSubCategory"
       @update="editSubCatalog"
       :visible="dialogConfigs.editSubCatalog.visible"
-      @close="dialogConfigs.editSubCatalog.visible = false">
+      @close="dialogConfigs.editSubCatalog.visible = false"
+    >
     </edit-sub-catalog-dialog>
 
     <add-service-dialog
@@ -177,7 +176,8 @@
       :used-services="usedServices"
       @create="addService"
       :visible="dialogConfigs.addService.visible"
-      @close="dialogConfigs.addService.visible = false">
+      @close="dialogConfigs.addService.visible = false"
+    >
     </add-service-dialog>
     <!-- dialogs end -->
   </div>
@@ -255,8 +255,9 @@ export default {
     },
 
     onSave() {
-      this.categoryList = this.categoryList
-        .filter(category => Array.isArray(category.children) && category.children.length);
+      this.categoryList = this.categoryList.filter(
+        category => Array.isArray(category.children) && category.children.length,
+      );
       const saveCategory = CategoryUtil.array2Map(this.categoryList);
       SchemaService.updateSchema(saveCategory)
         .then(() => {
@@ -294,10 +295,7 @@ export default {
     },
 
     addSubCategory(subCatalog) {
-      const hasExit = find(
-        this.selectedCategory.children,
-        x => x.name === subCatalog.name,
-      );
+      const hasExit = find(this.selectedCategory.children, x => x.name === subCatalog.name);
       if (!hasExit) {
         this.selectedCategory.children.push(subCatalog);
         this.switchSubCatalog(subCatalog);

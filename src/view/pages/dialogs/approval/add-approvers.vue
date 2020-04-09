@@ -5,7 +5,8 @@
     :visible.sync="isShow"
     @dao-dialog-confirm="onConfirm"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <div class="dao-table-container" style="padding: 20px;">
       <div class="dao-table-toolbar">
         <el-select
@@ -14,21 +15,21 @@
           v-model="keyword"
           placeholder="请输入文本"
           :popper-append-to-body="false"
-          class="select-approve-member">
+          class="select-approve-member"
+        >
           <el-option
             v-for="item in availableUsers"
             :key="item.id"
             :label="item.username"
-            :value="item.username">
+            :value="item.username"
+          >
             <p class="item-username">{{ item.username }}</p>
             <div class="user-info">
               <span>{{ item.email }}</span>
             </div>
           </el-option>
         </el-select>
-        <button
-          class="dao-btn add-approver-btn has-icon blue pull-left"
-          @click="addApprover()">
+        <button class="dao-btn add-approver-btn has-icon blue pull-left" @click="addApprover()">
           <svg class="icon">
             <use xlink:href="#icon_plus"></use>
           </svg>
@@ -38,30 +39,23 @@
           <dao-switch
             v-model="isEnableOrder"
             :with-notice="true"
-            :option="{ on: '有序', off: '无序' }">
+            :option="{ on: '有序', off: '无序' }"
+          >
           </dao-switch>
         </div>
       </div>
       <div class="dao-table-main">
         <table class="dao-table row">
           <thead>
-          <tr>
-            <th
-              class="td-name"
-              style="width:20px;"
-              v-show="isEnableOrder">
-            </th>
-            <th class="td-name">用户名</th>
-            <th>手机号</th>
-            <th>邮箱</th>
-            <th>操作</th>
-          </tr>
+            <tr>
+              <th class="td-name" style="width: 20px;" v-show="isEnableOrder"></th>
+              <th class="td-name">用户名</th>
+              <th>手机号</th>
+              <th>邮箱</th>
+              <th>操作</th>
+            </tr>
           </thead>
-          <draggable
-            element="tbody"
-            class="dao-table-main"
-            v-model="users"
-            :options="option">
+          <draggable element="tbody" class="dao-table-main" v-model="users" :options="option">
             <tr v-for="(user, index) in users" :key="index">
               <td class="td-name" v-show="isEnableOrder">
                 <span class="drag-handle">☰</span>
@@ -79,10 +73,7 @@
             </tr>
           </draggable>
         </table>
-        <empty-state
-          v-show="!users.length"
-          title="审批成员为空">
-        </empty-state>
+        <empty-state v-show="!users.length" title="审批成员为空"> </empty-state>
       </div>
     </div>
   </dao-dialog>
@@ -154,9 +145,7 @@ export default {
       if (user) {
         this.users.push(user);
       }
-      this.keyword = this.availableUsers.length
-        ? this.availableUsers[0].text
-        : '';
+      this.keyword = this.availableUsers.length ? this.availableUsers[0].text : '';
     },
 
     remove(index) {

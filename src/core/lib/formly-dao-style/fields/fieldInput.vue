@@ -23,7 +23,8 @@
           @keyup="onKeyup"
           @keydown="onKeydown"
           v-formly-atts="to.atts"
-          v-formly-input-type="to.inputType">
+          v-formly-input-type="to.inputType"
+        >
         </dao-input>
       </div>
     </dao-setting-item>

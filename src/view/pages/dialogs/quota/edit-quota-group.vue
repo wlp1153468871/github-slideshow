@@ -1,8 +1,5 @@
 <template>
-  <dao-dialog
-    :visible.sync="isShow"
-    @closed="onClosed"
-    :header="title">
+  <dao-dialog :visible.sync="isShow" @closed="onClosed" :header="title">
     <div class="dao-setting-warning">
       <svg class="tip-icon icon"><use xlink:href="#icon_bell"></use></svg>
       提示: 配额组下设置的"配额字段"会影响所有使用该配额组的租户或项目组，请谨慎修改。
@@ -19,7 +16,8 @@
             v-validate="'required|max:10'"
             data-vv-as="配额组名"
             :message="veeErrors.first('name')"
-            :status="veeErrors.has('name') ? 'error' : ''">
+            :status="veeErrors.has('name') ? 'error' : ''"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -37,7 +35,8 @@
             v-validate="'max:50'"
             data-vv-as="描述"
             :message="veeErrors.first('description')"
-            :status="veeErrors.has('description') ? 'error' : ''">
+            :status="veeErrors.has('description') ? 'error' : ''"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -50,22 +49,18 @@
             <table class="dao-table flexrow">
               <thead>
                 <tr>
-                  <th style="width:20%">唯一标识</th>
-                  <th style="width:40%">字段名</th>
-                  <th style="width:40%">值</th>
+                  <th style="width: 20%;">唯一标识</th>
+                  <th style="width: 40%;">字段名</th>
+                  <th style="width: 40%;">值</th>
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="(item, index) in limits"
-                  :key="index">
-                  <td style="width:20%">
+                <tr v-for="(item, index) in limits" :key="index">
+                  <td style="width: 20%;">
                     {{ item.code }}
                   </td>
-                  <td style="width:40%">
-                    {{ item.name }} ({{ item.unit }})
-                  </td>
-                  <td style="width:40%">
+                  <td style="width: 40%;">{{ item.name }} ({{ item.unit }})</td>
+                  <td style="width: 40%;">
                     <dao-input
                       block
                       no-border
@@ -79,7 +74,8 @@
                       :data-vv-as="item.code"
                       :message="veeErrors.first(item.code)"
                       :status="veeErrors.has(item.code) ? 'error' : ''"
-                      v-validate="'decimal:3|max:12|min_value:0|max_value:999999'">
+                      v-validate="'decimal:3|max:12|min_value:0|max_value:999999'"
+                    >
                     </dao-input>
                   </td>
                 </tr>
@@ -90,15 +86,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        @click="onConfirm"
-        :disabled="!isValidForm || isCreating">
+      <button class="dao-btn blue" @click="onConfirm" :disabled="!isValidForm || isCreating">
         确定
       </button>
     </div>
@@ -175,11 +166,7 @@ export default {
       const { MEMORY } = PLANKEY;
       limits.forEach(limit => {
         if (limit.code === MEMORY && limit.limit !== null) {
-          limit.limit = `${convert(
-            limit.limit,
-            'MB',
-            this.quotaDict[MEMORY].unit,
-          )}`;
+          limit.limit = `${convert(limit.limit, 'MB', this.quotaDict[MEMORY].unit)}`;
         }
       });
       return limits;

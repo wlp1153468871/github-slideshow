@@ -1,11 +1,8 @@
 <template>
   <div>
-    <d-alert
-      v-if="objrefs.length"
-      :show-icon="true"
-    >
+    <d-alert v-if="objrefs.length" :show-icon="true">
       <template #message>
-        <div style="display: flex">
+        <div style="display: flex;">
           该 {{ kind }} 正在被资源
           <resource-link
             :key="index"
@@ -26,16 +23,13 @@
             基本信息
           </div>
           <div class="ins-card-body">
-            <div
-              class="ins-info-item"
-              v-for="(value, key) in information.basic"
-              :key="key">
-            <span class="info-item-label text-lowercase">
-              {{ key }}
-            </span>
+            <div class="ins-info-item" v-for="(value, key) in information.basic" :key="key">
+              <span class="info-item-label text-lowercase">
+                {{ key }}
+              </span>
               <span class="info-item-content">
-              {{ value }}
-            </span>
+                {{ value }}
+              </span>
             </div>
           </div>
         </div>
@@ -46,39 +40,41 @@
           </div>
           <div class="ins-card-body">
             <div class="ins-info-item">
-            <span class="info-item-label">
-              存储容量
-            </span>
+              <span class="info-item-label">
+                存储容量
+              </span>
               <span class="info-item-content">
-              <span v-if="pvc.spec && pvc.spec.volumeName">
-                <span v-if="pvc.status.capacity['storage']">
-                  {{pvc.status.capacity['storage'] | usage_with_units('storage')}}
+                <span v-if="pvc.spec && pvc.spec.volumeName">
+                  <span v-if="pvc.status.capacity['storage']">
+                    {{ pvc.status.capacity['storage'] | usage_with_units('storage') }}
+                  </span>
+                  <span v-if="!pvc.status.capacity['storage']">unknown</span>
                 </span>
-                <span v-if="!pvc.status.capacity['storage']">unknown</span>
+                <span v-if="pvc.spec && !pvc.spec.volumeName">
+                  <span>-</span>
+                </span>
               </span>
-              <span v-if="pvc.spec && !pvc.spec.volumeName">
-                <span>-</span>
-              </span>
-            </span>
             </div>
             <div class="ins-info-item">
-            <span class="info-item-label">
-              请求容量
-            </span>
-              <span class="info-item-content">
-              <span v-if="pvc.spec && pvc.spec.resources.requests['storage']">
-                {{pvc.spec.resources.requests['storage'] | usage_with_units('storage')}}
+              <span class="info-item-label">
+                请求容量
               </span>
-              <span v-if="pvc.spec && !pvc.spec.resources.requests['storage']"><em>none</em></span>
-            </span>
+              <span class="info-item-content">
+                <span v-if="pvc.spec && pvc.spec.resources.requests['storage']">
+                  {{ pvc.spec.resources.requests['storage'] | usage_with_units('storage') }}
+                </span>
+                <span v-if="pvc.spec && !pvc.spec.resources.requests['storage']"
+                  ><em>none</em></span
+                >
+              </span>
             </div>
             <div class="ins-info-item">
-            <span class="info-item-label">
-              读取模式
-            </span>
+              <span class="info-item-label">
+                读取模式
+              </span>
               <span class="info-item-content">
-              {{!pvc.spec ? '' : pvc.spec.accessModes | access_modes }}
-            </span>
+                {{ !pvc.spec ? '' : pvc.spec.accessModes | access_modes }}
+              </span>
             </div>
           </div>
         </div>
@@ -88,12 +84,10 @@
           <div class="ins-card-title">
             <span>操作记录</span>
             <span>
-            <a
-              href="javascript:void(0)"
-              @click="$emit('change-tab', 'jobs')">
-              查看更多 >
-            </a>
-          </span>
+              <a href="javascript:void(0)" @click="$emit('change-tab', 'jobs')">
+                查看更多 >
+              </a>
+            </span>
           </div>
           <div class="ins-card-body">
             <event-list :jobs="jobs"></event-list>
@@ -123,7 +117,7 @@ export default {
 
   props: {
     pvc: { type: Object, default: () => ({}) },
-    objrefs: { type: Array, default: () => ([]) },
+    objrefs: { type: Array, default: () => [] },
     information: {
       type: Object,
       default: () => {
@@ -137,7 +131,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-  .volume-overview {
-    margin-top: 15px;
-  }
+.volume-overview {
+  margin-top: 15px;
+}
 </style>

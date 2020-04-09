@@ -6,11 +6,7 @@
           <div class="product-brief">
             <div class="product-logo">
               <logo-placeholder v-if="!service.logo_url"></logo-placeholder>
-              <div
-                class="logo-box"
-                v-if="service.logo_url"
-                v-bg-image="service.logo_url">
-              </div>
+              <div class="logo-box" v-if="service.logo_url" v-bg-image="service.logo_url"></div>
             </div>
             <div class="product-info">
               <div class="product-name">
@@ -26,7 +22,8 @@
           <button
             class="dao-btn blue pull-right"
             :disabled="!service.available"
-            @click="checkout()">
+            @click="checkout()"
+          >
             {{ service.available ? '立即获取' : '已经下架' }}
           </button>
         </div>
@@ -34,23 +31,21 @@
       <div class="row">
         <div class="col-md-9 product-overview">
           <div class="overview-pic" v-if="service.pictures">
-            <div class="pic-big" v-bg-image="bigUrl">
-            </div>
+            <div class="pic-big" v-bg-image="bigUrl"></div>
             <div class="small-pic" v-if="(service.pictures || []).length !== 1">
               <ul>
                 <li
-                  :class="{ 'active': bigUrl === pic }"
-                  @click='show(pic)'
+                  :class="{ active: bigUrl === pic }"
+                  @click="show(pic)"
                   v-for="pic in service.pictures"
                   :key="pic"
-                  v-bg-image="pic">
-                </li>
+                  v-bg-image="pic"
+                ></li>
               </ul>
             </div>
           </div>
           <div class="overview-main">
-            <markdown class="main-text" :text="service.description">
-            </markdown>
+            <markdown class="main-text" :text="service.description"> </markdown>
           </div>
         </div>
         <div class="col-md-3 hidden-xs hidden-sm">

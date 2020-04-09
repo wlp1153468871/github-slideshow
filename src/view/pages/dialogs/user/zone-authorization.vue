@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @before-open="loadRoleOptions"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户名</div>
@@ -18,10 +19,7 @@
         <template #label>权限</template>
         <template #content>
           <div class="dao-setting-patch role">
-            <div
-              class="sub-setting-layout role"
-              v-for="(zone, index) in zones"
-              :key="index">
+            <div class="sub-setting-layout role" v-for="(zone, index) in zones" :key="index">
               <div class="sub-setting-section">
                 <div class="sub-setting-item">
                   <p>可用区</p>
@@ -29,14 +27,13 @@
                 </div>
                 <div class="sub-setting-item">
                   <p>权限</p>
-                  <dao-select
-                    style="width: 157px;"
-                    v-model="result[zone.name]">
+                  <dao-select style="width: 157px;" v-model="result[zone.name]">
                     <dao-option
                       v-for="(role, key) in zone.roles"
                       :key="key"
                       :value="role"
-                      :label="role.name">
+                      :label="role.name"
+                    >
                     </dao-option>
                   </dao-select>
                 </div>
@@ -48,16 +45,10 @@
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <save-button
-        class="blue"
-        text="确定"
-        :saving="isUpdating"
-        @click="authorizeZone">
+      <save-button class="blue" text="确定" :saving="isUpdating" @click="authorizeZone">
       </save-button>
     </div>
   </dao-dialog>

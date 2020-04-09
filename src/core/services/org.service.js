@@ -76,7 +76,9 @@ class OrgService {
     quota.cpu = gib2byte(quota.cpu, 'CPU');
     quota.memory = gib2byte(quota.memory);
     quota.storage = gib2byte(quota.storage);
-    return this.api.post('/quota/approval/organization', quota, { params: { organization_id: this.orgId } });
+    return this.api.post('/quota/approval/organization', quota, {
+      params: { organization_id: this.orgId },
+    });
   }
 
   updateResourceQuota(orgId, quota) {
@@ -87,7 +89,10 @@ class OrgService {
   }
 
   getResourceQuotaApprovals(orgId, type = 'apply') {
-    return this.api.get('/quota/approval/organization', { organization_id: orgId || this.orgId, type });
+    return this.api.get('/quota/approval/organization', {
+      organization_id: orgId || this.orgId,
+      type,
+    });
   }
 }
 

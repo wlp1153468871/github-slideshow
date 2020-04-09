@@ -3,7 +3,8 @@
     :initEnvs="dcEnv"
     :secrets="secrets"
     :configMaps="configMaps"
-    @envUpdate="(newEnv) => $emit('envUpdate', newEnv)"></env-editor>
+    @envUpdate="newEnv => $emit('envUpdate', newEnv)"
+  ></env-editor>
 </template>
 
 <script>

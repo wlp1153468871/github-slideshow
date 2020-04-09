@@ -1,16 +1,10 @@
 <template>
   <div class="dao-view-main" style="margin: 0;">
     <div class="dao-view-sidebar">
-      <daox-list-group
-        :content.sync="sidebar"
-        :groups="SIDE_BARS">
-      </daox-list-group>
+      <daox-list-group :content.sync="sidebar" :groups="SIDE_BARS"> </daox-list-group>
     </div>
     <div class="dao-view-content with-sidebar">
-      <adavance-panel
-        v-if="sidebar === TABS.ADVANCE"
-        :instance="instance">
-      </adavance-panel>
+      <adavance-panel v-if="sidebar === TABS.ADVANCE" :instance="instance"> </adavance-panel>
     </div>
   </div>
 </template>

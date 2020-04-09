@@ -1,7 +1,5 @@
 <template>
-  <span
-    v-if="message"
-    class="help-block form-text text-danger">
+  <span v-if="message" class="help-block form-text text-danger">
     {{ message }}
   </span>
 </template>
@@ -16,10 +14,10 @@ export default {
     message() {
       let message = false;
       if (
-        !(this.field in this.form.$errors)
-        || !(this.field in this.form)
-        || this.form[this.field].$active
-        || !this.form[this.field].$dirty
+        !(this.field in this.form.$errors) ||
+        !(this.field in this.form) ||
+        this.form[this.field].$active ||
+        !this.form[this.field].$dirty
       ) {
         return message;
       }

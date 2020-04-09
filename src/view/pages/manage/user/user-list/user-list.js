@@ -32,8 +32,7 @@ export default {
         users: false,
         create: false,
       },
-      filterMethod: (data, filterKey) =>
-        data.username.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.username.toLowerCase().includes(filterKey),
       other: { status: (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER') },
       ROLES: [],
     };
@@ -180,9 +179,7 @@ export default {
     },
 
     createUser(vars, role, isNewUser) {
-      const {
-        pwd, confirm_pwd, phone, ...user
-      } = vars;
+      const { pwd, confirm_pwd, phone, ...user } = vars;
       user.password = pwd;
       user.phone_number = phone;
 

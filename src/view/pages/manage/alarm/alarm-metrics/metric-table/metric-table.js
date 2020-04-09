@@ -27,11 +27,10 @@ export default {
       if (this.searchKey === '') {
         this.currentRules = this.rules;
       } else {
-        this.currentRules = this.rules
-          .filter(rule => {
-            const key = this.searchKey.toLowerCase();
-            return rule.name.toLowerCase().includes(key) || rule.expr.toLowerCase().includes(key);
-          });
+        this.currentRules = this.rules.filter(rule => {
+          const key = this.searchKey.toLowerCase();
+          return rule.name.toLowerCase().includes(key) || rule.expr.toLowerCase().includes(key);
+        });
       }
     },
   },

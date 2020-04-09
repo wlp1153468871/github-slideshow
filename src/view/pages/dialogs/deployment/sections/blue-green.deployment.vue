@@ -5,13 +5,11 @@
         <div class="sub-setting-item level-item">
           <p class="top-label">当前 Service</p>
           <div>
-            <dao-select
-              v-model="formModel.backend.name"
-              class="select-full-width"
-              :disabled="true">
+            <dao-select v-model="formModel.backend.name" class="select-full-width" :disabled="true">
               <dao-option
                 :value="formModel.backend.name"
-                :label="formModel.backend.name"></dao-option>
+                :label="formModel.backend.name"
+              ></dao-option>
             </dao-select>
             <dao-numeric-input
               icon-inside
@@ -21,21 +19,21 @@
               placeholder="0-100"
               unit="%"
               required
-              v-model="formModel.backend.weight">
+              v-model="formModel.backend.weight"
+            >
             </dao-numeric-input>
           </div>
         </div>
         <div class="sub-setting-item level-item">
           <p class="top-label">新版本 Service</p>
           <div>
-            <dao-select
-              v-model="formModel.alternateBackends.name"
-              class="select-full-width">
+            <dao-select v-model="formModel.alternateBackends.name" class="select-full-width">
               <dao-option
                 v-for="service in services"
                 :key="service.metadata.name"
                 :value="service.metadata.name"
-                :label="service.metadata.name">
+                :label="service.metadata.name"
+              >
               </dao-option>
             </dao-select>
             <dao-numeric-input
@@ -46,7 +44,8 @@
               placeholder="0-100"
               unit="%"
               required
-              v-model="formModel.alternateBackends.weight">
+              v-model="formModel.alternateBackends.weight"
+            >
             </dao-numeric-input>
           </div>
         </div>

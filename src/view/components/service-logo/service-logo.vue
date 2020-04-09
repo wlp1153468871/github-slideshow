@@ -1,13 +1,7 @@
 <template>
   <div class="service-logo" :class="size">
-    <div
-      v-if="!!src"
-      class="image-container"
-      v-bg-image="src">
-    </div>
-    <div
-      v-else
-      class="default-logo">
+    <div v-if="!!src" class="image-container" v-bg-image="src"></div>
+    <div v-else class="default-logo">
       <svg>
         <use xlink:href="#icon_container-small"></use>
       </svg>

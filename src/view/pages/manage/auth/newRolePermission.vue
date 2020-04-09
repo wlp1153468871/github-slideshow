@@ -23,7 +23,6 @@
               data-vv-as="角色名"
             >
             </dao-input>
-
           </div>
         </dao-setting-item>
         <dao-setting-item>
@@ -71,10 +70,10 @@
             :indeterminate="isIndeterminate"
             v-model="checkAll"
             @change="handleCheckAllChange"
-          >全选
+            >全选
           </el-checkbox>
           <el-divider>
-            <div style="white-space: nowrap;max-width: 200px;overflow: hidden;">
+            <div style="white-space: nowrap; max-width: 200px; overflow: hidden;">
               <i class="el-icon-set-up"></i>
               {{ selectedNode && selectedNode.name }}
             </div>
@@ -84,40 +83,24 @@
           <p v-if="!actions.length">
             无权限动作
           </p>
-          <div
-            class="checkbox-container"
-            v-else
-          >
-            <div
-              class="m-xs"
-              v-for="action in actions"
-              :key="action.featureCode"
-            >
-
+          <div class="checkbox-container" v-else>
+            <div class="m-xs" v-for="action in actions" :key="action.featureCode">
               <el-checkbox
                 border
                 v-model="action.access"
                 :label="action.name"
                 @change="handleCheckedActionsChange"
-              >{{ action.name }}
+                >{{ action.name }}
               </el-checkbox>
             </div>
-
           </div>
-
         </div>
       </div>
     </div>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose"
-      >关闭</button>
-      <button
-        class="dao-btn blue"
-        @click="create"
-      >
+      <button class="dao-btn ghost" @click="onClose">关闭</button>
+      <button class="dao-btn blue" @click="create">
         创建
       </button>
     </div>
@@ -282,7 +265,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .auth-content {
   display: flex;
   height: 400px;

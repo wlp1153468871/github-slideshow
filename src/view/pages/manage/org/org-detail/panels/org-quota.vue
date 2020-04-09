@@ -3,7 +3,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <div class="quota-section">
-          <h4 class="quota-section-head">{{orgDescription}}总配额</h4>
+          <h4 class="quota-section-head">{{ orgDescription }}总配额</h4>
           <quota-cards
             :hard="OrgQuota.hard"
             :sub-hard="OrgQuota.subHard"
@@ -11,15 +11,13 @@
             :scope="`${orgDescription}配额`"
             :sub-scope="`${spaceDescription}配额总和`"
           >
-            <button
-              class="dao-btn blue"
-              slot="action"
-              @click="updateDialog.visible = true"
-            >更新配额</button>
+            <button class="dao-btn blue" slot="action" @click="updateDialog.visible = true">
+              更新配额
+            </button>
           </quota-cards>
         </div>
         <div class="quota-section">
-          <h4 class="quota-section-head"> {{orgDescription}}下{{spaceDescription}}配额 </h4>
+          <h4 class="quota-section-head">{{ orgDescription }}下{{ spaceDescription }}配额</h4>
           <space-quota-table
             :loading="tableLoading"
             @refresh="getOrgAndSpaceQuotas"

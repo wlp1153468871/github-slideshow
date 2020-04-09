@@ -6,7 +6,8 @@
       :state="job.status"
       :btn-show="job.cancelable"
       btn-text="取消任务"
-      @btn-event="cancelJob(job.id)">
+      @btn-event="cancelJob(job.id)"
+    >
       <span slot="right-title">{{ job.owner.name }} {{ job.name }}</span>
       <template slot="right-des">
         <span class="right-des">{{ job.started_at | date_from }}&nbsp;&nbsp;&nbsp;</span>

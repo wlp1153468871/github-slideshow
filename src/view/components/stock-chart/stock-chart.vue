@@ -46,15 +46,17 @@ export default {
       if (!(item.length === 0 || skip)) {
         this.$emit('clear');
         let i = 0;
-        item.forEach(e => e.forEach(p => {
-          if (i >= chartCount) return;
-          if (i !== chartCount - 1) {
-            this.chart.series[i].addPoint(p, false, true);
-          } else {
-            this.chart.series[i].addPoint(p, true, true);
-          }
-          i += 1;
-        }));
+        item.forEach(e =>
+          e.forEach(p => {
+            if (i >= chartCount) return;
+            if (i !== chartCount - 1) {
+              this.chart.series[i].addPoint(p, false, true);
+            } else {
+              this.chart.series[i].addPoint(p, true, true);
+            }
+            i += 1;
+          }),
+        );
       }
     },
   },
@@ -95,11 +97,13 @@ export default {
           gridLineWidth: 0,
           title: null,
           reversedStacks: false,
-          plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080',
-          }],
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: '#808080',
+            },
+          ],
           min: 0,
           endOnTick: false,
           minRange: 0.15,
@@ -143,7 +147,11 @@ export default {
       if (points === undefined) {
         return arr;
       } else if (flag) {
-        return this.reorgnizeArr(rest, false, points.map(e => [e]));
+        return this.reorgnizeArr(
+          rest,
+          false,
+          points.map(e => [e]),
+        );
       }
       points.forEach((e, i) => arr[i].push(e));
       return this.reorgnizeArr(rest, false, arr);

@@ -30,8 +30,7 @@ export default {
       dialogConfigs: {
         errorInfo: { visible: false },
       },
-      filterMethod: (data, filterKey) =>
-        data.metadata.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.metadata.name.toLowerCase().includes(filterKey),
     };
   },
 

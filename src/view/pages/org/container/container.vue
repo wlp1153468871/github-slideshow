@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="dao-tab dao-header-tab-nav nav-between"
-    style="width: 100%">
+  <div class="dao-tab dao-header-tab-nav nav-between" style="width: 100%;">
     <div class="dao-tab__header">
       <ul class="dao-tab-nav">
         <li class="dao-tab-nav-item">{{ org.name }}</li>
@@ -13,13 +11,13 @@
             :key="tab.name"
             class="dao-tab-nav-item"
             tag="li"
-            :to="tab.to">
+            :to="tab.to"
+          >
             {{ tab.name }}
           </router-link>
         </template>
       </ul>
-      <ul class="dao-tab-nav">
-      </ul>
+      <ul class="dao-tab-nav"></ul>
     </div>
     <div class="dao-tab__body" style="margin-top: 15px;">
       <router-view></router-view>
@@ -27,5 +25,4 @@
   </div>
 </template>
 
-<script src="./container.js">
-</script>
+<script src="./container.js"></script>

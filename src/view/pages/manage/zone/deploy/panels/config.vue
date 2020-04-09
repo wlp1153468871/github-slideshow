@@ -1,6 +1,5 @@
 <template>
   <div class="panel-config" id="zone-panel-config">
-
     <dao-setting-layout>
       <template #layout-title>基本信息</template>
       <dao-setting-section>
@@ -16,7 +15,8 @@
               :message="veeErrors.first('area')"
               :status="veeErrors.has('area') ? 'error' : ''"
               v-validate="'required|max:20'"
-              v-model="form.area_name">
+              v-model="form.area_name"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -34,7 +34,8 @@
               :message="veeErrors.first('env')"
               :status="veeErrors.has('env') ? 'error' : ''"
               v-validate="'required|max:20'"
-              v-model="form.env_name">
+              v-model="form.env_name"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -59,7 +60,8 @@
               v-validate="'required|url'"
               data-vv-scope="cluster"
               v-model="form.clusterUrl"
-              @change="resetClusterCheck">
+              @change="resetClusterCheck"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -80,7 +82,8 @@
               v-validate="'required|base_64'"
               data-vv-scope="cluster"
               v-model="form.certificateAuthorityData"
-              @change="resetClusterCheck">
+              @change="resetClusterCheck"
+            >
             </textarea>
           </div>
         </dao-setting-item>
@@ -89,36 +92,32 @@
       <template slot="footer">
         <div class="cluster-test">
           <div class="test-message">
-            <template v-if="status===TEST_STATUS.UNTEST">
+            <template v-if="status === TEST_STATUS.UNTEST">
               <svg class="icon icon-warning">
                 <use xlink:href="#icon_exclamation-bubble"></use>
               </svg>
               <span>集群地址暂未测试连接</span>
             </template>
-            <template v-if="status===TEST_STATUS.LOADING">
+            <template v-if="status === TEST_STATUS.LOADING">
               <svg class="icon loading-icon rotating">
                 <use xlink:href="#icon_circle-rotate"></use>
               </svg>
               <span>正在测试集群地址...</span>
             </template>
-            <template
-              v-if="status===TEST_STATUS.ACCESS">
+            <template v-if="status === TEST_STATUS.ACCESS">
               <svg class="icon success-icon">
                 <use xlink:href="#icon_checkmark"></use>
               </svg>
               <span>集群地址验证成功</span>
             </template>
-            <template
-              v-if="status===TEST_STATUS.ERROR">
+            <template v-if="status === TEST_STATUS.ERROR">
               <svg class="icon error-icon">
                 <use xlink:href="#icon_close-circled"></use>
               </svg>
               <span class="errorInfo">{{ errorInfo }}</span>
             </template>
           </div>
-          <button
-            class="dao-btn blue"
-            @click="testCluster">
+          <button class="dao-btn blue" @click="testCluster">
             测试
           </button>
         </div>
@@ -140,7 +139,8 @@
               :class="{ error: veeErrors.has('clientCertificateData') }"
               :message="veeErrors.first('clientCertificateData')"
               v-validate="'required|base_64'"
-              v-model="form.clientCertificateData">
+              v-model="form.clientCertificateData"
+            >
             </textarea>
           </div>
         </dao-setting-item>
@@ -158,7 +158,8 @@
               :message="veeErrors.first('clientKeyData')"
               :class="{ error: veeErrors.has('clientKeyData') }"
               v-validate="'required|base_64'"
-              v-model="form.clientKeyData">
+              v-model="form.clientKeyData"
+            >
             </textarea>
           </div>
         </dao-setting-item>
@@ -180,7 +181,8 @@
               :message="veeErrors.first('esUrl')"
               :status="veeErrors.has('esUrl') ? 'error' : ''"
               v-validate="'url'"
-              v-model="form.es.esUrl">
+              v-model="form.es.esUrl"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -197,8 +199,9 @@
               data-vv-as="ES Token"
               :message="veeErrors.first('esToken')"
               :class="{ error: veeErrors.has('esToken') }"
-              v-validate="{ required_if_not_empty : form.es.esUrl }"
-              v-model="form.es.token">
+              v-validate="{ required_if_not_empty: form.es.esUrl }"
+              v-model="form.es.token"
+            >
             </textarea>
           </div>
         </dao-setting-item>
@@ -212,9 +215,7 @@
           <div slot="label">类型</div>
           <div slot="content">
             <dao-radio-group>
-              <dao-radio
-                label="harbor"
-                v-model="form.registry.type">
+              <dao-radio label="harbor" v-model="form.registry.type">
                 Harbor
               </dao-radio>
             </dao-radio-group>
@@ -232,11 +233,12 @@
               name="registryUrl"
               data-vv-as="镜像仓库地址"
               :message="veeErrors.first('registry.registryUrl')"
-              :status="veeErrors.has('registry.registryUrl')? 'error' : ''"
+              :status="veeErrors.has('registry.registryUrl') ? 'error' : ''"
               data-vv-scope="registry"
               v-validate="'required|url'"
               v-model="form.registry.url"
-              @change="resetRegistryCheck">
+              @change="resetRegistryCheck"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -255,7 +257,8 @@
               data-vv-scope="registry"
               v-validate="'required|alpha_num'"
               v-model="form.registry.username"
-              @change="resetRegistryCheck">
+              @change="resetRegistryCheck"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -275,7 +278,8 @@
               data-vv-scope="registry"
               v-validate="'exclude_spaces|required|min:5'"
               v-model="form.registry.password"
-              @change="resetRegistryCheck">
+              @change="resetRegistryCheck"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -284,36 +288,32 @@
       <template slot="footer">
         <div class="cluster-test">
           <div class="test-message">
-            <template v-if="registryStatus===REGISTRY_STATUS.UNTEST">
+            <template v-if="registryStatus === REGISTRY_STATUS.UNTEST">
               <svg class="icon icon-warning">
                 <use xlink:href="#icon_exclamation-bubble"></use>
               </svg>
               <span>仓库地址暂未测试连接</span>
             </template>
-            <template v-if="registryStatus===REGISTRY_STATUS.TESTING">
+            <template v-if="registryStatus === REGISTRY_STATUS.TESTING">
               <svg class="icon loading-icon rotating">
                 <use xlink:href="#icon_circle-rotate"></use>
               </svg>
               <span>正在测试仓库地址...</span>
             </template>
-            <template
-              v-if="registryStatus===REGISTRY_STATUS.SUCCESS">
+            <template v-if="registryStatus === REGISTRY_STATUS.SUCCESS">
               <svg class="icon success-icon">
                 <use xlink:href="#icon_checkmark"></use>
               </svg>
               <span>仓库地址验证成功</span>
             </template>
-            <template
-              v-if="registryStatus===REGISTRY_STATUS.ERROR">
+            <template v-if="registryStatus === REGISTRY_STATUS.ERROR">
               <svg class="icon error-icon">
                 <use xlink:href="#icon_close-circled"></use>
               </svg>
               <span class="errorInfo">{{ registryErrorMessage }}</span>
             </template>
           </div>
-          <button
-            class="dao-btn blue"
-            @click="checkRegistryAccount">
+          <button class="dao-btn blue" @click="checkRegistryAccount">
             测试
           </button>
         </div>
@@ -329,14 +329,16 @@
               ref="EditableTable"
               :config="config"
               v-model="form.router_config"
-              @valid="validChange">
+              @valid="validChange"
+            >
               <template v-for="th in config.header">
                 <dao-tooltip
                   v-if="th === '唯一标识'"
                   :key="th"
                   :slot="th"
                   content="唯一标识必须默认包含inrouter"
-                  placement="top">
+                  placement="top"
+                >
                   <svg class="icon">
                     <use xlink:href="#icon_info-line"></use>
                   </svg>
@@ -362,7 +364,8 @@
               :message="veeErrors.first('grafanaUrl')"
               :status="veeErrors.has('grafanaUrl') ? 'error' : ''"
               v-validate="'required|url'"
-              v-model="form.grafana.url">
+              v-model="form.grafana.url"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -374,16 +377,11 @@
         <dao-setting-item>
           <template #label>是否开启</template>
           <template #content>
-            <dao-switch
-              size="sm"
-              v-model="form.is_alert">
-            </dao-switch>
+            <dao-switch size="sm" v-model="form.is_alert"> </dao-switch>
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
-
   </div>
 </template>
 
@@ -497,10 +495,12 @@ export default {
         return this.$validator.validateAll().then(valid => {
           this.$refs.EditableTable.validate();
           this.handleValidationErrorBasic();
-          resolve(this.routeValid &&
+          resolve(
+            this.routeValid &&
               valid &&
               this.status === TEST_STATUS.ACCESS &&
-              this.registryStatus === REGISTRY_STATUS.SUCCESS);
+              this.registryStatus === REGISTRY_STATUS.SUCCESS,
+          );
         });
       });
     },
@@ -584,12 +584,9 @@ export default {
 
     handleValidationErrorBasic() {
       this.$nextTick(() => {
-        const domRect = document
-          .querySelector('.error')
-          .getBoundingClientRect();
+        const domRect = document.querySelector('.error').getBoundingClientRect();
         if (!domRect) return;
-        const domRectDistance =
-          domRect.top + document.documentElement.scrollTop;
+        const domRectDistance = domRect.top + document.documentElement.scrollTop;
         window.scrollTo(0, domRectDistance - 175);
       });
     },
@@ -597,7 +594,7 @@ export default {
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 @import '~daoColor';
 #zone-panel-config {
   .dao-setting-layout-footer {

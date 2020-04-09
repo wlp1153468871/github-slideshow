@@ -1,24 +1,15 @@
 <template>
   <div>
-    <empty-state
-      title="容器组为空，无实时日志信息"
-      v-if="!pods.length">
-    </empty-state>
-    <pod-log
-      :pod="pod"
-      :pod-name="podName"
-      v-if="pods.length">
+    <empty-state title="容器组为空，无实时日志信息" v-if="!pods.length"> </empty-state>
+    <pod-log :pod="pod" :pod-name="podName" v-if="pods.length">
       <label>Pod: </label>
-      <el-select
-        size="small"
-        filterable
-        v-model="podName"
-        placeholder="Pod Name">
+      <el-select size="small" filterable v-model="podName" placeholder="Pod Name">
         <el-option
           v-for="pod in pods"
           :key="pod.metadata.name"
           :label="pod.metadata.name"
-          :value="pod.metadata.name">
+          :value="pod.metadata.name"
+        >
         </el-option>
       </el-select>
     </pod-log>

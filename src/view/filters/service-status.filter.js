@@ -1,10 +1,6 @@
 import { SERVICE_STATUS } from '@/core/constants/constants';
 
-const {
-  AVAILABLE,
-  UNAVAILABLE,
-  BROKERDELETED,
-} = SERVICE_STATUS; // INSTANCE_STATUS
+const { AVAILABLE, UNAVAILABLE, BROKERDELETED } = SERVICE_STATUS; // INSTANCE_STATUS
 
 export default function serviceStatus(status) {
   const statusMap = {

@@ -4,19 +4,14 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">选择服务</div>
         <div slot="content">
-          <dao-select
-            v-model="serviceId"
-            placeholder="选择服务"
-            no-data-text="没有符合条件的服务">
-            <dao-option
-              v-for="item in serviceOptions"
-              :key="item.key"
-              :value="item.id">
+          <dao-select v-model="serviceId" placeholder="选择服务" no-data-text="没有符合条件的服务">
+            <dao-option v-for="item in serviceOptions" :key="item.key" :value="item.id">
               {{ item.name }}（{{ item.zone.name }}）
             </dao-option>
           </dao-select>
@@ -24,14 +19,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        @click="onConfirm">
+      <button class="dao-btn blue" @click="onConfirm">
         确定
       </button>
     </div>
@@ -60,7 +51,9 @@ export default {
 
   computed: {
     serviceOptions() {
-      return differenceBy(this.services, this.usedServices, 'id').filter(service => service.available === 'available');
+      return differenceBy(this.services, this.usedServices, 'id').filter(
+        service => service.available === 'available',
+      );
     },
   },
 

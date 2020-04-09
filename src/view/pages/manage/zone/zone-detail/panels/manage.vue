@@ -2,19 +2,18 @@
   <div class="page-catalog">
     <template v-if="catalogAvailable">
       <div class="empty-state-message" v-if="zone.syncStatus === SYNC_STATUS.UNSYNC">
-        <img :src="emptyImg" alt="暂无服务同步"/>
+        <img :src="emptyImg" alt="暂无服务同步" />
         <p class="hint-title">暂无任何服务</p>
-        <p class="hint-desc">您刚初始化一个可用区, 点击 同步服务, 我们将自动获取该k8集群下的 所有 broker 及其 服务</p>
+        <p class="hint-desc">
+          您刚初始化一个可用区, 点击 同步服务, 我们将自动获取该k8集群下的 所有 broker 及其 服务
+        </p>
         <button class="dao-btn blue" @click="$emit('syncService', 'catalog')">
           <span class="text">同步服务目录</span>
         </button>
       </div>
 
       <div class="panel-manage" v-if="zone.syncStatus === SYNC_STATUS.SYNCED">
-        <div
-          class="panel-manage-header"
-          ref="panelHeader"
-          :class="{ 'active': headerActive }">
+        <div class="panel-manage-header" ref="panelHeader" :class="{ active: headerActive }">
           <button class="dao-btn blue has-icon" @click="addBroker">
             <svg class="icon">
               <use xlink:href="#icon_plus-circled"></use>
@@ -22,11 +21,7 @@
             <span class="text">添加 Broker</span>
           </button>
           <div>
-            <dao-input
-              v-model="keyword"
-              search
-              placeholder="请输入搜索内容">
-            </dao-input>
+            <dao-input v-model="keyword" search placeholder="请输入搜索内容"> </dao-input>
             <button class="dao-btn white refresh-btn" @click="$emit('refresh')">
               <svg class="icon">
                 <use xlink:href="#icon_update"></use>
@@ -38,17 +33,15 @@
           <div class="panel-manage-body">
             <div
               class="card-broker"
-              :class="{'active': value === broker}"
+              :class="{ active: value === broker }"
               v-for="(broker, index) in brokers"
               :key="broker.id"
-              @click="showDetails($event, broker)">
+              @click="showDetails($event, broker)"
+            >
               <div class="card-broker-title">
                 <div class="title-desc">
-                  <p>{{broker.name}}</p>
-                  <dao-dropdown
-                    trigger="hover"
-                    :append-to-body="false"
-                    placement="bottom-start">
+                  <p>{{ broker.name }}</p>
+                  <dao-dropdown trigger="hover" :append-to-body="false" placement="bottom-start">
                     <svg class="icon icon-more">
                       <use xlink:href="#icon_more"></use>
                     </svg>
@@ -59,14 +52,14 @@
                     </dao-dropdown-menu>
                   </dao-dropdown>
                 </div>
-                <p class="service-amount">共 {{broker.brokerServices.length}} 个服务</p>
+                <p class="service-amount">共 {{ broker.brokerServices.length }} 个服务</p>
               </div>
-              <time>{{broker.createdAt|unix_date}}</time>
+              <time>{{ broker.createdAt | unix_date }}</time>
             </div>
           </div>
         </div>
         <div class="empty-state-message" v-else>
-          <p class="hint-title">{{ keyword? '搜索结果为空' : '当前可用区没有broker接入' }}</p>
+          <p class="hint-title">{{ keyword ? '搜索结果为空' : '当前可用区没有broker接入' }}</p>
         </div>
       </div>
     </template>
@@ -77,30 +70,23 @@
     </div>
 
     <div class="fixed-bottom-panels">
-      <dao-panel
-        size="l"
-        :visible.sync="panelVisible">
+      <dao-panel size="l" :visible.sync="panelVisible">
         <dao-panel-item heading="Broker 详情">
           <button
             style="margin-bottom: 15px;"
             class="dao-btn blue"
-            @click="$emit('syncService', 'broker')">
+            @click="$emit('syncService', 'broker')"
+          >
             同步服务
           </button>
-          <dao-table-view
-            ref="tableView"
-            :rows="filteredService"
-            :config="tConfig">
+          <dao-table-view ref="tableView" :rows="filteredService" :config="tConfig">
           </dao-table-view>
         </dao-panel-item>
       </dao-panel>
     </div>
 
     <!--dialog start-->
-    <add-broker-dialog
-      :zone-id="zone.id"
-      :visible="dialogConfigs.addBroker.visible"
-      @close="close">
+    <add-broker-dialog :zone-id="zone.id" :visible="dialogConfigs.addBroker.visible" @close="close">
     </add-broker-dialog>
     <!--dialog end-->
   </div>
@@ -258,8 +244,7 @@ export default {
     },
 
     brokers() {
-      return this.zone.brokers.filter(broker =>
-        broker.name.includes(this.keyword));
+      return this.zone.brokers.filter(broker => broker.name.includes(this.keyword));
     },
 
     filteredService() {

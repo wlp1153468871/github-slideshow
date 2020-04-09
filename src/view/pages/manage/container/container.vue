@@ -6,5 +6,4 @@
   </div>
 </template>
 
-<script src="./container.js">
-</script>
+<script src="./container.js"></script>

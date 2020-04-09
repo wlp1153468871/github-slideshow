@@ -1,10 +1,6 @@
 import { first, find } from 'lodash';
 import ImageParser from '@/core/lib/docker-parse-image';
-import {
-  DEPLOYMENT_SERVICE,
-  VOLUME_SERVICE,
-  PLANKEY,
-} from '@/core/constants/constants';
+import { DEPLOYMENT_SERVICE, VOLUME_SERVICE, PLANKEY } from '@/core/constants/constants';
 
 const FIELDS = [
   'applicationid',

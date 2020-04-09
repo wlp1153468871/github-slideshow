@@ -10,15 +10,13 @@
       @change="handleChange"
       @blur="hanldeBlur"
       @keyup.enter="save"
-      @keyup.esc="cancel">
+      @keyup.esc="cancel"
+    >
       <template v-if="$slots.prepend" slot="prepend"><slot name="prepend"></slot></template>
       <template v-if="$slots.append" slot="append"><slot name="append"></slot></template>
       <template v-if="!$slots.prepend && !$slots.append" slot="button">
         <div class="edit-op">
-          <div
-            class="edit-op-toggle"
-            v-show="!isEdit"
-            @click="edit">
+          <div class="edit-op-toggle" v-show="!isEdit" @click="edit">
             <svg><use xlink:href="#icon_pencil"></use></svg><span class="text">更改</span>
           </div>
           <div class="edit-op-btn" v-show="isEdit">
@@ -29,10 +27,7 @@
       </template>
     </dao-input>
     <div v-if="$slots.prepend || $slots.append" class="edit-op">
-      <div
-        class="edit-op-toggle"
-        v-show="!isEdit"
-        @click="edit">
+      <div class="edit-op-toggle" v-show="!isEdit" @click="edit">
         <svg><use xlink:href="#icon_pencil"></use></svg><span class="text">更改</span>
       </div>
       <div class="edit-op-btn" v-show="isEdit">
@@ -157,7 +152,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~daoColor";
+@import '~daoColor';
 
 .dao-editable-input {
   display: inline-flex;

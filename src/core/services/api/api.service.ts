@@ -13,5 +13,3 @@ export default class APIService extends Rest {
     this.useInterceptor(interceptor || {});
   }
 }
-
-

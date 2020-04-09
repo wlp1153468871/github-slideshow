@@ -1,11 +1,7 @@
 <template>
   <div id="monitor">
     <template>
-      <el-form
-        :inline="true"
-        class="demo-form-inline form-panel"
-        :model="filters"
-      >
+      <el-form :inline="true" class="demo-form-inline form-panel" :model="filters">
         <el-form-item label="pod">
           <el-select
             filterable
@@ -20,7 +16,8 @@
               :value="pod"
               :label="pod.name"
               v-for="pod in pods"
-              :key="pod.uid"></el-option>
+              :key="pod.uid"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="">
@@ -38,16 +35,13 @@
             <el-option
               :value="t"
               :label="t"
-              v-for= "(t, index) in timeRanges"
-              :key="index"></el-option>
+              v-for="(t, index) in timeRanges"
+              :key="index"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
-      <iframe
-        class="monitor-frame"
-        :src="url"
-        frameborder="0">
-      </iframe>
+      <iframe class="monitor-frame" :src="url" frameborder="0"> </iframe>
     </template>
   </div>
 </template>
@@ -108,5 +102,5 @@ export default {
 };
 </script>
 <style lang="scss">
-  @import '@/view/pages/console/monitor/_monitor.scss';
+@import '@/view/pages/console/monitor/_monitor.scss';
 </style>

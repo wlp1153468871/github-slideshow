@@ -1,10 +1,5 @@
 function tableViewMixinFactory(...setting) {
-  const [
-    tTrackBy = 'id',
-    tLimit = 25,
-    tSortProp,
-    tSortOrder = 'asc',
-  ] = setting;
+  const [tTrackBy = 'id', tLimit = 25, tSortProp, tSortOrder = 'asc'] = setting;
 
   const data = {
     tConfig: {
@@ -38,9 +33,7 @@ function tableViewMixinFactory(...setting) {
       setTableProps(tCols = []) {
         this.tCols = tCols;
         const columns = tCols.map(item => {
-          const {
-            id, name, type = 'text', ...option
-          } = item;
+          const { id, name, type = 'text', ...option } = item;
           return {
             id,
             name,

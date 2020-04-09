@@ -37,32 +37,33 @@ export default {
       this.deploymentConfigBackUp = cloneDeep(this.deploymentConfig);
     },
     composeRows(data) {
-      return Object.keys(data)
-        .map(key => {
-          const [memMax, memLimit, cpuMax, cpuLimit] = data[key];
-          return {
-            name: key,
-            cpuMax,
-            cpuLimit,
-            memMax,
-            memLimit,
-          };
-        });
+      return Object.keys(data).map(key => {
+        const [memMax, memLimit, cpuMax, cpuLimit] = data[key];
+        return {
+          name: key,
+          cpuMax,
+          cpuLimit,
+          memMax,
+          memLimit,
+        };
+      });
     },
     searchDC(key) {
       if (key === '') {
         this.deploymentConfig = this.deploymentConfigBackUp;
       } else {
-        this.deploymentConfig = this.deploymentConfigBackUp
-          .filter(dc => dc.name.toLowerCase().indexOf(key.toLowerCase()) > -1);
+        this.deploymentConfig = this.deploymentConfigBackUp.filter(
+          dc => dc.name.toLowerCase().indexOf(key.toLowerCase()) > -1,
+        );
       }
     },
     searchD(key) {
       if (key === '') {
         this.deployment = this.deploymentBackUp;
       } else {
-        this.deployment = this.deploymentBackUp
-          .filter(dc => dc.name.toLowerCase().indexOf(key.toLowerCase()) > -1);
+        this.deployment = this.deploymentBackUp.filter(
+          dc => dc.name.toLowerCase().indexOf(key.toLowerCase()) > -1,
+        );
       }
     },
   },

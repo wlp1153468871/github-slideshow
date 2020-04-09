@@ -17,52 +17,41 @@
       </div>
     </div>
     <div v-if="serviceId">
-      <resource-header
-        :selfDefined="true"
-        :resource="resource">
-      </resource-header>
+      <resource-header :selfDefined="true" :resource="resource"> </resource-header>
       <div class="dao-view-main">
         <x-table
           :loading="loadings.instances"
           :data="rows"
           @refresh="loadInstances"
           :filter-method="filterMethod"
-          style="width: 100%"
+          style="width: 100%;"
         >
           <template #operation>
             <button
               class="dao-btn blue has-icon"
               :disabled="loadings.instances || isZoneSyncing || isDeleted"
               v-if="$can('serviceBroker.create', 'serviceBroker')"
-              @click="deployService">
+              @click="deployService"
+            >
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
               <span class="text">创建实例</span>
             </button>
           </template>
-          <el-table-column
-            prop="name"
-            sortable
-            label="实例">
+          <el-table-column prop="name" sortable label="实例">
             <template slot-scope="{ row: instances }">
               <a href="javascript:void(0)" @click="gotoDetail(instances)">
                 {{ instances.name }}
               </a>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="created_at"
-            label="创建时间"
-            :show-overflow-tooltip="true">
+          <el-table-column prop="created_at" label="创建时间" :show-overflow-tooltip="true">
             <template slot-scope="{ row: instances }">
               {{ instances.created_at | unix_date }}
             </template>
           </el-table-column>
-          <el-table-column
-            prop="owner"
-            label="创建者"
-            :show-overflow-tooltip="true">
+          <el-table-column prop="owner" label="创建者" :show-overflow-tooltip="true">
             <template slot-scope="{ row: instances }">
               {{ instances.owner.name }}
             </template>
@@ -72,17 +61,13 @@
               <x-table-status
                 :row="instances"
                 :other="other"
-                :text="renderStatus(instances.status)">
+                :text="renderStatus(instances.status)"
+              >
               </x-table-status>
             </template>
           </el-table-column>
-          <el-table-column
-            fixed="right"
-            label=""
-            align="center"
-            header-align="center"
-            width="80">
-            <template slot-scope="{ row: instances}">
+          <el-table-column fixed="right" label="" align="center" header-align="center" width="80">
+            <template slot-scope="{ row: instances }">
               <el-dropdown @command="handleOperate($event, instances)" trigger="click">
                 <span>
                   <svg class="icon dropdown-trigger">
@@ -95,7 +80,8 @@
                     v-if="$can('serviceBroker.delete', 'serviceBroker')"
                     :disabled="disableDelete(instances)"
                     command="delete"
-                    icon="el-icon-delete">
+                    icon="el-icon-delete"
+                  >
                     删除
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -109,10 +95,10 @@
     <error-info-dialog
       :text="selectedInstanceInfo"
       :visible="dialogConfigs.errorInfo.visible"
-      @close="dialogConfigs.errorInfo.visible = false">
+      @close="dialogConfigs.errorInfo.visible = false"
+    >
     </error-info-dialog>
   </div>
 </template>
 
-<script src="./instance-list.js">
-</script>
+<script src="./instance-list.js"></script>

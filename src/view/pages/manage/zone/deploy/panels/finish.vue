@@ -8,8 +8,7 @@
       </div>
       <div class="tip">
         <h3>已完成{{ operationLabel }}</h3>
-        <p>您可以在 <a @click="gotoDetail">可用区详情页面</a> 查看可用区相关信息
-        </p>
+        <p>您可以在 <a @click="gotoDetail">可用区详情页面</a> 查看可用区相关信息</p>
       </div>
     </div>
 

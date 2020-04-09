@@ -18,9 +18,7 @@ export default {
         data.short_description.toLowerCase().includes(filterKey),
       other: {
         status: (_, item) => {
-          return item.available === SERVICE_STATUS.AVAILABLE
-            ? 'SUCCESS'
-            : 'STOPED';
+          return item.available === SERVICE_STATUS.AVAILABLE ? 'SUCCESS' : 'STOPED';
         },
       },
     };

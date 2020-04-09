@@ -11,12 +11,14 @@
             :data="rows"
             :filter-method="filterMethod"
             :loading="loadings.table"
-            @refresh="loadInstances">
+            @refresh="loadInstances"
+          >
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
                 v-if="$can('configMap.create', 'configMap')"
-                @click="createConfigMap">
+                @click="createConfigMap"
+              >
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>
                 </svg>
@@ -24,22 +26,13 @@
               </button>
             </template>
 
-            <el-table-column
-              label="名称"
-              sortable
-              :sort-method="sortName"
-              min-width="150">
+            <el-table-column label="名称" sortable :sort-method="sortName" min-width="150">
               <template slot-scope="{ row: configMap }">
-                <el-table-name-cell
-                  :resource="configMap"
-                  routerName="resource.configmaps.detail">
+                <el-table-name-cell :resource="configMap" routerName="resource.configmaps.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="name"
-              label="标签"
-              min-width="120">
+            <el-table-column prop="name" label="标签" min-width="120">
               <template slot-scope="{ row: configMap }">
                 {{ humanizeLabel(configMap) }}
               </template>
@@ -49,7 +42,8 @@
               label="创建时间"
               sortable
               :formatter="dateFormat"
-              width="200">
+              width="200"
+            >
             </el-table-column>
 
             <el-table-column
@@ -57,9 +51,9 @@
               label="操作"
               align="center"
               header-align="center"
-              width="80">
-              <template slot-scope="{ row: configMap}">
-
+              width="80"
+            >
+              <template slot-scope="{ row: configMap }">
                 <el-dropdown @command="handleOperate($event, configMap)">
                   <span>
                     <svg class="icon dropdown-trigger">
@@ -71,7 +65,8 @@
                     <el-dropdown-item
                       command="edit"
                       :disabled="disableDelete(configMap)"
-                      icon="el-icon-edit-outline">
+                      icon="el-icon-edit-outline"
+                    >
                       编辑
                     </el-dropdown-item>
                     <el-dropdown-item
@@ -79,16 +74,15 @@
                       v-if="$can('configMap.delete', 'configMap')"
                       :disabled="disableDelete(configMap)"
                       command="delete"
-                      icon="el-icon-delete">
+                      icon="el-icon-delete"
+                    >
                       删除
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-
               </template>
             </el-table-column>
           </x-table>
-
         </div>
       </div>
     </template>
@@ -96,10 +90,10 @@
     <error-info-dialog
       :text="selectedInstanceInfo"
       :visible="dialogConfigs.errorInfo.visible"
-      @close="dialogConfigs.errorInfo.visible = false">
+      @close="dialogConfigs.errorInfo.visible = false"
+    >
     </error-info-dialog>
   </div>
 </template>
 
-<script src="./_config-map-list.js">
-</script>
+<script src="./_config-map-list.js"></script>

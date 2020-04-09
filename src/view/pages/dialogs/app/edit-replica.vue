@@ -6,7 +6,8 @@
     @before-open="onBeforeOpen"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <div class="left">
       <dao-setting-section>
         <dao-setting-item>
@@ -21,7 +22,8 @@
               placeholder="输入期望的实例个数（大于等于1）"
               unit="个"
               required
-              v-model="editReplica">
+              v-model="editReplica"
+            >
             </dao-numeric-input>
           </div>
         </dao-setting-item>
@@ -41,14 +43,12 @@
       <div class="replica-price-bottom">
         <p>
           <span class="replica-price-label">应补差价: </span>
-          <span class="replica-price-content">{{ newPrice - prePrice | fen_2_yuan }}元</span>
+          <span class="replica-price-content">{{ (newPrice - prePrice) | fen_2_yuan }}元</span>
         </p>
       </div>
     </div>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
       <save-button
@@ -56,7 +56,8 @@
         text="确定"
         :disabled="!isValidForm"
         :saving="loadings.updating"
-        @click="onConfirm">
+        @click="onConfirm"
+      >
       </save-button>
     </div>
   </dao-dialog>
@@ -130,9 +131,7 @@ export default {
     },
 
     onConfirm() {
-      const params = [
-        { id: 'clustersize', value: parseInt(this.editReplica, 10) },
-      ];
+      const params = [{ id: 'clustersize', value: parseInt(this.editReplica, 10) }];
       const updated = { params };
       if (this.chargingEnable) {
         updated.charging_rule_detail_ids = this.chargingRuleDetailId;

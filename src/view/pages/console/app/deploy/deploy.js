@@ -72,11 +72,7 @@ export default {
 
       this.instanceError = {};
       this.loadings.purchasing = true;
-      return ApplicationService.createInstance(
-        this.space.id,
-        this.zone.id,
-        instance,
-      )
+      return ApplicationService.createInstance(this.space.id, this.zone.id, instance)
         .then(res => {
           this.instance = res;
         })
@@ -137,10 +133,7 @@ export default {
       // 地域与环境
 
       // 名称/版本
-      params.push(
-        { id: 'name', value: name },
-        { id: 'version', value: version },
-      );
+      params.push({ id: 'name', value: name }, { id: 'version', value: version });
 
       // 规格
       params.push({ id: 'plan', value: this.parsePlanParams() });
@@ -187,10 +180,7 @@ export default {
 
       // 环境配置: 环境变量, 应用完整 Config Map
       const parsedEnvs = envs.filter(x => x.name !== '');
-      params.push(
-        { id: 'envs', value: parsedEnvs },
-        { id: 'configFiles', value: configFiles },
-      );
+      params.push({ id: 'envs', value: parsedEnvs }, { id: 'configFiles', value: configFiles });
 
       // 挂载 Config Map
 
@@ -202,21 +192,21 @@ export default {
 
       //  监控
       params.push({
-        id: 'monitor', value: monitor,
+        id: 'monitor',
+        value: monitor,
       });
 
       // hpa
       params.push({
-        id: 'hpa', value: hpa,
+        id: 'hpa',
+        value: hpa,
       });
 
       return params;
     },
 
     parseIngress() {
-      const {
-        name, hostname, version, port, path,
-      } = this.form;
+      const { name, hostname, version, port, path } = this.form;
       const namespace = this.space.short_name;
       const inrouter = find(this.zone.router_config, { key: INROUTER_KEY });
       const inrouterDomain = getValue(inrouter, 'domain');
@@ -252,9 +242,7 @@ export default {
 
     /* eslint-enable function-paren-newline */
     parseDeploymentParams() {
-      const {
-        name, hostname, version, path,
-      } = this.form;
+      const { name, hostname, version, path } = this.form;
       const namespace = this.space.short_name;
       const inrouter = find(this.zone.router_config, { key: INROUTER_KEY });
       const inrouterDomain = getValue(inrouter, 'domain');

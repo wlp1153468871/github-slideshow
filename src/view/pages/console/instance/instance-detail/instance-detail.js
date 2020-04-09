@@ -108,8 +108,7 @@ export default {
 
     showOperations() {
       return (
-        (this.instance.status === INSTANCE_STATUS.RUNNING &&
-          this.dashboards.length) ||
+        (this.instance.status === INSTANCE_STATUS.RUNNING && this.dashboards.length) ||
         this.canDelete
       );
     },
@@ -152,10 +151,7 @@ export default {
         .then(instance => {
           this.instance = instance;
           const { information = [], instance_metadata } = this.instance;
-          const dashboardUrl = getValue(
-            instance_metadata,
-            'status.dashboardURL',
-          );
+          const dashboardUrl = getValue(instance_metadata, 'status.dashboardURL');
           const dashboards = [];
           if (dashboardUrl) {
             dashboards.push({
@@ -201,12 +197,7 @@ export default {
 
     // TODO: fix bullet…
     getBasicInfos(instance) {
-      const {
-        owner = {},
-        organizationName,
-        spaceName,
-        zoneName,
-      } = instance;
+      const { owner = {}, organizationName, spaceName, zoneName } = instance;
       const unixDate = Vue.filter('unix_date');
       return [
         { name: '租户 / 项目组', value: `${organizationName} / ${spaceName}` },

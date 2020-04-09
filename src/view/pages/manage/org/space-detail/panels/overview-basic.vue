@@ -12,7 +12,8 @@
             data-vv-as="项目组名称"
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
-            v-model="name">
+            v-model="name"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -21,11 +22,7 @@
       <dao-setting-item>
         <div slot="label">唯一标识</div>
         <div slot="content">
-          <dao-input
-            type="text"
-            v-model="short_name"
-            placeholder="shortname"
-            :disabled="true">
+          <dao-input type="text" v-model="short_name" placeholder="shortname" :disabled="true">
           </dao-input>
         </div>
       </dao-setting-item>
@@ -37,12 +34,13 @@
           <textarea
             class="dao-control"
             :class="{
-              'error': veeErrors.first('description'),
+              error: veeErrors.first('description'),
             }"
             v-model="description"
             name="description"
             rows="3"
-            v-validate="'max:80'">
+            v-validate="'max:80'"
+          >
           </textarea>
           <p class="text-danger" v-show="veeErrors.first('description')">
             项目组备注不能超过80字
@@ -51,10 +49,7 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="save()">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="save()">
         保存
       </button>
     </div>
@@ -93,10 +88,7 @@ export default {
   },
   methods: {
     save() {
-      const {
-        name,
-        description,
-      } = this;
+      const { name, description } = this;
 
       this.$emit('save', {
         name,

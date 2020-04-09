@@ -30,7 +30,11 @@ export default {
     async initMetrics() {
       try {
         this.loading = true;
-        const { container, app: { jmx }, service } = await AlarmService.getAllAlarmMetircs();
+        const {
+          container,
+          app: { jmx },
+          service,
+        } = await AlarmService.getAllAlarmMetircs();
         this.containerMetrics = container;
         this.appMetrics = jmx;
         this.serviceMetricsFull = service;

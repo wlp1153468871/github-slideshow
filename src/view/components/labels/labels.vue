@@ -1,22 +1,15 @@
 <template>
   <div :class="['labels', highLight && 'high-light']" v-if="hasLabels">
     <template v-for="(labelValue, labelKey, index) in labels">
-      <div
-        :key="index"
-        class="label-pair"
-        v-if="!limit || index < limit">
-        <span class="label truncate ">{{labelKey}}</span>
-        <span class="label truncate">{{labelValue}}</span>
+      <div :key="index" class="label-pair" v-if="!limit || index < limit">
+        <span class="label truncate">{{ labelKey }}</span>
+        <span class="label truncate">{{ labelValue }}</span>
       </div>
     </template>
-    <button
-      class="dao-btn blue mini more-labels"
-      @click="limit = null"
-      v-show="showMore">
+    <button class="dao-btn blue mini more-labels" @click="limit = null" v-show="showMore">
       更多...
     </button>
   </div>
-
 </template>
 
 <script>
@@ -92,7 +85,7 @@ export default {
     font-size: 12px;
   }
 
-  &.high-light .label:nth-of-type(1){
+  &.high-light .label:nth-of-type(1) {
     background-color: #3890ff;
     color: white;
   }

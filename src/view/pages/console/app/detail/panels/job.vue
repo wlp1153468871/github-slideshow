@@ -8,13 +8,14 @@
         :btn-show="job.status === 'failed'"
         :is-error="job.status === 'failed'"
         btn-text="查看详情  >>"
-        @btn-event="openErrorInfoDialog(job)">
+        @btn-event="openErrorInfoDialog(job)"
+      >
         <span @click="openErrorInfoDialog(job)" slot="left">{{ job.status | ops_status }}</span>
         <span slot="right-title">{{ job.name }}</span>
         <template slot="right-des">
           <span>操作人：{{ job.owner.name }}&nbsp;&nbsp;&nbsp;</span>
           <span>{{ job.started_at | date_from }}&nbsp;&nbsp;&nbsp;</span>
-          <span v-if="(job.ended_at - job.started_at) > 1">
+          <span v-if="job.ended_at - job.started_at > 1">
             耗时 {{ job.ended_at | date_from(job.started_at) }}
           </span>
           <span v-else>耗时 1 秒内</span>
@@ -25,7 +26,8 @@
     <error-info-dialog
       :visible="dialogConfigs.errorInfo.visible"
       :text="selectedInstanceInfo"
-      @close="dialogConfigs.errorInfo.visible = false">
+      @close="dialogConfigs.errorInfo.visible = false"
+    >
     </error-info-dialog>
   </div>
 </template>

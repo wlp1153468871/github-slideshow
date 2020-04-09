@@ -19,29 +19,17 @@
             v-model="zoneIds"
             placeholder="请输入关键词"
           >
-            <el-option
-              v-for="zone in zones"
-              :key="zone.id"
-              :label="zone.name"
-              :value="zone.id"
-            >
+            <el-option v-for="zone in zones" :key="zone.id" :label="zone.name" :value="zone.id">
             </el-option>
           </el-select>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose"
-      >
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!zoneIds.length"
-        @click="onConfirm"
-      >
+      <button class="dao-btn blue" :disabled="!zoneIds.length" @click="onConfirm">
         确定
       </button>
     </div>

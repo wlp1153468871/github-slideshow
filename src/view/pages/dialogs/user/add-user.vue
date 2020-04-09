@@ -1,6 +1,6 @@
 <template>
   <dao-dialog
-    :header="isUpdate? '更新用户权限' : '添加用户'"
+    :header="isUpdate ? '更新用户权限' : '添加用户'"
     :visible.sync="isShow"
     @before-open="init"
     @closed="closed"
@@ -58,11 +58,12 @@
       </dao-setting-item>
       <template>
         <el-alert
-          style="margin-top: 12px"
+          style="margin-top: 12px;"
           v-if="model.username === userName && spaceMenus.some(m => m === 'space.base')"
           title="请注意！您是项目组管理员，请谨慎操作防止降级。"
           type="warning"
-          show-icon>
+          show-icon
+        >
         </el-alert>
       </template>
     </dao-setting-section>
@@ -71,18 +72,14 @@
         <template #label>可用区权限</template>
         <template #content>
           <div class="dao-setting-patch role">
-            <div
-              class="sub-setting-layout role"
-              v-for="(zone, index) in zones"
-              :key="index"
-            >
+            <div class="sub-setting-layout role" v-for="(zone, index) in zones" :key="index">
               <div class="sub-setting-section">
                 <div class="sub-setting-item">
-                  <p style="font-size: 13px">可用区</p>
+                  <p style="font-size: 13px;">可用区</p>
                   <div class="zone">{{ zone.name }}</div>
                 </div>
                 <div class="sub-setting-item">
-                  <p style="font-size: 13px">权限</p>
+                  <p style="font-size: 13px;">权限</p>
                   <dao-select
                     placeholder="请选择"
                     name="zone_space_roles"
@@ -105,17 +102,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose"
-      >
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!valid"
-        @click="onConfirm"
-      >
+      <button class="dao-btn blue" :disabled="!valid" @click="onConfirm">
         确定
       </button>
     </div>

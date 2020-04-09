@@ -1,28 +1,15 @@
 <template>
   <div class="resource-header">
     <div class="resource-info">
-      <service-logo
-        v-if="selfDefined"
-        :src="resource.logo">
-      </service-logo>
-      <svg
-        class="logo"
-        v-else>
+      <service-logo v-if="selfDefined" :src="resource.logo"> </service-logo>
+      <svg class="logo" v-else>
         <use :xlink:href="resource.logo"></use>
       </svg>
       <div class="resource-status">
         <div class="name-time">
           <breadcrumb :links="resource.links"></breadcrumb>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="查看帮助文档"
-            placement="right">
-            <a
-              target="_blank"
-              v-if="helpUrl"
-              :href="helpUrl"
-              class="help-link">
+          <el-tooltip class="item" effect="dark" content="查看帮助文档" placement="right">
+            <a target="_blank" v-if="helpUrl" :href="helpUrl" class="help-link">
               <svg class="icon">
                 <use xlink:href="#icon_question"></use>
               </svg>
@@ -138,7 +125,7 @@ export default {
 
   .description {
     font-size: 20px;
-    color: rgba(0,0,0,0.85);
+    color: rgba(0, 0, 0, 0.85);
     line-height: 28px;
     font-weight: bold;
   }

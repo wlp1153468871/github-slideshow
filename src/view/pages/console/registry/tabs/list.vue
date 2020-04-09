@@ -3,17 +3,9 @@
     <div class="table-toolbar">
       <div class="table-toolbar-right">
         <div>
-          <dao-input
-            search
-            placeholder="搜索镜像"
-            @change="updateKey"
-            v-model="query.q"
-          >
+          <dao-input search placeholder="搜索镜像" @change="updateKey" v-model="query.q">
           </dao-input>
-          <button
-            class="dao-btn"
-            style="margin-left: 10px;"
-            @click="getImages">
+          <button class="dao-btn" style="margin-left: 10px;" @click="getImages">
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
@@ -22,44 +14,22 @@
       </div>
     </div>
 
-    <el-table
-      :data="images"
-      v-loading="imageTableLoading"
-      @expand-change="onExpandChange">
+    <el-table :data="images" v-loading="imageTableLoading" @expand-change="onExpandChange">
       <el-table-column type="expand">
         <template #default="{ row: repository }">
-          <el-table
-            v-loading="repository.tagLoading"
-            :data="repository.tags"
-            size="mini">
-            <el-table-column
-              prop="name"
-              label="标签"
-              width="180">
+          <el-table v-loading="repository.tagLoading" :data="repository.tags" size="mini">
+            <el-table-column prop="name" label="标签" width="180">
               <template #default="{ row: tag }">
-                <router-link
-                  :to="scanDetailRouter(repository.name, tag)">
-                  {{tag.name}}
+                <router-link :to="scanDetailRouter(repository.name, tag)">
+                  {{ tag.name }}
                 </router-link>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="author"
-              label="作者"
-              width="180">
+            <el-table-column prop="author" label="作者" width="180"> </el-table-column>
+            <el-table-column prop="created" label="创建时间" :formatter="formatCreationTime">
             </el-table-column>
-            <el-table-column
-              prop="created"
-              label="创建时间"
-              :formatter="formatCreationTime">
-            </el-table-column>
-            <el-table-column
-              prop="docker_version"
-              label="Docker版本">
-            </el-table-column>
-            <el-table-column
-              prop="scan_overview"
-              label="漏洞扫描">
+            <el-table-column prop="docker_version" label="Docker版本"> </el-table-column>
+            <el-table-column prop="scan_overview" label="漏洞扫描">
               <template #default="{ row: tag }">
                 <scan-status :status="tag.scan_overview | scan_overview_status"></scan-status>
               </template>
@@ -80,32 +50,14 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="名称"
-        sortable>
-      </el-table-column>
-      <el-table-column
-        prop="tags_count"
-        label="标签数">
-      </el-table-column>
-      <el-table-column
-        prop="pull_count"
-        sortable
-        label="下载数">
-      </el-table-column>
-      <el-table-column
-        sortable
-        prop="update_time"
-        :formatter="formatUpdateTime"
-        label="更新时间">
+      <el-table-column prop="name" label="名称" sortable> </el-table-column>
+      <el-table-column prop="tags_count" label="标签数"> </el-table-column>
+      <el-table-column prop="pull_count" sortable label="下载数"> </el-table-column>
+      <el-table-column sortable prop="update_time" :formatter="formatUpdateTime" label="更新时间">
       </el-table-column>
       <el-table-column label="操作" v-if="$can('image.deploy', 'image.center')">
         <template slot-scope="scope">
-          <button
-            class="dao-btn btn-sm mini blue"
-            @click="deploy(scope.row)">部署应用
-          </button>
+          <button class="dao-btn btn-sm mini blue" @click="deploy(scope.row)">部署应用</button>
         </template>
       </el-table-column>
     </el-table>
@@ -118,7 +70,8 @@
       :page-sizes="[10, 50, 100]"
       :page-size.sync="query.page_size"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="totalCount">
+      :total="totalCount"
+    >
     </el-pagination>
   </div>
 </template>

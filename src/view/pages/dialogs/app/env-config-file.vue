@@ -4,7 +4,8 @@
     header="环境配置 | 引用完整 Config Map"
     :visible.sync="isShow"
     @before-open="init"
-    @closed="onClosed">
+    @closed="onClosed"
+  >
     <dao-setting-layout>
       <dao-setting-section>
         <dao-setting-item>
@@ -28,8 +29,9 @@
                 v-model="formModel.type"
                 :label="item.value"
                 v-for="(item, index) in types"
-                :key="index">
-                {{item.label}}
+                :key="index"
+              >
+                {{ item.label }}
               </dao-radio>
             </dao-radio-group>
           </div>
@@ -40,15 +42,13 @@
         <dao-setting-item>
           <div slot="label">文件名称</div>
           <div slot="content">
-            <dao-select
-              with-search
-              v-model="formModel.name"
-              placeholder="name">
+            <dao-select with-search v-model="formModel.name" placeholder="name">
               <dao-option
                 v-for="(item, index) in files"
                 :key="index"
                 :value="item.metadata.name"
-                :label="item.metadata.name">
+                :label="item.metadata.name"
+              >
               </dao-option>
             </dao-select>
           </div>
@@ -67,7 +67,8 @@
               :message="veeErrors.first('value')"
               :status="veeErrors.has('value') ? 'error' : ''"
               v-validate="'env_variables_name'"
-              data-vv-as="前缀">
+              data-vv-as="前缀"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -75,15 +76,10 @@
     </dao-setting-layout>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!valid"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!valid" @click="onConfirm">
         添加
       </button>
     </div>

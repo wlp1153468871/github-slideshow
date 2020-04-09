@@ -89,8 +89,11 @@ export default {
       const receivers = this.rule.emails.map(r => r.email);
       const receiversPre = await this.composeReceiverInfo();
       if (typeof receiversPre === 'boolean' && !receiversPre.status) {
-        this.email.receivers = this.rule.emails
-          .map(({ user: username, email }) => ({ email, username, choose: true }));
+        this.email.receivers = this.rule.emails.map(({ user: username, email }) => ({
+          email,
+          username,
+          choose: true,
+        }));
       } else {
         this.email.receivers = receiversPre.map(r => {
           const choose = receivers.includes(r.email);
@@ -110,7 +113,9 @@ export default {
       this.updateChangeView(this.detail);
     },
     async initScope() {
-      const { scope: [scopeEx] } = this.rule;
+      const {
+        scope: [scopeEx],
+      } = this.rule;
       const params = this.isService
         ? { serviceId: this.getServiceId(scopeEx) }
         : { deployType: MONITOR_KIND_MAP[scopeEx.type] };
@@ -141,9 +146,9 @@ export default {
     // all depend on the [rule] data
     getServiceId(scope) {
       const { services } = this.$store.state;
-      const { services: [{ id }] } = services
-        .filter(s => s.monitor)
-        .find(({ services: [s] }) => s.name === scope.type);
+      const {
+        services: [{ id }],
+      } = services.filter(s => s.monitor).find(({ services: [s] }) => s.name === scope.type);
       return id;
     },
     getMetric({ metricId }) {
@@ -201,10 +206,12 @@ export default {
       }
     },
     async onRemove() {
-      if (await this.$tada.confirm({
-        title: '删除规则',
-        text: `您确定要删除 规则 ${this.rule.name} 吗？`,
-      })) {
+      if (
+        await this.$tada.confirm({
+          title: '删除规则',
+          text: `您确定要删除 规则 ${this.rule.name} 吗？`,
+        })
+      ) {
         try {
           this.loadings.submitRemove = true;
           await AlarmService.deleteAlarmRules(this.rule.id);

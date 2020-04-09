@@ -1,4 +1,4 @@
-@import "~daoColor";
+@import '~daoColor';
 
 .g-nav {
   position: fixed;
@@ -95,7 +95,7 @@
 .global-search {
   width: 220px;
   margin-right: 50px;
-  transition: width .2s;
+  transition: width 0.2s;
 
   &-input {
     width: 100%;
@@ -134,7 +134,7 @@
   .instance-create-time {
     float: right;
     margin-left: 10px;
-    color: rgba(0, 0, 0, .5);
+    color: rgba(0, 0, 0, 0.5);
     font-size: 12px;
     vertical-align: bottom;
   }
@@ -186,9 +186,9 @@
     height: 0;
     color: #fff;
     background: transparent;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .16);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.16);
     border-radius: 4px;
-    transition: opacity .16s ease-in-out, width .16s ease-in-out;
+    transition: opacity 0.16s ease-in-out, width 0.16s ease-in-out;
     opacity: 0;
     visibility: hidden;
 
@@ -232,7 +232,7 @@
     //background-image: linear-gradient(-180deg, #55aeff 0%, #188cf7 100%);
     //background-color: #1890ff;
     color: #fff;
-    background: rgba(0, 0, 0, .8);
+    background: rgba(0, 0, 0, 0.8);
 
     li {
       height: 50px;
@@ -292,7 +292,7 @@
 
   .operation-line {
     padding: 6px 10px;
-    color: rgba(0, 0, 0, .4);
+    color: rgba(0, 0, 0, 0.4);
     line-height: 22px;
 
     p {

@@ -17,13 +17,12 @@
           style="margin: 15px 0;"
           @click="onSave"
           :disabled="!changed"
-          v-if="editable">保存
+          v-if="editable"
+        >
+          保存
         </button>
-        <button
-          class="dao-btn ghost"
-          v-show="changed"
-          @click="onReset"
-          v-if="editable">重置
+        <button class="dao-btn ghost" v-show="changed" @click="onReset" v-if="editable">
+          重置
         </button>
       </template>
     </div>

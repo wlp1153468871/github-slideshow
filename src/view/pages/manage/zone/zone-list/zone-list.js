@@ -17,8 +17,7 @@ export default {
         zone: false,
       },
       isCreating: false,
-      filterMethod: (data, filterKey) =>
-        data.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.name.toLowerCase().includes(filterKey),
       other: {
         status: (_, item) => (!item.available ? 'STOPED' : 'SUCCESS'),
       },

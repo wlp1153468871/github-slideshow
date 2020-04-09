@@ -5,7 +5,8 @@
         class="setting-btn-wrapper"
         trigger="click"
         :append-to-body="true"
-        placement="bottom-end">
+        placement="bottom-end"
+      >
         <div class="dao-btn has-icon ghost setting-btn">
           <svg class="icon"><use xlink:href="#icon_setting"></use></svg>
         </div>
@@ -16,30 +17,18 @@
       </dao-dropdown>
       <div class="service-spec-grid-name">{{ plan.name }}</div>
       <div class="service-spec-grid-desc">{{ plan.description }}</div>
-      <div
-        class="service-spec-grid-quota"
-        v-for="quota in plan.quota_requires"
-        :key="quota.name">
-        {{ quota.require }} {{ quota.unit }}  {{ quota.name }}
+      <div class="service-spec-grid-quota" v-for="quota in plan.quota_requires" :key="quota.name">
+        {{ quota.require }} {{ quota.unit }} {{ quota.name }}
       </div>
-      <div
-        class="service-spec-grid-bullet"
-        v-for="bullet in plan.bullets"
-        :key="bullet">
+      <div class="service-spec-grid-bullet" v-for="bullet in plan.bullets" :key="bullet">
         {{ bullet }}
       </div>
     </div>
     <div class="use-btn-wrapper">
-      <div
-        class="dao-btn ghost"
-        v-if="plan.available"
-        @click="disablePlan()">
+      <div class="dao-btn ghost" v-if="plan.available" @click="disablePlan()">
         立即下架
       </div>
-      <div
-        class="dao-btn blue"
-        v-if="!plan.available"
-        @click="enablePlan()">
+      <div class="dao-btn blue" v-if="!plan.available" @click="enablePlan()">
         立即上架
       </div>
     </div>
@@ -73,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~daoColor";
+@import '~daoColor';
 $side-padding: 8px;
 
 .service-spec {
@@ -83,7 +72,7 @@ $side-padding: 8px;
     min-width: calc(100% / 3);
     max-width: calc(100% / 3);
     padding: 0 $side-padding 20px;
-    &:nth-child(3n+1) {
+    &:nth-child(3n + 1) {
       padding-right: $side-padding * 2;
       padding-left: 0;
     }
@@ -116,7 +105,7 @@ $side-padding: 8px;
         background-color: $white;
         .dao-btn {
           width: 100%;
-          box-shadow: 2px 0 4px rgba(204, 209, 217, .3);
+          box-shadow: 2px 0 4px rgba(204, 209, 217, 0.3);
           border-top-right-radius: 0;
           border-top-left-radius: 0;
           &.ghost {

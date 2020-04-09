@@ -4,7 +4,7 @@
     <template v-else>
       <resource-header :resource="resource">
         <template #status v-if="status === 'approving'">
-          <labels highLight :labels="{'状态': '审批中'}"></labels>
+          <labels highLight :labels="{ 状态: '审批中' }"></labels>
         </template>
         <template #labels>
           <labels :labels="labels"></labels>
@@ -12,11 +12,13 @@
 
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('statefulSet.update', 'statefulSet') ||
-              $can('statefulSet.delete', 'statefulSet')"
+            v-if="
+              $can('statefulSet.update', 'statefulSet') || $can('statefulSet.delete', 'statefulSet')
+            "
             trigger="click"
             :append-to-body="true"
-            placement="bottom-end">
+            placement="bottom-end"
+          >
             <button class="dao-btn ghost has-icon">
               操作
               <svg class="icon">
@@ -27,13 +29,15 @@
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
                 v-if="$can('statefulSet.update', 'statefulSet')"
-                @click="onUpdateClick">
+                @click="onUpdateClick"
+              >
                 <span>更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
                 v-if="$can('statefulSet.delete', 'statefulSet')"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
-                @click="onDeleteClick">
+                @click="onDeleteClick"
+              >
                 <span>删除</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
@@ -41,7 +45,8 @@
           <button
             class="dao-btn csp-table-update-btn"
             @click="onRefresh"
-            style="margin-left: 10px">
+            style="margin-left: 10px;"
+          >
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
@@ -50,79 +55,54 @@
       </resource-header>
 
       <el-tabs v-model="tab" @tab-click="handleTabClick">
-        <el-tab-pane
-          :label="TABS.INFO.label"
-          :name="TABS.INFO.name"
-          lazy>
+        <el-tab-pane :label="TABS.INFO.label" :name="TABS.INFO.name" lazy>
           <info-panel
             :images-by-docker-reference="imagesByDockerReference"
             :projectName="name"
             :statefulset="statefulset"
-            @extend="onExtend">
+            @extend="onExtend"
+          >
           </info-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.PODS.label"
-          :name="TABS.PODS.name"
-          lazy>
-          <pods-panel
-            :spaceId="space.id"
-            :zone="zone.id"
-            :name="this.name"></pods-panel>
+        <el-tab-pane :label="TABS.PODS.label" :name="TABS.PODS.name" lazy>
+          <pods-panel :spaceId="space.id" :zone="zone.id" :name="this.name"></pods-panel>
         </el-tab-pane>
         <!-- 实时日志 -->
-        <el-tab-pane
-          lazy
-          :label="TABS.LOG.label"
-          :name="TABS.LOG.name">
-          <log-panel
-            v-if="tab === TABS.LOG.name"
-            type="statefulSet">
-          </log-panel>
+        <el-tab-pane lazy :label="TABS.LOG.label" :name="TABS.LOG.name">
+          <log-panel v-if="tab === TABS.LOG.name" type="statefulSet"> </log-panel>
         </el-tab-pane>
 
         <!-- 历史日志 -->
         <el-tab-pane :label="TABS.OFFLINE_LOG.label" :name="TABS.OFFLINE_LOG.name">
-          <log-offline-panel
-            v-if="tab === TABS.OFFLINE_LOG.name"
-            type="statefulSet">
+          <log-offline-panel v-if="tab === TABS.OFFLINE_LOG.name" type="statefulSet">
           </log-offline-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.ENV.label"
-          :name="TABS.ENV.name"
-          lazy>
-          <env-panel
-            :ssEnv="statefulsetEnv"
-            @envUpdate="onEnvUpdate">
-          </env-panel>
+        <el-tab-pane :label="TABS.ENV.label" :name="TABS.ENV.name" lazy>
+          <env-panel :ssEnv="statefulsetEnv" @envUpdate="onEnvUpdate"> </env-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.EVENT.label"
-          :name="TABS.EVENT.name"
-          lazy>
+        <el-tab-pane :label="TABS.EVENT.label" :name="TABS.EVENT.name" lazy>
           <events-table
             v-if="tab === TABS.EVENT.name"
             :loading="loading.event"
             :events="events"
-            @refresh="getEvents">
+            @refresh="getEvents"
+          >
           </events-table>
         </el-tab-pane>
         <el-tab-pane
           :label="TABS.OPERATING_DATA.label"
           :name="TABS.OPERATING_DATA.name"
-          :lazy="true">
+          :lazy="true"
+        >
           <operating-data :name="name"></operating-data>
         </el-tab-pane>
         <el-tab-pane
           v-if="pods.length"
           :label="TABS.MONITOR.label"
           :name="TABS.MONITOR.name"
-          :lazy="true">
-          <monitor-panel
-            v-if="tab === TABS.MONITOR.name"
-            :pods="pods"
-            :name="name">
+          :lazy="true"
+        >
+          <monitor-panel v-if="tab === TABS.MONITOR.name" :pods="pods" :name="name">
           </monitor-panel>
         </el-tab-pane>
       </el-tabs>
@@ -260,11 +240,10 @@ export default {
     getStatefulSet() {
       this.loading.page = true;
       this.loading.tabs = true;
-      return Promise.all([this.getStatefulSetService(), this.fetchPods()])
-        .finally(() => {
-          this.loading.page = false;
-          this.loading.tabs = false;
-        });
+      return Promise.all([this.getStatefulSetService(), this.fetchPods()]).finally(() => {
+        this.loading.page = false;
+        this.loading.tabs = false;
+      });
     },
 
     onUpdateClick() {
@@ -273,12 +252,7 @@ export default {
 
     updateByYaml(updatedStatefulSet) {
       this.loading.tabs = true;
-      StatefulSetService.put(
-        this.space.id,
-        this.zone.id,
-        this.name,
-        updatedStatefulSet,
-      )
+      StatefulSetService.put(this.space.id, this.zone.id, this.name, updatedStatefulSet)
         .then(() => {
           return this.getStatefulSet();
         })
@@ -326,12 +300,7 @@ export default {
 
     onExtend(replicas) {
       this.loading.tabs = true;
-      StatefulSetService.updateReplica(
-        this.space.id,
-        this.zone.id,
-        this.name,
-        replicas,
-      )
+      StatefulSetService.updateReplica(this.space.id, this.zone.id, this.name, replicas)
         .then(() => {
           return this.getStatefulSet();
         })
@@ -353,7 +322,6 @@ export default {
         this.pods.unshift({ name: MONITOR_ALL_PODS });
       }
     },
-
   },
 };
 </script>

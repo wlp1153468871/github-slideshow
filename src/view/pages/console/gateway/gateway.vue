@@ -1,9 +1,9 @@
 <template>
   <div class="gateway">
-    <exception-page type="40301" ></exception-page>
+    <exception-page type="40301"></exception-page>
   </div>
 </template>
-<script >
+<script>
 import Vue from 'vue';
 import store from '@/core/store';
 import ExceptionPage from '@/view/pages/exception/ExceptionPage.vue';
@@ -29,6 +29,5 @@ export default {
 <style lang="scss">
 .gateway {
   padding: 20px 0 0 20px;
-  
 }
 </style>

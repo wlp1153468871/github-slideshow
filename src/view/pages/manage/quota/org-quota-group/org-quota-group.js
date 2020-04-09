@@ -166,10 +166,12 @@ export default {
     onUpdateQuotaGroup(quotaGroup) {
       this.isCreating = true;
       const { name, description = '', limits = [] } = quotaGroup;
-      const quotaGroupLimits = limits.filter(x => x.limit !== '').map(x => ({
-        quota_field_id: x.id,
-        limit: Number(x.limit),
-      }));
+      const quotaGroupLimits = limits
+        .filter(x => x.limit !== '')
+        .map(x => ({
+          quota_field_id: x.id,
+          limit: Number(x.limit),
+        }));
       QuotaService.updateQuotaGroup(quotaGroup.id, {
         name,
         description,

@@ -1,36 +1,23 @@
 <template>
   <div class="truncate-long-text">
     <span v-if="!truncated">
-      <span
-        v-html="fullContent"
-        class="truncated-content">
-      </span>
+      <span v-html="fullContent" class="truncated-content"> </span>
     </span>
 
     <span v-if="truncated">
       <span v-if="!expanded">
         <span class="truncation-block">
-          <span
-            v-html="truncatedContent"
-            class="truncated-content">
-          </span>&hellip;
+          <span v-html="truncatedContent" class="truncated-content"> </span>&hellip;
         </span>
-        <span
-          v-if="expandable"
-          @click="expanded = true"
-          class="truncation-expand-link">
+        <span v-if="expandable" @click="expanded = true" class="truncation-expand-link">
           See All
         </span>
       </span>
       <span v-if="expanded">
-      <span
-        v-html="fullContent"
-        class="truncated-content">
-      </span>
-      <span
-        v-if="!hideCollapse"
-        @click="expanded = false"
-        class="truncation-collapse-link">Collapse</span>
+        <span v-html="fullContent" class="truncated-content"> </span>
+        <span v-if="!hideCollapse" @click="expanded = false" class="truncation-collapse-link"
+          >Collapse</span
+        >
       </span>
     </span>
   </div>
@@ -79,10 +66,7 @@ export default {
       );
 
       if (size(this.keywords)) {
-        return Vue.filter('highlight_keywords')(
-          truncatedContent,
-          this.keywords,
-        );
+        return Vue.filter('highlight_keywords')(truncatedContent, this.keywords);
       }
 
       return truncatedContent;

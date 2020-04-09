@@ -1,8 +1,5 @@
 <template>
-  <button
-    class="dao-btn blue"
-    @click="onClick()"
-    :disabled="disabled || saving">
+  <button class="dao-btn blue" @click="onClick()" :disabled="disabled || saving">
     <svg v-show="saving" class="icon rotating">
       <use xlink:href="#icon_status-progress-circle"></use>
     </svg>

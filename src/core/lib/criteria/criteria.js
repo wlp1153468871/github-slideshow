@@ -1,13 +1,5 @@
-import {
-  isNil,
-  zip,
-  orderBy,
-  filter as filterBy,
-  iteratee,
-  overEvery,
-} from 'lodash';
+import { isNil, zip, orderBy, filter as filterBy, iteratee, overEvery } from 'lodash';
 import Pagination from './pagination';
-
 
 class Criteria {
   constructor(data = []) {
@@ -64,8 +56,7 @@ class Criteria {
   execFilter(list) {
     let filteredList = list;
     if (this.filters.size) {
-      const filters = Array
-        .from(this.filters.values())
+      const filters = Array.from(this.filters.values())
         .filter(x => !isNil(x))
         .map(iteratee);
       filteredList = filterBy(list, overEvery(filters));
