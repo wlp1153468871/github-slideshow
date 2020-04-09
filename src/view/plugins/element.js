@@ -32,6 +32,7 @@ import {
   Card,
   Tree,
   Divider,
+  Alert,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
@@ -68,3 +69,4 @@ Vue.use(FormItem);
 Vue.use(Card);
 Vue.use(Tree);
 Vue.use(Divider);
+Vue.use(Alert);

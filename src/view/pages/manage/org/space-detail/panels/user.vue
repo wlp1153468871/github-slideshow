@@ -141,7 +141,7 @@ export default {
         {
           name: '修改用户权限',
           event: 'update-user-dialog',
-          disabled: item => item.username === this.userName,
+          // disabled: item => item.username === this.userName,
           tooltip: '无法修改本人权限，防止降级',
         },
         {
