@@ -182,7 +182,7 @@ export default {
           } else {
             this.histories = logs.map(item => {
               const { dateTime, podName, user, message }
-                = item._source;// eslint-disable-line no-underscore-dangle
+                = item._source; // eslint-disable-line no-underscore-dangle
 
               return `dateTime:${dateTime}  podName:${podName}  user:${user}  message: ${message}`;
             });
