@@ -56,6 +56,15 @@
           </dao-select>
         </template>
       </dao-setting-item>
+      <template>
+        <el-alert
+          style="margin-top: 12px"
+          v-if="model.username === userName && spaceMenus.some(m => m === 'space.base')"
+          title="请注意！您是项目组管理员，请谨慎操作防止降级。"
+          type="warning"
+          show-icon>
+        </el-alert>
+      </template>
     </dao-setting-section>
     <dao-setting-section>
       <dao-setting-item>
@@ -155,7 +164,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['org']),
+    ...mapState(['org', 'spaceMenus']),
     ...mapGetters(['userName']),
     isShow: {
       set() {
