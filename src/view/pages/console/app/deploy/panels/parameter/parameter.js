@@ -90,10 +90,7 @@ export default {
     ...mapState(['space', 'zone', 'quotaDict']),
 
     inrouterDomain() {
-      return getValue(
-        find(this.zone.router_config, { key: INROUTER_KEY }),
-        'domain',
-      );
+      return getValue(find(this.zone.router_config, { key: INROUTER_KEY }), 'domain');
     },
   },
 

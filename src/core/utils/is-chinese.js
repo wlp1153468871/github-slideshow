@@ -4,4 +4,3 @@ function isChinese(name) {
 }
 
 export default isChinese;
-

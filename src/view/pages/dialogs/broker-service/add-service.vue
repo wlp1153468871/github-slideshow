@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">服务名</div>
@@ -17,7 +18,8 @@
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
             v-validate="'required|max:25'"
-            data-vv-as="服务名">
+            data-vv-as="服务名"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -26,7 +28,7 @@
       <dao-setting-item>
         <div slot="label">类型</div>
         <div slot="content">
-          <p style="margin-bottom: 10px">服务创建之后无法修改类型</p>
+          <p style="margin-bottom: 10px;">服务创建之后无法修改类型</p>
           <dao-radio-group type="block">
             <dao-radio
               v-for="(item, index) in SERVICE_TYPES"
@@ -35,16 +37,15 @@
               :label="item.value"
               :headline="item.text"
               :disabled="item.disabled"
-              :description="item.desc">
+              :description="item.desc"
+            >
             </dao-radio>
           </dao-radio-group>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
       <save-button
@@ -52,7 +53,8 @@
         text="确定"
         :disabled="formInvalidate"
         :loading="loading"
-        @click="onConfirm">
+        @click="onConfirm"
+      >
       </save-button>
     </div>
   </dao-dialog>
@@ -93,11 +95,7 @@ export default {
 
     onConfirm() {
       // saving on parent component
-      const {
-        name,
-        description,
-        type,
-      } = this;
+      const { name, description, type } = this;
 
       this.$emit('create', {
         name,

@@ -13,7 +13,8 @@
             v-validate="'required|max:20'"
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
-            data-vv-as="服务名">
+            data-vv-as="服务名"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -29,8 +30,8 @@
             <div
               class="service-new-logo"
               v-if="serviceModel.logo_url"
-              v-bg-image="serviceModel.logo_url">
-            </div>
+              v-bg-image="serviceModel.logo_url"
+            ></div>
             <logo-placeholder v-if="!serviceModel.logo_url"></logo-placeholder>
           </div>
           <file-upload
@@ -41,7 +42,8 @@
             :multiple="true"
             :maximum="1"
             v-model="fileNames"
-            @input="handleFileInput">
+            @input="handleFileInput"
+          >
             <svg class="icon">
               <use xlink:href="#icon_plus-circled"></use>
             </svg>
@@ -63,7 +65,8 @@
             v-validate="'max:225'"
             :message="veeErrors.first('short_description')"
             :status="veeErrors.has('short_description') ? 'error' : ''"
-            placeholder="简短介绍">
+            placeholder="简短介绍"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -74,14 +77,15 @@
         <div slot="content">
           <textarea
             class="dao-control"
-            :class="{ 'error': veeErrors.first('description') }"
-            style="width: 100%"
+            :class="{ error: veeErrors.first('description') }"
+            style="width: 100%;"
             type="text"
             name="description"
             v-validate="'max:255'"
             rows="3"
             placeholder="详细介绍"
-            v-model="serviceModel.description">
+            v-model="serviceModel.description"
+          >
           </textarea>
           <p class="text-danger" v-show="veeErrors.first('description')">
             详细介绍不能超过255字
@@ -102,17 +106,15 @@
             v-validate="'url'"
             :message="veeErrors.first('helpUrl')"
             :status="veeErrors.has('helpUrl') ? 'error' : ''"
-            :class="{ 'error': veeErrors.first('helpUrl') }"
-            style="width: 100%">
+            :class="{ error: veeErrors.first('helpUrl') }"
+            style="width: 100%;"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onUpdate">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onUpdate">
         保存
       </button>
     </div>
@@ -174,11 +176,12 @@ export default {
           formData[key] = undefined;
         }
       });
-      ServiceService.updateService(this.service.id, this.service.zone.id, formData)
-        .then(service => {
+      ServiceService.updateService(this.service.id, this.service.zone.id, formData).then(
+        service => {
           this.$noty.success('修改服务成功');
           this.$emit('update', service);
-        });
+        },
+      );
     },
   },
 

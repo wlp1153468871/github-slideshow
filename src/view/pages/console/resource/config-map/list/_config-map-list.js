@@ -33,8 +33,7 @@ export default {
       },
       yamlJSON: {},
       configMap: {},
-      filterMethod: (data, filterKey) =>
-        data.metadata.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.metadata.name.toLowerCase().includes(filterKey),
     };
   },
 

@@ -5,7 +5,8 @@
     :close-on-press-escape="false"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onCancel"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-layout>
       <dao-setting-section>
         <dao-setting-item>
@@ -31,7 +32,8 @@
               :status="veeErrors.has('port') ? 'error' : ''"
               v-validate="'required|port'"
               data-vv-as="端口"
-              placeholder="端口号；例:80">
+              placeholder="端口号；例:80"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -49,7 +51,8 @@
               icon-inside
               :message="veeErrors.first('username')"
               :status="veeErrors.has('username') ? 'error' : ''"
-              data-vv-as="用户名">
+              data-vv-as="用户名"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -65,23 +68,18 @@
               autocomplete="off"
               :message="veeErrors.first('password')"
               :status="veeErrors.has('password') ? 'error' : ''"
-              data-vv-as="密码">
+              data-vv-as="密码"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
       </dao-setting-section>
     </dao-setting-layout>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onCancel">
+      <button class="dao-btn ghost" @click="onCancel">
         取消
       </button>
-      <save-button
-        class="blue"
-        text="确定"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <save-button class="blue" text="确定" :disabled="!isValidForm" @click="onConfirm">
       </save-button>
     </div>
   </dao-dialog>
@@ -112,8 +110,7 @@ export default {
 
   computed: {
     isValidForm() {
-      return Boolean(this.port &&
-        !this.veeErrors.any());
+      return Boolean(this.port && !this.veeErrors.any());
     },
   },
 

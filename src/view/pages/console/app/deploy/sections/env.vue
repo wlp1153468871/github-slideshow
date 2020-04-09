@@ -8,40 +8,38 @@
         <template slot="content">
           <table class="dao-table flexrow" v-if="env.rows.length">
             <thead>
-            <tr>
-              <th style="width: 20%;">
-                <span>键</span>
-              </th>
-              <th style="width: 60%;">
-                <span>值</span>
-              </th>
-              <th style="text-align: center; width: 20%;">
-                <span>操作</span>
-              </th>
-            </tr>
+              <tr>
+                <th style="width: 20%;">
+                  <span>键</span>
+                </th>
+                <th style="width: 60%;">
+                  <span>值</span>
+                </th>
+                <th style="text-align: center; width: 20%;">
+                  <span>操作</span>
+                </th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="(row, index) in env.rows" :key="row.name">
-              <td style="width: 20%;">
-                {{row.name}}
-              </td>
-              <td style="width: 60%;">
-                {{row | config_map}}
-              </td>
-              <td style="width: 20%;" class="cell-operations">
-                <svg class="icon icon-remove" @click="removeRow(index, 'env')">
-                  <use xlink:href="#icon_cross"></use>
-                </svg>
-                <svg class="icon icon-edit" @click="editRow(index, 'env')">
-                  <use xlink:href="#icon_pencil-edit"></use>
-                </svg>
-              </td>
-            </tr>
+              <tr v-for="(row, index) in env.rows" :key="row.name">
+                <td style="width: 20%;">
+                  {{ row.name }}
+                </td>
+                <td style="width: 60%;">
+                  {{ row | config_map }}
+                </td>
+                <td style="width: 20%;" class="cell-operations">
+                  <svg class="icon icon-remove" @click="removeRow(index, 'env')">
+                    <use xlink:href="#icon_cross"></use>
+                  </svg>
+                  <svg class="icon icon-edit" @click="editRow(index, 'env')">
+                    <use xlink:href="#icon_pencil-edit"></use>
+                  </svg>
+                </td>
+              </tr>
             </tbody>
           </table>
-          <button
-            class="dao-btn blue mini has-icon"
-            @click="addRow('env')">
+          <button class="dao-btn blue mini has-icon" @click="addRow('env')">
             <svg class="icon">
               <use xlink:href="#icon_plus-circled"></use>
             </svg>
@@ -59,40 +57,38 @@
         <template slot="content">
           <table class="dao-table flexrow" v-if="envFile.rows.length">
             <thead>
-            <tr>
-              <th style="width: 20%;">
-                <span>名称</span>
-              </th>
-              <th style="width: 60%;">
-                <span>前缀</span>
-              </th>
-              <th style="text-align: center; width: 20%;">
-                <span>操作</span>
-              </th>
-            </tr>
+              <tr>
+                <th style="width: 20%;">
+                  <span>名称</span>
+                </th>
+                <th style="width: 60%;">
+                  <span>前缀</span>
+                </th>
+                <th style="text-align: center; width: 20%;">
+                  <span>操作</span>
+                </th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="(row, index) in envFile.rows" :key="row.name">
-              <td style="width: 20%;">
-                {{row | config_map}}
-              </td>
-              <td style="width: 60%;">
-                {{row.value}}
-              </td>
-              <td style="width: 20%;" class="cell-operations">
-                <svg class="icon icon-remove" @click="removeRow(index, 'envFile')">
-                  <use xlink:href="#icon_cross"></use>
-                </svg>
-                <svg class="icon icon-edit" @click="editRow(index, 'envFile')">
-                  <use xlink:href="#icon_pencil-edit"></use>
-                </svg>
-              </td>
-            </tr>
+              <tr v-for="(row, index) in envFile.rows" :key="row.name">
+                <td style="width: 20%;">
+                  {{ row | config_map }}
+                </td>
+                <td style="width: 60%;">
+                  {{ row.value }}
+                </td>
+                <td style="width: 20%;" class="cell-operations">
+                  <svg class="icon icon-remove" @click="removeRow(index, 'envFile')">
+                    <use xlink:href="#icon_cross"></use>
+                  </svg>
+                  <svg class="icon icon-edit" @click="editRow(index, 'envFile')">
+                    <use xlink:href="#icon_pencil-edit"></use>
+                  </svg>
+                </td>
+              </tr>
             </tbody>
           </table>
-          <button
-            class="dao-btn mini blue has-icon"
-            @click="addRow('envFile')">
+          <button class="dao-btn mini blue has-icon" @click="addRow('envFile')">
             <svg class="icon">
               <use xlink:href="#icon_plus-circled"></use>
             </svg>
@@ -108,7 +104,8 @@
       :model="env.model"
       :visible="dialogs.env"
       @finish="finish($event, 'env')"
-      @close="dialogs.env = false">
+      @close="dialogs.env = false"
+    >
     </edit-env-dialog>
 
     <edit-env-file-dialog
@@ -117,7 +114,8 @@
       :model="envFile.model"
       :visible="dialogs.envFile"
       @finish="finish($event, 'envFile')"
-      @close="dialogs.envFile = false">
+      @close="dialogs.envFile = false"
+    >
     </edit-env-file-dialog>
   </div>
 </template>

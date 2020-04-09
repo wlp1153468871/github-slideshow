@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">规格名称</div>
@@ -17,7 +18,8 @@
             v-validate="'required|max:30'"
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
-            data-vv-as="规格名称">
+            data-vv-as="规格名称"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -34,7 +36,8 @@
             v-validate="'max:30'"
             :message="veeErrors.first('description')"
             :status="veeErrors.has('description') ? 'error' : ''"
-            data-vv-as="简短介绍">
+            data-vv-as="简短介绍"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -51,15 +54,14 @@
             v-validate="'max:30'"
             :message="veeErrors.first('custom_description')"
             :status="veeErrors.has('custom_description') ? 'error' : ''"
-            data-vv-as="规格备注">
+            data-vv-as="规格备注"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <dao-setting-section>
-      <dao-setting-item
-        v-for="(require, index) in vars.requires"
-        :key="index">
+      <dao-setting-item v-for="(require, index) in vars.requires" :key="index">
         <div slot="label">
           {{ index === 0 ? '配额要求' : '' }}
         </div>
@@ -72,7 +74,8 @@
             icon-inside
             :message="veeErrors.first(`$${index}`)"
             :status="veeErrors.has(`$${index}`) ? 'error' : ''"
-            :data-vv-as="require.name">
+            :data-vv-as="require.name"
+          >
             <span slot="append">{{ require.unit }}</span>
           </dao-input>
           {{ require.name }}
@@ -80,15 +83,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -132,12 +130,7 @@ export default {
   },
   methods: {
     initPlan(plan) {
-      const {
-        id,
-        name,
-        description,
-        custom_description,
-      } = plan;
+      const { id, name, description, custom_description } = plan;
 
       const requires = orderBy(cloneDeep(plan.requires || []), 'name');
       this.vars = {

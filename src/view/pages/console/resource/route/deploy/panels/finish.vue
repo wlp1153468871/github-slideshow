@@ -9,8 +9,7 @@
       </div>
       <div class="tip">
         <h3>已完成订购</h3>
-        <p>您可以在 <a @click="gotoDetail">Route 详情页面</a> 查看
-        </p>
+        <p>您可以在 <a @click="gotoDetail">Route 详情页面</a> 查看</p>
       </div>
     </div>
     <div v-if="type === RESULT_TYPES.APPROVAL">
@@ -67,9 +66,7 @@ export default {
       if (!isEmpty(this.error)) {
         return this.RESULT_TYPES.ERROR;
       }
-      return this.route.is_need_approval
-        ? this.RESULT_TYPES.APPROVAL
-        : this.RESULT_TYPES.SUCCESS;
+      return this.route.is_need_approval ? this.RESULT_TYPES.APPROVAL : this.RESULT_TYPES.SUCCESS;
     },
 
     errorMsg() {
@@ -100,7 +97,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss">
 .panel-finish {

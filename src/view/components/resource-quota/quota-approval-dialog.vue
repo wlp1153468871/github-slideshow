@@ -11,19 +11,21 @@
         <dao-setting-item>
           <div slot="label">申请人</div>
           <p slot="content">
-            {{approval.applicant_name}}
+            {{ approval.applicant_name }}
           </p>
         </dao-setting-item>
         <dao-setting-item>
-          <div slot="label">{{scope === 'space' ? this.spaceDescription:this.orgDescription}}</div>
+          <div slot="label">
+            {{ scope === 'space' ? this.spaceDescription : this.orgDescription }}
+          </div>
           <p slot="content">
-            {{scope === 'space' ? approval.space_name :  approval.organization_name || '-'}}
+            {{ scope === 'space' ? approval.space_name : approval.organization_name || '-' }}
           </p>
         </dao-setting-item>
         <dao-setting-item>
           <div slot="label">提交时间</div>
           <p slot="content">
-            {{approval.created_at | unix_date('YYYY/MM/DD HH:mm:ss')}}
+            {{ approval.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
           </p>
         </dao-setting-item>
         <dao-setting-item>
@@ -41,31 +43,31 @@
         <dao-setting-item>
           <div slot="label">备注</div>
           <p slot="content">
-            {{ approval.remark || '-'}}
+            {{ approval.remark || '-' }}
           </p>
         </dao-setting-item>
-        <template v-if="type==='detail'">
+        <template v-if="type === 'detail'">
           <dao-setting-item>
             <div slot="label">处理人</div>
             <p slot="content">
-              {{ approval.approver_name || '-'}}
+              {{ approval.approver_name || '-' }}
             </p>
           </dao-setting-item>
           <dao-setting-item>
             <div slot="label">处理结果</div>
             <p slot="content">
-              {{ approval.status | quotaStatus}}
+              {{ approval.status | quotaStatus }}
             </p>
           </dao-setting-item>
           <dao-setting-item>
             <div slot="label">审批回复</div>
             <p slot="content">
-              {{ approval.reply || '-'}}
+              {{ approval.reply || '-' }}
             </p>
           </dao-setting-item>
         </template>
         <dao-setting-item
-          v-if="approval.status === 'approving' && type === 'rejected' || type === 'success'"
+          v-if="(approval.status === 'approving' && type === 'rejected') || type === 'success'"
         >
           <div slot="label">回复（可选）</div>
           <div slot="content">
@@ -82,7 +84,7 @@
             >
             </textarea>
             <div class="dao-input-message error">
-              <span>{{veeErrors.first('reply')}}</span>
+              <span>{{ veeErrors.first('reply') }}</span>
             </div>
           </div>
         </dao-setting-item>
@@ -90,18 +92,11 @@
     </dao-setting-layout>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose"
-        v-if="hasCancelBtn"
-      >
+      <button class="dao-btn ghost" @click="onClose" v-if="hasCancelBtn">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        @click="onSubmit"
-      >
-        {{submitText}}
+      <button class="dao-btn blue" @click="onSubmit">
+        {{ submitText }}
       </button>
     </div>
   </dao-dialog>

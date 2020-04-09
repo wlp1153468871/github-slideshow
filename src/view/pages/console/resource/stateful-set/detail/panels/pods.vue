@@ -4,7 +4,8 @@
     :pods="pods"
     :loading="loading"
     @remove="removePods"
-    @refresh="getPods">
+    @refresh="getPods"
+  >
   </pod-table>
 </template>
 
@@ -26,7 +27,6 @@ export default {
     name: String,
   },
 
-
   data() {
     return {
       pods: [],
@@ -41,11 +41,13 @@ export default {
   methods: {
     getPods() {
       this.loading = true;
-      StatefulSetService.getPodList(this.spaceId, this.zone, this.name).then(res => {
-        this.pods = res.originData.items || [];
-      }).finally(() => {
-        this.loading = false;
-      });
+      StatefulSetService.getPodList(this.spaceId, this.zone, this.name)
+        .then(res => {
+          this.pods = res.originData.items || [];
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     onRefresh() {
       this.getPods();
@@ -73,5 +75,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

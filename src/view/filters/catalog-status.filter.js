@@ -1,8 +1,6 @@
 import { CATALOG_STATUS } from '@/core/constants/constants';
 
-const {
-  AVAILABLE, UNINSTALL, INSTALLUNAVAILABLE, UNKNOWN,
-} = CATALOG_STATUS;
+const { AVAILABLE, UNINSTALL, INSTALLUNAVAILABLE, UNKNOWN } = CATALOG_STATUS;
 
 export default function catalogStatus(status) {
   const statusMap = {

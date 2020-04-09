@@ -1,9 +1,6 @@
 <template>
   <div style="display: inline-block; width: 100%;" ref="container">
-    <el-tooltip
-      v-if="!isCollapse && overflow"
-      :content="text"
-      placement="right">
+    <el-tooltip v-if="!isCollapse && overflow" :content="text" placement="right">
       <span class="menu-content">
         {{ text }}
       </span>
@@ -12,7 +9,6 @@
       {{ text }}
     </span>
   </div>
-
 </template>
 
 <script>

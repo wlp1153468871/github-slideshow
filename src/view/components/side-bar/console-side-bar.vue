@@ -3,10 +3,7 @@
     <div class="menus">
       <div class="section-space">
         <template v-if="orgs.length">
-          <el-tooltip
-            :content="orgSpaceValue"
-            placement="right"
-          >
+          <el-tooltip :content="orgSpaceValue" placement="right">
             <el-cascader
               :options="orgWithSpaceSepereatedBySlash"
               :props="props"
@@ -21,23 +18,14 @@
           </el-tooltip>
         </template>
         <template v-else>
-          <el-tooltip
-            placement="right"
-            content="暂无项目组"
-          >
+          <el-tooltip placement="right" content="暂无项目组">
             <p class="empty-message">暂无项目组</p>
           </el-tooltip>
         </template>
       </div>
 
-      <div
-        class="section-zone"
-        v-if="menus.some(m => m==='space')"
-      >
-        <el-tooltip
-          :content="zone.name ? zone.name : '暂无可用区'"
-          placement="right"
-        >
+      <div class="section-zone" v-if="menus.some(m => m === 'space')">
+        <el-tooltip :content="zone.name ? zone.name : '暂无可用区'" placement="right">
           <zone-select v-if="zones.length"></zone-select>
           <template v-else>
             <p class="empty-message">暂无可用区</p>
@@ -57,11 +45,7 @@
       >
         <template v-for="(item, index) in allMenus">
           <template v-if="item.children">
-            <el-submenu
-              :index="item.name"
-              v-if="!hiddenMenu(item)"
-              :key="index"
-            >
+            <el-submenu :index="item.name" v-if="!hiddenMenu(item)" :key="index">
               <template slot="title">
                 <svg class="icon">
                   <use :xlink:href="item.meta.icon"></use>
@@ -79,11 +63,7 @@
                     <use :xlink:href="menuItem.meta.icon"></use>
                   </svg>
                   <span>
-                    <overflow-tooltip
-                      slot="title"
-                      :text="menuItem.meta.title"
-                    >
-                    </overflow-tooltip>
+                    <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
                   </span>
                 </el-menu-item>
               </template>
@@ -96,17 +76,14 @@
                   :index="compileIndex(menu)"
                   :route="menu.route"
                 >
-                  <service-logo
-                    :src="menu.logo_url"
-                    size="small"
-                  ></service-logo>
+                  <service-logo :src="menu.logo_url" size="small"></service-logo>
                   <el-tooltip
                     popper-class="service-name-tooltip"
                     slot="title"
                     :content="menu.name"
                     placement="right"
                   >
-                    <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
+                    <span class="service-menu-name text-overflow-ellipsis">{{ menu.name }}</span>
                   </el-tooltip>
                 </el-menu-item>
               </template>
@@ -133,10 +110,7 @@
       </el-menu>
     </div>
 
-    <div
-      class="collapse-btn"
-      @click="toggleSideBar"
-    >
+    <div class="collapse-btn" @click="toggleSideBar">
       <i class="el-icon-d-arrow-left"></i>
     </div>
   </div>

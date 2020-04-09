@@ -20,8 +20,8 @@ export default {
         addOrg: { visible: false },
       },
       filterMethod: (data, filterKey) =>
-        data.name.toLowerCase().includes(filterKey)
-        || data.short_name.toLowerCase().includes(filterKey),
+        data.name.toLowerCase().includes(filterKey) ||
+        data.short_name.toLowerCase().includes(filterKey),
     };
   },
   watch: {
@@ -32,11 +32,13 @@ export default {
   methods: {
     loadOrgs() {
       this.loadings.orgs = true;
-      OrgService.getOrgs().then(orgs => {
-        this.rows = orgs;
-      }).finally(() => {
-        this.loadings.orgs = false;
-      });
+      OrgService.getOrgs()
+        .then(orgs => {
+          this.rows = orgs;
+        })
+        .finally(() => {
+          this.loadings.orgs = false;
+        });
     },
 
     addOrgDialog() {

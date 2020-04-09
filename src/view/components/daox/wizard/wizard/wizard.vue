@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="daox-wizard"
-    @keyup.right="focusNextTab"
-    @keyup.left="focusPrevTab">
+  <div class="daox-wizard" @keyup.right="focusNextTab" @keyup.left="focusPrevTab">
     <div class="wizard-navigation">
       <div class="wizard-nav">
         <div class="wizard-nav-left">
@@ -14,11 +11,9 @@
             v-for="(tab, index) in tabs"
             :tab="tab"
             :index="index"
-            :navigate-to-tab="navigateToTab">
-            <li
-              class="step-content"
-              :key="tab.title"
-              :class="{ 'checked': tab.checked }">
+            :navigate-to-tab="navigateToTab"
+          >
+            <li class="step-content" :key="tab.title" :class="{ checked: tab.checked }">
               <a class="step-tab">
                 <span class="step-icon">{{ index + 1 }}</span>
                 <span class="step-title">{{ tab.title }}</span>
@@ -31,8 +26,7 @@
         </div>
       </div>
       <div class="wizard-tab-content">
-        <slot v-bind="slotProps">
-        </slot>
+        <slot v-bind="slotProps"> </slot>
       </div>
     </div>
 
@@ -44,11 +38,10 @@
             @keyup.enter="prevTab"
             v-if="displayPrevButton"
             role="button"
-            tabindex="0">
+            tabindex="0"
+          >
             <slot name="prev" v-bind="slotProps">
-              <wizard-button
-                :style="fillButtonStyle"
-                :disabled="loading">
+              <wizard-button :style="fillButtonStyle" :disabled="loading">
                 {{ backButtonText }}
               </wizard-button>
             </slot>
@@ -63,23 +56,17 @@
             @keyup.enter="nextTab"
             v-if="isLastStep"
             role="button"
-            tabindex="0">
+            tabindex="0"
+          >
             <slot name="finish" v-bind="slotProps">
               <button :style="fillButtonStyle">
                 {{ finishButtonText }}
               </button>
             </slot>
           </span>
-          <span
-            @click="nextTab"
-            @keyup.enter="nextTab"
-            role="button"
-            tabindex="0"
-            v-else>
+          <span @click="nextTab" @keyup.enter="nextTab" role="button" tabindex="0" v-else>
             <slot name="next" v-bind="slotProps">
-              <button
-                :style="fillButtonStyle"
-                :disabled="loading">
+              <button :style="fillButtonStyle" :disabled="loading">
                 {{ nextButtonText }}
               </button>
             </slot>

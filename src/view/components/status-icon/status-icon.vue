@@ -1,9 +1,6 @@
 <template>
   <!-- some states don't have their icons -->
-  <svg
-    :style="{fill: color}"
-    class="icon status-icon"
-    :class="{ 'icon-spin': enableAnimation }">
+  <svg :style="{ fill: color }" class="icon status-icon" :class="{ 'icon-spin': enableAnimation }">
     <use :xlink:href="icon"></use>
   </svg>
 </template>

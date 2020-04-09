@@ -9,11 +9,7 @@
       @confirm-remove-user="confirmRemoveUser"
     >
       <div slot="tool">
-        <button
-          :disabled="loadings.all"
-          class="dao-btn has-icon blue"
-          @click="openAddUserDialog()"
-        >
+        <button :disabled="loadings.all" class="dao-btn has-icon blue" @click="openAddUserDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>

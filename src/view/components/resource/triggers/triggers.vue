@@ -5,7 +5,9 @@
         <dt>Manual (CLI):</dt>
         <dd style="margin-bottom: 5px;">
           <!-- eslint-disable-next-line -->
-          <dao-copy-block>{{'oc rollout latest dc/' + dcName + ' -n ' + projectName}}</dao-copy-block>
+          <dao-copy-block>{{
+            'oc rollout latest dc/' + dcName + ' -n ' + projectName
+          }}</dao-copy-block>
         </dd>
         <div v-for="(t, i) in triggers" :key="i">
           <span v-if="t.type === 'ConfigChange'">
@@ -15,10 +17,8 @@
           <span v-else-if="t.imageChangeParams.from">
             <dt>New Image For:</dt>
             <dd>
-              {{t.imageChangeParams.from | imageObjectRef(dcNamespace)}}
-              <small
-                v-if="t.imageChangeParams.automatic"
-              >(disabled)</small>
+              {{ t.imageChangeParams.from | imageObjectRef(dcNamespace) }}
+              <small v-if="t.imageChangeParams.automatic">(disabled)</small>
             </dd>
           </span>
         </div>
@@ -73,7 +73,6 @@ export default {
   // }
 };
 </script>
-
 
 <style lang="scss">
 .clipboard {

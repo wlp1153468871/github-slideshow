@@ -4,7 +4,8 @@
     :pods="pods"
     :loading="loadings.table"
     @remove="removePods"
-    @refresh="getPods">
+    @refresh="getPods"
+  >
   </pod-table>
 </template>
 
@@ -51,11 +52,7 @@ export default {
     poll() {
       this.pollTimer = setTimeout(() => {
         clearTimeout(this.pollTimer);
-        DeploymentResourceService.getPods(
-          this.space.id,
-          this.zone.id,
-          this.deploymentName,
-        )
+        DeploymentResourceService.getPods(this.space.id, this.zone.id, this.deploymentName)
           .then(res => {
             this.pods = res.originData.items || [];
           })
@@ -69,11 +66,7 @@ export default {
     },
     getPods() {
       this.loadings.table = true;
-      return DeploymentResourceService.getPods(
-        this.space.id,
-        this.zone.id,
-        this.deploymentName,
-      )
+      return DeploymentResourceService.getPods(this.space.id, this.zone.id, this.deploymentName)
         .then(res => {
           this.pods = res.originData.items || [];
         })

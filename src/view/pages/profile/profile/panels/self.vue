@@ -30,7 +30,8 @@
               :status="validate.email.status"
               :edit-state="false"
               :on-check="isValidEmail"
-              :on-success="updateEmail">
+              :on-success="updateEmail"
+            >
             </dao-editable-input>
           </div>
         </dao-setting-item>
@@ -48,7 +49,8 @@
               :status="validate.phone.status"
               :edit-state="false"
               :on-check="isValidPhone"
-              :on-success="updatePhone">
+              :on-success="updatePhone"
+            >
             </dao-editable-input>
           </div>
         </dao-setting-item>
@@ -70,7 +72,8 @@
       ref="updatePwdDialog"
       @update="updatePwd"
       :visible="dialogConfigs.updatePwd.visible"
-      @close="dialogConfigs.updatePwd.visible = false">
+      @close="dialogConfigs.updatePwd.visible = false"
+    >
     </update-pwd-dialog>
     <!-- dialogs end -->
   </div>

@@ -4,10 +4,7 @@
     <template v-else>
       <template v-if="!hasData">
         <div class="empty-data">
-          <img
-            src="@/assets/images/dashboard.png"
-            alt=""
-          />
+          <img src="@/assets/images/dashboard.png" alt="" />
           <p class="empty-title">这里空空如也~</p>
           <p class="empty-content">您还未创建任何实例。</p>
         </div>
@@ -35,10 +32,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(application, index) in applications"
-                      :key="index"
-                    >
+                    <tr v-for="(application, index) in applications" :key="index">
                       <td>{{ application.zone }}</td>
                       <td class="count">{{ application.count }}</td>
                     </tr>
@@ -68,10 +62,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(instance, index) in instances"
-                      :key="index"
-                    >
+                    <tr v-for="(instance, index) in instances" :key="index">
                       <td>{{ instance.zone }}</td>
                       <td class="count">{{ instance.count }}</td>
                     </tr>
@@ -101,10 +92,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(pvc, index) in pvcs"
-                      :key="index"
-                    >
+                    <tr v-for="(pvc, index) in pvcs" :key="index">
                       <td>{{ pvc.zone }}</td>
                       <td class="count">{{ pvc.count }}</td>
                     </tr>
@@ -134,10 +122,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(image, index) in images"
-                      :key="index"
-                    >
+                    <tr v-for="(image, index) in images" :key="index">
                       <td>{{ image.zone }}</td>
                       <td class="count">{{ image.count }}</td>
                     </tr>
@@ -162,23 +147,13 @@
                   <thead>
                     <tr>
                       <th>可用区</th>
-                      <th
-                        :key="index"
-                        v-for="(text, index) in headers"
-                      >
-                        <overflow-tooltip
-                          placement="top-start"
-                          :text="text"
-                        >
-                        </overflow-tooltip>
+                      <th :key="index" v-for="(text, index) in headers">
+                        <overflow-tooltip placement="top-start" :text="text"> </overflow-tooltip>
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(resource, index) in resources"
-                      :key="index"
-                    >
+                    <tr v-for="(resource, index) in resources" :key="index">
                       <td>{{ resource.zone }}</td>
                       <td class="count">{{ resource.deploymentCount }}</td>
                       <td class="count">{{ resource.deploymentConfigCount }}</td>
@@ -364,5 +339,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./_dashboard.scss">
-</style>
+<style lang="scss" src="./_dashboard.scss"></style>

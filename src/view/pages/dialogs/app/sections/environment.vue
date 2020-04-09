@@ -1,9 +1,5 @@
 <template>
-  <section-env
-    :configMaps="configMaps"
-    :secrets="secrets"
-    v-model="editEnvs">
-  </section-env>
+  <section-env :configMaps="configMaps" :secrets="secrets" v-model="editEnvs"> </section-env>
 </template>
 
 <script>

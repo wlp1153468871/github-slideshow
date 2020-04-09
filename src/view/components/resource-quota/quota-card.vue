@@ -1,18 +1,20 @@
 <template>
   <li class="quota-card">
     <div class="quota-card-title">
-      <big>{{type}}</big>
-      <small>剩余 <big> {{ hard- subHard | byte2gib(type) }} </big>{{unit}}</small>
+      <big>{{ type }}</big>
+      <small
+        >剩余 <big> {{ (hard - subHard) | byte2gib(type) }} </big>{{ unit }}</small
+      >
     </div>
     <div>
-      <small>{{subScope}} <big> {{ subHard | byte2gib(type)}} </big>{{unit}}</small>
-      <small> / {{scope}} <big> {{ hard | byte2gib(type)}} </big>{{unit}}</small>
+      <small
+        >{{ subScope }} <big> {{ subHard | byte2gib(type) }} </big>{{ unit }}</small
+      >
+      <small>
+        / {{ scope }} <big> {{ hard | byte2gib(type) }} </big>{{ unit }}</small
+      >
     </div>
-    <dao-progress
-      type="usage"
-      :progress="subHard / hard"
-    >
-    </dao-progress>
+    <dao-progress type="usage" :progress="subHard / hard"> </dao-progress>
   </li>
 </template>
 

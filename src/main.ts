@@ -42,7 +42,6 @@ import '@/assets/svgs';
 import './assets/styles/index.scss';
 import './view/plugins/element';
 
-
 preloaderFinished();
 
 Vue.use(DayJS);

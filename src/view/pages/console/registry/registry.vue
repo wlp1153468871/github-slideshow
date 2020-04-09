@@ -3,18 +3,16 @@
     <resource-header :resource="resource"></resource-header>
 
     <el-tabs v-model="tab">
-      <el-tab-pane
-        label="镜像列表"
-        name="镜像列表"
-        :lazy="true">
+      <el-tab-pane label="镜像列表" name="镜像列表" :lazy="true">
         <tab-list></tab-list>
       </el-tab-pane>
       <el-tab-pane
         v-if="isSpaceAdmin || isOrganizationAdmin"
         label="镜像仓库信息"
         name="镜像仓库信息"
-        :lazy="true">
-      <passwd></passwd>
+        :lazy="true"
+      >
+        <passwd></passwd>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -53,5 +51,4 @@ export default {
 };
 </script>
 
-<style src="./_registry.scss" lang="scss">
-</style>
+<style src="./_registry.scss" lang="scss"></style>

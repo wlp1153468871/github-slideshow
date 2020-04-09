@@ -20,11 +20,13 @@ export default function getConfig(el, series, Highcharts) {
       gridLineWidth: 0,
       title: null,
       reversedStacks: false,
-      plotLines: [{
-        value: 0,
-        width: 1,
-        color: '#808080',
-      }],
+      plotLines: [
+        {
+          value: 0,
+          width: 1,
+          color: '#808080',
+        },
+      ],
       min: 0,
       endOnTick: false,
       minRange: 0.15,

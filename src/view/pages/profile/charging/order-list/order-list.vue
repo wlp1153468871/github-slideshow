@@ -9,28 +9,15 @@
           @refresh="laodUserOrder"
           @checked-rows-change="onCheckedRowsChange"
           @confirm-pay="confirmPay"
-          @confirm-refund="confirmRefund">
+          @confirm-refund="confirmRefund"
+        >
           <div slot="tool">
-            <dao-select
-              v-model="orgId"
-              style="width: 180px"
-              placeholder="全部租户">
-              <dao-option
-                v-for="item in orgs"
-                :label="item.name"
-                :value="item.id"
-                :key="item.id">
+            <dao-select v-model="orgId" style="width: 180px;" placeholder="全部租户">
+              <dao-option v-for="item in orgs" :label="item.name" :value="item.id" :key="item.id">
               </dao-option>
             </dao-select>
-            <dao-select
-              v-model="spaceId"
-              style="width: 180px"
-              placeholder="全部项目组">
-              <dao-option
-                v-for="item in spaces"
-                :label="item.name"
-                :value="item.id"
-                :key="item.id">
+            <dao-select v-model="spaceId" style="width: 180px;" placeholder="全部项目组">
+              <dao-option v-for="item in spaces" :label="item.name" :value="item.id" :key="item.id">
               </dao-option>
             </dao-select>
           </div>

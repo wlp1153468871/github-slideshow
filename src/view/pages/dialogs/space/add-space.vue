@@ -1,10 +1,5 @@
 <template>
-  <dao-dialog
-    header="添加项目组"
-    :visible.sync="isShow"
-    @before-open="bopen"
-    @closed="closed"
-  >
+  <dao-dialog header="添加项目组" :visible.sync="isShow" @before-open="bopen" @closed="closed">
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">项目组名</div>
@@ -35,7 +30,7 @@
             v-validate="{
               required: true,
               dns_1123_label: true,
-              max: 63
+              max: 63,
             }"
             v-model="short_name"
           >
@@ -58,29 +53,17 @@
             v-model="zoneIds"
             placeholder="请输入关键词"
           >
-            <el-option
-              v-for="zone in zones"
-              :key="zone.id"
-              :label="zone.name"
-              :value="zone.id"
-            >
+            <el-option v-for="zone in zones" :key="zone.id" :label="zone.name" :value="zone.id">
             </el-option>
           </el-select>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose"
-      >
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm"
-      >
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>

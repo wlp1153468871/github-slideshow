@@ -5,9 +5,7 @@
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">项目信息</div>
-          <div slot="content">
-            租户：{{ org.name }}，项目：{{ space.name }}
-          </div>
+          <div slot="content">租户：{{ org.name }}，项目：{{ space.name }}</div>
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section>
@@ -26,14 +24,14 @@
         <dao-setting-item>
           <div slot="label">容量</div>
           <div slot="content">
-            {{formModel.spec.resources.requests.storage | usage_with_units('storage')}}
+            {{ formModel.spec.resources.requests.storage | usage_with_units('storage') }}
           </div>
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">读写模式</div>
-          <div slot="content">{{ [formModel.spec.accessMode] | access_modes  }}</div>
+          <div slot="content">{{ [formModel.spec.accessMode] | access_modes }}</div>
         </dao-setting-item>
       </dao-setting-section>
     </dao-setting-layout>

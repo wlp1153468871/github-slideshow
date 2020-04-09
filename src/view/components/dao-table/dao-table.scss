@@ -1,4 +1,4 @@
-@import "~daoColor";
+@import '~daoColor';
 
 .csp-table-container {
   display: flex;
@@ -14,13 +14,13 @@
     background-color: #fff;
     border-collapse: separate;
     border-spacing: 0;
-    border: 1px solid #E4E7ED;
-    color: #595F69;
-    fill: #595F69;
+    border: 1px solid #e4e7ed;
+    color: #595f69;
+    fill: #595f69;
 
     thead {
       height: $tr-height + 1;
-      background-color: #F6F7F8;
+      background-color: #f6f7f8;
     }
 
     tbody {
@@ -32,7 +32,7 @@
         }
 
         &:hover {
-          background-color: #FBFCFD;
+          background-color: #fbfcfd;
           .dropdown-trigger {
             color: $grey-dark;
             fill: $grey-dark;
@@ -42,8 +42,8 @@
         &.selected {
           background-color: #e8f2ff;
           .dropdown-trigger {
-            color: #9BA3AF;
-            fill: #9BA3AF;
+            color: #9ba3af;
+            fill: #9ba3af;
           }
         }
 
@@ -57,8 +57,8 @@
           color: $grey-light;
           fill: $grey-light;
           &:hover {
-            color: #3890FF;
-            fill: #3890FF;
+            color: #3890ff;
+            fill: #3890ff;
           }
         }
       }
@@ -68,10 +68,11 @@
       height: 34px;
       text-align: left;
 
-      th, td {
+      th,
+      td {
         padding-left: 10px;
         padding-right: 10px;
-        border-bottom: 1px solid #F1F3F6;
+        border-bottom: 1px solid #f1f3f6;
         vertical-align: middle;
       }
 
@@ -84,7 +85,7 @@
       th {
         position: relative;
         font-weight: normal;
-        border-bottom: 1px solid #E4E7ED;
+        border-bottom: 1px solid #e4e7ed;
         cursor: pointer;
         .sort-arrow {
           position: absolute;
@@ -98,7 +99,7 @@
         &::after {
           content: ' ';
           position: absolute;
-          border-right: 1px solid #D5DBE3;
+          border-right: 1px solid #d5dbe3;
           right: 0;
           height: 20px / 34px * 100%;
           top: (1 - (20px / 34px)) / 2 * 100%;

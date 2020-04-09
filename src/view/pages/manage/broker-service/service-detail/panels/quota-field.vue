@@ -47,7 +47,8 @@
       :fields="availableFields"
       @create="addServiceQuota"
       :visible="dialogConfigs.addQuota.visible"
-      @close="dialogConfigs.addQuota.visible = false">
+      @close="dialogConfigs.addQuota.visible = false"
+    >
     </add-quota-field-dialog>
   </dao-setting-layout>
 </template>
@@ -94,15 +95,17 @@ export default {
     },
 
     confirmDeleteQuota(field, index) {
-      this.$tada.confirm({
-        title: '删除配额种类',
-        text: `您确定要删除配额种类 ${field.name} 吗？`,
-      }).then(willDel => {
-        if (willDel) {
-          const quotaField = this.quotaFields[index];
-          this.$emit('remove-quota', quotaField);
-        }
-      });
+      this.$tada
+        .confirm({
+          title: '删除配额种类',
+          text: `您确定要删除配额种类 ${field.name} 吗？`,
+        })
+        .then(willDel => {
+          if (willDel) {
+            const quotaField = this.quotaFields[index];
+            this.$emit('remove-quota', quotaField);
+          }
+        });
     },
   },
 };

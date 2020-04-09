@@ -3,7 +3,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <div class="quota-section">
-          <h4 class="quota-section-head"> {{spaceDescription}}配额审批 </h4>
+          <h4 class="quota-section-head">{{ spaceDescription }}配额审批</h4>
           <quota-approval-table
             :loading="approvalLoading"
             :approvals="quotaApproval"
@@ -15,7 +15,7 @@
           </quota-approval-table>
         </div>
         <div class="quota-section">
-          <h4 class="quota-section-head">{{orgDescription}}配额审批</h4>
+          <h4 class="quota-section-head">{{ orgDescription }}配额审批</h4>
           <quota-approval-table
             :loading="requestLoading"
             @refresh="getOrgApprovals"
@@ -62,19 +62,25 @@ export default {
   methods: {
     getSpaceApprovals() {
       this.approvalLoading = true;
-      spaceService.getResourceQuotaApprovals('approve').then(res => {
-        this.quotaApproval = res;
-      }).finally(() => {
-        this.approvalLoading = false;
-      });
+      spaceService
+        .getResourceQuotaApprovals('approve')
+        .then(res => {
+          this.quotaApproval = res;
+        })
+        .finally(() => {
+          this.approvalLoading = false;
+        });
     },
     getOrgApprovals() {
       this.requestLoading = true;
-      orgService.getResourceQuotaApprovals().then(res => {
-        this.quotaRequests = res;
-      }).finally(() => {
-        this.requestLoading = false;
-      });
+      orgService
+        .getResourceQuotaApprovals()
+        .then(res => {
+          this.quotaRequests = res;
+        })
+        .finally(() => {
+          this.requestLoading = false;
+        });
     },
   },
 };

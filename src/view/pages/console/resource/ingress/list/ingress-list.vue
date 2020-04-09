@@ -11,33 +11,27 @@
             :data="ingressList"
             :filter-method="filterMethod"
             :loading="loadings.table"
-            @refresh="listIngresses">
+            @refresh="listIngresses"
+          >
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
                 v-if="$can('ingress.create', 'ingress')"
-                @click="dialogs.create = true">
+                @click="dialogs.create = true"
+              >
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>
                 </svg>
                 <span class="text">创建</span>
               </button>
             </template>
-            <el-table-column
-              label="名称"
-              sortable
-              :sort-method="sortName"
-              min-width="150">
+            <el-table-column label="名称" sortable :sort-method="sortName" min-width="150">
               <template slot-scope="{ row: ingress }">
-                <el-table-name-cell
-                  :resource="ingress"
-                  routerName="resource.ingresses.detail">
+                <el-table-name-cell :resource="ingress" routerName="resource.ingresses.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>
-            <el-table-column
-              label="域名"
-              min-width="150">
+            <el-table-column label="域名" min-width="150">
               <template slot-scope="{ row: ingress }">
                 {{ ingress.approveStatus === 'approving' ? '-' : formatHost(ingress) }}
               </template>
@@ -47,7 +41,8 @@
               prop="metadata.creationTimestamp"
               sortable
               width="200"
-              :formatter="dateFormat">
+              :formatter="dateFormat"
+            >
             </el-table-column>
           </x-table>
         </div>
@@ -88,8 +83,7 @@ export default {
         table: false,
       },
       ingressList: [],
-      filterMethod: (data, filterKey) =>
-        data.metadata.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.metadata.name.toLowerCase().includes(filterKey),
       dialogs: {
         create: JSON.parse(create),
       },

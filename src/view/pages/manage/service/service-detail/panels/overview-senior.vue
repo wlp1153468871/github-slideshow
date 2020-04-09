@@ -10,11 +10,9 @@
           <dao-tooltip
             content="该服务正在使用，无法删除服务"
             :disabled="!service.length"
-            placement="right">
-            <button
-              @click="confirmRemove()"
-              :disabled="service.length"
-              class="dao-btn red">
+            placement="right"
+          >
+            <button @click="confirmRemove()" :disabled="service.length" class="dao-btn red">
               删除
             </button>
           </dao-tooltip>

@@ -1,9 +1,4 @@
-import axios, {
-  AxiosRequestConfig,
-  AxiosInstance,
-  AxiosPromise,
-  CancelTokenSource,
-} from 'axios';
+import axios, { AxiosRequestConfig, AxiosInstance, AxiosPromise, CancelTokenSource } from 'axios';
 
 class Rest {
   endPointURL: string;
@@ -39,11 +34,7 @@ class Rest {
     return this.rest.get<T>(url, getConfig);
   }
 
-  post<T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig,
-  ): AxiosPromise<T> {
+  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T> {
     return this.rest.post(url, data, config);
   }
 
@@ -54,19 +45,11 @@ class Rest {
     return this.rest.delete(url, delConfig);
   }
 
-  put<T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig,
-  ): AxiosPromise<T> {
+  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T> {
     return this.rest.put(url, data, config);
   }
 
-  patch<T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig,
-  ): AxiosPromise<T> {
+  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T> {
     return this.rest.patch(url, data, config);
   }
 

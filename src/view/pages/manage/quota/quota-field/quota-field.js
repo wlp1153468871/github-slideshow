@@ -50,12 +50,14 @@ export default {
   methods: {
     loadQuotaFields() {
       this.loadings.listQuotaField = true;
-      QuotaService.listQuotaFields().then(list => {
-        this.quotaFields = list;
-        this.rows = list;
-      }).finally(() => {
-        this.loadings.listQuotaField = false;
-      });
+      QuotaService.listQuotaFields()
+        .then(list => {
+          this.quotaFields = list;
+          this.rows = list;
+        })
+        .finally(() => {
+          this.loadings.listQuotaField = false;
+        });
     },
 
     createQuotaField(quotaField) {
@@ -67,23 +69,27 @@ export default {
         this.$tada.error('该唯一标识已存在');
       }
 
-      QuotaService.createQuotaField(quotaField).then(() => {
-        this.$noty.success('添加配额字段成功');
-        this.loadQuotaFields();
-      }).finally(() => {
-        this.dialogConfigs.createQuotaField.visible = false;
-      });
+      QuotaService.createQuotaField(quotaField)
+        .then(() => {
+          this.$noty.success('添加配额字段成功');
+          this.loadQuotaFields();
+        })
+        .finally(() => {
+          this.dialogConfigs.createQuotaField.visible = false;
+        });
     },
 
     updateQuotaField(quotaField) {
       const quotaFieldId = this.findQuotaFileId(quotaField);
       this.quotaField = this.quotaFields.find(q => q.id === quotaFieldId);
-      QuotaService.updateQuotaField(quotaFieldId, quotaField).then(() => {
-        this.$noty.success('修改配额字段成功');
-        this.loadQuotaFields();
-      }).finally(() => {
-        this.dialogConfigs.updateQuotaField.visible = false;
-      });
+      QuotaService.updateQuotaField(quotaFieldId, quotaField)
+        .then(() => {
+          this.$noty.success('修改配额字段成功');
+          this.loadQuotaFields();
+        })
+        .finally(() => {
+          this.dialogConfigs.updateQuotaField.visible = false;
+        });
     },
 
     createQuotaFieldShow() {
@@ -91,26 +97,30 @@ export default {
     },
 
     confirmDeleteQuotaField(item) {
-      this.$tada.confirm({
-        title: '删除配额字段',
-        text: `您确定要删除配额字段 ${item.name} 吗？`,
-      }).then(willDelete => {
-        if (willDelete) {
-          this.removeQuotaField(item);
-        }
-      });
+      this.$tada
+        .confirm({
+          title: '删除配额字段',
+          text: `您确定要删除配额字段 ${item.name} 吗？`,
+        })
+        .then(willDelete => {
+          if (willDelete) {
+            this.removeQuotaField(item);
+          }
+        });
     },
 
     removeQuotaField(item) {
       const quotaFieldId = this.findQuotaFileId(item);
-      return QuotaService.deleteQuotaField(quotaFieldId).then(() => {
-        const index = this.quotaFields.findIndex(v => v.id === quotaFieldId);
-        this.quotaFields.splice(index, 1);
-        this.loadQuotaFields();
-        this.$noty.success('删除成功');
-      }).catch(() => {
-        this.$noty.error('删除失败');
-      });
+      return QuotaService.deleteQuotaField(quotaFieldId)
+        .then(() => {
+          const index = this.quotaFields.findIndex(v => v.id === quotaFieldId);
+          this.quotaFields.splice(index, 1);
+          this.loadQuotaFields();
+          this.$noty.success('删除成功');
+        })
+        .catch(() => {
+          this.$noty.error('删除失败');
+        });
     },
 
     openUpdateQuotaFieldDialog(item) {

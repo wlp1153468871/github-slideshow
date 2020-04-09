@@ -1,12 +1,6 @@
 <template>
-  <formly-form
-    class="formly-array-item"
-    :form="form"
-    :model="model"
-    :fields="field">
-    <button
-      class="formly-array-btn dao-btn blue mini has-icon"
-      @click="removeItem">
+  <formly-form class="formly-array-item" :form="form" :model="model" :fields="field">
+    <button class="formly-array-btn dao-btn blue mini has-icon" @click="removeItem">
       <svg class="icon">
         <use xlink:href="#icon_trash"></use>
       </svg>

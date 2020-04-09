@@ -18,7 +18,8 @@
         :default-active="defaultActiveMenu"
         :default-openeds="defaultOpens"
         :router="true"
-        :collapse="isCollapse">
+        :collapse="isCollapse"
+      >
         <el-submenu index="account">
           <template slot="title">
             <svg class="icon">
@@ -26,18 +27,14 @@
             </svg>
             <span slot="title">账号管理</span>
           </template>
-          <el-menu-item
-            index="profile.self"
-            :route="{ name: 'profile.self' }">
+          <el-menu-item index="profile.self" :route="{ name: 'profile.self' }">
             <template slot="title">个人中心</template>
           </el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
 
-    <div
-      class="collapse-btn"
-      @click="toggleSideBar">
+    <div class="collapse-btn" @click="toggleSideBar">
       <i class="el-icon-d-arrow-left"></i>
     </div>
   </div>

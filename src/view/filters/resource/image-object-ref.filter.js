@@ -1,10 +1,6 @@
 import { isEmpty } from 'lodash';
 
-export default function imageObjectRef(
-  objectRef,
-  nsIfUnspecified,
-  shortOutput,
-) {
+export default function imageObjectRef(objectRef, nsIfUnspecified, shortOutput) {
   if (!objectRef) {
     return '';
   }

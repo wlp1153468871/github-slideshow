@@ -2,9 +2,7 @@
   <div class="instance-overview">
     <div class="info-column">
       <!-- 基本信息 -->
-      <daox-info-table
-        title="基本信息"
-        :list="basicInformations">
+      <daox-info-table title="基本信息" :list="basicInformations">
         <template #self>
           <router-link
             :to="{
@@ -12,17 +10,15 @@
               query: { tab: 'app', app: instance.name, id: instance.id },
             }"
             tag="a"
-          >点击查看</router-link>
+            >点击查看</router-link
+          >
         </template>
-
       </daox-info-table>
     </div>
     <div class="detail-column">
       <daox-info-table title="操作记录">
         <template slot="operation">
-          <a
-            href="javascript:void(0)"
-            @click="gotoJobsTab">
+          <a href="javascript:void(0)" @click="gotoJobsTab">
             查看更多 >
           </a>
         </template>

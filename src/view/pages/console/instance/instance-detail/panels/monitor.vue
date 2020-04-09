@@ -1,11 +1,7 @@
 <template>
   <div id="monitor">
     <template>
-      <el-form
-        :inline="true"
-        class="demo-form-inline form-panel"
-        :model="filters"
-      >
+      <el-form :inline="true" class="demo-form-inline form-panel" :model="filters">
         <el-form-item label="">
           <slot name="prefix">
             <i class="el-icon-time timeRangeIcon"></i>
@@ -21,16 +17,13 @@
             <el-option
               :value="t"
               :label="t"
-              v-for= "(t, index) in timeRanges"
-              :key="index"></el-option>
+              v-for="(t, index) in timeRanges"
+              :key="index"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
-      <iframe
-        class="monitor-frame"
-        :src="url"
-        frameborder="0">
-      </iframe>
+      <iframe class="monitor-frame" :src="url" frameborder="0"> </iframe>
     </template>
   </div>
 </template>
@@ -88,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '@/view/pages/console/monitor/_monitor.scss';
+@import '@/view/pages/console/monitor/_monitor.scss';
 </style>

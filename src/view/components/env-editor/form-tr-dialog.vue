@@ -1,16 +1,13 @@
 <template>
   <div>
     <h2 style="margin: 10px 5px;">
-      {{name}}
-      <a
-class="sec-toggle"
-v-if="isSec"
-@click="toggleSecHid">{{secHid ? '显示' : '隐藏'}}</a>
+      {{ name }}
+      <a class="sec-toggle" v-if="isSec" @click="toggleSecHid">{{ secHid ? '显示' : '隐藏' }}</a>
     </h2>
     <table class="dao-table kv">
       <tbody v-if="haskv">
         <tr v-for="(v, k) in kvs" :key="k">
-          <td>{{k}}</td>
+          <td>{{ k }}</td>
           <td>
             <template v-if="isSec">
               <code v-if="secHid">******</code>
@@ -21,7 +18,9 @@ v-if="isSec"
         </tr>
       </tbody>
       <tbody v-else>
-        <tr style="text-align: center">无</tr>
+        <tr style="text-align: center;">
+          无
+        </tr>
       </tbody>
     </table>
   </div>

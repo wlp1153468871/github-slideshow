@@ -1,10 +1,6 @@
 <template>
   <div class="resource-link">
-    <span
-      v-if="showKind"
-      class="resource-icon"
-      :class="[resource.icon]"
-      title="Secret">
+    <span v-if="showKind" class="resource-icon" :class="[resource.icon]" title="Secret">
       {{ kind[0] }}
     </span>
     <router-link :to="resource.route">

@@ -27,5 +27,5 @@
 </template>
 <script src="./reports.js"></script>
 <style scoped lang="scss">
-  @import './reports.scss';
+@import './reports.scss';
 </style>

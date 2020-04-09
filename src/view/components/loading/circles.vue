@@ -1,5 +1,5 @@
 <template>
-  <div class="loader" :class="{ 'space-loader': position==='space-view' }">
+  <div class="loader" :class="{ 'space-loader': position === 'space-view' }">
     <div class="ball-triangle-path">
       <div></div>
       <div></div>

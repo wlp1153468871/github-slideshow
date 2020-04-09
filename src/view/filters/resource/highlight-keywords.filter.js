@@ -1,13 +1,5 @@
 // Returns HTML wrapping the matching words in a `mark` tag.
-import {
-  escape,
-  escapeRegExp,
-  isRegExp,
-  get,
-  isEmpty,
-  isString,
-  uniq,
-} from 'lodash';
+import { escape, escapeRegExp, isRegExp, get, isEmpty, isString, uniq } from 'lodash';
 
 const generateKeywords = filterText => {
   if (!filterText) {

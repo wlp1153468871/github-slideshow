@@ -26,9 +26,7 @@ class BrokerService {
   }
 
   getBrokerLogs(zoneId: string, brokerId: string) {
-    return this.api.get(
-      `/zones/${zoneId}/brokers/${brokerId}/broker-service/sync_log`,
-    );
+    return this.api.get(`/zones/${zoneId}/brokers/${brokerId}/broker-service/sync_log`);
   }
 }
 

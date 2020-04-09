@@ -8,10 +8,8 @@
       <div class="info-detail">
         <span class="detail-key">镜像仓库密码</span>
         <span class="detail-value">{{ password }}</span>
-        <button
-          class="dao-btn blue"
-          @click="passwordVisible = !passwordVisible">
-          {{ passwordVisible? '隐藏' : '查看' }}
+        <button class="dao-btn blue" @click="passwordVisible = !passwordVisible">
+          {{ passwordVisible ? '隐藏' : '查看' }}
         </button>
       </div>
     </template>

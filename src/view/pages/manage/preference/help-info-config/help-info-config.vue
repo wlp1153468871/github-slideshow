@@ -9,26 +9,17 @@
         <dao-setting-item>
           <div slot="label">{{ key }}</div>
           <div slot="content">
-            <dao-input
-              :disabled="loading"
-              v-model="helpURLDict[key]">
-            </dao-input>
+            <dao-input :disabled="loading" v-model="helpURLDict[key]"> </dao-input>
           </div>
         </dao-setting-item>
       </dao-setting-section>
 
       <dao-setting-section>
-        <button
-          class="dao-btn blue"
-          :disabled="loading"
-          @click="onSave">
+        <button class="dao-btn blue" :disabled="loading" @click="onSave">
           <dao-spin v-if="loading" color="white"></dao-spin>
           保存
         </button>
-        <button
-          class="dao-btn"
-          :disabled="loading"
-          @click="onReset">
+        <button class="dao-btn" :disabled="loading" @click="onReset">
           重置
         </button>
       </dao-setting-section>

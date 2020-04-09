@@ -60,9 +60,9 @@
           >
             <dao-option
               v-for="item in findRelatedOptionsByName(
-                    formatedSecrets,
-                    env.valueFrom.secretKeyRef.name
-                  )"
+                formatedSecrets,
+                env.valueFrom.secretKeyRef.name,
+              )"
               :key="item.value"
               :value="item.value"
               :label="item.label"
@@ -98,9 +98,9 @@
           <dao-option-group>
             <dao-option
               v-for="item in findRelatedOptionsByName(
-                      formatedConfigMaps,
-                      env.valueFrom.configMapKeyRef.name
-                    )"
+                formatedConfigMaps,
+                env.valueFrom.configMapKeyRef.name,
+              )"
               :key="item.value"
               :value="item.value"
               :label="item.label"

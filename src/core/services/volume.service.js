@@ -45,9 +45,7 @@ class VolumeService {
     });
   }
 
-  updateByYaml({
-    space = this.space, zone = this.zone, name, data,
-  }) {
+  updateByYaml({ space = this.space, zone = this.zone, name, data }) {
     return this.api.put(`/spaces/${space}/volumes/${name}/yaml`, data, {
       params: { zone },
     });

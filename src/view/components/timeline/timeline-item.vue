@@ -3,7 +3,7 @@
     <div :class="['left', stateClass]">
       <slot name="left"></slot>
     </div>
-    <div class="right" :class="{errorClass: isError}">
+    <div class="right" :class="{ errorClass: isError }">
       <slot>
         <div>
           <div class="operation">
@@ -14,10 +14,7 @@
           </div>
         </div>
         <div class="btn-group">
-          <a
-            v-if="btnShow"
-            class="blue"
-            @click="handleClick()">
+          <a v-if="btnShow" class="blue" @click="handleClick()">
             {{ btnText }}
           </a>
         </div>

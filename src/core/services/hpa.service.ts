@@ -31,10 +31,7 @@ class HPAService {
 
   filterHPA(hpaResources: any[], kind: string, name: string) {
     return filter(hpaResources, hpa => {
-      return (
-        hpa.spec.scaleTargetRef.kind === kind &&
-        hpa.spec.scaleTargetRef.name === name
-      );
+      return hpa.spec.scaleTargetRef.kind === kind && hpa.spec.scaleTargetRef.name === name;
     });
   }
 
@@ -52,15 +49,11 @@ class HPAService {
     } = { name: '', data: {} },
   ) {
     if (!name) return Promise.reject();
-    return this.api.put(
-      `spaces/${space}/horizontalpodautoscalers/${name}`,
-      data,
-      {
-        params: {
-          zone,
-        },
+    return this.api.put(`spaces/${space}/horizontalpodautoscalers/${name}`, data, {
+      params: {
+        zone,
       },
-    );
+    });
   }
 
   delete(
@@ -77,10 +70,7 @@ class HPAService {
     if (!name) {
       return Promise.reject(new Error('no hpa name'));
     }
-    return this.api.delete(
-      `/spaces/${space}/horizontalpodautoscalers/${name}`,
-      { zone },
-    );
+    return this.api.delete(`/spaces/${space}/horizontalpodautoscalers/${name}`, { zone });
   }
 }
 

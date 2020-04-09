@@ -28,5 +28,4 @@ export default {
       el[ctx].unbind();
     }
   },
-
 };

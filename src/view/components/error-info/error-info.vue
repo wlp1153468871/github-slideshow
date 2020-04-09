@@ -1,6 +1,6 @@
 <template>
   <div class="error-info">
-    <img src="~@/assets/images/empty.png" alt=""/>
+    <img src="~@/assets/images/empty.png" alt="" />
     <p class="error-info-text">请求数据失败，请刷新重试！</p>
   </div>
 </template>

@@ -12,7 +12,8 @@
           :id="to.id ? to.id : null"
           :option="to.option"
           :with-notice="true"
-          v-model="model[field.key]">
+          v-model="model[field.key]"
+        >
         </dao-switch>
       </div>
       <p slot="content-helper">

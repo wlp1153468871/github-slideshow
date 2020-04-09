@@ -2,9 +2,7 @@
   <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
-        <span
-          class="go-back"
-          @click="$router.go(-1)">
+        <span class="go-back" @click="$router.go(-1)">
           <svg class="icon">
             <use xlink:href="#icon_caret-left"></use>
           </svg>
@@ -16,7 +14,6 @@
 
     <div class="container">
       <div class="dao-view-content">
-
         <config-panel
           v-show="STEPS.CONFIG === stepIndex"
           ref="configPanel"
@@ -33,7 +30,8 @@
           :service-name="service.name"
           :purchasing="loadings.purchasing"
           @prev="prev(STEPS.OVERVIEW)"
-          @next="purchase">
+          @next="purchase"
+        >
         </overview-panel>
 
         <!-- 成功 -->
@@ -42,7 +40,8 @@
           :instance="instance"
           :error="instanceError"
           :service-id="service.id"
-          @prev="prev(STEPS.FINISH)">
+          @prev="prev(STEPS.FINISH)"
+        >
         </finish-panel>
       </div>
     </div>
@@ -57,13 +56,13 @@
       @prev="prev"
       @next="next"
       @purchase="purchase"
-      @changeChargingType="changeChargingType">
+      @changeChargingType="changeChargingType"
+    >
     </checkout-footer-panel>
   </div>
 </template>
 
-<script src="./checkout.js">
-</script>
+<script src="./checkout.js"></script>
 
 <style lang="scss">
 @import './checkout';

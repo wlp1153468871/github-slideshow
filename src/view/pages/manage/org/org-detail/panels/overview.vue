@@ -7,8 +7,9 @@
             class="dao-list-item"
             v-for="tab in TABS"
             :key="tab"
-            :class="{ 'active' : content === tab }"
-            @click="content = tab">
+            :class="{ active: content === tab }"
+            @click="content = tab"
+          >
             <div>
               {{ tab }}
               <span class="icon">
@@ -20,16 +21,8 @@
       </div>
     </div>
     <div class="dao-view-content with-sidebar">
-      <basic-panel
-        v-if="content === TABS.BASIC"
-        :org="org"
-        @save="updateOrg">
-      </basic-panel>
-      <senior-panel
-        v-if="content === TABS.SENIOR"
-        @delete="deleteOrg()"
-        :users="users"
-        :org="org">
+      <basic-panel v-if="content === TABS.BASIC" :org="org" @save="updateOrg"> </basic-panel>
+      <senior-panel v-if="content === TABS.SENIOR" @delete="deleteOrg()" :users="users" :org="org">
       </senior-panel>
     </div>
   </div>

@@ -11,9 +11,9 @@
         <dao-setting-item>
           <div slot="label">CPU</div>
           <div slot="content-helper">
-            {{spaceDescription}}下可用区配额总和:{{cpu.subHard}} Core
+            {{ spaceDescription }}下可用区配额总和:{{ cpu.subHard }} Core
             <br />
-            当前配额: {{cpu.hard}} Core
+            当前配额: {{ cpu.hard }} Core
           </div>
           <div slot="content">
             <dao-input
@@ -35,9 +35,9 @@
         <dao-setting-item>
           <div slot="label">内存</div>
           <div slot="content-helper">
-            {{spaceDescription}}下可用区配额总和：{{memory.subHard}}G
+            {{ spaceDescription }}下可用区配额总和：{{ memory.subHard }}G
             <br />
-            当前配额： {{memory.hard}}G
+            当前配额： {{ memory.hard }}G
           </div>
           <div slot="content">
             <dao-input
@@ -59,9 +59,9 @@
         <dao-setting-item>
           <div slot="label">存储</div>
           <div slot="content-helper">
-            {{spaceDescription}}下可用区配额总和:{{storage.subHard}}G
+            {{ spaceDescription }}下可用区配额总和:{{ storage.subHard }}G
             <br />
-            当前配额: {{storage.hard}}G
+            当前配额: {{ storage.hard }}G
           </div>
           <div slot="content">
             <dao-input
@@ -80,27 +80,21 @@
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section>
-        <p
-          style="color: red"
-          v-if="this.warning.length > 0"
-        >
-          检测到该{{spaceDescription}}下的【{{this.warning.join('、')}}】可用区配额总和大于{{spaceDescription}}的当前配额，
-          可能是底层错误修改了配额，请更新可用区或{{spaceDescription}}配额以保证可用区配额的总和小于{{spaceDescription}}配额。
+        <p style="color: red;" v-if="this.warning.length > 0">
+          检测到该{{ spaceDescription }}下的【{{ this.warning.join('、') }}】可用区配额总和大于{{
+            spaceDescription
+          }}的当前配额， 可能是底层错误修改了配额，请更新可用区或{{
+            spaceDescription
+          }}配额以保证可用区配额的总和小于{{ spaceDescription }}配额。
         </p>
       </dao-setting-section>
     </div>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose"
-      >
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        @click="onSubmit"
-      >
+      <button class="dao-btn blue" @click="onSubmit">
         更新
       </button>
     </div>

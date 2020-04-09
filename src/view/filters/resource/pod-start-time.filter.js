@@ -7,15 +7,11 @@ export default function podStartTimeFilter(pod) {
 
   containerStatuses.forEach(containerStatus => {
     const status =
-      get(containerStatus, 'state.running') ||
-      get(containerStatus, 'state.terminated');
+      get(containerStatus, 'state.running') || get(containerStatus, 'state.terminated');
     if (!status) {
       return;
     }
-    if (
-      !earliestStartTime ||
-      dayjs(status.startedAt).isBefore(earliestStartTime)
-    ) {
+    if (!earliestStartTime || dayjs(status.startedAt).isBefore(earliestStartTime)) {
       earliestStartTime = status.startedAt;
     }
   });

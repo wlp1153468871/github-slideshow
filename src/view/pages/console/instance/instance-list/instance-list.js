@@ -6,11 +6,7 @@ import InstanceService from '@/core/services/instance.service';
 
 import ErrorInfo from '@/view/mixins/error-info';
 import isApprove from '@/core/utils/is-approve';
-import {
-  INSTANCE_STATUS,
-  STATUS_COLOR,
-  SERVICE_STATUS,
-} from '@/core/constants/constants';
+import { INSTANCE_STATUS, STATUS_COLOR, SERVICE_STATUS } from '@/core/constants/constants';
 
 import planDescMixin from '@/view/mixins/plan-desc';
 
@@ -39,8 +35,7 @@ export default {
       loadings: {
         instances: false,
       },
-      filterMethod: (data, filterKey) =>
-        data.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.name.toLowerCase().includes(filterKey),
       other: {
         status: (_, item) => {
           const { status } = item;
@@ -200,12 +195,9 @@ export default {
 
     disableDelete(item) {
       return (
-        isApprove(item.status) ||
-        !this.brokerService.instances_deletable ||
-        this.isZoneSyncing
+        isApprove(item.status) || !this.brokerService.instances_deletable || this.isZoneSyncing
       );
     },
-
   },
 
   watch: {

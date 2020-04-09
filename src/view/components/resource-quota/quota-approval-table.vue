@@ -5,31 +5,17 @@
       :filter-method="filterMethod"
       :loading="loading"
       small
-      :search-placeholder="showSpaceCol ?
-        `搜索 申请人、${this.orgDescription}、${spaceDescription}`
-        :
-        '搜索 申请人'"
+      :search-placeholder="
+        showSpaceCol ? `搜索 申请人、${this.orgDescription}、${spaceDescription}` : '搜索 申请人'
+      "
       @refresh="onRefresh"
     >
+      <el-table-column prop="applicant_name" label="申请者"> </el-table-column>
 
-      <el-table-column
-        prop="applicant_name"
-        label="申请者"
-      >
+      <el-table-column prop="space_name" :label="spaceDescription" v-if="showSpaceCol">
       </el-table-column>
 
-      <el-table-column
-        prop="space_name"
-        :label="spaceDescription"
-        v-if="showSpaceCol"
-      >
-      </el-table-column>
-
-      <el-table-column
-        prop="created_at"
-        label="提交时间"
-        width="150"
-      >
+      <el-table-column prop="created_at" label="提交时间" width="150">
         <template #default="{ row: approval }">
           <div>
             {{ approval.created_at | unix_date('YYYY/MM/DD') }}
@@ -40,30 +26,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        label="原有配额"
-        width="400"
-      >
+      <el-table-column label="原有配额" width="400">
         <template #default="{ row: approval }">
           {{ approval.current_hard | quotaHardTableRow }}
         </template>
       </el-table-column>
 
-      <el-table-column
-        label="申请配额"
-        width="400"
-      >
+      <el-table-column label="申请配额" width="400">
         <template #default="{ row: approval }">
           {{ approval.apply_hard | quotaHardTableRow }}
         </template>
       </el-table-column>
 
-      <el-table-column
-        prop="remark"
-        label="备注"
-        show-overflow-tooltip
-      >
-      </el-table-column>
+      <el-table-column prop="remark" label="备注" show-overflow-tooltip> </el-table-column>
 
       <el-table-column label="审批状态">
         <template #default="{ row: approval }">
@@ -71,11 +46,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        fixed="right"
-        :align="'center'"
-        label="操作"
-      >
+      <el-table-column fixed="right" :align="'center'" label="操作">
         <template #default="{ row: approval }">
           <button
             class="dao-btn btn-sm mini blue"
@@ -122,7 +93,6 @@
       @close="dialogConfigs.visible = false"
     >
     </quota-approval-dialog>
-
   </div>
 </template>
 

@@ -1,19 +1,8 @@
 <template>
   <div>
-    <dao-table-view
-      :rows="rows"
-      :config="tConfig"
-      @refresh="loadSpaceZones"
-      :loading="loading"
-    >
-      <div
-        slot="tool"
-        class="dao-table-view-left-bar"
-      >
-        <button
-          class="dao-btn white has-icon"
-          @click="openAddZoneDialog()"
-        >
+    <dao-table-view :rows="rows" :config="tConfig" @refresh="loadSpaceZones" :loading="loading">
+      <div slot="tool" class="dao-table-view-left-bar">
+        <button class="dao-btn white has-icon" @click="openAddZoneDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>

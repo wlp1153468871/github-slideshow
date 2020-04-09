@@ -32,19 +32,21 @@ export default {
       if (this.searchKey === '') {
         this.currentRules = this.rules;
       } else {
-        this.currentRules = this.rules
-          .filter(rule => {
-            const key = this.searchKey.toLowerCase();
-            return rule.name.toLowerCase().includes(key)
-              || rule.metricName.toLowerCase().includes(key);
-          });
+        this.currentRules = this.rules.filter(rule => {
+          const key = this.searchKey.toLowerCase();
+          return (
+            rule.name.toLowerCase().includes(key) || rule.metricName.toLowerCase().includes(key)
+          );
+        });
       }
     },
     async onClickRemove({ id, name }) {
-      if (await this.$tada.confirm({
-        title: '删除规则',
-        text: `您确定要删除 规则 ${name} 吗？`,
-      })) {
+      if (
+        await this.$tada.confirm({
+          title: '删除规则',
+          text: `您确定要删除 规则 ${name} 吗？`,
+        })
+      ) {
         await this.removeRule(id);
         this.$noty.success('成功删除规则');
         this.$emit('updateRulesLayer');

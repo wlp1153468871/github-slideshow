@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户名</div>
@@ -18,7 +19,8 @@
             icon-inside
             :message="veeErrors.first('realname')"
             :status="veeErrors.has('realname') ? 'error' : ''"
-            data-vv-as="姓名">
+            data-vv-as="姓名"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -36,7 +38,8 @@
             :message="veeErrors.first('email')"
             :status="veeErrors.has('email') ? 'error' : ''"
             v-validate="'required|email'"
-            data-vv-as="邮箱">
+            data-vv-as="邮箱"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -54,7 +57,8 @@
             :message="veeErrors.first('phone')"
             :status="veeErrors.has('phone') ? 'error' : ''"
             v-validate="'required|real_phone'"
-            data-vv-as="手机">
+            data-vv-as="手机"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -63,10 +67,7 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select
-            v-model="role"
-            placeholder="请选择"
-            >
+          <dao-select v-model="role" placeholder="请选择">
             <!-- <dao-option
               :value="PLATFORM_ROLE.MEMBER"
               :label="PLATFORM_ROLE.MEMBER | platform_role">
@@ -75,11 +76,7 @@
               :value="PLATFORM_ROLE.ADMIN"
               :label="PLATFORM_ROLE.ADMIN | platform_role">
             </dao-option> -->
-            <dao-option
-              v-for="(r, index) in platformroles"
-              :key="index"
-              :value="r"
-              :label="r.name">
+            <dao-option v-for="(r, index) in platformroles" :key="index" :value="r" :label="r.name">
             </dao-option>
           </dao-select>
         </div>
@@ -99,7 +96,8 @@
             icon-inside
             :message="veeErrors.first('pwd')"
             :status="veeErrors.has('pwd') ? 'error' : ''"
-            data-vv-as="新密码">
+            data-vv-as="新密码"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -112,11 +110,12 @@
             name="confirmpwd"
             type="password"
             autocomplete="new-password"
-            v-validate="{exclude_spaces: true, required: true, min:5, equal_to: user.pwd }"
+            v-validate="{ exclude_spaces: true, required: true, min: 5, equal_to: user.pwd }"
             icon-inside
             :message="veeErrors.first('confirmpwd')"
             :status="veeErrors.has('confirmpwd') ? 'error' : ''"
-            data-vv-as="确认密码">
+            data-vv-as="确认密码"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -133,15 +132,14 @@
             v-validate="'max:100'"
             icon-inside
             :message="veeErrors.first('company_name')"
-            :status="veeErrors.has('company_name') ? 'error' : ''">
+            :status="veeErrors.has('company_name') ? 'error' : ''"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
       <save-button
@@ -149,7 +147,8 @@
         text="创建"
         :saving="loading"
         :disabled="loading || isValidForm"
-        @click="onConfirm()">
+        @click="onConfirm()"
+      >
       </save-button>
     </div>
   </dao-dialog>
@@ -183,13 +182,15 @@ export default {
   },
   computed: {
     isValidForm() {
-      return this.user.username === ''
-        || this.user.email === ''
-        || this.role === ''
-        || this.user.pwd === ''
-        || this.user.confirmpwd === ''
-        || this.user.phone === ''
-        || this.veeErrors.any();
+      return (
+        this.user.username === '' ||
+        this.user.email === '' ||
+        this.role === '' ||
+        this.user.pwd === '' ||
+        this.user.confirmpwd === '' ||
+        this.user.phone === '' ||
+        this.veeErrors.any()
+      );
     },
   },
   methods: {

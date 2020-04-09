@@ -15,9 +15,7 @@ const STEPS = {
   FINISH: '2-2',
 };
 
-const SECRET_TYPES = [
-  { value: 'Opaque' },
-];
+const SECRET_TYPES = [{ value: 'Opaque' }];
 
 export default {
   name: 'deploySecret',
@@ -59,7 +57,6 @@ export default {
     valid() {
       return !this.veeErrors.any() && this.secretName !== '';
     },
-
   },
   methods: {
     editData(data) {

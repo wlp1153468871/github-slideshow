@@ -1,10 +1,6 @@
 <template>
   <div>
-    <dao-table-view
-      :rows="rows"
-      :config="tConfig"
-      :loading="loading">
-    </dao-table-view>
+    <dao-table-view :rows="rows" :config="tConfig" :loading="loading"> </dao-table-view>
   </div>
 </template>
 

@@ -4,11 +4,8 @@
       <div class="table-toolbar-left">
         <slot name="operation"></slot>
       </div>
-      <div
-        class="table-toolbar-right"
-        v-if="filterMethod || showRefresh"
-      >
-        <div style="display: flex;justify-content: center;align-items: center;">
+      <div class="table-toolbar-right" v-if="filterMethod || showRefresh">
+        <div style="display: flex; justify-content: center; align-items: center;">
           <!-- <dao-input
             search
             v-model="filterKey"
@@ -61,7 +58,7 @@
       v-if="paginate"
       background
       :small="small"
-      :page-sizes="[10,30,50]"
+      :page-sizes="[10, 30, 50]"
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
       :layout="small ? `prev, pager, next` : 'sizes, prev, pager, next'"
@@ -71,5 +68,4 @@
   </div>
 </template>
 
-<script src="./_x-table.js">
-</script>
+<script src="./_x-table.js"></script>

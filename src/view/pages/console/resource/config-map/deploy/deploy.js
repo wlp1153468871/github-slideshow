@@ -128,10 +128,8 @@ export default {
       }
     },
 
-    gotoDetail() {
-    },
+    gotoDetail() {},
 
-    gotoList() {
-    },
+    gotoList() {},
   },
 };

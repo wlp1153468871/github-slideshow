@@ -102,7 +102,9 @@ export default {
         return [];
       }
       const podsMap = items.map(item => {
-        const { metadata: { name } } = item;
+        const {
+          metadata: { name },
+        } = item;
         return {
           name,
         };
@@ -114,7 +116,9 @@ export default {
     },
     async getAllPodsAndContainers() {
       let list;
-      const { instance: { name } } = this.filters;
+      const {
+        instance: { name },
+      } = this.filters;
       switch (this.filters.kind) {
         case MONITOR_KIND.DEPLOYMENT:
           list = await DeploymentService.getPods(this.space.id, this.zone.id, name);

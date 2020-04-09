@@ -1,9 +1,5 @@
 <template>
-  <dao-dialog
-    :visible.sync="isShow"
-    @closed="onClosed"
-    header="下载文件">
-
+  <dao-dialog :visible.sync="isShow" @closed="onClosed" header="下载文件">
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">请输入路径</div>
@@ -15,23 +11,18 @@
             :message="veeErrors.first('path')"
             :status="veeErrors.has('path') ? 'error' : ''"
             data-vv-as="路径"
-            v-model="path">
+            v-model="path"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="isShow = false">
+      <button class="dao-btn ghost" @click="isShow = false">
         取消
       </button>
-      <save-button
-        class="dao-btn blue"
-        text="确定"
-        :saving="isWaiting"
-        @click="onSaveFile">
+      <save-button class="dao-btn blue" text="确定" :saving="isWaiting" @click="onSaveFile">
       </save-button>
     </div>
   </dao-dialog>

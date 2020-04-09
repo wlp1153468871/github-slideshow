@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @before-open="init"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户名</div>
@@ -17,9 +18,7 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select
-            placeholder="无权限"
-            v-model="role">
+          <dao-select placeholder="无权限" v-model="role">
             <!-- <dao-option
               :value="PLATFORM_ROLE.ADMIN"
               :label="PLATFORM_ROLE.ADMIN | platform_role">
@@ -34,22 +33,17 @@
               :key="index"
               :value="r"
               :label="r.name"
-              ></dao-option>
+            ></dao-option>
           </dao-select>
         </div>
       </dao-setting-item>
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="formValidate"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="formValidate" @click="onConfirm">
         确定
       </button>
     </div>
@@ -88,10 +82,14 @@ export default {
   },
   methods: {
     onConfirm() {
-      this.$emit('update', {
-        id: this.user.id,
-        role: 'platform_admin',
-      }, this.role);
+      this.$emit(
+        'update',
+        {
+          id: this.user.id,
+          role: 'platform_admin',
+        },
+        this.role,
+      );
     },
     init() {
       if (this.user.roles) {

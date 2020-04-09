@@ -1,7 +1,5 @@
 <template>
-  <dao-tooltip
-    :content="text"
-    :placement="placement">
+  <dao-tooltip :content="text" :placement="placement">
     <svg class="icon">
       <use xlink:href="#icon_info-line"></use>
     </svg>

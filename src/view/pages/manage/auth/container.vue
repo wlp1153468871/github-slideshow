@@ -6,23 +6,14 @@
       </ul> -->
       <ul class="dao-tab-nav dao-tab-nav-tab">
         <template v-for="tab in TABS">
-          <router-link
-            :key="tab.name"
-            class="dao-tab-nav-item"
-            tag="li"
-            exact
-            :to="tab.to"
-          >
+          <router-link :key="tab.name" class="dao-tab-nav-item" tag="li" exact :to="tab.to">
             {{ tab.name }}
           </router-link>
         </template>
       </ul>
       <ul class="dao-tab-nav"></ul>
     </div>
-    <div
-      class="dao-tab__body"
-      style="margin-top: 15px;"
-    >
+    <div class="dao-tab__body" style="margin-top: 15px;">
       <router-view></router-view>
     </div>
   </div>

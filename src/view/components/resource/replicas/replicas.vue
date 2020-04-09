@@ -1,5 +1,5 @@
 <template>
-  <span>{{spec}} replica<span v-if="spec !== 1">s</span></span>
+  <span>{{ spec }} replica<span v-if="spec !== 1">s</span></span>
 </template>
 
 <script>

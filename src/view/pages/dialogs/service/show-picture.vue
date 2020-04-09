@@ -3,12 +3,10 @@
     :config="config"
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <div>
-      <div
-        class="show-picture"
-        v-bg-image="pic">
-      </div>
+      <div class="show-picture" v-bg-image="pic"></div>
     </div>
     <div slot="footer">
       <button class="dao-btn" @click="onClose">关闭</button>

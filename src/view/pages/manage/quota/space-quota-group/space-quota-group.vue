@@ -6,11 +6,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <!-- 用户列表 -->
-        <dao-table-view
-          :rows="rows"
-          :config="tConfig"
-          :loading="loadings.orgs"
-          @refresh="loadOrgs">
+        <dao-table-view :rows="rows" :config="tConfig" :loading="loadings.orgs" @refresh="loadOrgs">
         </dao-table-view>
       </div>
     </div>

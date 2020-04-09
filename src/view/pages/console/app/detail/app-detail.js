@@ -205,8 +205,7 @@ export default {
     },
 
     toggleYamlDialog() {
-      this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml
-        .visible;
+      this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml.visible;
     },
 
     gotoJobsTab() {

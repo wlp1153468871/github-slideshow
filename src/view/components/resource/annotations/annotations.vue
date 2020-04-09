@@ -1,31 +1,25 @@
 <template>
   <div class="annotations">
-    <p
-      v-if="annotations"
-      class="mar-bottom-sm"
-      :class="{'mar-bottom-xl': !expandAnnotations}">
-      <button
-        class="dao-btn mini blue"
-        @click="toggleAnnotations">
-        {{expandAnnotations ? 'Hide Annotations' : 'Show Annotations'}}
+    <p v-if="annotations" class="mar-bottom-sm" :class="{ 'mar-bottom-xl': !expandAnnotations }">
+      <button class="dao-btn mini blue" @click="toggleAnnotations">
+        {{ expandAnnotations ? 'Hide Annotations' : 'Show Annotations' }}
       </button>
     </p>
     <div v-if="expandAnnotations && annotations" class="table-responsive scroll-shadows-horizontal">
       <table class="table table-bordered key-value-table">
         <tbody>
-        <tr
-          :key="annotationKey"
-          v-for="(annotationKey, annotationValue) in annotations">
-          <td>{{annotationKey}}</td>
-          <td>
-            <truncate-long-text
-              :content="annotationValue | prettify_json"
-              :limit="500"
-              :newline-limit="20"
-              :expandable="true">
-            </truncate-long-text>
-          </td>
-        </tr>
+          <tr :key="annotationKey" v-for="(annotationKey, annotationValue) in annotations">
+            <td>{{ annotationKey }}</td>
+            <td>
+              <truncate-long-text
+                :content="annotationValue | prettify_json"
+                :limit="500"
+                :newline-limit="20"
+                :expandable="true"
+              >
+              </truncate-long-text>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

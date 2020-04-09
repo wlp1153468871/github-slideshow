@@ -3,4 +3,3 @@ function isRealName(name) {
 }
 
 export default isRealName;
-

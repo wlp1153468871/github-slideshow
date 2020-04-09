@@ -1,15 +1,14 @@
 <template>
   <span>
-    <span v-if="resource.isNew">
-      {{resource.metadata.name}} (新建审批中)
-    </span>
+    <span v-if="resource.isNew"> {{ resource.metadata.name }} (新建审批中) </span>
     <router-link
       v-else
       :to="{
         name: routerName,
-        params: { name: resource.metadata.name }
-      }">
-      {{resource.metadata.name}} {{resource.approveStatus === 'approving' ? '(审批中)' : ''}}
+        params: { name: resource.metadata.name },
+      }"
+    >
+      {{ resource.metadata.name }} {{ resource.approveStatus === 'approving' ? '(审批中)' : '' }}
     </router-link>
   </span>
 </template>

@@ -2,13 +2,10 @@
   <div>
     <circle-loading v-if="loadings.configMap"></circle-loading>
     <template v-if="!loadings.configMap">
-
       <resource-header :resource="resource">
-        <template #creationTime>
-          创建于{{ configMap.metadata.creationTimestamp | date }}
-        </template>
+        <template #creationTime> 创建于{{ configMap.metadata.creationTimestamp | date }} </template>
         <template #status v-if="status === 'approving'">
-          <labels highLight :labels="{'状态': '审批中'}"></labels>
+          <labels highLight :labels="{ 状态: '审批中' }"></labels>
         </template>
 
         <template #labels>
@@ -30,7 +27,6 @@
             </button>
 
             <dao-dropdown-menu slot="list">
-
               <dao-dropdown-item
                 v-if="$can('configMap.update', 'configMap')"
                 @click="dialogConfigs.yamlEdit = true"
@@ -51,7 +47,7 @@
           <button
             class="dao-btn csp-table-update-btn"
             @click="loadConfigMapDetail"
-            style="margin-left: 10px"
+            style="margin-left: 10px;"
           >
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
@@ -61,17 +57,10 @@
       </resource-header>
 
       <el-tabs v-model="activeName">
-        <el-tab-pane
-          :label="TABS.OVERVIEW"
-          :name="TABS.OVERVIEW"
-        >
-
-          <d-alert
-            v-if="objrefs.length"
-            :show-icon="true"
-          >
+        <el-tab-pane :label="TABS.OVERVIEW" :name="TABS.OVERVIEW">
+          <d-alert v-if="objrefs.length" :show-icon="true">
             <template #message>
-              <div style="display: flex">
+              <div style="display: flex;">
                 该 {{ kind }} 正在被资源
                 <resource-link
                   :key="index"
@@ -85,18 +74,10 @@
             </template>
           </d-alert>
 
-          <labels-table
-            :data="data"
-            :dialog-title="CONFIG_TITLE_TYPE.DATA"
-            @edit="editData"
-          >
+          <labels-table :data="data" :dialog-title="CONFIG_TITLE_TYPE.DATA" @edit="editData">
           </labels-table>
 
-          <labels-table
-            :data="labels"
-            :dialog-title="CONFIG_TITLE_TYPE.LABEL"
-            @edit="editLabel"
-          >
+          <labels-table :data="labels" :dialog-title="CONFIG_TITLE_TYPE.LABEL" @edit="editLabel">
           </labels-table>
 
           <labels-table
@@ -105,18 +86,11 @@
             @edit="editAnnotations"
           >
           </labels-table>
-
         </el-tab-pane>
-        <el-tab-pane
-          lazy
-          :label="TABS.EVENT"
-          :name="TABS.EVENT"
-        >
-
+        <el-tab-pane lazy :label="TABS.EVENT" :name="TABS.EVENT">
           <event-panel :jobs="events" v-if="events.length"></event-panel>
 
           <empty-state v-else></empty-state>
-
         </el-tab-pane>
       </el-tabs>
     </template>
@@ -130,5 +104,4 @@
   </div>
 </template>
 
-<script src="./_config-map-detail.js">
-</script>
+<script src="./_config-map-detail.js"></script>

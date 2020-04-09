@@ -14,20 +14,9 @@
           >
           </dao-input>
         </div>
-        <el-table
-          :data="currentRules"
-          v-loading="loadings.rules"
-          @selection-change="onChooseRules"
-        >
-          <el-table-column
-            type="selection"
-            width="55">
-          </el-table-column>
-          <el-table-column
-            prop="ruleName"
-            label="规则名"
-            v-slot="{ row, $index }"
-          >
+        <el-table :data="currentRules" v-loading="loadings.rules" @selection-change="onChooseRules">
+          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column prop="ruleName" label="规则名" v-slot="{ row, $index }">
             <dao-input
               block
               icon-inside
@@ -38,20 +27,13 @@
               data-vv-as="规则名"
               v-validate="row.choosed ? 'required|max:50' : false"
               :message="row.choosed ? veeErrors.first(`ruleName-${$index}`) : ''"
-              :status="veeErrors.has(`ruleName-${$index}`) && row.choosed ? 'error' : ''">
+              :status="veeErrors.has(`ruleName-${$index}`) && row.choosed ? 'error' : ''"
             >
+              >
             </dao-input>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="指标名"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="description"
-            label="告警内容"
-            v-slot="{ row, $index }"
-          >
+          <el-table-column prop="name" label="指标名"> </el-table-column>
+          <el-table-column prop="description" label="告警内容" v-slot="{ row, $index }">
             <dao-input
               block
               icon-inside
@@ -62,15 +44,12 @@
               data-vv-as="告警内容"
               v-validate="row.choosed ? 'required|max:255' : false"
               :message="row.choosed ? veeErrors.first(`desc-${$index}`) : ''"
-              :status="veeErrors.has(`desc-${$index}`) ? 'error' : ''">
+              :status="veeErrors.has(`desc-${$index}`) ? 'error' : ''"
+            >
               >
             </dao-input>
           </el-table-column>
-          <el-table-column
-            prop="threshold"
-            label="阈值"
-            v-slot="{ row, $index }"
-          >
+          <el-table-column prop="threshold" label="阈值" v-slot="{ row, $index }">
             <el-select
               v-model="row.threshold[0]"
               size="small"
@@ -81,7 +60,8 @@
                 v-for="ts in rulesStatic.threshold"
                 :key="ts"
                 :label="ts | threshold"
-                :value="ts">
+                :value="ts"
+              >
               </el-option>
             </el-select>
             <dao-input
@@ -96,14 +76,10 @@
               v-validate="row.choosed ? 'required|numeric' : false"
               :message="row.choosed ? veeErrors.first(`threshold-${$index}`) : ''"
               :status="veeErrors.has(`threshold-${$index}`) ? 'error' : ''"
-             >
+            >
             </dao-input>
           </el-table-column>
-          <el-table-column
-            prop="for"
-            label="持续时间"
-            v-slot="{ row, $index }"
-          >
+          <el-table-column prop="for" label="持续时间" v-slot="{ row, $index }">
             <dao-input
               block
               icon-inside
@@ -115,7 +91,8 @@
               data-vv-as="持续时间"
               v-validate="'required|numeric'"
               :message="row.choosed ? veeErrors.first(`duration-${$index}`) : ''"
-              :status="veeErrors.has(`duration-${$index}`) ? 'error' : ''">
+              :status="veeErrors.has(`duration-${$index}`) ? 'error' : ''"
+            >
               >
             </dao-input>
             <el-select
@@ -124,12 +101,7 @@
               class="atomSelector"
               :disabled="!row.choosed"
             >
-              <el-option
-                v-for="f in rulesStatic.for"
-                :key="f"
-                :label="f"
-                :value="f">
-              </el-option>
+              <el-option v-for="f in rulesStatic.for" :key="f" :label="f" :value="f"> </el-option>
             </el-select>
           </el-table-column>
         </el-table>
@@ -139,35 +111,20 @@
         <div class="title-line">
           <label for="">收件人</label>
         </div>
-        <el-table
-          :data="chooseReceiverInfo"
-          v-loading="loadings.receivers"
-        >
-          <el-table-column
-            prop="username"
-            label="用户名"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="email"
-            label="用户邮箱"
-          >
-          </el-table-column>
-          <el-table-column
-            label="操作"
-            v-slot="{ row }"
-          >
+        <el-table :data="chooseReceiverInfo" v-loading="loadings.receivers">
+          <el-table-column prop="username" label="用户名"> </el-table-column>
+          <el-table-column prop="email" label="用户邮箱"> </el-table-column>
+          <el-table-column label="操作" v-slot="{ row }">
             <button
               @click="onDeleteReceiver(row.email)"
               class="dao-btn mini red btn-sm"
               type="text"
-            >删除</button>
+            >
+              删除
+            </button>
           </el-table-column>
         </el-table>
-        <button
-          class="dao-btn blue addReceiverBtn"
-          @click="onAddReceiver"
-        >
+        <button class="dao-btn blue addReceiverBtn" @click="onAddReceiver">
           增加收件人
         </button>
       </section>
@@ -176,11 +133,7 @@
         <div class="title-line">
           <label for="">监控全部实例</label>
         </div>
-        <dao-switch
-          v-model="instancesMonitor.monitorAll"
-          size="sm"
-        >
-        </dao-switch>
+        <dao-switch v-model="instancesMonitor.monitorAll" size="sm"> </dao-switch>
         <instances-table
           v-show="!instancesMonitor.monitorAll"
           :originInstances="instancesMonitor.instances"
@@ -196,12 +149,8 @@
       @confirm="onConfirmReceivers"
       @closed="onCloseReceivers"
     >
-      <el-form
-        class="receiver-dialog"
-      >
-        <el-form-item
-          label="收件人"
-        >
+      <el-form class="receiver-dialog">
+        <el-form-item label="收件人">
           <el-select
             filterable
             v-model="receiverCandidates"
@@ -224,5 +173,5 @@
 </template>
 <script src="./step-one.js"></script>
 <style lang="scss">
-  @import './step-one';
+@import './step-one';
 </style>

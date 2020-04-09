@@ -2,10 +2,7 @@
   <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
-        <a
-          class="go-back"
-          href="javascript:void(0)"
-          @click="$router.go(-1)">
+        <a class="go-back" href="javascript:void(0)" @click="$router.go(-1)">
           <svg class="icon">
             <use xlink:href="#icon_caret-left"></use>
           </svg>
@@ -17,23 +14,18 @@
 
     <div class="page-content container">
       <div class="dao-view-content">
-        <config-panel
-          v-show="step === STEPS.CONFIG"
-          v-model="route"
-          ref="configPanel">
+        <config-panel v-show="step === STEPS.CONFIG" v-model="route" ref="configPanel">
         </config-panel>
 
-        <overview-panel
-          v-if="step === STEPS.OVERVIEW"
-          :route="route">
-        </overview-panel>
+        <overview-panel v-if="step === STEPS.OVERVIEW" :route="route"> </overview-panel>
 
         <finish-panel
           v-if="step === STEPS.FINISH"
           :route="instance"
           :error="instanceError"
           :is-creating="isCreating"
-          @prev="prev(STEPS.FINISH)">
+          @prev="prev(STEPS.FINISH)"
+        >
         </finish-panel>
       </div>
     </div>
@@ -44,12 +36,10 @@
       :is-creating="isCreating"
       @prev="prev"
       @next="next"
-      @deploy="deploy">
+      @deploy="deploy"
+    >
     </footer-panel>
-
-
   </div>
 </template>
 
-<script src="./_deploy.js">
-</script>
+<script src="./_deploy.js"></script>

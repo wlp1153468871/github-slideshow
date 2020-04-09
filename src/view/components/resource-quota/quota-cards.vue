@@ -1,13 +1,8 @@
 <template>
   <ul class="quota-cards">
     <div class="action">
-      <slot name="action">
-      </slot>
-      <button
-        class="dao-btn"
-        style="margin-left: 10px;"
-        @click="$emit('refresh')"
-      >
+      <slot name="action"> </slot>
+      <button class="dao-btn" style="margin-left: 10px;" @click="$emit('refresh')">
         <svg class="icon">
           <use xlink:href="#icon_update"></use>
         </svg>

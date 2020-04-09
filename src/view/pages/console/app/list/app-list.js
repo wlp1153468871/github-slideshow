@@ -87,9 +87,7 @@ export default {
     },
 
     yamlDeployEnabled() {
-      return this.name
-      && this.version
-      && !this.veeErrors.any();
+      return this.name && this.version && !this.veeErrors.any();
     },
   },
 
@@ -219,8 +217,7 @@ export default {
     },
 
     toggleYamlDialog() {
-      this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml
-        .visible;
+      this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml.visible;
     },
 
     renderStatus(status) {

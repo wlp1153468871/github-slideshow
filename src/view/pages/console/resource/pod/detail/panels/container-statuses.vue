@@ -1,16 +1,13 @@
 <template>
   <div>
-    <div
-      v-for="(containerStatus, index) in pod.status.containerStatuses"
-      :key="index">
-      <h4>Container {{containerStatus.name}}</h4>
+    <div v-for="(containerStatus, index) in pod.status.containerStatuses" :key="index">
+      <h4>Container {{ containerStatus.name }}</h4>
 
       <dl class="dl-horizontal">
         <div class="dl-item">
           <dt>State:</dt>
           <dd>
-            <kubernetes-object-describe-container-state
-              :container-state="containerStatus.state">
+            <kubernetes-object-describe-container-state :container-state="containerStatus.state">
             </kubernetes-object-describe-container-state>
           </dd>
         </div>
@@ -18,17 +15,18 @@
           <dt>Last State</dt>
           <dd>
             <kubernetes-object-describe-container-state
-              :container-state="containerStatus.lastState">
+              :container-state="containerStatus.lastState"
+            >
             </kubernetes-object-describe-container-state>
           </dd>
         </div>
         <div class="dl-item">
           <dt>Ready:</dt>
-          <dd>{{containerStatus.ready}}</dd>
+          <dd>{{ containerStatus.ready }}</dd>
         </div>
         <div class="dl-item">
           <dt>Restart Count:</dt>
-          <dd>{{containerStatus.restartCount}}</dd>
+          <dd>{{ containerStatus.restartCount }}</dd>
         </div>
       </dl>
     </div>

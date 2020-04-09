@@ -16,7 +16,8 @@
             v-validate="'required|max:20'"
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
-            v-model="ssoModel.name">
+            v-model="ssoModel.name"
+          >
           </dao-input>
         </div>
       </dao-setting-section>
@@ -31,7 +32,8 @@
             v-validate="'required|url'"
             :message="veeErrors.first('login_url')"
             :status="veeErrors.has('login_url') ? 'error' : ''"
-            v-model="ssoModel.login_url">
+            v-model="ssoModel.login_url"
+          >
           </dao-input>
         </template>
       </dao-setting-section>
@@ -46,7 +48,8 @@
             v-validate="'required|url'"
             :message="veeErrors.first('logout_url')"
             :status="veeErrors.has('logout_url') ? 'error' : ''"
-            v-model="ssoModel.logout_url">
+            v-model="ssoModel.logout_url"
+          >
           </dao-input>
         </template>
       </dao-setting-section>
@@ -60,23 +63,18 @@
             data-vv-as="描述"
             :message="veeErrors.first('description')"
             :status="veeErrors.has('description') ? 'error' : ''"
-            v-model="ssoModel.description">
+            v-model="ssoModel.description"
+          >
           </dao-input>
         </template>
       </dao-setting-section>
     </dao-setting-layout>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="isShow = false">
+      <button class="dao-btn ghost" @click="isShow = false">
         取消
       </button>
-      <save-button
-        class="blue"
-        :text="confirmText"
-        :loading="loading"
-        @click="onConfirm">
+      <save-button class="blue" :text="confirmText" :loading="loading" @click="onConfirm">
       </save-button>
     </div>
   </dao-dialog>

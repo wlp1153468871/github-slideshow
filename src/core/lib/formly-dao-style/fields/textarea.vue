@@ -6,7 +6,8 @@
       rows="3"
       :disabled="to.disabled"
       :placeholder="getAtts(to.atts, 'placeholder')"
-      v-model="model[field.key]">
+      v-model="model[field.key]"
+    >
     </textarea>
   </field-item>
 </template>

@@ -19,10 +19,9 @@
       @keydown="onKeydown"
       :append-to-body="false"
       v-formly-atts="to.atts"
-      v-formly-input-type="to.inputType">
-      <span
-        v-if="to.unit"
-        slot="append">
+      v-formly-input-type="to.inputType"
+    >
+      <span v-if="to.unit" slot="append">
         {{ to.unit }}
       </span>
     </dao-input>

@@ -1,19 +1,10 @@
 <template>
   <div class="login-layout">
-    <div
-      class="bg-img"
-      :style="{backgroundImage: `url('${loginBackground}')`}"
-    ></div>
+    <div class="bg-img" :style="{ backgroundImage: `url('${loginBackground}')` }"></div>
     <div class="section-logo">
-      <logo-container
-        :target="'login'"
-        :inverse="true"
-      ></logo-container>
+      <logo-container :target="'login'" :inverse="true"></logo-container>
     </div>
-    <div
-      class="login-container"
-      :class="{'shake': !loginFail}"
-    >
+    <div class="login-container" :class="{ shake: !loginFail }">
       <h2 class="title">
         {{ title }}
       </h2>
@@ -71,13 +62,12 @@
           v-for="item in ssoList"
           :key="item.key"
           class="dao-btn ghost sso-btn"
-          style="margin:10px 0"
+          style="margin: 10px 0;"
           :href="item.login_url"
         >
           {{ item.name }}
         </a>
       </div>
-
     </div>
   </div>
 </template>
@@ -114,9 +104,7 @@ export default {
     ...mapGetters(['theme']),
     ...mapState(['ssoList', 'localLogin']),
     isFromValid() {
-      return this.user.username
-        && this.user.password
-        && !this.veeErrors.any();
+      return this.user.username && this.user.password && !this.veeErrors.any();
     },
     title() {
       return this.theme.productName || 'DaoCloud Service Platform';
@@ -129,13 +117,10 @@ export default {
       this.toConsolePage();
     }
 
-    Object.assign(
-      this.sso,
-      {
-        ssoToken: this.$route.query.sso_token,
-        identityProviderId: this.$route.query.identity_provider_id,
-      },
-    );
+    Object.assign(this.sso, {
+      ssoToken: this.$route.query.sso_token,
+      identityProviderId: this.$route.query.identity_provider_id,
+    });
     if (this.sso.ssoToken && this.sso.identityProviderId) {
       this.autoLogin();
     }
@@ -182,15 +167,17 @@ export default {
     },
 
     toConsolePage() {
-      this.$router.push({
-        name: 'console.gateway',
-      }, () => {
-        this.loadings.login = false;
-      });
+      this.$router.push(
+        {
+          name: 'console.gateway',
+        },
+        () => {
+          this.loadings.login = false;
+        },
+      );
     },
   },
 };
-
 </script>
 
 <style lang="scss">

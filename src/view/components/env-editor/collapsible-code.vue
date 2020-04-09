@@ -1,14 +1,17 @@
 <template>
   <span>
     <template v-if="!longEnough">
-      <code>{{trimedCode}}</code><br/>
+      <code>{{ trimedCode }}</code
+      ><br />
     </template>
     <template v-else-if="!collapsed">
-      <code>{{trimedCode}}</code><br/>
+      <code>{{ trimedCode }}</code
+      ><br />
       <a @click="toggleCollapse">收起</a>
     </template>
     <template v-else>
-      <code>{{trimedCode | codeValueCollapsed}}</code><br/>
+      <code>{{ trimedCode | codeValueCollapsed }}</code
+      ><br />
       <a @click="toggleCollapse">展开</a>
     </template>
   </span>

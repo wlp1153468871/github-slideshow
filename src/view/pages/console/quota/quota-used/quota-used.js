@@ -57,9 +57,7 @@ export default {
       const { quota_usages } = space;
       const memory = find(quotaFields, { code: MEMORY });
       return quotaFields.map(field => {
-        const {
-          name, unit, id, code,
-        } = field;
+        const { name, unit, id, code } = field;
         const usage = quota_usages.find(x => x.quota_field_id === field.id);
         const groupFieldLimits = quotaGroups.map(group => {
           const { quota_group_limits = [] } = group;
@@ -174,11 +172,7 @@ export default {
 
     applyRequest(request) {
       this.dialogConfigs.isConfirming = true;
-      QuotaService.updateSpaceQuotaApproval(
-        this.spaceId,
-        request.approvalId,
-        request.data,
-      )
+      QuotaService.updateSpaceQuotaApproval(this.spaceId, request.approvalId, request.data)
         .then(() => {
           this.$noty.success('配额修改成功');
           this.$emit('update-quota');

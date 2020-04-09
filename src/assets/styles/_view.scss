@@ -1,4 +1,4 @@
-@import "~daoColor";
+@import '~daoColor';
 // 注：这个文件的代码都是从原项目抄过来的
 // 各个详情页的header部分
 $dao-view-margin-h: 20px;
@@ -65,7 +65,7 @@ $dao-view-margin-v: 15px;
         }
       }
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         left: 0;
         height: 100%;

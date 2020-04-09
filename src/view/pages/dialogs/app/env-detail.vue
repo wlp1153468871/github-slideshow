@@ -4,11 +4,10 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-layout>
-      <dao-setting-section
-        v-for="(config, index) in configs"
-        :key="index">
+      <dao-setting-section v-for="(config, index) in configs" :key="index">
         <dao-setting-item>
           <div slot="label">{{ config[0] }}</div>
           <div slot="content">
@@ -18,9 +17,7 @@
       </dao-setting-section>
     </dao-setting-layout>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
     </div>
@@ -41,15 +38,19 @@ export default {
   computed: {
     configs() {
       const configMap = Vue.filter('config_map');
-      const isEnv = [
-        ENV_SOURCE.DEFAULT,
-        ENV_SOURCE.CONFIG,
-        ENV_SOURCE.SECRET,
-      ].includes(this.row.type);
+      const isEnv = [ENV_SOURCE.DEFAULT, ENV_SOURCE.CONFIG, ENV_SOURCE.SECRET].includes(
+        this.row.type,
+      );
       if (isEnv) {
-        return [['键', this.row.name], ['值', configMap(this.row)]];
+        return [
+          ['键', this.row.name],
+          ['值', configMap(this.row)],
+        ];
       }
-      return [['文件名称', this.row.name], ['前缀', this.row.value]];
+      return [
+        ['文件名称', this.row.name],
+        ['前缀', this.row.value],
+      ];
     },
   },
 };

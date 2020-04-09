@@ -1,12 +1,11 @@
 <template>
-  <div
-    class="table-pagination"
-    v-if="display">
+  <div class="table-pagination" v-if="display">
     <div class="dao-btn-group">
       <button
         class="pagi-btn dao-btn btn-sm has-icon white"
         @click="$emit('prev')"
-        :disabled="disablePrev">
+        :disabled="disablePrev"
+      >
         <svg class="icon">
           <use xlink:href="#icon_caret-left"></use>
         </svg>
@@ -14,7 +13,8 @@
       <button
         class="pagi-btn dao-btn btn-sm has-icon white"
         @click="$emit('next')"
-        :disabled="disableNext">
+        :disabled="disableNext"
+      >
         <svg class="icon">
           <use xlink:href="#icon_caret-right"></use>
         </svg>
@@ -82,7 +82,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~daoColor";
+@import '~daoColor';
 
 .table-pagination {
   margin-top: 10px;

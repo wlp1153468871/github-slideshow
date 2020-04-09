@@ -4,18 +4,19 @@
     header="挂载 Config Map"
     :visible.sync="isShow"
     @before-open="init"
-    @closed="onClosed">
+    @closed="onClosed"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">类型</div>
         <div slot="content">
-          <dao-radio-group
-            @change.native="onTypeChanged">
+          <dao-radio-group @change.native="onTypeChanged">
             <dao-radio
               v-model="formModel.type"
               :label="item.value"
               v-for="(item, index) in types"
-              :key="index">
+              :key="index"
+            >
               {{ item.label }}
             </dao-radio>
           </dao-radio-group>
@@ -31,12 +32,14 @@
             with-search
             @change="onFileNameChanged"
             v-model="formModel.source"
-            placeholder="name">
+            placeholder="name"
+          >
             <dao-option
               v-for="(item, index) in files"
               :key="index"
               :value="item.metadata.name"
-              :label="item.metadata.name">
+              :label="item.metadata.name"
+            >
             </dao-option>
           </dao-select>
         </div>
@@ -56,7 +59,8 @@
             :message="veeErrors.first('mountpath')"
             :status="veeErrors.has('mountpath') ? 'error' : ''"
             v-validate="'required'"
-            v-model="formModel.mountpath">
+            v-model="formModel.mountpath"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -70,7 +74,8 @@
             with-notice
             size="sm"
             :option="{ on: '可写', off: '只读' }"
-            v-model="formModel.readonly">
+            v-model="formModel.readonly"
+          >
           </dao-switch>
         </div>
       </dao-setting-item>
@@ -80,25 +85,17 @@
       <dao-setting-item>
         <div slot="label">增加子路径</div>
         <div slot="content">
-          <dao-editable-table
-            :config="config"
-            v-model="formModel.items"
-            @valid="validChange">
+          <dao-editable-table :config="config" v-model="formModel.items" @valid="validChange">
           </dao-editable-table>
         </div>
       </dao-setting-item>
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!valid"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!valid" @click="onConfirm">
         添加
       </button>
     </div>
@@ -229,10 +226,9 @@ export default {
     },
 
     valid() {
-      return this.formModel.mountpath
-        && !this.veeErrors.any()
-        && this.tableValid
-        && this.isValidSubpath;
+      return (
+        this.formModel.mountpath && !this.veeErrors.any() && this.tableValid && this.isValidSubpath
+      );
     },
 
     isValidSubpath() {

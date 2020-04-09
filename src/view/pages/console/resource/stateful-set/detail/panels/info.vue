@@ -2,13 +2,17 @@
   <div class="row">
     <div class="col-md-6">
       <div class="panel-resource">
-        <h3>基本信息</h3>
+        <h3>
+          基本信息
+        </h3>
         <div class="panel-resource-content content-bordered">
           <div class="dl-horizontal dl-bordered">
             <dl>
               <div class="dl-item">
-                <dt>状态（Status）：</dt>
-                <dd>{{deploymentStatusFormat(statefulset) || "暂无"}}</dd>
+                <dt>
+                  状态（Status）：
+                </dt>
+                <dd>{{ deploymentStatusFormat(statefulset) || '暂无' }}</dd>
               </div>
               <div class="dl-item">
                 <dt>实例数:</dt>
@@ -16,7 +20,7 @@
                   <inline-extend
                     :updateable="$can('statefulSet.update', 'statefulSet')"
                     :data="statefulset"
-                    @extend="(replicas) => $emit('extend', replicas)"
+                    @extend="replicas => $emit('extend', replicas)"
                   ></inline-extend>
                 </dd>
               </div>
@@ -51,8 +55,10 @@
         <h3>存储卷</h3>
         <div class="panel-resource-content">
           <volumes
-            v-if="statefulset.spec.template.spec.volumes
-              && statefulset.spec.template.spec.volumes.length"
+            v-if="
+              statefulset.spec.template.spec.volumes &&
+              statefulset.spec.template.spec.volumes.length
+            "
             :volumes="statefulset.spec.template.spec.volumes"
           ></volumes>
           <div v-else>暂无</div>
@@ -71,10 +77,10 @@ export default {
   components: { Volumes },
 
   props: {
-    statefulset: { type: Object, default: () => ({ }) },
+    statefulset: { type: Object, default: () => ({}) },
     projectName: { type: String },
-    imagesByDockerReference: { type: Object, default: () => ({ }) },
-    builds: { type: Object, default: () => ({ }) },
+    imagesByDockerReference: { type: Object, default: () => ({}) },
+    builds: { type: Object, default: () => ({}) },
     detailed: { type: Boolean, default: false },
   },
 

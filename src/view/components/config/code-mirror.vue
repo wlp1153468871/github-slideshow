@@ -1,9 +1,5 @@
 <template>
-  <codemirror
-    v-model="code"
-    :options="cmOptions"
-    @ready="onCmReady">
-  </codemirror>
+  <codemirror v-model="code" :options="cmOptions" @ready="onCmReady"> </codemirror>
 </template>
 
 <script>

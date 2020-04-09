@@ -7,7 +7,8 @@
       :container-class="containerClass"
       @opened="onOpened"
       @before-close="onBeforeClose"
-      @closed="onClosed">
+      @closed="onClosed"
+    >
       <slot></slot>
       <div slot="footer" class="property-dialog-footer">
         <div class="error-message" @click="goToErrorTab">
@@ -16,10 +17,7 @@
         <div>
           <slot name="footer">
             <button class="dao-btn ghost" @click="onCancel">取消</button>
-            <save-button
-              class="dao-btn blue"
-              @click="onConfirm"
-              :saving="isSaving">
+            <save-button class="dao-btn blue" @click="onConfirm" :saving="isSaving">
               确定
             </save-button>
           </slot>
@@ -65,8 +63,8 @@ export default {
 };
 </script>
 
-<style lang='scss'>
-@import "~daoColor";
+<style lang="scss">
+@import '~daoColor';
 $error-color: generate-color($red, -3);
 
 .property-dialog {

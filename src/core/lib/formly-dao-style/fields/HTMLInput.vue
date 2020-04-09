@@ -21,7 +21,6 @@ export default {
 
   mixins: [baseField],
 
-
   props: {
     type: {
       type: String,
@@ -31,7 +30,7 @@ export default {
 
   computed: {
     inputType() {
-      const { attrs = ({}) } = this.field;
+      const { attrs = {} } = this.field;
       if (attrs.inputType) {
         return attrs.inputType;
       }
