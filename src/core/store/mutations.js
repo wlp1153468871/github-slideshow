@@ -149,15 +149,12 @@ export const getters = {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
 
-  isPlatformAdmin(state, getters) {
-    return getters.menus.indexOf('platfrom.manager') === -1;
+  isPlatformAdmin(state) {
+    return state.platformMenus.some(m => m === 'platfrom.manage');
   },
 
   isOrganizationAdmin(state, getters) {
-    return (
-      getters.isPlatformAdmin ||
-      getValue(state, 'orgAction.organization', []).indexOf('organization.manage') > -1
-    );
+    return getters.isPlatformAdmin || state.orgMenus.some(m => m === 'organization.manage');
   },
 
   isSpaceAdmin(state, getters) {
