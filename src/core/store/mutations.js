@@ -149,8 +149,8 @@ export const getters = {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
 
-  isPlatformAdmin(state) {
-    return getValue(state, 'platformAction.platform', []).indexOf('platform.manage') > -1;
+  isPlatformAdmin(state, getters) {
+    return getters.menus.indexOf('platfrom.manager') === -1;
   },
 
   isOrganizationAdmin(state, getters) {

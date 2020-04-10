@@ -62,6 +62,16 @@ export default {
     if (!config.headers.Authorization && AuthService.getToken()) {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
+    const { spaceId, orgId, zoneId } = store.getters;
+    if (spaceId) {
+      config.headers.AuthSpaceId = spaceId;
+    }
+    if (orgId) {
+      config.headers.AuthOrgId = orgId;
+    }
+    if (zoneId) {
+      config.headers.AuthZoneId = zoneId;
+    }
     saveRefreshTime();
     return config;
   },

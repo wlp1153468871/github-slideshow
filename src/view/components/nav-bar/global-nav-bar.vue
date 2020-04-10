@@ -169,7 +169,7 @@
           </el-select>
         </div>
       </template>
-      <div class="goto-new-tab" v-if="$can('platform.manage', 'platform')">
+      <div class="goto-new-tab" v-if="isPlatformAdmin">
         <router-link v-if="!isConsoleView" :to="{ name: 'console' }">
           <span>退出管理员视图</span>
         </router-link>
