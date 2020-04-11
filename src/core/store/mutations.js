@@ -150,7 +150,7 @@ export const getters = {
   },
 
   isPlatformAdmin(state) {
-    return state.platformMenus.some(m => m === 'platfrom.manage');
+    return state.platformMenus.some(m => m === 'platform.manage');
   },
 
   isOrganizationAdmin(state, getters) {
