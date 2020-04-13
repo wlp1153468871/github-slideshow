@@ -64,11 +64,11 @@ export default {
     }
     const { spaceId, orgId, zoneId } = store.getters;
     if (spaceId || orgId || zoneId) {
-      config.headers.AuthorizationScope = {
+      config.headers.AuthorizationScope = JSON.stringify({
         space_id: spaceId,
         organization_id: orgId,
         zone_id: zoneId,
-      };
+      });
     }
     saveRefreshTime();
     return config;
