@@ -2,6 +2,7 @@
   <div class="dao-nav-menu" :class="{ collapsed: isCollapse }">
     <div class="menus">
       <el-menu
+        v-if="false"
         class="side-bar-menu"
         background-color="#373B41"
         router
@@ -69,6 +70,57 @@
           <span slot="title">设置</span>
         </el-menu-item>
       </el-menu>
+
+      <el-menu
+        class="side-bar-menu"
+        background-color="#373B41"
+        router
+        text-color="#e4e7ed"
+        :default-active="defaultActiveMenu"
+        :collapse="isCollapse"
+        :default-openeds="defaultOpeneds"
+      >
+        <template v-for="(item, index) in menus">
+          <template v-if="item.meta.type === 'submenu'">
+            <el-submenu :index="item.name" v-if="!hiddenMenu(item)" :key="index">
+              <template slot="title">
+                <svg class="icon">
+                  <use :xlink:href="item.meta.icon"></use>
+                </svg>
+                <span>{{ item.meta.title }}</span>
+              </template>
+              <template v-for="(menuItem, index) in item.children">
+                <el-menu-item
+                  :key="index"
+                  :route="{ name: menuItem.name }"
+                  :index="menuItem.name"
+                  v-if="!hiddenMenu(menuItem)"
+                >
+                  <svg class="icon">
+                    <use :xlink:href="menuItem.meta.icon"></use>
+                  </svg>
+                  <span>
+                    <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
+                  </span>
+                </el-menu-item>
+              </template>
+            </el-submenu>
+          </template>
+          <template v-else>
+            <el-menu-item
+              :key="index"
+              v-if="!hiddenMenu(item)"
+              :route="{ name: item.name }"
+              :index="item.name"
+            >
+              <svg class="icon">
+                <use :xlink:href="item.meta.icon"></use>
+              </svg>
+              <span slot="title">{{ item.meta.title }}</span>
+            </el-menu-item>
+          </template>
+        </template>
+      </el-menu>
     </div>
 
     <div class="collapse-btn" @click="toggleSideBar">
@@ -79,6 +131,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import menus from '@/view/router/manage.js';
+import hasPermission from '@/core/utils/hasPermission';
+
 import * as types from '../../../core/store/mutation-types';
 
 export default {
@@ -86,6 +141,7 @@ export default {
 
   data() {
     return {
+      menus,
       defaultOpeneds: ['account-permissions', 'global-setting'],
       selectedOptions: [],
     };
@@ -113,6 +169,10 @@ export default {
 
     toggleSideBar() {
       this.$store.commit(types.IS_COLLAPSE, !this.isCollapse);
+    },
+
+    hiddenMenu(menu) {
+      return (menu.meta && menu.meta.hidden) || !hasPermission(menu);
     },
   },
 };

@@ -14,7 +14,11 @@
           style="width: 100%;"
         >
           <template #operation>
-            <button class="dao-btn has-icon blue" @click="openCreateUserDialog()">
+            <button
+              class="dao-btn has-icon blue"
+              v-if="$can('platform.user.create', 'platform.user')"
+              @click="openCreateUserDialog()"
+            >
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
@@ -72,7 +76,11 @@
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
-                    v-if="user.username === userName && canEdit"
+                    v-if="
+                      user.username === userName &&
+                        canEdit &&
+                        $can('platform.user.update', 'platform.user')
+                    "
                   >
                     <dao-tooltip content="无法对自己操作" placement="top">
                       <span style="color: #bbb;">设置</span>
@@ -80,15 +88,25 @@
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-else
-                    :disabled="user.username === userName && canEdit"
+                    :disabled="
+                      user.username === userName &&
+                        canEdit &&
+                        $can('platform.user.update', 'platform.user')
+                    "
                     command="edit"
                   >
                     设置
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="user.is_frozen" command="enable">
+                  <el-dropdown-item
+                    v-if="user.is_frozen && $can('platform.user.freeze', 'platform.user')"
+                    command="enable"
+                  >
                     激活
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="!user.is_frozen" command="disable">
+                  <el-dropdown-item
+                    v-if="!user.is_frozen && $can('platform.user.freeze', 'platform.user')"
+                    command="disable"
+                  >
                     冻结
                   </el-dropdown-item>
                 </el-dropdown-menu>
