@@ -40,7 +40,15 @@ export default {
   methods: {
     loadCatalog() {
       this.loading = true;
-      CatalogService.getCatalog(this.zone.id)
+      const AuthorizationScope = JSON.stringify({
+        zone_id: this.zone.id,
+      });
+      const config = {
+        headers: {
+          AuthorizationScope,
+        },
+      };
+      CatalogService.getCatalog(this.zone.id, config)
         .then(data => {
           this.zone = data;
           if (this.selectedBroker) {
