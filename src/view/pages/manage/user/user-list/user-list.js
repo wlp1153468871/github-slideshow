@@ -41,8 +41,12 @@ export default {
   computed: {
     ...mapState({
       self: 'user',
+      platformMenus: 'platformMenus',
     }),
     ...mapGetters(['userName']),
+    canEdit() {
+      return this.platformMenus.some(m => m === 'platform.manage');
+    },
   },
 
   methods: {
