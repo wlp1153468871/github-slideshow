@@ -41,6 +41,7 @@ export default {
     loadCatalog() {
       this.loading = true;
       const AuthorizationScope = JSON.stringify({
+        platform_id: 'dsp',
         zone_id: this.zone.id,
       });
       const config = {
