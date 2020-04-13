@@ -194,7 +194,7 @@
               </svg>
               <span class="text">应用管理</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="gotoOrg" v-if="$can('organization.manage', 'organization')">
+            <dao-dropdown-item @click="gotoOrg" v-if="isOrganizationAdmin">
               <svg class="icon">
                 <use xlink:href="#icon_city"></use>
               </svg>
