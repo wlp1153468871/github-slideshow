@@ -63,14 +63,12 @@ export default {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
     const { spaceId, orgId, zoneId } = store.getters;
-    if (spaceId) {
-      config.headers.AuthSpaceId = spaceId;
-    }
-    if (orgId) {
-      config.headers.AuthOrgId = orgId;
-    }
-    if (zoneId) {
-      config.headers.AuthZoneId = zoneId;
+    if (spaceId || orgId || zoneId) {
+      config.headers.AuthorizationScope = {
+        space_id: spaceId,
+        organization_id: orgId,
+        zone_id: zoneId,
+      };
     }
     saveRefreshTime();
     return config;
