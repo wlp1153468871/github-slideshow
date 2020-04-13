@@ -62,13 +62,15 @@ export default {
     if (!config.headers.Authorization && AuthService.getToken()) {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
-    const { spaceId, orgId, zoneId } = store.getters;
-    if (spaceId || orgId || zoneId) {
-      config.headers.AuthorizationScope = JSON.stringify({
-        space_id: spaceId,
-        organization_id: orgId,
-        zone_id: zoneId,
-      });
+    if (!config.headers.AuthorizationScope) {
+      const { spaceId, orgId, zoneId } = store.getters;
+      if (spaceId || orgId || zoneId) {
+        config.headers.AuthorizationScope = JSON.stringify({
+          space_id: spaceId,
+          organization_id: orgId,
+          zone_id: zoneId,
+        });
+      }
     }
     saveRefreshTime();
     return config;
