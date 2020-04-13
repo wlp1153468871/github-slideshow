@@ -112,7 +112,12 @@
         </span>
       </p>
       <button class="dao-btn ghost" @click="onClose">关闭</button>
-      <button class="dao-btn blue" @click="save" :disabled="loading" v-if="!isPreset">
+      <button
+        class="dao-btn blue"
+        @click="save"
+        :disabled="loading"
+        v-if="!isPreset && $can('platform.rolePermission.update', 'platform.rolePermission')"
+      >
         更新
       </button>
     </div>

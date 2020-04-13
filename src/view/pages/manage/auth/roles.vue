@@ -8,7 +8,12 @@
       @refresh="listRoles"
     >
       <template #operation>
-        <button class="dao-btn blue has-icon" :disabled="loading" @click="addRole">
+        <button
+          class="dao-btn blue has-icon"
+          v-if="$can('platform.rolePermission.create', 'platform.rolePermission')"
+          :disabled="loading"
+          @click="addRole"
+        >
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -28,7 +33,11 @@
           <button class="dao-btn btn-sm mini blue" @click="checkOrUpdateRole(role)">
             详情
           </button>
-          <button v-if="!role.preset" class="dao-btn btn-sm mini red" @click="confirmDelete(role)">
+          <button
+            v-if="!role.preset && $can('platform.rolePermission.delete', 'platform.rolePermission')"
+            class="dao-btn btn-sm mini red"
+            @click="confirmDelete(role)"
+          >
             删除
           </button>
         </template>

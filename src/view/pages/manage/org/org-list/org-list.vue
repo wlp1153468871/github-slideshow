@@ -13,7 +13,11 @@
           style="width: 100%;"
         >
           <template #operation>
-            <button class="dao-btn has-icon blue" @click="addOrgDialog()">
+            <button
+              class="dao-btn has-icon blue"
+              v-if="$can('platform.organization.create', 'platform.organization')"
+              @click="addOrgDialog()"
+            >
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
