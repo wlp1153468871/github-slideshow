@@ -33,10 +33,10 @@
               <template #list v-if="!appDeployDisabled">
                 <dao-dropdown-menu>
                   <dao-dropdown-item @click="toggleYamlDialog">
-                    <span>编辑 YAML</span>
+                    <span>通过 YAML 部署</span>
                   </dao-dropdown-item>
                   <dao-dropdown-item @click="deployApplication">
-                    <span>编辑 表单</span>
+                    <span>通过 镜像 部署</span>
                   </dao-dropdown-item>
                 </dao-dropdown-menu>
               </template>
