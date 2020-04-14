@@ -158,7 +158,7 @@ export const getters = {
   },
 
   isSpaceAdmin(state, getters) {
-    return getters.isPlatformAdmin || state.spaceMenus.some(m => m === 'space.base');
+    return getters.isPlatformAdmin || state.spaceMenus.some(m => m === 'space.manage');
   },
 
   zoneUnauthorized(state, getters) {
@@ -772,13 +772,13 @@ export const mutations = {
   },
   setZoneRole(state, role) {
     state.zoneRole = role;
-    const { menus, actions } = flat(role.children);
+    const { menus, actions } = flat([role]);
     state.zoneMenus = menus;
     state.zoneAction = actions;
   },
   setSpaceRole(state, role) {
     state.spaceRole = role;
-    const { menus, actions } = flat(role.children);
+    const { menus, actions } = flat([role]);
     state.spaceMenus = menus;
     state.spaceAction = actions;
   },
@@ -790,8 +790,7 @@ export const mutations = {
   },
   setPlatformRole(state, role) {
     state.platformRole = role;
-    const platRole = [role];
-    const { menus, actions } = flat(platRole);
+    const { menus, actions } = flat([role]);
     state.platformMenus = menus;
     state.platformAction = actions;
   },

@@ -1,7 +1,11 @@
 <template>
   <div class="container space-view-list">
     <div class="space-tool row">
-      <button class="dao-btn white has-icon" @click="openAddSpaceDialog()">
+      <button
+        v-if="$can('organization.space.create', 'organization.space')"
+        class="dao-btn white has-icon"
+        @click="openAddSpaceDialog()"
+      >
         <svg class="icon">
           <use xlink:href="#icon_plus-circled"></use>
         </svg>

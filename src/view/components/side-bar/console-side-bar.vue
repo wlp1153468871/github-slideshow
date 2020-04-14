@@ -24,7 +24,7 @@
         </template>
       </div>
 
-      <div class="section-zone" v-if="menus.some(m => m === 'space')">
+      <div class="section-zone" v-if="isShowZoneSelect">
         <el-tooltip :content="zone.name ? zone.name : '暂无可用区'" placement="right">
           <zone-select v-if="zones.length"></zone-select>
           <template v-else>
@@ -167,6 +167,11 @@ export default {
       'apiResource',
     ]),
     ...mapGetters(['menus']),
+
+    isShowZoneSelect() {
+      // 只要加入项目就可以切换可用区
+      return this.menus.some(m => m === 'space-root');
+    },
 
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;

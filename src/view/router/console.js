@@ -472,7 +472,7 @@ export default [
     meta: {
       title: '管理',
       icon: '#icon_setting',
-      code: 'space.base;organization.space',
+      code: 'space.manage;organization.space',
     },
   },
   // deploy
@@ -645,7 +645,7 @@ export default [
         component: SpaceList,
         meta: {
           hidden: true,
-          code: 'organization-root',
+          code: 'organization.space',
         },
       },
       {
@@ -654,6 +654,7 @@ export default [
         component: OrgUserList,
         meta: {
           hidden: true,
+          code: 'organization.user',
         },
       },
       {

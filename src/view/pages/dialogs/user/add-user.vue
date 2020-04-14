@@ -59,7 +59,7 @@
       <template>
         <el-alert
           style="margin-top: 12px;"
-          v-if="model.username === userName && spaceMenus.some(m => m === 'space.base')"
+          v-if="model.username === userName && spaceMenus.some(m => m === 'space.manage')"
           title="请注意！您是项目组管理员，请谨慎操作防止降级。"
           type="warning"
           show-icon
