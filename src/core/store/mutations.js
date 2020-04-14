@@ -103,7 +103,7 @@ function flat(
   },
 ) {
   tree.forEach(({ featureCode, type, children, access }) => {
-    if ((type === 'page' || type === 'feature') && access) {
+    if ((type === 'page' || type === 'feature' || type === 'root') && access) {
       result.menus.push(featureCode);
     }
     // result.actions[featureCode] = access;
@@ -150,7 +150,7 @@ export const getters = {
   },
 
   isPlatformAdmin(state) {
-    return state.platformMenus.some(m => m === 'platform.manage');
+    return state.platformMenus.some(m => m === 'platform-root');
   },
 
   isOrganizationAdmin(state, getters) {
@@ -790,7 +790,8 @@ export const mutations = {
   },
   setPlatformRole(state, role) {
     state.platformRole = role;
-    const { menus, actions } = flat(role.children);
+    const platRole = [role];
+    const { menus, actions } = flat(platRole);
     state.platformMenus = menus;
     state.platformAction = actions;
   },
