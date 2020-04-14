@@ -67,6 +67,7 @@
         </div>
         <div class="actions">
           <el-checkbox
+            v-if="actions.length"
             :indeterminate="isIndeterminate"
             v-model="checkAll"
             @change="handleCheckAllChange"
