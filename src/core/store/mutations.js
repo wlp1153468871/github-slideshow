@@ -154,7 +154,7 @@ export const getters = {
   },
 
   isOrganizationAdmin(state, getters) {
-    return getters.isPlatformAdmin || state.orgMenus.some(m => m === 'organization.manage');
+    return getters.isPlatformAdmin || state.orgMenus.some(m => m === 'organization-root');
   },
 
   isSpaceAdmin(state, getters) {
@@ -784,7 +784,7 @@ export const mutations = {
   },
   setOrgRole(state, role) {
     state.orgRole = role;
-    const { menus, actions } = flat(role.children);
+    const { menus, actions } = flat([role]);
     state.orgMenus = menus;
     state.orgAction = actions;
   },

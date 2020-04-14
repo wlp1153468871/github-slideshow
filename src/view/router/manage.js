@@ -66,7 +66,7 @@ export default [
         component: OrgList,
         meta: {
           icon: '#icon_users',
-          title: '租户管理',
+          title: '组织管理',
           code: 'platform.organization',
         },
         children: [],

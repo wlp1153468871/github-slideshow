@@ -45,7 +45,7 @@ export default {
     }),
     ...mapGetters(['userName']),
     canEdit() {
-      return this.platformMenus.some(m => m === 'platform.manage');
+      return this.platformMenus.some(m => m === 'platform-root');
     },
   },
 

@@ -645,7 +645,7 @@ export default [
         component: SpaceList,
         meta: {
           hidden: true,
-          code: 'organization.manage',
+          code: 'organization-root',
         },
       },
       {
