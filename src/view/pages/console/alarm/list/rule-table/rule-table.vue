@@ -40,10 +40,14 @@
         <span class="action">
           <dao-dropdown trigger="click" placement="bottom-end">
             <slot>
-              <svg class="icon icon-more"><use xlink:href="#icon_more"></use></svg>
+              <svg class="icon icon-more">
+                <use xlink:href="#icon_more"></use>
+              </svg>
             </slot>
             <dao-dropdown-menu slot="list">
-              <dao-dropdown-item v-if="$can('alert.delete', 'alert')" @click="onClickRemove(row)"
+              <dao-dropdown-item
+                v-if="$can('space.alert.delete', 'space.alert')"
+                @click="onClickRemove(row)"
                 >删除</dao-dropdown-item
               >
             </dao-dropdown-menu>
