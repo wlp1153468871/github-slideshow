@@ -71,7 +71,7 @@
           <el-checkbox
             :indeterminate="isIndeterminate"
             v-model="checkAll"
-            v-if="!isPreset"
+            v-if="!isPreset && actions.length"
             @change="handleCheckAllChange"
             >全选
           </el-checkbox>
