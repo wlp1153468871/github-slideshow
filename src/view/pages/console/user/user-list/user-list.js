@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex';
+import { first, isEmpty } from 'lodash';
 // pages
 import SpaceUserList from '@/view/pages/manage/org/space-detail/panels/user';
 // ApprovalSetting
@@ -13,14 +14,47 @@ export default {
   data() {
     return {
       SIDE_BAR: {
-        MEBMBER: '成员',
-        ZONE: '可用区',
-        SERVE: '服务',
-        APPROVE: '审批',
-        ADVANCED_SETTING: '高级',
+        MEBMBER: {
+          id: 'mebmber',
+          canShow: this.$can('space.manage.users', 'space.manage'),
+          name: '成员',
+        },
+        ZONE: {
+          id: 'zone',
+          canShow: false,
+          name: '可用区',
+        },
+        SERVE: {
+          id: 'serve',
+          canShow: false,
+          name: '服务',
+        },
+        APPROVE: {
+          id: 'approve',
+          canShow: this.$can('space.manage.approval', 'space.manage'),
+          name: '审批',
+        },
+        ADVANCED_SETTING: {
+          id: 'setting',
+          canShow: false,
+          name: '高级',
+        },
       },
       activeName: 'mebmber',
     };
+  },
+  created() {
+    this.getActiveName();
+  },
+  methods: {
+    getActiveName() {
+      const tab = first(Object.values(this.SIDE_BAR).filter(t => t.canShow));
+      if (isEmpty(tab)) {
+        this.$noty.error('您暂无任何管理权限');
+      } else {
+        this.activeName = tab.id;
+      }
+    },
   },
   computed: {
     ...mapGetters(['spaceId', 'orgId']),
