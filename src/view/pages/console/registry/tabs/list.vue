@@ -55,7 +55,7 @@
       <el-table-column prop="pull_count" sortable label="下载数"> </el-table-column>
       <el-table-column sortable prop="update_time" :formatter="formatUpdateTime" label="更新时间">
       </el-table-column>
-      <el-table-column label="操作" v-if="$can('image.deploy', 'image.center')">
+      <el-table-column label="操作" v-if="$can('space.image.deploy', 'space.image')">
         <template slot-scope="scope">
           <button class="dao-btn btn-sm mini blue" @click="deploy(scope.row)">部署应用</button>
         </template>

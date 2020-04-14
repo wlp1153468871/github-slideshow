@@ -89,7 +89,7 @@ export default [
     meta: {
       title: '总览',
       icon: '#icon_microsoft',
-      code: 'overview',
+      code: 'space.overview',
     },
   },
   {
@@ -362,7 +362,7 @@ export default [
     meta: {
       title: '镜像',
       icon: '#icon_docker-image',
-      code: 'image.center',
+      code: 'space.image',
     },
   },
   {
@@ -372,7 +372,7 @@ export default [
     meta: {
       activeMenu: 'console.registry',
       hidden: true,
-      code: 'image.center',
+      code: 'space.image',
     },
   },
   {

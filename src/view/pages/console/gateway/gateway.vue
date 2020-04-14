@@ -24,7 +24,7 @@ export default {
 
   methods: {
     gotoNextPage() {
-      if (store.getters.menus.some(m => m === 'overview')) {
+      if (store.getters.menus.some(m => m === 'space.overview')) {
         this.$router.push({ name: 'console.dashboard' });
       } else if (store.getters.menus.some(m => m === 'organization.space')) {
         this.$router.push({ name: 'console.space-settings' });
