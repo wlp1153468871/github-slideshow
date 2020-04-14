@@ -19,7 +19,7 @@
               slot="action"
               :loading="true"
               @click="applyDialog.visible = true"
-              v-if="$can('quota.update', 'quota')"
+              v-if="$can('space.quota.update', 'space.quota')"
             >
               申请{{ spaceDescription }}配额
             </button>
@@ -32,7 +32,7 @@
             }}配额以保证可用区配额的总和小于{{ spaceDescription }}配额。
           </p>
         </div>
-        <div class="quota-section" v-if="$can('quota.view', 'quota')">
+        <div class="quota-section" v-if="$can('space.quota.view', 'space.quota')">
           <h4 class="quota-section-head">{{ zone.name }} 可用区配额</h4>
           <quota-cards
             :hard="zoneQuota.hard"
@@ -46,7 +46,7 @@
               class="dao-btn blue"
               slot="action"
               @click="updateDialog.visible = true"
-              v-if="$can('quota.update', 'quota')"
+              v-if="$can('space.quota.update', 'space.quota')"
             >
               更新可用区配额
             </button>
@@ -58,7 +58,7 @@
             检测到该{{ zone.name }}可用区的【{{ zoneWarning.join('、') }}】已用 资源大于配额。
           </p>
         </div>
-        <div class="quota-section" v-if="$can('quota.update', 'quota')">
+        <div class="quota-section" v-if="$can('space.quota.update', 'space.quota')">
           <h4 class="quota-section-head">{{ spaceDescription }}配额更新请求</h4>
           <quota-approval-table
             :loading="quotaApprovalLoading"
@@ -151,7 +151,7 @@ export default {
   },
   created() {
     this.getSpaceQuota();
-    if (this.$can('quota.view', 'quota')) this.getZoneQuota();
+    if (this.$can('space.quota.view', 'space.quota')) this.getZoneQuota();
     this.getSpaceQuotaApplyList();
   },
   components: {

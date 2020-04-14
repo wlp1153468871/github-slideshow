@@ -382,7 +382,7 @@ export default [
     meta: {
       title: '监控',
       icon: '#icon_monitor',
-      code: 'monitor',
+      code: 'space.monitor',
     },
   },
   {
@@ -392,7 +392,7 @@ export default [
     meta: {
       title: '告警',
       icon: '#icon_bell',
-      code: 'alert',
+      code: 'space.alert',
     },
   },
   {
@@ -401,7 +401,7 @@ export default [
     component: CreateAlarmRule,
     meta: {
       hidden: true,
-      code: 'alert.create',
+      code: 'space.alert.create',
     },
   },
   {
@@ -410,7 +410,7 @@ export default [
     component: AlarmDetail,
     meta: {
       hidden: true,
-      code: 'alert',
+      code: 'space.alert',
     },
   },
   {
@@ -430,7 +430,7 @@ export default [
     meta: {
       title: '审批',
       icon: '#icon_audit',
-      code: 'approval',
+      code: 'space.approval',
     },
     children: [
       {
@@ -439,7 +439,7 @@ export default [
         component: ApprovalList,
         meta: {
           title: '审批请求',
-          code: 'approval.view',
+          code: 'space.approval.view',
           icon: '#icon_outgoing',
         },
       },
@@ -449,7 +449,7 @@ export default [
         component: ApprovalHistory,
         meta: {
           title: '审批记录',
-          code: 'approval.log',
+          code: 'space.approval.log',
           icon: '#icon_log',
         },
       },
@@ -462,7 +462,7 @@ export default [
     meta: {
       title: '配额',
       icon: '#icon_quota',
-      code: 'quota',
+      code: 'space.quota',
     },
   },
   {
