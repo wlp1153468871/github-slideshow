@@ -87,7 +87,7 @@ export default {
 
   computed: {
     ...mapState(['user']),
-    ...mapGetters(['userName']),
+    ...mapGetters(['userName', 'isOrganizationAdmin']),
   },
 
   created() {
@@ -128,7 +128,7 @@ export default {
         },
       ]);
       const isSelf = item =>
-        item.username === this.userName && this.$can('organization.manage', 'organization');
+        item.username === this.userName && this.isOrganizationAdmin;
       const isManageView = this.$route.path.includes('manage/org');
       this.setTableOperations([
         {
