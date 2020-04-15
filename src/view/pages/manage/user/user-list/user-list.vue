@@ -7,6 +7,7 @@
       <div class="dao-view-content">
         <!-- 用户列表 -->
         <x-table
+          :showRefresh="$can('platform.user.get', 'platform.user')"
           :loading="loadings.users"
           :data="rows"
           @refresh="loadUsers"

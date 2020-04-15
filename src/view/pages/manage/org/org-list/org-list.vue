@@ -6,6 +6,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <x-table
+          :showRefresh="this.$can('platform.organization.get', 'platform.organization')"
           :loading="loadings.orgs"
           :data="rows"
           @refresh="loadOrgs"

@@ -7,7 +7,11 @@ export default {
     AddOrgDialog,
   },
   created() {
-    this.loadOrgs();
+    if (this.$can('platform.organization.get', 'platform.organization')) {
+      this.loadOrgs();
+    } else {
+      this.$noty.error('您暂无组织管理查看权限');
+    }
   },
   data() {
     return {

@@ -93,6 +93,7 @@ export const state = {
   platformRole: {},
   platformMenus: [],
   platformAction: {},
+  isManageView: false,
 };
 
 function flat(
@@ -793,6 +794,10 @@ export const mutations = {
     const { menus, actions } = flat([role]);
     state.platformMenus = menus;
     state.platformAction = actions;
+  },
+
+  setManageView(state, status) {
+    state.isManageView = status;
   },
 };
 /* eslint-enable no-shadow */
