@@ -1,6 +1,6 @@
 <template>
   <div class="org-quota">
-    <div class="dao-view-main">
+    <div class="dao-view-main" v-if="$can('platform.organization.quota', 'platform.organization')">
       <div class="dao-view-content">
         <div class="quota-section">
           <h4 class="quota-section-head">{{ orgDescription }}总配额</h4>
@@ -19,6 +19,7 @@
         <div class="quota-section">
           <h4 class="quota-section-head">{{ orgDescription }}下{{ spaceDescription }}配额</h4>
           <space-quota-table
+            :canUpdate="$can('platform.organization.quota', 'platform.organization')"
             :loading="tableLoading"
             @refresh="getOrgAndSpaceQuotas"
             :space-quotas="spaceQuotas"
@@ -81,7 +82,11 @@ export default {
     };
   },
   created() {
-    this.getOrgAndSpaceQuotas();
+    if (this.$can('platform.organization.quota', 'platform.organization')) {
+      this.getOrgAndSpaceQuotas();
+    } else {
+      this.$noty.error('暂无租户配额相关权限');
+    }
   },
   methods: {
     getOrgAndSpaceQuotas() {

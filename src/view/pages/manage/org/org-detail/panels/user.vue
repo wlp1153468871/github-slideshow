@@ -100,7 +100,7 @@ export default {
     if (this.canView) {
       this.loadOrgRoles();
     } else {
-      this.$noty('您暂无查询项目组权限');
+      this.$noty.error('您暂无查询项目组权限');
     }
   },
 
