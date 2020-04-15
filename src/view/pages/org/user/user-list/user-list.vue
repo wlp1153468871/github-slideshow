@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <org-user-list
-        :canView="$can('organization.space.get', 'organization.user')"
+        :canView="$can('organization.user.get', 'organization.user')"
         :canDelete="$can('organization.user.create', 'organization.user')"
         :canCreat="$can('organization.user.create', 'organization.user')"
         :canUpdate="$can('organization.user.update', 'organization.user')"

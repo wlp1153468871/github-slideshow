@@ -3,6 +3,7 @@
     <dao-table-view
       :rows="rows"
       :config="tConfig"
+      :showRefresh="canView"
       @refresh="loadOrgUsers"
       :loading="this.loadings.all"
       @update-user-dialog="updateUserDialog"

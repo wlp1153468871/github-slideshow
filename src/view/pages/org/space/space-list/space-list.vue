@@ -16,7 +16,13 @@
       </button>
     </div>
     <div class="row">
-      <div style="padding: 5px;" class="col-md-3" v-for="space in spaces" :key="space.id">
+      <div
+        v-if="$can('organization.space.get', 'organization.space')"
+        style="padding: 5px;"
+        class="col-md-3"
+        v-for="space in spaces"
+        :key="space.id"
+      >
         <space-card :space="space" @goto="gotoSpace"> </space-card>
       </div>
     </div>
