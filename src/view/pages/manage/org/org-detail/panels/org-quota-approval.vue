@@ -3,6 +3,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <quota-approval-table
+          :canUpdate="$can('platform.organization.approval', 'platform.organization')"
           :loading="false"
           :approvals="quotaRequests"
           @refresh="getZoneApprovals"
@@ -36,7 +37,11 @@ export default {
     };
   },
   created() {
-    this.getZoneApprovals();
+    if (this.$can('platform.organization.approval', 'platform.organization')) {
+      this.getZoneApprovals();
+    } else {
+      this.$noty.error('您暂无租户审批权限');
+    }
   },
   methods: {
     getZoneApprovals() {
