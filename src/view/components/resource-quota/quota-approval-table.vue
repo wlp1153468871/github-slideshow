@@ -4,6 +4,7 @@
       :data="parsedData"
       :filter-method="filterMethod"
       :loading="loading"
+      :showRefresh="canUpdate"
       small
       :search-placeholder="
         showSpaceCol ? `搜索 申请人、${this.orgDescription}、${spaceDescription}` : '搜索 申请人'
@@ -59,7 +60,7 @@
             <button
               class="dao-btn btn-sm mini blue"
               @click="openDialog(approval, 'success')"
-              v-if="type === 'approval'"
+              v-if="type === 'approval' && canUpdate"
             >
               同意
             </button>
@@ -67,13 +68,13 @@
             <button
               class="dao-btn btn-sm mini red"
               @click="openDialog(approval, 'rejected')"
-              v-if="type === 'approval'"
+              v-if="type === 'approval' && canUpdate"
             >
               拒绝
             </button>
             <button
               class="dao-btn btn-sm mini red"
-              v-if="type === 'apply'"
+              v-if="type === 'apply' && canUpdate"
               @click="openDialog(approval, 'cancel')"
             >
               撤销
@@ -108,7 +109,7 @@ import QuotaApprovalDialog from './quota-approval-dialog.vue';
 export default {
   name: 'ApprovalRequestTable',
 
-  props: ['loading', 'approvals', 'showSpaceCol', 'type', 'scope'],
+  props: ['loading', 'approvals', 'showSpaceCol', 'type', 'scope', 'canUpdate'],
 
   components: {
     QuotaApprovalDialog,

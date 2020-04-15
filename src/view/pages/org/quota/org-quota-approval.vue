@@ -5,6 +5,7 @@
         <div class="quota-section">
           <h4 class="quota-section-head">{{ spaceDescription }}配额审批</h4>
           <quota-approval-table
+            :can-update="$can('organization.approval', 'organization-root')"
             :loading="approvalLoading"
             :approvals="quotaApproval"
             :showSpaceCol="true"
@@ -17,6 +18,7 @@
         <div class="quota-section">
           <h4 class="quota-section-head">{{ orgDescription }}配额审批</h4>
           <quota-approval-table
+            :can-update="$can('organization.approval', 'organization-root')"
             :loading="requestLoading"
             @refresh="getOrgApprovals"
             :approvals="quotaRequests"
@@ -56,8 +58,12 @@ export default {
     };
   },
   created() {
-    this.getSpaceApprovals();
-    this.getOrgApprovals();
+    if (this.$can('organization.approval', 'organization-root')) {
+      this.getSpaceApprovals();
+      this.getOrgApprovals();
+    } else {
+      this.$noty.error('您暂无租户审批权限');
+    }
   },
   methods: {
     getSpaceApprovals() {
