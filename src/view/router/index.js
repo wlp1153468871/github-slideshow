@@ -63,6 +63,7 @@ const router = new Router({
         name: 'console.gateway',
       },
       beforeEnter(to, from, next) {
+        store.commit('setManageView', false);
         const { spaceId, zoneId, orgId } = to.query;
         if (spaceId && zoneId && orgId) {
           SpaceService.setLocalSpace({
@@ -91,6 +92,13 @@ const router = new Router({
       path: '/manage',
       name: 'manage',
       beforeEnter(to, from, next) {
+        // SpaceService.removeLocalSpace();
+        // ZoneService.removeLocalZone();
+        // OrgService.removeLocalOrg();
+        localStorage.removeItem('SELECTED_SPACE');
+        localStorage.removeItem('SELECTED_ORG');
+        localStorage.removeItem('SELECTED_ZONE');
+        store.commit('setManageView', true);
         store.dispatch('getUserInfo').finally(() => {
           if (store.getters.isPlatformAdmin) {
             next();

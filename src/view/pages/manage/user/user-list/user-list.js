@@ -15,8 +15,12 @@ export default {
   },
 
   created() {
-    this.loadUsers();
-    this.loadPlatformRoles();
+    if (this.$can('platform.user.get', 'platform.user')) {
+      this.loadUsers();
+      this.loadPlatformRoles();
+    } else {
+      this.$noty.error('您暂无用户列表查看前看');
+    }
   },
 
   data() {

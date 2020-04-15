@@ -63,13 +63,19 @@ export default {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
     if (!config.headers.AuthorizationScope) {
-      const { spaceId, orgId, zoneId } = store.getters;
-      if (spaceId || orgId || zoneId) {
+      if (store.isManageView) {
         config.headers.AuthorizationScope = JSON.stringify({
-          space_id: spaceId,
-          organization_id: orgId,
-          zone_id: zoneId,
+          platform_id: 'dsp',
         });
+      } else {
+        const { spaceId, orgId, zoneId } = store.getters;
+        if (spaceId || orgId || zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: spaceId,
+            organization_id: orgId,
+            zone_id: zoneId,
+          });
+        }
       }
     }
     saveRefreshTime();
