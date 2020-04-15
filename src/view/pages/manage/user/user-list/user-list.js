@@ -43,10 +43,7 @@ export default {
       self: 'user',
       platformMenus: 'platformMenus',
     }),
-    ...mapGetters(['userName']),
-    canEdit() {
-      return this.platformMenus.some(m => m === 'platform-root');
-    },
+    ...mapGetters(['userName', 'isPlatformAdmin']),
   },
 
   methods: {
@@ -149,6 +146,12 @@ export default {
         })
         .catch(() => {
           this.$noty.error(isNewUser ? '权限初始化失败' : '添加用户失败');
+        })
+        .finally(() => {
+          if (!isNewUser) {
+            this.dialogConfigs.updateUser.visible = false;
+            this.selectedUser = {};
+          }
         });
     },
 
@@ -210,9 +213,9 @@ export default {
       if (command === 'disable') {
         this.disableUser(zone);
       }
-      if (command === 'edit') {
-        this.updateUserDialog(zone);
-      }
+      // if (command === 'edit') {
+      //   this.updateUserDialog(zone);
+      // }
     },
   },
   filters: {
