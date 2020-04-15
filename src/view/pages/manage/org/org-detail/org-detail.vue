@@ -12,7 +12,14 @@
         <space-panel :org-id="orgId"> </space-panel>
       </el-tab-pane>
       <el-tab-pane :label="SIDE_BAR.USER" :name="SIDE_BAR.USER">
-        <user-panel :users="users" :org-id="orgId"> </user-panel>
+        <user-panel
+          :users="users"
+          :org-id="orgId"
+          :canDelete="$can('platform.organization.user', 'platform.organization')"
+          :canCreat="$can('platform.organization.user', 'platform.organization')"
+          :canUpdate="$can('platform.organization.user', 'platform.organization')"
+        >
+        </user-panel>
       </el-tab-pane>
       <el-tab-pane :label="SIDE_BAR.QUOTA" :name="SIDE_BAR.QUOTA">
         <org-quota-panel :tab="tab" :defautlTab="SIDE_BAR.QUOTA"> </org-quota-panel>
