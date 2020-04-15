@@ -65,7 +65,17 @@
               </x-table-status>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="" align="center" header-align="center" width="80">
+          <el-table-column
+            v-if="
+              $can('platform.user.update', 'platform.user') ||
+                $can('platform.user.freeze', 'platform.user')
+            "
+            fixed="right"
+            label=""
+            align="center"
+            header-align="center"
+            width="80"
+          >
             <template slot-scope="{ row: user }">
               <el-dropdown @command="handleOperate($event, user)" trigger="click">
                 <span>
@@ -75,39 +85,47 @@
                 </span>
 
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-if="
-                      user.username === userName &&
-                        canEdit &&
-                        $can('platform.user.update', 'platform.user')
-                    "
-                  >
+                  <el-dropdown-item v-if="$can('platform.user.update', 'platform.user')">
+                    <el-tooltip
+                      :disabled="!(user.username === userName && isPlatformAdmin)"
+                      class="item"
+                      effect="dark"
+                      content="无法对自己操作"
+                      placement="top-start"
+                    >
+                      <div>
+                        <el-button
+                          @click="updateUserDialog(user)"
+                          :disabled="user.username === userName && isPlatformAdmin"
+                          type="text"
+                          >设置</el-button
+                        >
+                      </div>
+                    </el-tooltip>
+                  </el-dropdown-item>
+                  <!-- <el-dropdown-item v-if="$can('platform.user.update', 'platform.user')">
                     <dao-tooltip content="无法对自己操作" placement="top">
                       <span style="color: #bbb;">设置</span>
                     </dao-tooltip>
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-else
-                    :disabled="
-                      user.username === userName &&
-                        canEdit &&
-                        $can('platform.user.update', 'platform.user')
-                    "
+                    :disabled="user.username === userName && canEdit && true"
                     command="edit"
                   >
                     设置
-                  </el-dropdown-item>
+                  </el-dropdown-item> -->
                   <el-dropdown-item
                     v-if="user.is_frozen && $can('platform.user.freeze', 'platform.user')"
                     command="enable"
                   >
-                    激活
+                    <el-button type="text">激活</el-button>
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-if="!user.is_frozen && $can('platform.user.freeze', 'platform.user')"
                     command="disable"
                   >
-                    冻结
+                    <el-button type="text">冻结</el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
