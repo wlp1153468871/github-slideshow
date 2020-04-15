@@ -18,6 +18,7 @@
           :canDelete="$can('platform.organization.user', 'platform.organization')"
           :canCreat="$can('platform.organization.user', 'platform.organization')"
           :canUpdate="$can('platform.organization.user', 'platform.organization')"
+          :canView="$can('platform.organization.user', 'platform.organization')"
         >
         </user-panel>
       </el-tab-pane>
