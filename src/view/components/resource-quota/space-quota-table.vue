@@ -4,6 +4,7 @@
       :data="parsedData"
       :filter-method="filterMethod"
       small
+      :showRefresh="canUpdate"
       :search-placeholder="`搜索 ${spaceDescription}`"
       @refresh="onRefresh"
     >
@@ -27,7 +28,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column fixed="right" :align="'center'" label="操作">
+      <el-table-column v-if="canUpdate" fixed="right" :align="'center'" label="操作">
         <template #default="{ row: quota }">
           <button class="dao-btn btn-sm mini blue" @click="openDialog(quota)">
             更新
@@ -56,7 +57,11 @@ import UpdateSpaceQuotaDialog from './update-space-quota-dialog.vue';
 export default {
   name: 'SpaceQuotaTable',
 
-  props: ['loading', 'spaceQuotas'],
+  // props: ['loading', 'spaceQuotas'],
+  props: {
+    spaceQuotas: { type: Array, default: () => [] },
+    canUpdate: { type: Boolean, default: () => false },
+  },
 
   components: {
     UpdateSpaceQuotaDialog,
