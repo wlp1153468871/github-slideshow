@@ -5,7 +5,12 @@ import Vue from 'vue';
 export default {
   name: 'ServiceList',
   created() {
-    this.loadService();
+    // 有权限查看 无权限提示
+    if (this.$can('platform.serviceBroker.get', 'platform.serviceBroker')) {
+      this.loadService();
+    } else {
+      this.$noty.error('您暂无服务列表查看权限');
+    }
   },
   data() {
     return {

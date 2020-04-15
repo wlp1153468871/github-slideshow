@@ -216,6 +216,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
+          activeMenu: 'manage.preference.home',
         },
       },
       {
@@ -225,6 +226,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
+          activeMenu: 'manage.preference.home',
         },
       },
       {
@@ -234,6 +236,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
+          activeMenu: 'manage.preference.home',
         },
       },
     ],

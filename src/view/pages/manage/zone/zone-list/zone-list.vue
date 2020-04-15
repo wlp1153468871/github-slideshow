@@ -5,6 +5,7 @@
     </div>
     <div class="dao-view-main">
       <x-table
+        :showRefresh="$can('platform.zone.get', 'platform.zone')"
         :loading="loadings.zone"
         :data="rows"
         @refresh="loadZones"
@@ -12,7 +13,11 @@
         style="width: 100%;"
       >
         <template #operation>
-          <button class="dao-btn has-icon blue" @click="deployZone">
+          <button
+            v-if="$can('platform.zone.create', 'platform.zone')"
+            class="dao-btn has-icon blue"
+            @click="deployZone"
+          >
             <svg class="icon">
               <use xlink:href="#icon_plus-circled"></use>
             </svg>
@@ -55,7 +60,14 @@
             {{ zone.createdAt | unix_date }}
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="" align="center" header-align="center" width="80">
+        <el-table-column
+          v-if="$can('platform.zone.update', 'platform.zone')"
+          fixed="right"
+          label=""
+          align="center"
+          header-align="center"
+          width="80"
+        >
           <template slot-scope="{ row: zone }">
             <el-dropdown @command="handleOperate($event, zone)" trigger="click">
               <span>
@@ -65,13 +77,22 @@
               </span>
 
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="edit">
+                <el-dropdown-item
+                  v-if="$can('platform.zone.update', 'platform.zone')"
+                  command="edit"
+                >
                   基础设置
                 </el-dropdown-item>
-                <el-dropdown-item v-if="!zone.available" command="enable">
+                <el-dropdown-item
+                  v-if="!zone.available && $can('platform.zone.update', 'platform.zone')"
+                  command="enable"
+                >
                   显示
                 </el-dropdown-item>
-                <el-dropdown-item v-if="zone.available" command="disable">
+                <el-dropdown-item
+                  v-if="zone.available && $can('platform.zone.update', 'platform.zone')"
+                  command="disable"
+                >
                   隐藏
                 </el-dropdown-item>
               </el-dropdown-menu>

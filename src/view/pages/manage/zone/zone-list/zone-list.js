@@ -25,7 +25,12 @@ export default {
   },
 
   created() {
-    this.loadZones();
+    // 有权限查看 无权限则提示
+    if (this.$can('platform.zone.get', 'platform.zone')) {
+      this.loadZones();
+    } else {
+      this.$noty.error('您暂无可用区查看权限');
+    }
   },
 
   methods: {

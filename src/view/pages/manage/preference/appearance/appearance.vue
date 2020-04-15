@@ -1,5 +1,5 @@
 <template>
-  <div class="appearance">
+  <div class="appearance" v-if="$can('platform.settings.assets', 'platform.settings')">
     <dao-setting-layout>
       <div slot="layout-title">
         产品文案
@@ -138,7 +138,11 @@ export default {
     },
   },
   created() {
-    this.productName = this.theme.productName;
+    if (this.$can('platform.settings.assets', 'platform.settings')) {
+      this.productName = this.theme.productName;
+    } else {
+      this.$noty.error('您暂无外观设置权限');
+    }
   },
   watch: {
     theme() {
