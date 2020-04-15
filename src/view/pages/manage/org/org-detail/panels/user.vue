@@ -9,7 +9,7 @@
       @confirm-remove-user="confirmRemoveUser"
     >
       <div slot="tool">
-        <div class="dao-btn has-icon white" @click="openAddUserDialog()">
+        <div v-if="canCreat" class="dao-btn has-icon white" @click="openAddUserDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -66,6 +66,10 @@ export default {
 
   props: {
     orgId: { type: String, default: () => '' },
+    canCreat: { type: Boolean, default: () => false },
+    canUpudate: { type: Boolean, default: () => false },
+    canDelete: { type: Boolean, default: () => false },
+    canView: { type: Boolean, default: () => false },
   },
 
   data() {
@@ -92,7 +96,11 @@ export default {
 
   created() {
     this.initTableView();
-    this.loadOrgRoles();
+    if (this.canView) {
+      this.loadOrgRoles();
+    } else {
+      this.$noty('您暂无查询项目组权限');
+    }
   },
 
   watch: {
@@ -127,19 +135,23 @@ export default {
           filter: 'role_format',
         },
       ]);
-      const isSelf = item =>
-        item.username === this.userName && this.isOrganizationAdmin;
+      const isSelf = item => item.username === this.userName && this.isOrganizationAdmin;
       const isManageView = this.$route.path.includes('manage/org');
+      const delVisible = this.canDelete;
+      const upudateVisible = this.canUpudate;
       this.setTableOperations([
         {
           name: '修改权限',
           event: 'update-user-dialog',
           disabled: isManageView ? false : isSelf,
           tooltip: '无法对自己操作',
+          visible: upudateVisible,
         },
         {
           name: '移除',
           event: 'confirm-remove-user',
+          disabled: false,
+          visible: delVisible,
         },
       ]);
     },

@@ -1,5 +1,8 @@
 <template>
-  <div class="container space-view-list">
+  <div
+    class="container space-view-list"
+    v-if="$can('organization.space.get', 'organization.space')"
+  >
     <div class="space-tool row">
       <button
         v-if="$can('organization.space.create', 'organization.space')"
