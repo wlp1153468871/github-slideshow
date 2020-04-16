@@ -63,7 +63,7 @@ export default {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
     if (!config.headers.AuthorizationScope) {
-      if (store.isManageView) {
+      if (store.state.isManageView) {
         config.headers.AuthorizationScope = JSON.stringify({
           platform_id: 'dsp',
         });
