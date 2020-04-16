@@ -80,19 +80,22 @@ export const state = {
   },
   isFullscreened: false,
   localLogin: true,
-  roleId: '',
   zoneRole: {},
   zoneMenus: [],
   zoneAction: {},
+  zonePermission: {},
   spaceRole: {},
   spaceMenus: [],
   spaceAction: {},
+  spacePermission: {},
   orgRole: {},
   orgMenus: [],
   orgAction: {},
+  orgPermission: {},
   platformRole: {},
   platformMenus: [],
   platformAction: {},
+  platformPermission: {},
   isManageView: false,
 };
 
@@ -195,6 +198,11 @@ export const getters = {
     return state.zone.id;
   },
 
+  zoneScope(state) {
+    return `zone.${state.zone.type}`;
+    // return `zone.${state.zone.version.type}`;
+  },
+
   theme(state) {
     return state.theme;
   },
@@ -260,15 +268,14 @@ export const actions = {
   async getPermissionById({ commit }, { role, params }) {
     const { id, scope } = role;
     const data = await RoleSrvice.getPermission(id, params);
-
     if (scope === 'space') {
-      commit('setSpaceRole', data);
+      commit('setSpaceRole', { data, role });
     } else if (scope.includes('zone')) {
-      commit('setZoneRole', data);
+      commit('setZoneRole', { data, role });
     } else if (scope === 'organization') {
-      commit('setOrgRole', data);
+      commit('setOrgRole', { data, role });
     } else if (scope === 'platform') {
-      commit('setPlatformRole', data);
+      commit('setPlatformRole', { data, role });
     }
     return Promise.resolve();
   },
@@ -290,6 +297,7 @@ export const actions = {
   loadZoneRole({ dispatch, getters, state }) {
     return dispatch('loadRole', {
       scope: state.zone.name && state.zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+      // scope: getters.zoneScope,
       spaceId: getters.spaceId,
       zoneId: getters.zoneId,
     });
@@ -771,27 +779,31 @@ export const mutations = {
   [types.FUll_SCREENED](state, isFullscreened) {
     state.isFullscreened = isFullscreened;
   },
-  setZoneRole(state, role) {
+  setZoneRole(state, { data, role }) {
     state.zoneRole = role;
-    const { menus, actions } = flat([role]);
+    state.zonePermission = data;
+    const { menus, actions } = flat([data]);
     state.zoneMenus = menus;
     state.zoneAction = actions;
   },
-  setSpaceRole(state, role) {
+  setSpaceRole(state, { data, role }) {
     state.spaceRole = role;
-    const { menus, actions } = flat([role]);
+    state.spacePermission = data;
+    const { menus, actions } = flat([data]);
     state.spaceMenus = menus;
     state.spaceAction = actions;
   },
-  setOrgRole(state, role) {
+  setOrgRole(state, { data, role }) {
     state.orgRole = role;
-    const { menus, actions } = flat([role]);
+    state.orgPermission = data;
+    const { menus, actions } = flat([data]);
     state.orgMenus = menus;
     state.orgAction = actions;
   },
-  setPlatformRole(state, role) {
+  setPlatformRole(state, { data, role }) {
     state.platformRole = role;
-    const { menus, actions } = flat([role]);
+    state.platformPermission = data;
+    const { menus, actions } = flat([data]);
     state.platformMenus = menus;
     state.platformAction = actions;
   },
