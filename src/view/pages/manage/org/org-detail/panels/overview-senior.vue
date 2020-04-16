@@ -13,6 +13,7 @@
             placement="right"
           >
             <button
+              v-if="$can('platform.organization.delete', 'platform.organization')"
               @click="deleteOrgConfirm()"
               :disabled="Boolean(users.length)"
               class="dao-btn red"

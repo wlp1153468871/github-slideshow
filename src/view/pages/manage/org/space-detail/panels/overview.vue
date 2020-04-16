@@ -23,7 +23,12 @@
     <div class="dao-view-content with-sidebar">
       <overview-basic-panel v-if="content === TABS.BASIC" :space="space" @save="updateSpace">
       </overview-basic-panel>
-      <overview-senior-panel v-if="content === TABS.SENIOR" :space="space" @delete="deleteSpace">
+      <overview-senior-panel
+        :users="users"
+        v-if="content === TABS.SENIOR"
+        :space="space"
+        @delete="deleteSpace"
+      >
       </overview-senior-panel>
     </div>
   </div>
@@ -40,6 +45,7 @@ export default {
     orgId: { type: String, default: '' },
     space: { type: Object, default: () => ({}) },
     spaceId: { type: String, default: '' },
+    users: { type: Array, default: () => [] },
   },
   components: {
     OverviewBasicPanel,

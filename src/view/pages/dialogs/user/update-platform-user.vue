@@ -56,7 +56,7 @@ import dialog from '@/view/mixins/dialog';
 
 export default {
   name: 'UpdateUserDialog',
-  extends: dialog('设置用户权限'),
+  extends: dialog('修改用户权限'),
   props: {
     user: { type: Object, default: () => ({}) },
     platformroles: [Object, Array],
