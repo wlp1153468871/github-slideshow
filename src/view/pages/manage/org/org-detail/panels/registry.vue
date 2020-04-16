@@ -1,5 +1,5 @@
 <template>
-  <div class="register-info">
+  <div class="register-info" v-if="hasPermission">
     <template v-if="hasRegistry">
       <div class="info-detail">
         <span class="detail-key">镜像仓库用户名</span>
@@ -46,10 +46,17 @@ export default {
       }
       return this.registry.password;
     },
+    hasPermission() {
+      return this.$can('platform.organization.imageRepository', 'platform.organization');
+    },
   },
 
   created() {
-    this.getRegistry();
+    if (this.hasPermission) {
+      this.getRegistry();
+    } else {
+      this.$noty.error('暂无镜像仓库查看权限');
+    }
   },
 
   methods: {

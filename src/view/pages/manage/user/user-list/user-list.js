@@ -210,17 +210,6 @@ export default {
           this.loadings.create = false;
         });
     },
-    handleOperate(command, zone) {
-      if (command === 'enable') {
-        this.enableUser(zone);
-      }
-      if (command === 'disable') {
-        this.disableUser(zone);
-      }
-      // if (command === 'edit') {
-      //   this.updateUserDialog(zone);
-      // }
-    },
   },
   filters: {
     roleFormat: val => {
