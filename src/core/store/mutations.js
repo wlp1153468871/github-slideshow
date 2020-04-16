@@ -782,28 +782,28 @@ export const mutations = {
   setZoneRole(state, { data, role }) {
     state.zoneRole = role;
     state.zonePermission = data;
-    const { menus, actions } = flat([data]);
+    const { menus, actions } = flat([data || {}]);
     state.zoneMenus = menus;
     state.zoneAction = actions;
   },
   setSpaceRole(state, { data, role }) {
     state.spaceRole = role;
     state.spacePermission = data;
-    const { menus, actions } = flat([data]);
+    const { menus, actions } = flat([data || {}]);
     state.spaceMenus = menus;
     state.spaceAction = actions;
   },
   setOrgRole(state, { data, role }) {
     state.orgRole = role;
     state.orgPermission = data;
-    const { menus, actions } = flat([data]);
+    const { menus, actions } = flat([data || {}]);
     state.orgMenus = menus;
     state.orgAction = actions;
   },
   setPlatformRole(state, { data, role }) {
     state.platformRole = role;
     state.platformPermission = data;
-    const { menus, actions } = flat([data]);
+    const { menus, actions } = flat([data || {}]);
     state.platformMenus = menus;
     state.platformAction = actions;
   },
