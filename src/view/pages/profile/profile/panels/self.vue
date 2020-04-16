@@ -13,7 +13,7 @@
         <dao-setting-item>
           <div slot="label">用户授权</div>
           <div slot="content">
-            {{ user.platform_role | platform_role }}
+            {{ platformRole.name || '无权限' }}
           </div>
         </dao-setting-item>
       </dao-setting-section>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import AuthService from '@/core/services/auth.service';
 import UserService from '@/core/services/user.service';
 import isEmail from '@/core/utils/is-email';
@@ -120,6 +120,7 @@ export default {
   },
 
   computed: {
+    ...mapState(['platformRole']),
     ...mapGetters(['isLocalAccount']),
   },
 
