@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="layout-content-header bg-white">
-      租户管理
+      组织管理
     </div>
     <div class="dao-view-main">
       <div class="dao-view-content">

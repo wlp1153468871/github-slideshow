@@ -68,7 +68,7 @@ export default {
   props: {
     orgId: { type: String, default: () => '' },
     canCreat: { type: Boolean, default: () => false },
-    canUpudate: { type: Boolean, default: () => false },
+    canUpdate: { type: Boolean, default: () => false },
     canDelete: { type: Boolean, default: () => false },
     canView: { type: Boolean, default: () => false },
   },
@@ -91,7 +91,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'isManageView']),
     ...mapGetters(['userName', 'isOrganizationAdmin']),
   },
 
@@ -137,22 +137,20 @@ export default {
         },
       ]);
       const isSelf = item => item.username === this.userName && this.isOrganizationAdmin;
-      const isManageView = this.$route.path.includes('manage/org');
-      const delVisible = this.canDelete;
-      const upudateVisible = this.canUpudate;
       this.setTableOperations([
         {
           name: '修改权限',
           event: 'update-user-dialog',
-          disabled: isManageView ? false : isSelf,
+          disabled: this.isManageView ? false : isSelf,
           tooltip: '无法对自己操作',
-          visible: upudateVisible,
+          visible: this.canUpdate,
         },
         {
           name: '移除',
           event: 'confirm-remove-user',
-          disabled: false,
-          visible: delVisible,
+          disabled: this.isManageView ? false : isSelf,
+          tooltip: '无法对自己操作',
+          visible: this.canDelete,
         },
       ]);
     },
