@@ -129,6 +129,7 @@ export default [
         component: Deployments,
         meta: {
           title: 'Deployments',
+          hidden: true,
           icon: '#icon_deployments',
           code: 'deployment',
         },
@@ -150,6 +151,8 @@ export default [
         meta: {
           title: 'DeploymentConfig',
           hidden: true,
+          code: 'deploymentConfig',
+          icon: '#icon_deploymentconfigs',
         },
       },
       {
@@ -159,6 +162,7 @@ export default [
         meta: {
           activeMenu: 'resource.deploymentconfigs.list',
           hidden: true,
+          code: 'deploymentConfig',
         },
       },
       {
@@ -167,6 +171,7 @@ export default [
         component: StatefulSetList,
         meta: {
           title: 'StatefulSet',
+          hidden: true,
           icon: '#icon_statefulsets',
           code: 'statefulSet',
         },
@@ -186,6 +191,7 @@ export default [
         name: 'resource.pods.list',
         component: Pods,
         meta: {
+          hidden: true,
           title: 'Pods',
           icon: '#icon_pods',
           code: 'pod',
@@ -206,6 +212,7 @@ export default [
         name: 'resource.services.list',
         component: ServiceList,
         meta: {
+          hidden: true,
           title: 'Service',
           icon: '#icon_services',
           code: 'service',
@@ -226,6 +233,7 @@ export default [
         name: 'resource.routes.list',
         component: RouteList,
         meta: {
+          hidden: true,
           title: 'Route',
           icon: '#icon_routes',
           code: 'router',
@@ -246,6 +254,7 @@ export default [
         name: 'resource.ingresses.list',
         component: IngressList,
         meta: {
+          hidden: true,
           title: 'Ingress',
           icon: '#icon_ingresses',
           code: 'ingress',
@@ -267,6 +276,7 @@ export default [
         name: 'resource.configmaps.list',
         component: ConfigMapList,
         meta: {
+          hidden: true,
           title: 'ConfigMap',
           icon: '#icon_configmaps',
           code: 'configMap',
@@ -287,6 +297,7 @@ export default [
         name: 'resource.secrets.list',
         component: SecretList,
         meta: {
+          hidden: true,
           title: 'Secret',
           icon: '#icon_secrets',
           code: 'secret',
@@ -307,6 +318,7 @@ export default [
         name: 'resource.persistentvolumeclaims.list',
         component: VolumeList,
         meta: {
+          hidden: true,
           title: 'PersistentVolumeClaim',
           icon: '#icon_persistentvolumeclaims',
           code: 'pvc',

@@ -67,7 +67,38 @@
                   </span>
                 </el-menu-item>
               </template>
-
+              <!-- 资源 子菜单 -->
+              <template v-for="resource in apiResource">
+                <el-menu-item
+                  v-if="item.meta.code === 'resource' && !hiddenMenu({ meta: resource.kind })"
+                  :key="resource.name"
+                  :index="resource.route.name"
+                  :route="resource.route"
+                >
+                  <svg class="icon">
+                    <use :xlink:href="resource.icon"></use>
+                  </svg>
+                  <overflow-tooltip slot="title" :text="resource.kind"> </overflow-tooltip>
+                </el-menu-item>
+              </template>
+              <!-- <template v-for="menu in apiResource">
+                <el-menu-item
+                  v-if="item.meta.code === 'resource'"
+                  :key="menu.id"
+                  :index="compileIndex(menu)"
+                  :route="menu.route"
+                >
+                  <service-logo :src="menu.logo_url" size="small"></service-logo>
+                  <el-tooltip
+                    popper-class="service-name-tooltip"
+                    slot="title"
+                    :content="menu.name"
+                    placement="right"
+                  >
+                    <span class="service-menu-name text-overflow-ellipsis">{{ menu.name }}</span>
+                  </el-tooltip>
+                </el-menu-item>
+              </template> -->
               <!-- 这里是服务子菜单 -->
               <template v-for="menu in services">
                 <el-menu-item
