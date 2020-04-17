@@ -200,7 +200,6 @@ export const getters = {
 
   zoneScope(state) {
     return `zone.${state.zone.type}`;
-    // return `zone.${state.zone.version.type}`;
   },
 
   theme(state) {
@@ -294,10 +293,10 @@ export const actions = {
   loadSpaceRole({ dispatch, getters }) {
     return dispatch('loadRole', { scope: 'space', spaceId: getters.spaceId });
   },
-  loadZoneRole({ dispatch, getters, state }) {
+  loadZoneRole({ dispatch, getters }) {
     return dispatch('loadRole', {
-      scope: state.zone.name && state.zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
-      // scope: getters.zoneScope,
+      // scope: state.zone.name && state.zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+      scope: getters.zoneScope,
       spaceId: getters.spaceId,
       zoneId: getters.zoneId,
     });
