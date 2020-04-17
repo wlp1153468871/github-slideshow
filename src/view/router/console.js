@@ -236,7 +236,7 @@ export default [
           hidden: true,
           title: 'Route',
           icon: '#icon_routes',
-          code: 'router',
+          code: 'route',
         },
       },
       {
@@ -246,7 +246,7 @@ export default [
         meta: {
           activeMenu: 'resource.routes.list',
           hidden: true,
-          code: 'router',
+          code: 'route',
         },
       },
       {
