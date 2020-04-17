@@ -79,7 +79,10 @@
       <el-table-column fixed="right" label="操作" width="180">
         <template #default="{ row: rc }">
           <el-button
-            v-if="$can('update') && dc.status.latestVersion !== rc.deploymentVersion"
+            v-if="
+              $can('deploymentConfig.update', 'deploymentConfig') &&
+                dc.status.latestVersion !== rc.deploymentVersion
+            "
             type="text"
             size="small"
             @click="onRollback(rc)"
@@ -190,7 +193,10 @@ export default {
     filteredHistories() {
       return this.formatedHistories.filter(h => {
         const key = this.filterKey.toLowerCase();
-        return h.deploymentVersion.toString().toLowerCase().includes(key);
+        return h.deploymentVersion
+          .toString()
+          .toLowerCase()
+          .includes(key);
       });
     },
     viewHistories() {

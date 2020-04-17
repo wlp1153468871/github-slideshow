@@ -10,7 +10,13 @@
           <labels :labels="labels"></labels>
         </template>
 
-        <template v-if="$can('update') || $can('delete')" #action-buttons>
+        <template
+          v-if="
+            $can('deploymentConfig.update', 'deploymentConfig') ||
+              $can('deploymentConfig.delete', 'deploymentConfig')
+          "
+          #action-buttons
+        >
           <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
             <button class="dao-btn ghost has-icon">
               操作
@@ -21,14 +27,20 @@
 
             <template #list>
               <dao-dropdown-menu>
-                <dao-dropdown-item v-if="$can('update')" @click="yamlVisible = true">
+                <dao-dropdown-item
+                  v-if="$can('deploymentConfig.update', 'deploymentConfig')"
+                  @click="yamlVisible = true"
+                >
                   <span>更新</span>
                 </dao-dropdown-item>
-                <dao-dropdown-item v-if="$can('update')" @click="onRestartClick">
+                <dao-dropdown-item
+                  v-if="$can('deploymentConfig.update', 'deploymentConfig')"
+                  @click="onRestartClick"
+                >
                   <span>重启</span>
                 </dao-dropdown-item>
                 <dao-dropdown-item
-                  v-if="$can('delete')"
+                  v-if="$can('deploymentConfig.delete', 'deploymentConfig')"
                   class="dao-dropdown-item-red dao-dropdown-item-hover-red"
                   @click="onDeleteClick"
                 >

@@ -18,7 +18,7 @@
                   <inline-extend
                     :autoscalers="autoscalers"
                     :data="dc"
-                    :updateable="$can('update')"
+                    :updateable="$can('deploymentConfig.update', 'deploymentConfig')"
                     @extend="replicas => $emit('extend', replicas)"
                   >
                   </inline-extend>
@@ -51,7 +51,7 @@
                     {{ hpa.metadata.name }}
                     <button
                       style="margin-left: 3px;"
-                      v-if="$can('update')"
+                      v-if="$can('deploymentConfig.update', 'deploymentConfig')"
                       class="dao-btn btn-sm mini blue"
                       @click="updateHPA(hpa)"
                     >
@@ -59,7 +59,7 @@
                     </button>
                     <button
                       style="margin-left: 0;"
-                      v-if="$can('delete')"
+                      v-if="$can('deploymentConfig.delete', 'deploymentConfig')"
                       class="dao-btn btn-sm mini red"
                       @click="confirmDeleteHPA(hpa.metadata.name)"
                     >

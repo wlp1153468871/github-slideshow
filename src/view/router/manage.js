@@ -78,7 +78,7 @@ export default [
         meta: {
           activeMenu: 'manage.org.list',
           hidden: true,
-          code: '',
+          code: 'platform.organization',
         },
       },
       {
@@ -88,7 +88,7 @@ export default [
         meta: {
           activeMenu: 'manage.org.list',
           hidden: true,
-          code: '',
+          code: 'platform.organization',
         },
       },
       {
