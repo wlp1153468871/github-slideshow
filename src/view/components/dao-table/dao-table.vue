@@ -46,8 +46,11 @@
           @click="onSelectRow(item, index, $event)"
         >
           <td v-for="(prop, index) in tProps" :key="index">
-            <span v-if="prop.type === DATA_TYPE.TEXT" :title="renderText(item, prop)">
-              {{ renderText(item, prop) }}
+            <span
+              v-if="prop.type === DATA_TYPE.TEXT"
+              :title="renderText(item, prop)"
+              style="white-space: pre-line"
+              >{{ renderText(item, prop) }}
             </span>
             <link-data
               :row="item"
