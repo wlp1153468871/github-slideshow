@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import QuotaService from '@/core/services/quota.service';
 import SSOService from '@/core/services/sso.service';
-import RoleSrvice from '@/core/services/role.service';
+import RoleService from '@/core/services/role.service';
 import StorageCache from '@/core/services/storage.cache';
 import router from '@/view/router';
 import {
@@ -253,7 +253,7 @@ export const getters = {
     return ['Ingress', 'Route'].map(kind => apiResource[kind]).filter(Boolean);
   },
 
-  actinos(state) {
+  actions(state) {
     const { zoneAction, spaceAction, orgAction, platformAction } = state;
     return Object.assign({}, zoneAction, spaceAction, orgAction, platformAction);
   },
@@ -267,7 +267,7 @@ export const getters = {
 export const actions = {
   async getPermissionById({ commit }, { role, params }) {
     const { id, scope } = role;
-    const data = await RoleSrvice.getPermission(id, params);
+    const data = await RoleService.getPermission(id, params);
     if (scope === 'space') {
       commit('setSpaceRole', { data, role });
     } else if (scope.includes('zone')) {
@@ -304,7 +304,7 @@ export const actions = {
   },
   // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
   loadRole({ getters, dispatch, commit }, params) {
-    return RoleSrvice.getRolesById(params, getters.userId).then(roleList => {
+    return RoleService.getRolesById(params, getters.userId).then(roleList => {
       const { scope } = params;
       if (roleList.length === 0) {
         if (scope === 'space') {
