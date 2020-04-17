@@ -58,14 +58,17 @@ export default {
     onChooseRules(val) {
       this.chooseRules = val;
       const ids = this.chooseRules.map(r => r.id);
-      this.currentRules.forEach(r => { r.choosed = ids.includes(r.id); });
+      this.currentRules.forEach(r => {
+        r.choosed = ids.includes(r.id);
+      });
     },
     mapRules(rules) {
       return rules.map(rule => ({ ...rule, ruleName: '', choosed: false }));
     },
     onSearch() {
-      this.currentRules = this.rules
-        .filter(rule => rule.name.toLowerCase().includes(this.searchRulesKey.toLowerCase()));
+      this.currentRules = this.rules.filter(rule =>
+        rule.name.toLowerCase().includes(this.searchRulesKey.toLowerCase()),
+      );
     },
     onDeleteReceiver(email) {
       this.receiverInfo.find(r => r.email === email).choose = false;
@@ -78,11 +81,10 @@ export default {
       this.receiverDialogOn = true;
     },
     mapAddReceivers(candidateEmails) {
-      return this.receiverInfo
-        .map(r => {
-          const choose = candidateEmails.includes(r.email) ? true : r.choose;
-          return { ...r, choose };
-        });
+      return this.receiverInfo.map(r => {
+        const choose = candidateEmails.includes(r.email) ? true : r.choose;
+        return { ...r, choose };
+      });
     },
     // just do adding
     onConfirmReceivers() {

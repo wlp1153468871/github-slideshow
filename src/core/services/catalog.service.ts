@@ -22,8 +22,8 @@ class CatalogService {
   }
 
   // get catalog
-  getCatalog(zoneId: string): any {
-    return this.api.get(`/zones/${zoneId}`);
+  getCatalog(zoneId: string, config: object): any {
+    return this.api.get(`/zones/${zoneId}`, {}, config);
   }
 
   syncCatalog(zoneId: string) {

@@ -5,9 +5,7 @@
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">{{ this.tenantDescription }}</div>
-          <div slot="content">
-            {{ org.name }} / {{ space.name }}
-          </div>
+          <div slot="content">{{ org.name }} / {{ space.name }}</div>
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section>
@@ -26,7 +24,7 @@
         <dao-setting-item>
           <div slot="label">参数</div>
           <div slot="content">
-            <pre>{{  stringifiedParameters }}</pre>
+            <pre>{{ stringifiedParameters }}</pre>
           </div>
         </dao-setting-item>
       </dao-setting-section>
@@ -95,10 +93,7 @@ export default {
         Object.entries(plan).forEach(([key, value]) => {
           const quotaDict = this.quotaDict[key];
           if (PLANKEY.CONFIG === key) {
-            planDetails.push(`${DICTIONARY[key]}：${this.groupConfig(
-              value,
-              standard[key].unit,
-            )}`);
+            planDetails.push(`${DICTIONARY[key]}：${this.groupConfig(value, standard[key].unit)}`);
           } else {
             planDetails.push(`${quotaDict.name}：${value}${quotaDict.unit}`);
           }

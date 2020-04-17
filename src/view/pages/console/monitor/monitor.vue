@@ -3,24 +3,13 @@
     <resource-header :resource="resource"></resource-header>
     <div id="monitor-tabs">
       <el-tabs v-model="activeTab">
-        <el-tab-pane
-          label="容器"
-          name="container"
-        >
+        <el-tab-pane label="容器" name="container">
           <containers></containers>
         </el-tab-pane>
-        <el-tab-pane
-          lazy
-          label="应用"
-          name="app"
-        >
+        <el-tab-pane lazy label="应用" name="app">
           <applications></applications>
         </el-tab-pane>
-        <el-tab-pane
-          lazy
-          label="服务"
-          name="service"
-        >
+        <el-tab-pane lazy label="服务" name="service">
           <services></services>
         </el-tab-pane>
       </el-tabs>

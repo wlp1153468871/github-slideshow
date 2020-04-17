@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">唯一标识</div>
@@ -17,7 +18,8 @@
             data-vv-as="唯一标识"
             :message="veeErrors.first('code')"
             :status="veeErrors.has('code') ? 'error' : ''"
-            v-validate="'required|alpha|max:10'">
+            v-validate="'required|alpha|max:10'"
+          >
           </dao-input>
         </div>
         <div slot="content-helper">
@@ -37,7 +39,8 @@
             v-validate="'required|max:10'"
             data-vv-as="配额字段名"
             :message="veeErrors.first('name')"
-            :status="veeErrors.has('name') ? 'error' : ''">
+            :status="veeErrors.has('name') ? 'error' : ''"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -54,7 +57,8 @@
             data-vv-as="配额字段单位"
             v-validate="'required|max:10'"
             :message="veeErrors.first('unit')"
-            :status="veeErrors.has('unit') ? 'error' : ''">
+            :status="veeErrors.has('unit') ? 'error' : ''"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -70,21 +74,17 @@
             data-vv-as="描述"
             v-validate="'max:255'"
             :message="veeErrors.first('description')"
-            :status="veeErrors.has('description') ? 'error' : ''">
+            :status="veeErrors.has('description') ? 'error' : ''"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -107,20 +107,12 @@ export default {
   },
   computed: {
     isValidForm() {
-      return this.code !== '' &&
-        this.name !== '' &&
-        this.unit !== '' &&
-        !this.veeErrors.any();
+      return this.code !== '' && this.name !== '' && this.unit !== '' && !this.veeErrors.any();
     },
   },
   methods: {
     onConfirm() {
-      const {
-        code,
-        name,
-        unit,
-        description,
-      } = this;
+      const { code, name, unit, description } = this;
 
       this.$emit('create', {
         code,

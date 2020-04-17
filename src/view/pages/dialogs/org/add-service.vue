@@ -4,19 +4,14 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">选择服务</div>
         <div slot="content">
-          <dao-select
-            v-model="serviceId"
-            placeholder="选择服务"
-            no-data-text="没有符合条件的服务">
-            <dao-option
-              v-for="item in serviceOptions"
-              :key="item.key"
-              :value="item.id">
+          <dao-select v-model="serviceId" placeholder="选择服务" no-data-text="没有符合条件的服务">
+            <dao-option v-for="item in serviceOptions" :key="item.key" :value="item.id">
               {{ getServiceInfo(item) }}
             </dao-option>
           </dao-select>
@@ -24,9 +19,7 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
       <save-button
@@ -34,7 +27,8 @@
         text="确定"
         :disabled="creating || !serviceId"
         :saving="creating"
-        @click="onConfirm">
+        @click="onConfirm"
+      >
       </save-button>
     </div>
   </dao-dialog>

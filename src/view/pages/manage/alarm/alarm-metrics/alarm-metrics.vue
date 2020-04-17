@@ -5,31 +5,14 @@
       <span class="header-note">告警指标为配置文件创建，如需更改，请查看部署文档相关内容</span>
     </div>
     <el-tabs>
-      <el-tab-pane
-        label="容器"
-      >
-        <metric-table
-          :rules="containerMetrics"
-          :loading="loading"
-        ></metric-table>
+      <el-tab-pane label="容器">
+        <metric-table :rules="containerMetrics" :loading="loading"></metric-table>
       </el-tab-pane>
-      <el-tab-pane
-        lazy
-        label="应用"
-      >
-        <metric-table
-          :rules="appMetrics"
-          :loading="loading"
-        ></metric-table>
+      <el-tab-pane lazy label="应用">
+        <metric-table :rules="appMetrics" :loading="loading"></metric-table>
       </el-tab-pane>
-      <el-tab-pane
-        lazy
-        label="服务"
-      >
-        <metric-table
-          :rules="serviceMetrics"
-          :loading="loading"
-        >
+      <el-tab-pane lazy label="服务">
+        <metric-table :rules="serviceMetrics" :loading="loading">
           <template #filter>
             <label for="" class="label-input">类型</label>
             <el-select
@@ -43,7 +26,8 @@
                 :value="s"
                 :label="s"
                 v-for="s in serviceMetricsNames"
-                :key="s"></el-option>
+                :key="s"
+              ></el-option>
             </el-select>
           </template>
         </metric-table>
@@ -53,5 +37,5 @@
 </template>
 <script src="./alarm-metrics.js"></script>
 <style lang="scss">
-  @import './alarm-metrics';
+@import './alarm-metrics';
 </style>

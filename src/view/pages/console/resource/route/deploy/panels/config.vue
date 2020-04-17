@@ -19,11 +19,12 @@
               v-validate="{
                 required: true,
                 dns_1123_sub_domain: true,
-                max: nameValidation.maxlength
+                max: nameValidation.maxlength,
               }"
               :message="veeErrors.first('name')"
               :status="veeErrors.has('name') ? 'error' : ''"
-              data-vv-as="名称">
+              data-vv-as="名称"
+            >
             </dao-input>
           </template>
         </dao-setting-item>
@@ -35,14 +36,13 @@
             Router 选择器
           </template>
           <template #content>
-            <dao-select
-              @change="onRouterSelectorChanged"
-              v-model="formModel.router_label">
+            <dao-select @change="onRouterSelectorChanged" v-model="formModel.router_label">
               <dao-option
                 v-for="item in zone.router_config"
                 :key="item.key"
                 :value="item.label"
-                :label="item.title">
+                :label="item.title"
+              >
               </dao-option>
             </dao-select>
           </template>
@@ -67,7 +67,8 @@
               }"
               :message="veeErrors.first('host')"
               :status="veeErrors.has('host') ? 'error' : ''"
-              data-vv-as="访问域名">
+              data-vv-as="访问域名"
+            >
             </dao-input>
           </template>
         </dao-setting-item>
@@ -75,7 +76,8 @@
 
       <dao-setting-section
         key="path"
-        v-if="!formModel.secureRoute || formModel.tls.termination !== 'passthrough'">
+        v-if="!formModel.secureRoute || formModel.tls.termination !== 'passthrough'"
+      >
         <dao-setting-item>
           <template #label>
             访问路径
@@ -88,7 +90,8 @@
               v-validate="'required|absolute_path'"
               :message="veeErrors.first('path')"
               :status="veeErrors.has('path') ? 'error' : ''"
-              data-vv-as="访问路径">
+              data-vv-as="访问路径"
+            >
             </dao-input>
           </template>
         </dao-setting-item>
@@ -105,7 +108,8 @@
                 v-for="service in services"
                 :key="service.metadata.name"
                 :value="service.metadata.name"
-                :label="service.metadata.name">
+                :label="service.metadata.name"
+              >
               </dao-option>
             </dao-select>
           </template>
@@ -123,7 +127,8 @@
                 v-for="(portOption, index) in portOptions"
                 :key="index"
                 :value="portOption.port"
-                :label="portOption.label">
+                :label="portOption.label"
+              >
               </dao-option>
             </dao-select>
           </template>
@@ -136,9 +141,7 @@
             Security
           </template>
           <template #content>
-            <dao-switch
-              :option="{ on: '是', off: '否' }"
-              v-model="formModel.secureRoute">
+            <dao-switch :option="{ on: '是', off: '否' }" v-model="formModel.secureRoute">
             </dao-switch>
           </template>
         </dao-setting-item>
@@ -152,19 +155,13 @@
             </template>
             <template #content>
               <dao-radio-group class="radio-group-row">
-                <dao-radio
-                  label="edge"
-                  v-model="formModel.tls.termination">
+                <dao-radio label="edge" v-model="formModel.tls.termination">
                   Edge
                 </dao-radio>
-                <dao-radio
-                  label="passthrough"
-                  v-model="formModel.tls.termination">
+                <dao-radio label="passthrough" v-model="formModel.tls.termination">
                   Passthrough
                 </dao-radio>
-                <dao-radio
-                  label="reencrypt"
-                  v-model="formModel.tls.termination">
+                <dao-radio label="reencrypt" v-model="formModel.tls.termination">
                   Re-encrypt
                 </dao-radio>
               </dao-radio-group>
@@ -179,16 +176,18 @@
               <template #content>
                 <textarea
                   class="dao-control"
-                  :class="{ 'error': veeErrors.has('caCertificate') }"
+                  :class="{ error: veeErrors.has('caCertificate') }"
                   v-model="formModel.tls.caCertificate"
                   name="caCertificate"
-                  rows="3">
+                  rows="3"
+                >
                 </textarea>
                 <file-upload
                   class="upload-file"
                   type="file"
                   name="caCertificate"
-                  @input="resolveFile($event, 'caCertificate')">
+                  @input="resolveFile($event, 'caCertificate')"
+                >
                   <a class="add-det">上传文件解析</a>
                 </file-upload>
               </template>
@@ -201,16 +200,18 @@
               <template #content>
                 <textarea
                   class="dao-control"
-                  :class="{ 'error': veeErrors.has('certificate') }"
+                  :class="{ error: veeErrors.has('certificate') }"
                   v-model="formModel.tls.certificate"
                   name="certificate"
-                  rows="3">
+                  rows="3"
+                >
                 </textarea>
                 <file-upload
                   class="upload-file"
                   type="file"
                   name="certificate"
-                  @input="resolveFile($event, 'certificate')">
+                  @input="resolveFile($event, 'certificate')"
+                >
                   <a class="add-det">上传文件解析</a>
                 </file-upload>
               </template>
@@ -223,25 +224,25 @@
               <template #content>
                 <textarea
                   class="dao-control"
-                  :class="{ 'error': veeErrors.has('key') }"
+                  :class="{ error: veeErrors.has('key') }"
                   v-model="formModel.tls.key"
                   name="key"
-                  rows="3">
+                  rows="3"
+                >
                 </textarea>
                 <file-upload
                   class="upload-file"
                   type="file"
                   name="key"
-                  @input="resolveFile($event, 'key')">
+                  @input="resolveFile($event, 'key')"
+                >
                   <a class="add-det">上传文件解析</a>
                 </file-upload>
               </template>
             </dao-setting-item>
           </dao-setting-section>
         </template>
-
       </template>
-
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -253,13 +254,11 @@
           </template>
           <template #content>
             <dao-radio-group class="radio-group-row">
-              <dao-radio
-                v-model="formModel.release_type"
-                :label="DEPLOYMENT_TYPE.DEFAULT">默认
+              <dao-radio v-model="formModel.release_type" :label="DEPLOYMENT_TYPE.DEFAULT"
+                >默认
               </dao-radio>
-              <dao-radio
-                v-model="formModel.release_type"
-                :label="DEPLOYMENT_TYPE.BLUEGREEN">按百分比
+              <dao-radio v-model="formModel.release_type" :label="DEPLOYMENT_TYPE.BLUEGREEN"
+                >按百分比
               </dao-radio>
             </dao-radio-group>
           </template>
@@ -283,7 +282,8 @@
                 v-show="formModel.release_type === DEPLOYMENT_TYPE.BLUEGREEN"
                 v-model="rule"
                 :current="formModel.backend.name"
-                :services="restServices">
+                :services="restServices"
+              >
               </blue-green-deployment>
             </div>
           </template>
@@ -400,9 +400,7 @@ export default {
         this.portOptions = ports.map(portMapping => {
           return {
             port: portMapping.port,
-            label: `${portMapping.port} \u2192 ${portMapping.targetPort} (${
-              portMapping.protocol
-            })`,
+            label: `${portMapping.port} \u2192 ${portMapping.targetPort} (${portMapping.protocol})`,
           };
         });
       } else {
@@ -414,10 +412,7 @@ export default {
       ServiceService.list().then(serviceList => {
         this.services = serviceList.items;
         this.servicesByName = keyBy(this.services, 'metadata.name');
-        this.formModel.backend.name = getValue(
-          first(this.services),
-          'metadata.name',
-        );
+        this.formModel.backend.name = getValue(first(this.services), 'metadata.name');
       });
     },
 
@@ -433,7 +428,7 @@ export default {
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 .panel-config {
   .dao-control {
     width: 100%;

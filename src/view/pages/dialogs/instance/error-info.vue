@@ -3,14 +3,13 @@
     :config="config"
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-copy-block class="copy-error-info__dialog">
       {{ text }}
     </dao-copy-block>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
     </div>
@@ -38,7 +37,7 @@ export default {
 
   pre {
     padding: 15px;
-    background-color: #F5F7FA;
+    background-color: #f5f7fa;
     width: 100%;
   }
 

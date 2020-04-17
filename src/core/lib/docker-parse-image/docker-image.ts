@@ -1,16 +1,10 @@
 export default class DockerImage {
-
   registry: string;
   namespace: string;
   repository: string;
   tag: string;
 
-  constructor(
-    registry: string,
-    namespace: string,
-    repository: string,
-    tag: string,
-  ) {
+  constructor(registry: string, namespace: string, repository: string, tag: string) {
     this.registry = registry;
     this.namespace = namespace;
     this.repository = repository;
@@ -23,7 +17,7 @@ export default class DockerImage {
   }
 
   private get _namespace() {
-    const {namespace } = this;
+    const { namespace } = this;
     return namespace && namespace !== 'library' ? `${namespace}/` : '';
   }
 
@@ -37,6 +31,8 @@ export default class DockerImage {
   }
 
   get fullname(): string {
-    return this._registry + (this._namespace || 'library/') + this.repository + (this._tag || ':latest');
+    return (
+      this._registry + (this._namespace || 'library/') + this.repository + (this._tag || ':latest')
+    );
   }
 }

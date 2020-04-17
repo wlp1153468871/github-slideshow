@@ -5,26 +5,22 @@
     @before-open="onBeforeOpen"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
-    <dao-editable-list
-      class="key-value-editor"
-      @add="add"
-      @remove="remove">
+    @dao-dialog-confirm="onConfirm"
+  >
+    <dao-editable-list class="key-value-editor" @add="add" @remove="remove">
       <li
         slot="list"
         v-for="(d, i) in currentList"
         :key="i"
         @click="select(i)"
-        :class="{active: current.index === i}">
-        <span>{{d.key || '未设置'}}</span>
+        :class="{ active: current.index === i }"
+      >
+        <span>{{ d.key || '未设置' }}</span>
         <svg class="icon text-danger" v-show="!d.check">
           <use xlink:href="#icon_warning"></use>
         </svg>
       </li>
-      <div
-        class="edit-detail"
-        slot="content"
-        v-if="current.index !== -1">
+      <div class="edit-detail" slot="content" v-if="current.index !== -1">
         <div class="edit-detail-label">
           <span class="left">键</span>
         </div>
@@ -34,7 +30,8 @@
             icon-inside
             :message="errorMessage.key"
             :status="errorMessage.key ? 'error' : ''"
-            v-model="current.key">
+            v-model="current.key"
+          >
           </dao-input>
         </div>
         <div class="edit-detail-label">
@@ -51,11 +48,10 @@
             v-show="valueType === 'input'"
             class="dao-control input-value"
             :placeholder="'例如: cmd'"
-            v-model="current.value">
+            v-model="current.value"
+          >
           </textarea>
-          <span
-            class="hepler-text red"
-            v-if="valueError">
+          <span class="hepler-text red" v-if="valueError">
             请输入字母、数字或英文字符等组合
           </span>
           <!-- <file-select ref="fileSelect"
@@ -64,16 +60,16 @@
           <upload-input
             ref="fileSelect"
             v-show="valueType === 'upload' && !loading.fileContent"
-            @on-file-change="fileChange">
+            @on-file-change="fileChange"
+          >
           </upload-input>
           <p
             v-show="valueType === 'upload' && !loading.fileContent"
-            class="text-danger select-file-info">
-          请选择文本文件，大小请勿超过 1M
+            class="text-danger select-file-info"
+          >
+            请选择文本文件，大小请勿超过 1M
           </p>
-          <div
-            v-show="valueType === 'upload' && loading.fileContent"
-            class="text-primary">
+          <div v-show="valueType === 'upload' && loading.fileContent" class="text-primary">
             <svg class="loading-icon icon rotating">
               <use xlink:href="#icon_circle-rotate"></use>
             </svg>
@@ -83,15 +79,10 @@
       </div>
     </dao-editable-list>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        :disabled="!check"
-        class="dao-btn blue"
-        @click="onConfirm">
+      <button :disabled="!check" class="dao-btn blue" @click="onConfirm">
         保存
       </button>
     </div>
@@ -99,16 +90,7 @@
 </template>
 
 <script>
-import {
-  isEmpty,
-  clone,
-  isArray,
-  every,
-  cloneDeep,
-  forEachRight,
-  debounce,
-  filter,
-} from 'lodash';
+import { isEmpty, clone, isArray, every, cloneDeep, forEachRight, debounce, filter } from 'lodash';
 import dialog from '@/view/mixins/dialog';
 
 const DEFAULT = {
@@ -280,9 +262,7 @@ export default {
       } else if (!/^[-._a-zA-Z0-9]+$/.test(key)) {
         // 检测非法字符
         errMsg = '不能含有非法字符。只能使用数字、大小写字母、"-"、 "_" 或 "."';
-      } else if (
-        filter(this.currentList, pair => pair.key === key).length > 1
-      ) {
+      } else if (filter(this.currentList, pair => pair.key === key).length > 1) {
         errMsg = '键重复';
       }
       // [ IS_INVALID, ERR_MESSAGE ]

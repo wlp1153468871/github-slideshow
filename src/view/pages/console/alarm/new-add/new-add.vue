@@ -1,9 +1,7 @@
 <template>
   <div id="alarm-new-add">
     <div class="header-title">
-      <span
-        class="go-back"
-        @click="$router.go(-1)">
+      <span class="go-back" @click="$router.go(-1)">
         <svg class="icon">
           <use xlink:href="#icon_caret-left"></use>
         </svg>
@@ -19,25 +17,16 @@
       @on-validate="onValidate"
     >
       <template #step="{ tab, index }">
-      <li
-        class="step-content"
-        :key="tab.title"
-        :class="{ 'checked': tab.checked }">
-        <a class="step-tab">
-          <span class="step-icon">{{ index + 1 }}</span>
-          <span class="step-title">{{ tab.title }}</span>
-        </a>
-      </li>
-    </template>
+        <li class="step-content" :key="tab.title" :class="{ checked: tab.checked }">
+          <a class="step-tab">
+            <span class="step-icon">{{ index + 1 }}</span>
+            <span class="step-title">{{ tab.title }}</span>
+          </a>
+        </li>
+      </template>
 
-      <tab-content
-        title="选择指标"
-        :before-change="validate">
-        <step-one
-          ref="okRules"
-          :params="params"
-        >
-        </step-one>
+      <tab-content title="选择指标" :before-change="validate">
+        <step-one ref="okRules" :params="params"> </step-one>
       </tab-content>
 
       <tab-content title="确认规则">
@@ -55,19 +44,14 @@
             <button
               class="dao-btn white"
               v-show="props.activeTabIndex !== 0"
-              @click="props.prevTab()">
+              @click="props.prevTab()"
+            >
               上一步
             </button>
-            <button
-              class="dao-btn blue"
-              v-show="!props.isLastStep"
-              @click="props.nextTab()">
+            <button class="dao-btn blue" v-show="!props.isLastStep" @click="props.nextTab()">
               下一步: 确认规则
             </button>
-            <button
-              class="dao-btn blue"
-              v-show="props.isLastStep"
-              @click="props.nextTab()">
+            <button class="dao-btn blue" v-show="props.isLastStep" @click="props.nextTab()">
               添加规则
             </button>
           </div>
@@ -78,5 +62,5 @@
 </template>
 <script src="./new-add.js"></script>
 <style lang="scss">
-  @import './new-add';
+@import './new-add';
 </style>

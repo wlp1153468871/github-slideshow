@@ -19,7 +19,8 @@
             :message="veeErrors.first('port')"
             :status="veeErrors.has('port') ? 'error' : ''"
             v-validate="'required|port'"
-            placeholder="端口号；例:80">
+            placeholder="端口号；例:80"
+          >
           </dao-input>
         </template>
       </dao-setting-item>

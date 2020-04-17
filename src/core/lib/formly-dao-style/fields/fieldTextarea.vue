@@ -13,12 +13,16 @@
           rows="3"
           :disabled="to.disabled"
           :placeholder="getAtts(to.atts, 'placeholder')"
-          v-model="model[field.key]">
+          v-model="model[field.key]"
+        >
         </textarea>
       </div>
       <p slot="content-helper">
-        <span>注意: 一行一条配置, 多个用分号";"分隔</span><br/>
-        <span>示例: jndiname1 | root | root | com.mysql.jdbc.Driver | jdbc:mysql://localhost:3306/testSite1;</span>
+        <span>注意: 一行一条配置, 多个用分号";"分隔</span><br />
+        <span
+          >示例: jndiname1 | root | root | com.mysql.jdbc.Driver |
+          jdbc:mysql://localhost:3306/testSite1;</span
+        >
         <span>{{ to.description }} </span>
       </p>
     </dao-setting-item>

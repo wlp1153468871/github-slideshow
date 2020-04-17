@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import NProgress from 'nprogress';
 
 // container
 import ConsoleContainer from '@/view/pages/console/container/container.vue';
+import ManageContainer from '@/view/pages/manage/container/container.vue';
+
 // home
 import Home from '@/view/pages/home/home.vue';
 // login
@@ -15,7 +18,7 @@ import ZoneService from '@/core/services/zone.service';
 
 import ProductRouters from './product';
 import ConsoleRouters from './console';
-import ManageRouters from './manager';
+import ManageRouters from './manage';
 
 import guards from './guards';
 
@@ -54,12 +57,13 @@ const router = new Router({
     {
       path: '/console',
       name: 'console',
-      redirect: {
-        name: 'console.dashboard',
-      },
       component: ConsoleContainer,
       children: ConsoleRouters,
+      redirect: {
+        name: 'console.gateway',
+      },
       beforeEnter(to, from, next) {
+        store.commit('setManageView', false);
         const { spaceId, zoneId, orgId } = to.query;
         if (spaceId && zoneId && orgId) {
           SpaceService.setLocalSpace({
@@ -72,6 +76,7 @@ const router = new Router({
             id: orgId,
           });
         }
+
         if (to.query.onInitTenantView) {
           next();
         } else {
@@ -83,8 +88,36 @@ const router = new Router({
     },
 
     // path: /manage'
-    ManageRouters,
-
+    {
+      path: '/manage',
+      name: 'manage',
+      beforeEnter(to, from, next) {
+        // SpaceService.removeLocalSpace();
+        // ZoneService.removeLocalZone();
+        // OrgService.removeLocalOrg();
+        localStorage.removeItem('SELECTED_SPACE');
+        localStorage.removeItem('SELECTED_ORG');
+        localStorage.removeItem('SELECTED_ZONE');
+        store.commit('setManageView', true);
+        store.dispatch('getUserInfo').finally(() => {
+          if (store.getters.isPlatformAdmin) {
+            next();
+          } else {
+            Vue.noty.error('无平台管理权限');
+            next({
+              name: 'console.gateway',
+            });
+            NProgress.done();
+          }
+        });
+      },
+      redirect: {
+        name: 'manage.org.list',
+      },
+      component: ManageContainer,
+      children: ManageRouters,
+    },
+    // ManageRouters,
     {
       path: '/403',
       name: '403',

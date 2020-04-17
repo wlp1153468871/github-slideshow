@@ -16,20 +16,11 @@ export function getPodStatus(pod) {
   }
 
   pod.status.containerStatuses.forEach(container => {
-    if (
-      container.state.waiting &&
-      container.state.waiting.reason !== ''
-    ) {
+    if (container.state.waiting && container.state.waiting.reason !== '') {
       reason = container.state.waiting.reason;
-    } else if (
-      container.state.terminated &&
-      container.state.terminated.reason !== ''
-    ) {
+    } else if (container.state.terminated && container.state.terminated.reason !== '') {
       reason = container.state.terminated.reason;
-    } else if (
-      container.state.terminated &&
-      container.state.terminated.reason === ''
-    ) {
+    } else if (container.state.terminated && container.state.terminated.reason === '') {
       if (container.state.terminated.signal !== 0) {
         reason = `Signal: ${container.state.terminated.signal}`;
       } else {

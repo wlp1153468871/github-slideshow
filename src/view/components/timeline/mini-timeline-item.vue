@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~daoColor";
+@import '~daoColor';
 
 .timeline .mini-item {
   position: relative;
@@ -54,7 +54,7 @@ export default {
   margin-right: -10px;
   margin-left: -10px;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     bottom: 0;
@@ -71,7 +71,7 @@ export default {
     line-height: 1.5;
     text-align: right;
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       top: 6px;
       right: -6px;
@@ -89,7 +89,7 @@ export default {
       color: #f1483f;
     }
     &.text-primary {
-      color: $blue!important;
+      color: $blue !important;
     }
   }
   .right {

@@ -1,4 +1,3 @@
-
 import tableView from '@/view/mixins/table-view';
 import OrgService from '@/core/services/org.service';
 
@@ -46,11 +45,13 @@ export default {
 
     loadOrgs() {
       this.loadings.orgs = true;
-      OrgService.getOrgs().then(orgs => {
-        this.rows = orgs;
-      }).finally(() => {
-        this.loadings.orgs = false;
-      });
+      OrgService.getOrgs()
+        .then(orgs => {
+          this.rows = orgs;
+        })
+        .finally(() => {
+          this.loadings.orgs = false;
+        });
     },
   },
 };

@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">二级分类名</div>
@@ -16,21 +17,17 @@
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
             v-validate="'required|max:8'"
-            data-vv-as="二级分类名">
+            data-vv-as="二级分类名"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -64,8 +61,7 @@ export default {
   },
   computed: {
     isValidForm() {
-      return this.catalog.name !== this.name &&
-          !this.veeErrors.any();
+      return this.catalog.name !== this.name && !this.veeErrors.any();
     },
   },
   methods: {

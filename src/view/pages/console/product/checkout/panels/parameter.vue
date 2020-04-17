@@ -1,19 +1,10 @@
 <template>
   <dao-setting-layout>
     <template slot="layout-title">参数设置</template>
-    <div
-      v-if="isLoading"
-      class="dao-setting-section"
-    >
+    <div v-if="isLoading" class="dao-setting-section">
       <loading-state></loading-state>
     </div>
-    <schema-form
-      v-else
-      ref="scehmaForm"
-      v-model="model"
-      :schema="JSONSchema"
-    >
-    </schema-form>
+    <schema-form v-else ref="scehmaForm" v-model="model" :schema="JSONSchema"> </schema-form>
   </dao-setting-layout>
 </template>
 

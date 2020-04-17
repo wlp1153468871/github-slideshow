@@ -8,12 +8,9 @@
       </div>
       <div class="tip">
         <h3>已完成订购</h3>
-        <p class="flex-cc">您可以在
-          <resource-link
-            :kind="configType"
-            :name="resourceName"
-            :show-kind="false"
-          >
+        <p class="flex-cc">
+          您可以在
+          <resource-link :kind="configType" :name="resourceName" :show-kind="false">
             &nbsp;{{ resourceName }}&nbsp;详情页面
           </resource-link>
           查看创建状态

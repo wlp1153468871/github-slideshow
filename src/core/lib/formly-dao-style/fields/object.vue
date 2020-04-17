@@ -4,7 +4,8 @@
       class="formly-array-item"
       :form="form"
       :model="model[field.key]"
-      :fields="field.fields">
+      :fields="field.fields"
+    >
     </formly-form>
   </field-item>
 </template>

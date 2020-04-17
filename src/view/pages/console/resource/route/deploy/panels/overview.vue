@@ -6,8 +6,8 @@
       <template v-for="(item, index) in info">
         <dao-setting-section :key="index" v-if="!item.invisible">
           <dao-setting-item>
-            <div slot="label">{{item.name}}</div>
-            <p slot="content">{{item.value}}</p>
+            <div slot="label">{{ item.name }}</div>
+            <p slot="content">{{ item.value }}</p>
           </dao-setting-item>
         </dao-setting-section>
       </template>
@@ -55,9 +55,7 @@ export default {
         {
           name: '访问路径',
           value: this.route.path || '-',
-          invisible:
-            this.route.secureRoute &&
-            this.route.tls.termination === 'passthrough',
+          invisible: this.route.secureRoute && this.route.tls.termination === 'passthrough',
         },
         {
           name: '当前 Service',
@@ -78,7 +76,9 @@ export default {
         },
         {
           name: 'TLS Termination',
-          value: Vue.filter('humanize_tls_termination')(getValue(this.route.tls, 'termination', '-')),
+          value: Vue.filter('humanize_tls_termination')(
+            getValue(this.route.tls, 'termination', '-'),
+          ),
           invisible: !getValue(this.route, 'secureRoute'),
         },
       ];
@@ -91,8 +91,9 @@ export default {
       const weight = getValue(this.route.backend, 'weight', 0);
 
       if (type === DEPLOYMENT_TYPE.BLUEGREEN) {
-        return `百分比：${weight}%的流量路由到当前 Service ${currentApp}；${100 -
-          weight}%流量路由到新版本 Service ${nextApp}`;
+        return `百分比：${weight}%的流量路由到当前 Service ${currentApp}；${
+          100 - weight
+        }%流量路由到新版本 Service ${nextApp}`;
       }
       return `默认：全部流量路由到当前 Service ${currentApp} `;
     },

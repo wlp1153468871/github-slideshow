@@ -2,16 +2,15 @@
   <span>
     <span>
       <span v-if="!showForm">
-         <span>
-          {{data.status.replicas}}/
-          {{data.spec.replicas}}
+        <span>
+          {{ data.status.replicas }}/
+          {{ data.spec.replicas }}
         </span>
         <span>replica</span>
         <span v-if="data.spec.replicas !== 1">s</span>
-        <a
-          @click="toggleForm()"
-          v-if="$can('update') && !autoscalers.length"
-          style="margin-left: 5px;">扩展</a>
+        <a @click="toggleForm()" v-if="updateable && !autoscalers.length" style="margin-left: 5px;"
+          >扩展</a
+        >
       </span>
       <span v-else class="form">
         <input
@@ -19,7 +18,8 @@
           v-model.number="replicas"
           min="0"
           @input="onInputChange"
-          placeholder="副本数"/>
+          placeholder="副本数"
+        />
         <a @click="extend()">确定</a>
         <a @click="showForm = false">取消</a>
       </span>
@@ -35,6 +35,10 @@ export default {
   props: {
     data: Object,
     autoscalers: { type: Array, default: () => [] },
+    updateable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {

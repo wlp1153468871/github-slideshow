@@ -2,9 +2,6 @@ import Vue from 'vue';
 import store from '@/core/store';
 import NProgress from 'nprogress';
 
-// container
-// import ConsoleContainer from '@/view/pages/console/container/container.vue';
-
 import RouteView from '@/view/layout/route-view';
 
 // monitor
@@ -52,6 +49,8 @@ import OrgRegistry from '@/view/pages/org/registry/registry.vue';
 // product
 import ProductCheckout from '@/view/pages/console/product/checkout/checkout.vue';
 
+import Gateway from '@/view/pages/console/gateway/gateway';
+
 import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
 import Registry from '@/view/pages/console/registry/registry.vue';
 import RegistryTag from '@/view/pages/console/registry/detail/registryTag.vue';
@@ -76,13 +75,21 @@ import IngressDetail from '@/view/pages/console/resource/ingress/detail/ingress-
 
 export default [
   {
+    path: 'gateway',
+    name: 'console.gateway',
+    component: Gateway,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
     path: 'dashboard',
     name: 'console.dashboard',
     component: Dashboard,
     meta: {
       title: '总览',
       icon: '#icon_microsoft',
-      code: 'overview',
+      code: 'space.overview',
     },
   },
   {
@@ -107,7 +114,7 @@ export default [
    * 资源对象类型: Pod
    */
   {
-    path: '/',
+    path: '/resource',
     name: 'resource',
     component: RouteView,
     meta: {
@@ -122,6 +129,7 @@ export default [
         component: Deployments,
         meta: {
           title: 'Deployments',
+          hidden: true,
           icon: '#icon_deployments',
           code: 'deployment',
         },
@@ -133,6 +141,7 @@ export default [
         meta: {
           activeMenu: 'resource.deployments.list',
           hidden: true,
+          code: 'deployment',
         },
       },
       {
@@ -142,6 +151,8 @@ export default [
         meta: {
           title: 'DeploymentConfig',
           hidden: true,
+          code: 'deploymentConfig',
+          icon: '#icon_deploymentconfigs',
         },
       },
       {
@@ -151,6 +162,7 @@ export default [
         meta: {
           activeMenu: 'resource.deploymentconfigs.list',
           hidden: true,
+          code: 'deploymentConfig',
         },
       },
       {
@@ -159,6 +171,7 @@ export default [
         component: StatefulSetList,
         meta: {
           title: 'StatefulSet',
+          hidden: true,
           icon: '#icon_statefulsets',
           code: 'statefulSet',
         },
@@ -178,6 +191,7 @@ export default [
         name: 'resource.pods.list',
         component: Pods,
         meta: {
+          hidden: true,
           title: 'Pods',
           icon: '#icon_pods',
           code: 'pod',
@@ -198,6 +212,7 @@ export default [
         name: 'resource.services.list',
         component: ServiceList,
         meta: {
+          hidden: true,
           title: 'Service',
           icon: '#icon_services',
           code: 'service',
@@ -210,6 +225,7 @@ export default [
         meta: {
           activeMenu: 'resource.services.list',
           hidden: true,
+          code: 'service',
         },
       },
       {
@@ -217,8 +233,10 @@ export default [
         name: 'resource.routes.list',
         component: RouteList,
         meta: {
+          hidden: true,
           title: 'Route',
-          icon: '#icon_route',
+          icon: '#icon_routes',
+          code: 'route',
         },
       },
       {
@@ -228,6 +246,7 @@ export default [
         meta: {
           activeMenu: 'resource.routes.list',
           hidden: true,
+          code: 'route',
         },
       },
       {
@@ -235,6 +254,7 @@ export default [
         name: 'resource.ingresses.list',
         component: IngressList,
         meta: {
+          hidden: true,
           title: 'Ingress',
           icon: '#icon_ingresses',
           code: 'ingress',
@@ -247,6 +267,7 @@ export default [
         meta: {
           activeMenu: 'resource.ingresses.list',
           hidden: true,
+          code: 'ingress',
         },
       },
 
@@ -255,6 +276,7 @@ export default [
         name: 'resource.configmaps.list',
         component: ConfigMapList,
         meta: {
+          hidden: true,
           title: 'ConfigMap',
           icon: '#icon_configmaps',
           code: 'configMap',
@@ -267,6 +289,7 @@ export default [
         meta: {
           activeMenu: 'resource.configmaps.list',
           hidden: true,
+          code: 'configMap',
         },
       },
       {
@@ -274,6 +297,7 @@ export default [
         name: 'resource.secrets.list',
         component: SecretList,
         meta: {
+          hidden: true,
           title: 'Secret',
           icon: '#icon_secrets',
           code: 'secret',
@@ -286,6 +310,7 @@ export default [
         meta: {
           activeMenu: 'resource.secrets.list',
           hidden: true,
+          code: 'secret',
         },
       },
       {
@@ -293,6 +318,7 @@ export default [
         name: 'resource.persistentvolumeclaims.list',
         component: VolumeList,
         meta: {
+          hidden: true,
           title: 'PersistentVolumeClaim',
           icon: '#icon_persistentvolumeclaims',
           code: 'pvc',
@@ -305,13 +331,14 @@ export default [
         meta: {
           activeMenu: 'resource.persistentvolumeclaims.list',
           hidden: true,
+          code: 'pvc',
         },
       },
     ],
   },
   {
-    path: '',
-    name: '',
+    path: '/instances',
+    name: 'serviceBroker',
     component: RouteView,
     meta: {
       title: '服务',
@@ -347,7 +374,7 @@ export default [
     meta: {
       title: '镜像',
       icon: '#icon_docker-image',
-      code: 'image.center',
+      code: 'space.image',
     },
   },
   {
@@ -357,6 +384,7 @@ export default [
     meta: {
       activeMenu: 'console.registry',
       hidden: true,
+      code: 'space.image',
     },
   },
   {
@@ -366,7 +394,7 @@ export default [
     meta: {
       title: '监控',
       icon: '#icon_monitor',
-      code: 'monitor',
+      code: 'space.monitor',
     },
   },
   {
@@ -376,23 +404,16 @@ export default [
     meta: {
       title: '告警',
       icon: '#icon_bell',
-      code: 'alert',
+      code: 'space.alert',
     },
   },
   {
     path: 'alarm/rule/create',
     name: 'console.alarm.create',
     component: CreateAlarmRule,
-    // beforeEnter(to, from, next) {
-    //   if (store.getters.alarmAdminAccessed) {
-    //     next();
-    //     return;
-    //   }
-    //   next({ name: 'console.alarm' });
-    // },
     meta: {
       hidden: true,
-      code: 'alert.create',
+      code: 'space.alert.create',
     },
   },
   {
@@ -401,6 +422,7 @@ export default [
     component: AlarmDetail,
     meta: {
       hidden: true,
+      code: 'space.alert',
     },
   },
   {
@@ -420,7 +442,7 @@ export default [
     meta: {
       title: '审批',
       icon: '#icon_audit',
-      code: 'approval',
+      code: 'space.approval',
     },
     children: [
       {
@@ -429,7 +451,7 @@ export default [
         component: ApprovalList,
         meta: {
           title: '审批请求',
-          code: 'approval.view',
+          code: 'space.approval.view',
           icon: '#icon_outgoing',
         },
       },
@@ -439,18 +461,10 @@ export default [
         component: ApprovalHistory,
         meta: {
           title: '审批记录',
-          code: 'approval.log',
+          code: 'space.approval.log',
           icon: '#icon_log',
         },
       },
-      // {
-      //   path: 'approval/setting',
-      //   name: 'console.approval.setting',
-      //   component: ApprovalSetting,
-      //   meta: {
-      //     title: '审批设置',
-      //   },
-      // },
     ],
   },
   {
@@ -460,38 +474,23 @@ export default [
     meta: {
       title: '配额',
       icon: '#icon_quota',
-      code: 'quota',
+      code: 'space.quota',
     },
   },
   {
-    path: 'user',
-    name: 'console.user.list',
+    path: 'space-settings',
+    name: 'console.space-settings',
     component: UserList,
     meta: {
       title: '管理',
-      icon: '#icon_user',
-      code: 'space',
+      icon: '#icon_setting',
+      code: 'space.manage;organization.space',
     },
   },
   // deploy
   {
     path: 'deploy',
     name: 'deploy',
-    // beforeEnter(to, from, next) {
-    //   // 每次经过 console 都会经过这个函数, 所以, 需要注意执行效率;
-    //   // 目前的过滤条件是前端写死的, 能够集中处理呢?
-    //   if (/deploy\./.test(to.name)) {
-    //     const yes = Vue.prototype.$ability.can('create');
-    //     if (yes) {
-    //       next();
-    //     } else {
-    //       // can't create!
-    //       next({ name: 'console' });
-    //     }
-    //   } else {
-    //     next();
-    //   }
-    // },
     component: DeployContainer,
     meta: {
       hidden: true,
@@ -503,6 +502,7 @@ export default [
         component: DeployApp,
         meta: {
           hidden: true,
+          code: 'serviceInstance.create',
         },
       },
       {
@@ -519,6 +519,7 @@ export default [
         component: Deployments,
         meta: {
           hidden: true,
+          code: 'deployment',
         },
       },
       {
@@ -527,6 +528,7 @@ export default [
         component: StatefulSetList,
         meta: {
           hidden: true,
+          code: 'statefulSet',
         },
       },
       {
@@ -535,6 +537,7 @@ export default [
         component: ServiceList,
         meta: {
           hidden: true,
+          code: 'service',
         },
       },
       {
@@ -543,6 +546,8 @@ export default [
         component: DeployRoute,
         meta: {
           hidden: true,
+          code: 'route.create',
+          // TODO: route还需要和配置文件确认
         },
       },
       {
@@ -551,7 +556,7 @@ export default [
         component: IngressList,
         meta: {
           hidden: true,
-          code: 'configMap.create',
+          code: 'ingress.create',
         },
       },
       {
@@ -560,6 +565,7 @@ export default [
         component: DeployConfigMap,
         meta: {
           hidden: true,
+          code: 'configMap.create',
         },
       },
       {
@@ -568,6 +574,7 @@ export default [
         component: DeploySecret,
         meta: {
           hidden: true,
+          code: 'secret.create',
         },
       },
       {
@@ -585,6 +592,7 @@ export default [
         component: ProductCheckout,
         meta: {
           hidden: true,
+          code: 'service',
         },
       },
     ],
@@ -629,7 +637,7 @@ export default [
       } else {
         Vue.noty.error('无权限访问此页面');
         next({
-          name: 'console.dashboard',
+          name: 'console.gateway',
         });
         NProgress.done();
       }
@@ -649,7 +657,7 @@ export default [
         component: SpaceList,
         meta: {
           hidden: true,
-          code: 'organization.manage',
+          code: 'organization.space',
         },
       },
       {
@@ -658,6 +666,7 @@ export default [
         component: OrgUserList,
         meta: {
           hidden: true,
+          code: 'organization.user',
         },
       },
       {

@@ -6,10 +6,7 @@
         <span>存储卷</span>
       </div>
       <div slot="content">
-        <dao-editable-table
-          :config="volumeConfig"
-          v-model="volumeModel"
-          @valid="onValidChange">
+        <dao-editable-table :config="volumeConfig" v-model="volumeModel" @valid="onValidChange">
         </dao-editable-table>
       </div>
     </dao-setting-section>

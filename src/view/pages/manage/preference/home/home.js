@@ -8,7 +8,11 @@ export default {
     CatalogPanel,
   },
   created() {
-    this.getAllService();
+    if (this.$can('platform.settings.assets', 'platform.settings')) {
+      this.getAllService();
+    } else {
+      this.$noty.error('您暂无首页编辑权限');
+    }
   },
   data() {
     const TABS = {

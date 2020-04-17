@@ -1,15 +1,8 @@
 <template>
   <field-item :to="to">
-    <div
-      class="dao-checkbox"
-      v-for="item in to.options"
-      :key="item.id">
+    <div class="dao-checkbox" v-for="item in to.options" :key="item.id">
       <label>
-        <input
-          type="checkbox"
-          :value="item.value"
-          v-model="model[field.key]"
-        />
+        <input type="checkbox" :value="item.value" v-model="model[field.key]" />
         {{ item.label }}
       </label>
     </div>

@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">配额组</div>
@@ -14,13 +15,15 @@
             placeholder="选择配额组"
             no-data-text="暂无配额组可以添加"
             :with-search="true"
-            search-placeholder="搜索配额组名字">
+            search-placeholder="搜索配额组名字"
+          >
             <dao-option-group>
               <dao-option
                 v-for="item in availableQutoaGroups"
                 :value="item.id"
                 :label="item.name"
-                :key="item.key">
+                :key="item.key"
+              >
               </dao-option>
             </dao-option-group>
           </dao-select>
@@ -28,15 +31,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        @click="onConfirm"
-        :disabled="!isValidForm">
+      <button class="dao-btn blue" @click="onConfirm" :disabled="!isValidForm">
         确定
       </button>
     </div>
@@ -84,15 +82,15 @@ export default {
 
   methods: {
     onConfirm() {
-      const quotaGroup = this.availableQutoaGroups
-        .find(x => x.id === this.quotaGroupId);
+      const quotaGroup = this.availableQutoaGroups.find(x => x.id === this.quotaGroupId);
       this.$emit('add', quotaGroup);
       this.onClose();
     },
 
     dialogWillClose() {
       this.quotaGroupId = this.availableQutoaGroups.length
-        ? first(this.availableQutoaGroups).id : '';
+        ? first(this.availableQutoaGroups).id
+        : '';
     },
   },
 };

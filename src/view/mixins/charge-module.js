@@ -16,10 +16,7 @@ export default {
         .then(rules => {
           this.chargingRule = first(rules);
           this.chargingTypes = this.chargingRule.charging_rule_details;
-          const chargeRuleId = getValue(
-            rules,
-            '[0].charging_rule_details[0].id',
-          );
+          const chargeRuleId = getValue(rules, '[0].charging_rule_details[0].id');
           if (chargeRuleId) this.chargingRuleDetailIds = [chargeRuleId];
         })
         .catch(e => {

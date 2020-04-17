@@ -16,7 +16,8 @@ class ResourceQuotaService {
 
   updateStatus(approvalId, reply = '', status) {
     return this.api.put(`/quota/approval/${approvalId}`, {
-      reply, status,
+      reply,
+      status,
     });
   }
 }

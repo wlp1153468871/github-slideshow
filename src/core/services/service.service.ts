@@ -38,12 +38,7 @@ class ServiceService {
     });
   }
 
-  getServiceParameters(
-    serviceId: string,
-    spaceId: string,
-    data: any,
-    zoneId?: string,
-  ) {
+  getServiceParameters(serviceId: string, spaceId: string, data: any, zoneId?: string) {
     const params: { [key: string]: string } = {};
     if (spaceId) params.space_id = spaceId;
     if (zoneId) params.zone_id = zoneId;

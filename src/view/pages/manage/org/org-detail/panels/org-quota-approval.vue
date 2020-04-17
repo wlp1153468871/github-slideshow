@@ -3,6 +3,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <quota-approval-table
+          :canUpdate="$can('platform.organization.approval', 'platform.organization')"
           :loading="false"
           :approvals="quotaRequests"
           @refresh="getZoneApprovals"
@@ -21,7 +22,6 @@ import { mapState } from 'vuex';
 import QuotaApprovalTable from '@/view/components/resource-quota/quota-approval-table.vue';
 import orgService from '@/core/services/org.service';
 
-
 export default {
   name: 'org-quota-approval',
   computed: {
@@ -37,7 +37,11 @@ export default {
     };
   },
   created() {
-    this.getZoneApprovals();
+    if (this.$can('platform.organization.approval', 'platform.organization')) {
+      this.getZoneApprovals();
+    } else {
+      this.$noty.error('您暂无租户审批权限');
+    }
   },
   methods: {
     getZoneApprovals() {

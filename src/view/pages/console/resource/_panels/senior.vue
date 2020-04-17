@@ -7,9 +7,7 @@
           <p class="delete-notice">
             删除实例需要谨慎操作，这是一个不可逆的操作。
           </p>
-          <button
-            @click="removeConfirm"
-            class="dao-btn red">
+          <button @click="removeConfirm" class="dao-btn red">
             删除
           </button>
         </div>
@@ -30,17 +28,18 @@ export default {
 
   methods: {
     removeConfirm() {
-      const name = getVal(this.instance, 'metadata.name')
-        || getVal(this.instance, 'name');
+      const name = getVal(this.instance, 'metadata.name') || getVal(this.instance, 'name');
 
-      this.$tada.confirm({
-        title: '删除实例',
-        text: `您确定要删除实例 ${name} 吗？`,
-      }).then(ok => {
-        if (ok) {
-          this.$emit('delete', this.instance);
-        }
-      });
+      this.$tada
+        .confirm({
+          title: '删除实例',
+          text: `您确定要删除实例 ${name} 吗？`,
+        })
+        .then(ok => {
+          if (ok) {
+            this.$emit('delete', this.instance);
+          }
+        });
     },
   },
 };

@@ -3,7 +3,8 @@
     :config="config"
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户名</div>
@@ -21,7 +22,8 @@
               v-for="(label, key) in spaceRoleOptions"
               :value="key"
               :key="key"
-              :label="label">
+              :label="label"
+            >
             </dao-option>
           </dao-select>
         </div>
@@ -29,15 +31,10 @@
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="formValidate"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="formValidate" @click="onConfirm">
         确定
       </button>
     </div>

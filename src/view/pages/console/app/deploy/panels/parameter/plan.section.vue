@@ -15,7 +15,8 @@
           :message="veeErrors.first('limitCpu')"
           :status="veeErrors.has('limitCpu') ? 'error' : ''"
           v-model="limitCpu"
-          data-vv-as="CPU 限制">
+          data-vv-as="CPU 限制"
+        >
           <span slot="append">Core</span>
         </dao-input>
       </template>
@@ -38,7 +39,8 @@
           :message="veeErrors.first('limitMem')"
           :status="veeErrors.has('limitMem') ? 'error' : ''"
           v-model="limitMem"
-          data-vv-as="内存限制">
+          data-vv-as="内存限制"
+        >
           <span slot="append">G</span>
         </dao-input>
       </template>
@@ -60,12 +62,13 @@
             required: true,
             decimal: 3,
             min_value: 0,
-            max_value: limitCpu
+            max_value: limitCpu,
           }"
           :message="veeErrors.first('cpu')"
           :status="veeErrors.has('cpu') ? 'error' : ''"
           v-model="cpu"
-          data-vv-as="CPU 预留">
+          data-vv-as="CPU 预留"
+        >
           <span slot="append">Core</span>
         </dao-input>
       </template>
@@ -88,11 +91,12 @@
             required: true,
             decimal: 3,
             min_value: 0,
-            max_value: limitMem
+            max_value: limitMem,
           }"
           :message="veeErrors.first('mem')"
           :status="veeErrors.has('mem') ? 'error' : ''"
-          data-vv-as="内存预留">
+          data-vv-as="内存预留"
+        >
           <span slot="append">G</span>
         </dao-input>
       </template>

@@ -10,19 +10,13 @@ export default function accessModesFilter(value, format) {
     const longForm = format === 'long';
     switch (item) {
       case 'ReadWriteOnce':
-        accessModeString = longForm
-          ? '读写(独占) (Read-Write-Once)'
-          : '读写(独占)';
+        accessModeString = longForm ? '读写(独占) (Read-Write-Once)' : '读写(独占)';
         break;
       case 'ReadWriteMany':
-        accessModeString = longForm
-          ? '读写(共享) (Read-Only-Many)'
-          : '读写(共享)';
+        accessModeString = longForm ? '读写(共享) (Read-Only-Many)' : '读写(共享)';
         break;
       case 'ReadOnlyMany':
-        accessModeString = longForm
-          ? '只读(共享) (Read-Write-Many)'
-          : '只读(共享)';
+        accessModeString = longForm ? '只读(共享) (Read-Write-Many)' : '只读(共享)';
         break;
       default:
         accessModeString = item;

@@ -4,15 +4,13 @@
 
     <div class="panel-resource-content">
       <!-- Prompt to add health checks if missing. -->
-      <div
-        v-if="detailed && !hasHealthChecks(pod)"
-        class="alert alert-info">
+      <div v-if="detailed && !hasHealthChecks(pod)" class="alert alert-info">
         <div class="alert-description">
           <svg class="icon">
             <use xlink:href="#icon_warning-line"></use>
           </svg>
           <span v-if="pod.spec.containers.length === 1">
-          Container {{pod.spec.containers[0].name}} does not have health checks
+            Container {{ pod.spec.containers[0].name }} does not have health checks
           </span>
           <span v-if="pod.spec.containers.length > 1">
             Not all containers have health checks
@@ -28,16 +26,16 @@
           <div
             class="pod-template-block"
             :key="index"
-            v-for="(container, index) in pod.spec.initContainers">
-
+            v-for="(container, index) in pod.spec.initContainers"
+          >
             <pod-template-container
               :pod-template="pod"
               :container="container"
               :images-by-docker-reference="imagesByDockerReference"
               :builds="builds"
-              :detailed="detailed">
+              :detailed="detailed"
+            >
             </pod-template-container>
-
           </div>
         </div>
       </template>
@@ -45,31 +43,24 @@
       <h4 v-if="detailed">Containers</h4>
 
       <div class="pod-template-container">
-        <div
-          :key="index"
-          v-for="(container, index) in pod.spec.containers">
-
+        <div :key="index" v-for="(container, index) in pod.spec.containers">
           <pod-template-container
             :pod-template="pod"
             :container="container"
             :images-by-docker-reference="imagesByDockerReference"
             :builds="builds"
-            :detailed="detailed">
+            :detailed="detailed"
+          >
           </pod-template-container>
-
         </div>
       </div>
 
       <h4>Volumes</h4>
 
-      <volumes
-        v-if="pod.spec.volumes.length"
-        :volumes="pod.spec.volumes">
-      </volumes>
+      <volumes v-if="pod.spec.volumes.length" :volumes="pod.spec.volumes"> </volumes>
 
       <div v-else>暂无</div>
     </div>
-
   </div>
 </template>
 
@@ -93,11 +84,7 @@ export default {
 
   computed: {
     hasContainers() {
-      return (
-        this.detailed &&
-        this.pod.spec.initContainers &&
-        this.pod.spec.initContainers.length
-      );
+      return this.detailed && this.pod.spec.initContainers && this.pod.spec.initContainers.length;
     },
   },
 

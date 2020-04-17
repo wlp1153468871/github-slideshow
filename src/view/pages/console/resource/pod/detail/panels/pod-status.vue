@@ -8,97 +8,91 @@
           <div class="dl-item">
             <dt>状态:</dt>
             <dd>
-              <status-icon
-                :enable-animation="enableAnimation"
-                :status="pod | pod_status">
+              <status-icon :enable-animation="enableAnimation" :status="pod | pod_status">
               </status-icon>
-              {{pod | pod_status | humanize_pod_status}}
-              <span v-if="podCompletionTime">, 已运行
-              {{podStartTimeFromCompletionTime}}</span>
+              {{ pod | pod_status | humanize_pod_status }}
+              <span v-if="podCompletionTime">, 已运行 {{ podStartTimeFromCompletionTime }}</span>
               <span v-if="pod.metadata.deletionTimestamp">
-              (过期于 {{pod.metadata.deletionTimestamp | date}})
-            </span>
+                (过期于 {{ pod.metadata.deletionTimestamp | date }})
+              </span>
             </dd>
           </div>
           <div class="dl-item" v-if="pod.status.message">
             <dt>Message:</dt>
-            <dd>{{pod.status.message}}</dd>
+            <dd>{{ pod.status.message }}</dd>
           </div>
           <div class="dl-item" v-if="dcName">
             <dt>
               Deployment:
             </dt>
             <dd>
-              <span>{{dcName}}</span>
-              <span v-if="rcName">,<span v-if="deploymentVersion">#{{deploymentVersion}}</span>
-                <span v-if="!deploymentVersion">{{rcName}}</span>
+              <span>{{ dcName }}</span>
+              <span v-if="rcName"
+                >,<span v-if="deploymentVersion">#{{ deploymentVersion }}</span>
+                <span v-if="!deploymentVersion">{{ rcName }}</span>
               </span>
             </dd>
           </div>
           <div class="dl-item" v-if="!dcName && controllerRef">
-            <dt>
-              {{controllerRef.kind | humanize_kind(true)}}:
-            </dt>
+            <dt>{{ controllerRef.kind | humanize_kind(true) }}:</dt>
             <dd>
-              {{controllerRef.name}}
+              {{ controllerRef.name }}
             </dd>
           </div>
           <div
             class="dl-item"
-            v-if="pod.metadata.deletionTimestamp && pod.spec.terminationGracePeriodSeconds">
+            v-if="pod.metadata.deletionTimestamp && pod.spec.terminationGracePeriodSeconds"
+          >
             <dt>Grace Period:</dt>
             <dd>
               <!-- Don't show "a few seconds" for small values. -->
               <span v-if="pod.spec.terminationGracePeriodSeconds < 60">
-                {{pod.spec.terminationGracePeriodSeconds}} seconds
+                {{ pod.spec.terminationGracePeriodSeconds }} seconds
               </span>
               <span v-if="pod.spec.terminationGracePeriodSeconds >= 60">
-                 {{pod.spec.terminationGracePeriodSeconds | humanize_duration_value}}
+                {{ pod.spec.terminationGracePeriodSeconds | humanize_duration_value }}
               </span>
             </dd>
           </div>
           <div class="dl-item">
             <dt>IP:</dt>
-            <dd>{{pod.status.podIP || 'unknown'}}</dd>
+            <dd>{{ pod.status.podIP || 'unknown' }}</dd>
           </div>
           <div class="dl-item">
             <dt>Node:</dt>
-            <dd>{{pod.spec.nodeName || 'unknown'}}
+            <dd>
+              {{ pod.spec.nodeName || 'unknown' }}
               <span v-if="pod.status.hostIP && pod.spec.nodeName !== pod.status.hostIP">
-              ({{pod.status.hostIP}})
-            </span>
+                ({{ pod.status.hostIP }})
+              </span>
             </dd>
           </div>
           <div class="dl-item">
             <dt>重启策略:</dt>
-            <dd>{{pod.spec.restartPolicy || 'Always'}}</dd>
+            <dd>{{ pod.spec.restartPolicy || 'Always' }}</dd>
           </div>
-          <div
-            class="dl-item"
-            v-if="pod.spec.activeDeadlineSeconds">
+          <div class="dl-item" v-if="pod.spec.activeDeadlineSeconds">
             <dt>Active Deadline:</dt>
             <dd>
               <!-- Don't show "a few seconds" for small values. -->
               <span v-if="pod.spec.activeDeadlineSeconds < 60">
-                {{pod.spec.activeDeadlineSeconds}} seconds
+                {{ pod.spec.activeDeadlineSeconds }} seconds
               </span>
               <span v-if="pod.spec.activeDeadlineSeconds >= 60">
-                {{pod.spec.activeDeadlineSeconds | humanize_duration_value}}
+                {{ pod.spec.activeDeadlineSeconds | humanize_duration_value }}
               </span>
               <span
                 v-if="pod.status.phase === 'Running' && pod.status.startTime"
-                class="text-muted">
-                (<span class="duration">{{pod.status.startTime | date_from(null, true)}}
-                </span> elapsed)
+                class="text-muted"
+              >
+                (<span class="duration">{{ pod.status.startTime | date_from(null, true) }} </span>
+                elapsed)
               </span>
             </dd>
           </div>
         </dl>
 
-        <container-statuses
-          :pod="pod"
-          :detailed="true">
-        </container-statuses>
+        <container-statuses :pod="pod" :detailed="true"> </container-statuses>
       </div>
     </div>
   </div>

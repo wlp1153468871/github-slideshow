@@ -33,11 +33,13 @@ export default {
   methods: {
     loadApprovalHistroy() {
       this.loadings.approvalHistory = true;
-      ApprovalService.history(this.spaceId).then((approvals = []) => {
-        this.rows = approvals.map(this.parseApprovalItem);
-      }).finally(() => {
-        this.loadings.approvalHistory = false;
-      });
+      ApprovalService.history(this.spaceId)
+        .then((approvals = []) => {
+          this.rows = approvals.map(this.parseApprovalItem);
+        })
+        .finally(() => {
+          this.loadings.approvalHistory = false;
+        });
     },
 
     parseApprovalItem(item) {

@@ -16,11 +16,12 @@
                 v-validate="{
                   required: true,
                   dns_1123_sub_domain: true,
-                  max: nameValidation.maxlength
+                  max: nameValidation.maxlength,
                 }"
                 :message="veeErrors.first('name')"
                 :status="veeErrors.has('name') ? 'error' : ''"
-                data-vv-as="存储名称">
+                data-vv-as="存储名称"
+              >
               </dao-input>
             </div>
             <template slot="content-helper">
@@ -38,10 +39,10 @@
               <storage-input
                 name="amount"
                 v-validate="{
-                    storageRequired: true,
-                    storageNumber: true,
-                    storageMin: 0
-                  }"
+                  storageRequired: true,
+                  storageNumber: true,
+                  storageMin: 0,
+                }"
                 :clazz="veeErrors.has('amount') ? 'error' : ''"
                 :status="veeErrors.has('amount') ? 'error' : ''"
                 :message="veeErrors.first('amount')"
@@ -56,13 +57,8 @@
           <dao-setting-item>
             <p slot="label">读写模式</p>
             <template slot="content">
-              <el-radio-group
-                v-model="form.spec.accessMode">
-                <el-radio
-                  v-for="mode in ACCESS_MODE"
-                  :label="mode.key"
-                  :key="mode.key"
-                >
+              <el-radio-group v-model="form.spec.accessMode">
+                <el-radio v-for="mode in ACCESS_MODE" :label="mode.key" :key="mode.key">
                   {{ mode.description }}
                 </el-radio>
               </el-radio-group>

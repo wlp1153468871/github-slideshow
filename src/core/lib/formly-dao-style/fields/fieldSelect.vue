@@ -10,13 +10,15 @@
           :disabled="to.disabled"
           placeholder="搜索主机"
           no-data-text="没有符合条件的主机"
-          :append-to-body="false">
+          :append-to-body="false"
+        >
           <dao-option-group>
             <dao-option
               v-for="item in to.options"
               :value="item.value"
               :label="item.text"
-              :key="item.key">
+              :key="item.key"
+            >
             </dao-option>
           </dao-option-group>
         </dao-select>

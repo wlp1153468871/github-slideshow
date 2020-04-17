@@ -1,10 +1,7 @@
 <template>
   <div @click="onClick" :class="computedStatusClassName">
     <svg class="icon rotating" style="vertical-align: middle;">
-      <use
-        :style="{ 'fill': typeInfo.color }"
-        v-bind="{ 'xlink:href': typeInfo.icon }">
-      </use>
+      <use :style="{ fill: typeInfo.color }" v-bind="{ 'xlink:href': typeInfo.icon }"></use>
     </svg>
     <span>{{ text }}</span>
   </div>
@@ -54,7 +51,6 @@ export default {
   methods: {
     init() {
       this.$_typeMap = {
-
         SUCCESS: { color: '#22c36a' }, // icon: '#icon_status-dot-small'
         DANGER: { color: '#f1483f' }, // icon: '#icon_status-dot-small'
         CONTINUE: { color: '#3890ff', icon: '#icon_circle-rotate' },

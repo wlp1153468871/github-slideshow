@@ -117,10 +117,12 @@ export default {
 
     updateServiceFromOrg(request) {
       const orgId = this.org.id;
-      Promise.all(request.map(quota => {
-        const { quotaUnitId, limit } = quota;
-        return OrgService.updateOrgQuota(orgId, quotaUnitId, { limit });
-      })).then(() => {
+      Promise.all(
+        request.map(quota => {
+          const { quotaUnitId, limit } = quota;
+          return OrgService.updateOrgQuota(orgId, quotaUnitId, { limit });
+        }),
+      ).then(() => {
         this.$noty.success('保存配额成功');
       });
     },

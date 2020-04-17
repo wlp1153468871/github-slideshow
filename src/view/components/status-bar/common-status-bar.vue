@@ -1,5 +1,5 @@
 <template>
-  <nav class="container-fluid navbar" :class="{'navbar-inverse': inverse}">
+  <nav class="container-fluid navbar" :class="{ 'navbar-inverse': inverse }">
     <div class="container">
       <section class="navbar-header">
         <router-link class="navbar-brand" :to="{ name: 'home' }">
@@ -9,24 +9,15 @@
       <section class="navbar-collapse">
         <ul class="navbar-nav navbar-right" v-if="isAuthed">
           <li>
-            <router-link
-              v-if="isPlatformAdmin"
-              class="console"
-              :to="{ name: 'manage' }">
+            <router-link v-if="isPlatformAdmin" class="console" :to="{ name: 'manage' }">
               控制台
             </router-link>
-            <router-link
-              v-else
-              :to="{name: 'console.dashborad'}"
-              class="console">
+            <router-link v-else :to="{ name: 'console.dashborad' }" class="console">
               控制台
             </router-link>
           </li>
           <li>
-            <dao-dropdown
-              trigger="click"
-              :append-to-body="true"
-              placement="bottom-end">
+            <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
               <a class="username">{{ user.username }}</a>
               <dao-dropdown-menu slot="list">
                 <dao-dropdown-item @click="onLogout(user)">

@@ -3,24 +3,25 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <div class="quota-section">
-          <h4 class="quota-section-head">{{orgDescription}}总配额</h4>
+          <h4 class="quota-section-head">{{ orgDescription }}总配额</h4>
           <quota-cards
+            v-if="$can('organization.quota.get', 'organization.quota')"
             :hard="OrgQuota.hard"
             :sub-hard="OrgQuota.subHard"
             :scope="`${orgDescription}配额`"
             :sub-scope="`${spaceDescription}配额总和`"
             @refresh="getOrgAndSpaceQuotas"
           >
-            <button
-              class="dao-btn blue"
-              slot="action"
-              @click="applyDialog.visible = true"
-            >申请{{orgDescription}}配额</button>
+            <button class="dao-btn blue" slot="action" @click="applyDialog.visible = true">
+              申请{{ orgDescription }}配额
+            </button>
           </quota-cards>
         </div>
         <div class="quota-section">
-          <h4 class="quota-section-head"> {{orgDescription}}下{{spaceDescription}}配额 </h4>
+          <h4 class="quota-section-head">{{ orgDescription }}下{{ spaceDescription }}配额</h4>
           <space-quota-table
+            v-if="$can('organization.quota.get', 'organization.quota')"
+            :can-update="$can('organization.space.quota.update', 'organization.quota')"
             :loading="false"
             @refresh="getOrgAndSpaceQuotas"
             :space-quotas="spaceQuotas"
@@ -77,7 +78,11 @@ export default {
     };
   },
   created() {
-    this.getOrgAndSpaceQuotas();
+    if (this.$can('organization.quota.get', 'organization.quota')) {
+      this.getOrgAndSpaceQuotas();
+    } else {
+      this.$noty.error('您暂无查询租户和租户下项目组配额权限');
+    }
   },
   methods: {
     getOrgAndSpaceQuotas() {

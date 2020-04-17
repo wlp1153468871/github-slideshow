@@ -3,18 +3,16 @@
     <div class="layout-content-header">
       服务管理
     </div>
-    <div class="dao-view-main ">
+    <div class="dao-view-main">
       <x-table
+        :showRefresh="$can('platform.serviceBroker.get', 'platform.serviceBroker')"
         :loading="loadings.maps"
         :data="rows"
         :filter-method="filterMethod"
         @refresh="loadService"
-        style="width: 100%"
+        style="width: 100%;"
       >
-        <el-table-column
-          prop="name"
-          sortable
-          label="服务名">
+        <el-table-column prop="name" sortable label="服务名">
           <template slot-scope="{ row: service }">
             <router-link
               :to="{
@@ -34,10 +32,7 @@
         <el-table-column prop="available" label="状态">
           <template slot-scope="{ row: service }">
             <!-- {{ service.available }} -->
-            <x-table-status
-              :row="service"
-              :other="other"
-              :text="renderStatus(service.available)">
+            <x-table-status :row="service" :other="other" :text="renderStatus(service.available)">
             </x-table-status>
           </template>
         </el-table-column>
@@ -48,7 +43,7 @@
           label="简单描述"
         >
           <template slot-scope="{ row: service }">
-            {{ service.short_description | otherwise}}
+            {{ service.short_description | otherwise }}
           </template>
         </el-table-column>
       </x-table>

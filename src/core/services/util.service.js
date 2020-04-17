@@ -17,15 +17,19 @@ class UtilService {
    */
   getDockerImageTags(organization, zone, image, username, password, verifySSL, tagFilter) {
     const query = { organization, zone };
-    return this.api.post('/image-tags', {
-      image,
-      tag_filter: tagFilter,
-      username,
-      password,
-      verify_ssl: verifySSL,
-    }, {
-      params: query,
-    });
+    return this.api.post(
+      '/image-tags',
+      {
+        image,
+        tag_filter: tagFilter,
+        username,
+        password,
+        verify_ssl: verifySSL,
+      },
+      {
+        params: query,
+      },
+    );
   }
 }
 

@@ -22,13 +22,13 @@
       </dao-setting-item>
       <dao-setting-item v-show="type !== 'none'">
         <div slot="content">
-          <dao-code-mirror
-            mode="json"
-            v-model="jsonConfig">
-          </dao-code-mirror>
+          <dao-code-mirror mode="json" v-model="jsonConfig"> </dao-code-mirror>
         </div>
         <p slot="content-helper">
-          <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature" target="_blank">
+          <a
+            href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature"
+            target="_blank"
+          >
             更多"亲和性与反亲和性"的信息
           </a>
         </p>
@@ -98,25 +98,31 @@ export default Vue.extend({
       }
 
       const podAffinityType = camelCase(['pod', this.type].join(' '));
-      this.stringifyJSON = JSON.stringify({
-        [podAffinityType]: {
-          preferredDuringSchedulingIgnoredDuringExecution: [{
-            weight: 100,
-            podAffinityTerm: {
-              labelSelector: {
-                matchExpressions: [{
-                  key: 'appbind/[InstanceName]',
-                  operator: 'In',
-                  values: [
-                    'true',
-                  ],
-                }],
+      this.stringifyJSON = JSON.stringify(
+        {
+          [podAffinityType]: {
+            preferredDuringSchedulingIgnoredDuringExecution: [
+              {
+                weight: 100,
+                podAffinityTerm: {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: 'appbind/[InstanceName]',
+                        operator: 'In',
+                        values: ['true'],
+                      },
+                    ],
+                  },
+                  topologyKey: 'kubernetes.io/hostname',
+                },
               },
-              topologyKey: 'kubernetes.io/hostname',
-            },
-          }],
+            ],
+          },
         },
-      }, null, 2);
+        null,
+        2,
+      );
     },
   },
 });

@@ -1,10 +1,5 @@
 <template>
-  <dao-dialog
-    header="添加租户"
-    :visible.sync="isShow"
-    @before-open="bopen"
-    @closed="closed"
-  >
+  <dao-dialog header="添加租户" :visible.sync="isShow" @before-open="bopen" @closed="closed">
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">租户名</div>
@@ -39,7 +34,7 @@
               required: true,
               dns_1123_label: true,
               max: 63,
-              min: 4
+              min: 4,
             }"
             v-model="short_name"
           >
@@ -81,12 +76,7 @@
             v-model="zone_ids"
             placeholder="请输入关键词"
           >
-            <el-option
-              v-for="zone in zones"
-              :key="zone.id"
-              :label="zone.name"
-              :value="zone.id"
-            >
+            <el-option v-for="zone in zones" :key="zone.id" :label="zone.name" :value="zone.id">
             </el-option>
           </el-select>
         </div>
@@ -98,34 +88,24 @@
         <div slot="content">
           <textarea
             class="dao-control"
-            :class="{ 'error': veeErrors.has('description') }"
+            :class="{ error: veeErrors.has('description') }"
             v-model="description"
             name="description"
             rows="3"
             v-validate="'max:80'"
           >
           </textarea>
-          <p
-            class="text-danger"
-            v-show="veeErrors.has('description')"
-          >
+          <p class="text-danger" v-show="veeErrors.has('description')">
             租户备注不能超过80字
           </p>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="$emit('close')"
-      >
+      <button class="dao-btn ghost" @click="$emit('close')">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm"
-      >
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>

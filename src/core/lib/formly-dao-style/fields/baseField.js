@@ -65,8 +65,8 @@ export default {
   computed: {
     hasError() {
       if (
-        this.form[this.field.key].$dirty === false
-        || this.form[this.field.key].$active === true
+        this.form[this.field.key].$dirty === false ||
+        this.form[this.field.key].$active === true
       ) {
         return false;
       }

@@ -6,8 +6,7 @@
       </div>
       <div class="tip">
         <h3>已完成订购</h3>
-        <p>您可以在 <a @click="gotoDetail">实例详情页面</a> 查看实例的创建状态
-        </p>
+        <p>您可以在 <a @click="gotoDetail">实例详情页面</a> 查看实例的创建状态</p>
       </div>
     </div>
     <div v-if="type === RESULT_TYPES.APPROVAL">
@@ -139,4 +138,3 @@ export default {
   }
 }
 </style>
-

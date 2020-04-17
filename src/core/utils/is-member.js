@@ -6,10 +6,7 @@ import { get as getValue } from 'lodash';
 import StorageCache from '@/core/services/storage.cache';
 
 function isMember() {
-  return (
-    getValue(StorageCache.getUser(), 'platform_role') ===
-    PLATFORM_ROLE.MEMBER
-  );
+  return getValue(StorageCache.getUser(), 'platform_role') === PLATFORM_ROLE.MEMBER;
 }
 
 export default isMember;

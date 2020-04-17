@@ -35,7 +35,8 @@
       :quotas="summaryQuota"
       @on-change="onQuotaChange"
       :visible="dialogConfigs.applyQuota.visible"
-      @close="dialogConfigs.applyQuota.visible = false">
+      @close="dialogConfigs.applyQuota.visible = false"
+    >
     </apply-quota-dialog>
 
     <edit-quota-dialog
@@ -43,7 +44,8 @@
       :visible="dialogConfigs.editQuota.visible"
       :is-confirming="dialogConfigs.isConfirming"
       @apply="applyRequest"
-      @close="closeDialog">
+      @close="closeDialog"
+    >
     </edit-quota-dialog>
 
     <dao-dialog :visible.sync="dialogConfigs.detail.visible" header="查看配额详情">
@@ -53,34 +55,31 @@
             v-if="detailRequest.process_status === quotaStatus.FINISH"
             message="审批已通过"
             type="success"
-            show-icon>
+            show-icon
+          >
           </dsp-alert>
           <dsp-alert
             v-if="detailRequest.process_status === quotaStatus.REJECT"
             message="审批已拒绝"
             type="error"
-            show-icon>
+            show-icon
+          >
           </dsp-alert>
         </template>
-        <dao-setting-section
-          v-for="(request, index) in requestDetails"
-          :key="index">
+        <dao-setting-section v-for="(request, index) in requestDetails" :key="index">
           <template #label>{{ request.label }}</template>
           <template #content>
             {{ request.value }}
           </template>
-          <template slot="content-helper">
-          </template>
+          <template slot="content-helper"> </template>
         </dao-setting-section>
       </dao-setting-layout>
     </dao-dialog>
     <!-- dialog end -->
-
   </div>
 </template>
 
-<script src="./quota-used.js">
-</script>
+<script src="./quota-used.js"></script>
 
 <style lang="scss">
 .page-quota {

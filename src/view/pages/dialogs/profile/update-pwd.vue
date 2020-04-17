@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <form>
       <dao-setting-section>
         <dao-setting-item>
@@ -20,7 +21,8 @@
               icon-inside
               :message="veeErrors.first('oldpwd')"
               :status="veeErrors.has('oldpwd') ? 'error' : ''"
-              data-vv-as="原密码">
+              data-vv-as="原密码"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -35,11 +37,12 @@
               name="newpwd"
               type="password"
               autocomplete="new-password"
-              v-validate="{ exclude_spaces: true, required: true, min:5, different_from: oldpwd }"
+              v-validate="{ exclude_spaces: true, required: true, min: 5, different_from: oldpwd }"
               icon-inside
               :message="veeErrors.first('newpwd')"
               :status="veeErrors.has('newpwd') ? 'error' : ''"
-              data-vv-as="新密码">
+              data-vv-as="新密码"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -54,26 +57,22 @@
               name="confirmpwd"
               type="password"
               autocomplete="new-password"
-              v-validate="{ exclude_spaces: true, required: true, min:5, equal_to: newpwd }"
+              v-validate="{ exclude_spaces: true, required: true, min: 5, equal_to: newpwd }"
               icon-inside
               :message="veeErrors.first('confirmpwd')"
               :status="veeErrors.has('confirmpwd') ? 'error' : ''"
-              data-vv-as="确认密码">
+              data-vv-as="确认密码"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
       </dao-setting-section>
     </form>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -95,10 +94,9 @@ export default {
   },
   computed: {
     isValidForm() {
-      return this.oldpwd === ''
-        || this.newpwd === ''
-        || this.confirmpwd === ''
-        || this.veeErrors.any();
+      return (
+        this.oldpwd === '' || this.newpwd === '' || this.confirmpwd === '' || this.veeErrors.any()
+      );
     },
   },
   methods: {

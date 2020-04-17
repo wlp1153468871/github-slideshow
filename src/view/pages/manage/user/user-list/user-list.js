@@ -15,8 +15,12 @@ export default {
   },
 
   created() {
-    this.loadUsers();
-    this.loadPlatformRoles();
+    if (this.$can('platform.user.get', 'platform.user')) {
+      this.loadUsers();
+      this.loadPlatformRoles();
+    } else {
+      this.$noty.error('您暂无用户列表查看前看');
+    }
   },
 
   data() {
@@ -32,8 +36,7 @@ export default {
         users: false,
         create: false,
       },
-      filterMethod: (data, filterKey) =>
-        data.username.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.username.toLowerCase().includes(filterKey),
       other: { status: (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER') },
       ROLES: [],
     };
@@ -42,8 +45,9 @@ export default {
   computed: {
     ...mapState({
       self: 'user',
+      platformMenus: 'platformMenus',
     }),
-    ...mapGetters(['userName']),
+    ...mapGetters(['userName', 'isPlatformAdmin']),
   },
 
   methods: {
@@ -131,44 +135,49 @@ export default {
     },
 
     setPlatformRole(role, userId, isNewUser) {
-      const orgParams = {
+      const platformParams = {
         userId,
         roleId: role.id,
         data: {
-          // organizationId: this.orgId,
           scope: role.scope,
           platformId: 'dsp',
         },
       };
-      RoleService.setRole(orgParams)
+      RoleService.setRole(platformParams)
         .then(() => {
           this.$noty.success(isNewUser ? '权限初始化成功' : '权限修改成功');
           this.loadUsers();
         })
         .catch(() => {
           this.$noty.error(isNewUser ? '权限初始化失败' : '添加用户失败');
+        })
+        .finally(() => {
+          if (!isNewUser) {
+            this.dialogConfigs.updateUser.visible = false;
+            this.selectedUser = {};
+          }
         });
     },
 
     updateUser(user, role) {
       this.setPlatformRole(role, user.id);
-      return UserService.updateUser(
-        user.id, // userId
-        { platform_role: user.role }, // platform role
-      )
-        .then(newUser => {
-          try {
-            this.applyUserChange(newUser);
-            // this.$noty.success('设置用户权限成功');
-          } catch (err) {
-            const { data = {} } = err;
-            this.$noty.error(data.error_info);
-          }
-        })
-        .finally(() => {
-          this.dialogConfigs.updateUser.visible = false;
-          this.selectedUser = {};
-        });
+      // return UserService.updateUser(
+      //   user.id, // userId
+      //   { platform_role: user.role }, // platform role
+      // )
+      //   .then(newUser => {
+      //     try {
+      //       this.applyUserChange(newUser);
+      //       // this.$noty.success('设置用户权限成功');
+      //     } catch (err) {
+      //       const { data = {} } = err;
+      //       this.$noty.error(data.error_info);
+      //     }
+      //   })
+      //   .finally(() => {
+      //     this.dialogConfigs.updateUser.visible = false;
+      //     this.selectedUser = {};
+      //   });
     },
 
     applyUserChange(newItem) {
@@ -180,35 +189,26 @@ export default {
       });
     },
 
-    createUser(vars, isNewUser) {
-      const {
-        pwd, confirm_pwd, phone, ...user
-      } = vars;
+    createUser(vars, role, isNewUser) {
+      const { pwd, confirm_pwd, phone, ...user } = vars;
       user.password = pwd;
       user.phone_number = phone;
 
       this.loadings.create = true;
-      UserService.createUser(user, isNewUser)
+
+      UserService.createUser(user, role, isNewUser)
         .then(newUser => {
-          this.setPlatformRole(user.role, newUser.id, isNewUser);
+          this.setPlatformRole(role, newUser.id, isNewUser);
           this.rows.push(newUser);
           this.$refs.createUser.onClose();
           this.$noty.success('创建用户成功');
         })
+        .catch(() => {
+          this.$noty.error('创建用户失败');
+        })
         .finally(() => {
           this.loadings.create = false;
         });
-    },
-    handleOperate(command, zone) {
-      if (command === 'enable') {
-        this.enableUser(zone);
-      }
-      if (command === 'disable') {
-        this.disableUser(zone);
-      }
-      if (command === 'edit') {
-        this.updateUserDialog(zone);
-      }
     },
   },
   filters: {

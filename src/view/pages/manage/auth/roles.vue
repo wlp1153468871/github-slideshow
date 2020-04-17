@@ -10,6 +10,7 @@
       <template #operation>
         <button
           class="dao-btn blue has-icon"
+          v-if="$can('platform.rolePermission.create', 'platform.rolePermission')"
           :disabled="loading"
           @click="addRole"
         >
@@ -19,36 +20,21 @@
           <span class="text">创建角色</span>
         </button>
       </template>
-      <el-table-column
-        prop="name"
-        label="名称"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="id"
-        label="唯一标识"
-      ></el-table-column>
+      <el-table-column prop="name" label="名称" width="180"> </el-table-column>
+      <el-table-column prop="id" label="唯一标识"></el-table-column>
       <el-table-column label="创建时间">
-        <template slot-scope="scope">{{scope.row.createdAt| date}}</template>
+        <template slot-scope="scope">{{ scope.row.createdAt | date }}</template>
       </el-table-column>
       <el-table-column label="更新时间">
-        <template slot-scope="scope">{{scope.row.updatedAt| date}}</template>
+        <template slot-scope="scope">{{ scope.row.updatedAt | date }}</template>
       </el-table-column>
-      <el-table-column
-        :align="'center'"
-        label="操作"
-        width="150"
-      >
+      <el-table-column :align="'center'" label="操作" width="150">
         <template #default="{ row: role }">
-          <button
-            class="dao-btn btn-sm mini blue"
-            @click="checkOrUpdateRole(role)"
-          >
+          <button class="dao-btn btn-sm mini blue" @click="checkOrUpdateRole(role)">
             详情
           </button>
           <button
-            v-if="!role.preset"
+            v-if="!role.preset && $can('platform.rolePermission.delete', 'platform.rolePermission')"
             class="dao-btn btn-sm mini red"
             @click="confirmDelete(role)"
           >

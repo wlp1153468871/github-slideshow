@@ -6,12 +6,12 @@
       :index="index"
       :model="item"
       :field="field.fields"
-      @remove="removeItem">
-    ></array-item>
+      @remove="removeItem"
+    >
+      ></array-item
+    >
 
-    <button
-      class="dao-btn blue mini has-icon"
-      @click="addItem">
+    <button class="dao-btn blue mini has-icon" @click="addItem">
       <svg class="icon">
         <use xlink:href="#icon_plus-circled"></use>
       </svg>

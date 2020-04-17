@@ -1,9 +1,5 @@
 <template>
-  <dao-table-view
-    ref="tableView"
-    :rows="services"
-    :config="tConfig">
-  </dao-table-view>
+  <dao-table-view ref="tableView" :rows="services" :config="tConfig"> </dao-table-view>
 </template>
 
 <script>
@@ -57,9 +53,7 @@ export default {
           name: '接入点',
           value(_, service) {
             const { ports = [] } = service.spec;
-            return ports
-              .map(port => `${port.port} > ${port.targetPort}`)
-              .join(';');
+            return ports.map(port => `${port.port} > ${port.targetPort}`).join(';');
           },
         },
         {

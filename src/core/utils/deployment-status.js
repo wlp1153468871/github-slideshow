@@ -1,8 +1,6 @@
 import { INSTANCE_STATUS } from '@/core/constants/constants';
 
-const {
-  CREATING, CREATE_FAILED, APPROVING, PROCESS_REJECTED,
-} = INSTANCE_STATUS;
+const { CREATING, CREATE_FAILED, APPROVING, PROCESS_REJECTED } = INSTANCE_STATUS;
 
 export default function deploymentStatus(status) {
   const statusMap = {

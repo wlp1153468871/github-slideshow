@@ -1,9 +1,14 @@
 <template>
-  <div class="container space-view-list">
+  <div
+    class="container space-view-list"
+    v-if="$can('organization.space.get', 'organization.space')"
+  >
     <div class="space-tool row">
       <button
+        v-if="$can('organization.space.create', 'organization.space')"
         class="dao-btn white has-icon"
-        @click="openAddSpaceDialog()">
+        @click="openAddSpaceDialog()"
+      >
         <svg class="icon">
           <use xlink:href="#icon_plus-circled"></use>
         </svg>
@@ -12,14 +17,13 @@
     </div>
     <div class="row">
       <div
+        v-if="$can('organization.space.get', 'organization.space')"
         style="padding: 5px;"
         class="col-md-3"
         v-for="space in spaces"
-        :key="space.id">
-        <space-card
-          :space="space"
-          @goto="gotoSpace">
-        </space-card>
+        :key="space.id"
+      >
+        <space-card :space="space" @goto="gotoSpace"> </space-card>
       </div>
     </div>
 
@@ -28,7 +32,8 @@
       @create="createSpace"
       :visible="dialogConfigs.addSpace.visible"
       :orgId="org.id"
-      @close="dialogConfigs.addSpace.visible = false">
+      @close="dialogConfigs.addSpace.visible = false"
+    >
     </add-space-dialog>
     <!-- dialog end -->
   </div>

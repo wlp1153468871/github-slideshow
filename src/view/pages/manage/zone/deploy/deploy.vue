@@ -2,10 +2,7 @@
   <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
-        <a
-          class="go-back"
-          href="javascript:void(0)"
-          @click="$router.go(-1)">
+        <a class="go-back" href="javascript:void(0)" @click="$router.go(-1)">
           <svg class="icon">
             <use xlink:href="#icon_caret-left"></use>
           </svg>
@@ -21,13 +18,15 @@
           ref="configPanel"
           v-show="step === STEPS.CONFIG"
           :operation-label="operationLabel"
-          v-model="zoneModel">
+          v-model="zoneModel"
+        >
         </config-panel>
 
         <overview-panel
           v-if="step === STEPS.OVERVIEW"
           :operation-label="operationLabel"
-          :zone="zoneModel">
+          :zone="zoneModel"
+        >
         </overview-panel>
 
         <finish-panel
@@ -35,7 +34,8 @@
           :operation-label="operationLabel"
           :instance="zoneInstance"
           :error="instanceError"
-          @prev="prev(STEPS.FINISH)">
+          @prev="prev(STEPS.FINISH)"
+        >
         </finish-panel>
       </div>
     </div>
@@ -47,11 +47,10 @@
       :is-editing="isEditing"
       @prev="prev"
       @next="next"
-      @deploy="deploy">
+      @deploy="deploy"
+    >
     </footer-panel>
-
   </div>
 </template>
 
-<script src="./_deploy.js">
-</script>
+<script src="./_deploy.js"></script>

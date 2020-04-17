@@ -3,7 +3,8 @@
     :config="config"
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户信息</div>
@@ -14,13 +15,15 @@
             :with-search="true"
             search-placeholder="请输入一位用户的手机号"
             no-data-text="无选项"
-            no-match-text="无匹配选项">
+            no-match-text="无匹配选项"
+          >
             <dao-option-group>
               <dao-option
                 v-for="(option, index) in options"
                 :key="index"
                 :value="option.id"
-                :label="option.value">
+                :label="option.value"
+              >
                 {{ option.text }}
               </dao-option>
             </dao-option-group>
@@ -37,22 +40,18 @@
               v-for="(label, key) in spaceRoleOptions"
               :value="key"
               :key="key"
-              :label="label">
+              :label="label"
+            >
             </dao-option>
           </dao-select>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!userId"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!userId" @click="onConfirm">
         确定
       </button>
     </div>
@@ -60,10 +59,7 @@
 </template>
 
 <script>
-import {
-  SPACE_ROLE,
-  SPACE_ROLE_LABEL as spaceRoleOptions,
-} from '@/core/constants/role';
+import { SPACE_ROLE, SPACE_ROLE_LABEL as spaceRoleOptions } from '@/core/constants/role';
 import { differenceBy } from 'lodash';
 import dialog from '@/view/mixins/dialog';
 import UserService from '@/core/services/user.service';
@@ -95,9 +91,7 @@ export default {
       UserService.getOrgUsers(this.orgId).then(users => {
         const userList = differenceBy(users, this.allUsers, 'id');
         const options = userList.map(user => ({
-          text: `${user.phone_number} ${
-            user.username ? `(${user.username})` : ''
-          }`,
+          text: `${user.phone_number} ${user.username ? `(${user.username})` : ''}`,
           value: user.phone_number,
           username: user.username,
           id: user.id,

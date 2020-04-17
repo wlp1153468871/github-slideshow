@@ -2,16 +2,14 @@
   <div class="page-pvc">
     <template v-if="!loadings.page">
       <resource-header :resource="resource" v-if="!isEmpty(volume)">
-        <template #creationTime>
-          创建于{{ volume.metadata.creationTimestamp | date }}
-        </template>
+        <template #creationTime> 创建于{{ volume.metadata.creationTimestamp | date }} </template>
 
         <template #status>
           状态：
           <status-icon :status="volume.status.phase"></status-icon>
-          {{volume.status.phase}}
+          {{ volume.status.phase }}
           <span v-if="volume.spec.volumeName">
-            &nbsp;to volume <strong>{{volume.spec.volumeName}}</strong>
+            &nbsp;to volume <strong>{{ volume.spec.volumeName }}</strong>
           </span>
         </template>
 
@@ -20,7 +18,8 @@
             v-if="$can('pvc.delete', 'pvc') || $can('pvc.update', 'pvc')"
             trigger="click"
             :append-to-body="true"
-            placement="bottom-end">
+            placement="bottom-end"
+          >
             <button class="dao-btn ghost has-icon">
               操作
               <svg class="icon">
@@ -29,17 +28,18 @@
             </button>
 
             <dao-dropdown-menu slot="list">
-
               <dao-dropdown-item
                 v-if="$can('pvc.update', 'pvc')"
-                @click="dialogConfigs.yamlEdit = true">
+                @click="dialogConfigs.yamlEdit = true"
+              >
                 <span>Yaml 更新</span>
               </dao-dropdown-item>
 
               <dao-dropdown-item
                 v-if="$can('pvc.delete', 'pvc')"
                 @click="removeConfirm"
-                class="dao-dropdown-item-red dao-dropdown-item-hover-red">
+                class="dao-dropdown-item-red dao-dropdown-item-hover-red"
+              >
                 <span>删除</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
@@ -48,38 +48,30 @@
           <button
             class="dao-btn csp-table-update-btn"
             @click="getVolume"
-            style="margin-left: 10px">
+            style="margin-left: 10px;"
+          >
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
           </button>
         </template>
-
       </resource-header>
 
       <el-tabs v-model="tab">
-        <el-tab-pane
-          :label="TABS.OVERVIEW.label"
-          :name="TABS.OVERVIEW.name">
+        <el-tab-pane :label="TABS.OVERVIEW.label" :name="TABS.OVERVIEW.name">
           <overview-panel
             :pvc="volume"
             :information="information"
             :jobs="jobs"
             :objrefs="objrefs"
-            @change-tab="tab = $event">
+            @change-tab="tab = $event"
+          >
           </overview-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.JOBS.label"
-          :name="TABS.JOBS.name"
-          :lazy="true">
-          <jobs-panel
-            :jobs="jobs"
-            :volume="volume">
-          </jobs-panel>
+        <el-tab-pane :label="TABS.JOBS.label" :name="TABS.JOBS.name" :lazy="true">
+          <jobs-panel :jobs="jobs" :volume="volume"> </jobs-panel>
         </el-tab-pane>
       </el-tabs>
-
     </template>
     <circle-loading v-else></circle-loading>
 
@@ -87,10 +79,10 @@
       :value="volume"
       :visible.sync="dialogConfigs.yamlEdit"
       @update="updateByYaml"
-      @close="dialogConfigs.yamlEdit = false">
+      @close="dialogConfigs.yamlEdit = false"
+    >
     </edit-yaml-dialog>
   </div>
 </template>
 
-<script src="./_volume-detail.js">
-</script>
+<script src="./_volume-detail.js"></script>

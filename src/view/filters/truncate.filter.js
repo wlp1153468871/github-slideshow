@@ -1,9 +1,4 @@
-export default function truncateFilter(
-  str,
-  charLimit,
-  useWordBoundary,
-  newlineLimit,
-) {
+export default function truncateFilter(str, charLimit, useWordBoundary, newlineLimit) {
   if (typeof str !== 'string') {
     return str;
   }

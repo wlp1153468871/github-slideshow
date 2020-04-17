@@ -4,15 +4,13 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">名称</div>
         <div slot="content">
-          <dao-input
-            type="text"
-            v-model="name">
-          </dao-input>
+          <dao-input type="text" v-model="name"> </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
@@ -20,21 +18,15 @@
       <dao-setting-item>
         <div slot="label">单位</div>
         <div slot="content">
-          <dao-input v-model="unit">
-          </dao-input>
+          <dao-input v-model="unit"> </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!formValidation"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!formValidation" @click="onConfirm">
         确定
       </button>
     </div>
@@ -55,8 +47,7 @@ export default {
   },
   computed: {
     formValidation() {
-      return this.name.trim() !== '' &&
-        this.unit.trim() !== '';
+      return this.name.trim() !== '' && this.unit.trim() !== '';
     },
   },
   methods: {

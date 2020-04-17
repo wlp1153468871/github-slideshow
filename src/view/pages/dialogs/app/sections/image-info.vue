@@ -6,10 +6,7 @@
           镜像地址
         </template>
         <template slot="content">
-          <dao-input
-            disabled
-            v-model="repository">
-          </dao-input>
+          <dao-input disabled v-model="repository"> </dao-input>
         </template>
       </dao-setting-item>
     </dao-setting-section>
@@ -27,13 +24,10 @@
             placeholder="选择一个版本"
             :loading="isLoading"
             :loading-text="loadingText"
-            v-model="editTag">
+            v-model="editTag"
+          >
             <dao-option-group>
-              <dao-option
-                v-for="item in tags"
-                :key="item"
-                :value="item"
-                :label="item">
+              <dao-option v-for="item in tags" :key="item" :value="item" :label="item">
               </dao-option>
             </dao-option-group>
           </dao-select>

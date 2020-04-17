@@ -75,10 +75,7 @@ class QuotaService {
   }
 
   updateOrgQuotaGroup(orgId, quotaGroupId, quotaGroup) {
-    return this.api.patch(
-      `/organizations/${orgId}/quota_groups/${quotaGroupId}`,
-      quotaGroup,
-    );
+    return this.api.patch(`/organizations/${orgId}/quota_groups/${quotaGroupId}`, quotaGroup);
   }
 
   // org used quota_group
@@ -88,10 +85,7 @@ class QuotaService {
   }
 
   updateOrgUsedQuotaGroup(orgId, quotaIds) {
-    return this.api.patch(
-      `/organizations/${orgId}/organization_quota_groups`,
-      quotaIds,
-    );
+    return this.api.patch(`/organizations/${orgId}/organization_quota_groups`, quotaIds);
   }
 
   // space used quota_group
@@ -125,10 +119,7 @@ class QuotaService {
   }
 
   updateSpaceQuotaApproval(spaceId, approvalId, approval) {
-    return this.api.patch(
-      `/spaces/${spaceId}/space_quota_approvals/${approvalId}`,
-      approval,
-    );
+    return this.api.patch(`/spaces/${spaceId}/space_quota_approvals/${approvalId}`, approval);
   }
 
   addServiceQuota(serviceId, params) {

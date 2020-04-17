@@ -2,10 +2,11 @@
   <div
     id="nav-bar-center-select"
     class="dao-select sm-select"
-    v-click-outside:dao-select-dropdown="onCloseMenu">
+    v-click-outside:dao-select-dropdown="onCloseMenu"
+  >
     <!-- select -->
     <div :class="['dao-select-main', 'dao-select-rel']" @click="onClick">
-      <div :class="['dao-select-switch', {'open': visible}]">
+      <div :class="['dao-select-switch', { open: visible }]">
         <div class="dao-select-switch-text">
           <div v-if="org.name" class="selected-text">
             <span>{{ org.name }}</span>
@@ -30,7 +31,8 @@
           :active="org.id === item.id"
           :key="index"
           :label="item.name"
-          :value="item.id">
+          :value="item.id"
+        >
         </center-select-option>
       </div>
     </div>
@@ -78,8 +80,8 @@ export default {
 };
 </script>
 
-<style lang='scss'>
-@import "~daoColor";
+<style lang="scss">
+@import '~daoColor';
 
 #nav-bar-center-select {
   width: 100%;

@@ -10,33 +10,28 @@
             :data="deploymentConfigs"
             :filter-method="filterMethod"
             :loading="loadings.table"
-            @refresh="getDeploymentConfig">
+            @refresh="getDeploymentConfig"
+          >
             <template #operation>
               <button
                 class="dao-btn dao-icon has-icon blue"
-                v-if="$can('create')"
+                v-if="$can('deploymentConfig.create', 'deploymentConfig')"
                 :disabled="loadings.table"
-                @click="dialogConfigs.yamlEdit = true">
+                @click="dialogConfigs.yamlEdit = true"
+              >
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>
                 </svg>
                 <span class="text">创建</span>
               </button>
             </template>
-            <el-table-column
-              prop="metadata.name"
-              label="名称">
+            <el-table-column prop="metadata.name" label="名称">
               <template slot-scope="{ row: dc }">
-                <el-table-name-cell
-                  :resource="dc"
-                  routerName="resource.deploymentconfigs.detail">
+                <el-table-name-cell :resource="dc" routerName="resource.deploymentconfigs.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="status.latestVersion"
-              label="当前版本">
-            </el-table-column>
+            <el-table-column prop="status.latestVersion" label="当前版本"> </el-table-column>
             <!--<el-table-column
               prop="metadata.status"
               label="状态">
@@ -45,12 +40,9 @@
                 <span class="status-detail">{{deployment | deployment_status}}</span>
               </template>
             </el-table-column> -->
-            <el-table-column
-              prop="metadata.creationTimestamp"
-              label="创建时间"
-              width="180">
+            <el-table-column prop="metadata.creationTimestamp" label="创建时间" width="180">
               <template slot-scope="{ row: dc }">
-                {{dc.metadata.creationTimestamp | date}}
+                {{ dc.metadata.creationTimestamp | date }}
               </template>
             </el-table-column>
             <!-- <el-table-column
@@ -97,8 +89,7 @@ export default {
         yamlEdit: JSON.parse(create),
       },
       yamlJSON: {},
-      filterMethod: (data, filterKey) =>
-        data.metadata.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.metadata.name.toLowerCase().includes(filterKey),
     };
   },
 
@@ -121,16 +112,15 @@ export default {
     },
 
     createByYaml(value) {
-      DCService.post(value)
-        .then(instance => {
-          if (instance.is_need_approval) {
-            this.$noty.success('请在审批记录页面，查看审批进度');
-          } else {
-            this.$noty.success('创建DeploymentConfig成功');
-          }
-          this.dialogConfigs.yamlEdit = false;
-          this.getDeploymentConfig();
-        });
+      DCService.post(value).then(instance => {
+        if (instance.is_need_approval) {
+          this.$noty.success('请在审批记录页面，查看审批进度');
+        } else {
+          this.$noty.success('创建DeploymentConfig成功');
+        }
+        this.dialogConfigs.yamlEdit = false;
+        this.getDeploymentConfig();
+      });
     },
   },
 };

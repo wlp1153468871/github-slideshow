@@ -26,9 +26,7 @@
     </dao-setting-layout> -->
 
     <!-- select image -->
-    <dao-setting-layout
-      class="section-image"
-      v-if="deployMode === 'image'">
+    <dao-setting-layout class="section-image" v-if="deployMode === 'image'">
       <template slot="layout-title">选择镜像</template>
       <dao-setting-section>
         <dao-setting-item>
@@ -47,7 +45,8 @@
                   :status="imageValidStatus"
                   v-validate="'required'"
                   data-vv-as="镜像地址"
-                  placeholder="registry_url/namespace/image">
+                  placeholder="registry_url/namespace/image"
+                >
                 </dao-input>
                 <div class="image-slash">/</div>
                 <dao-select
@@ -57,13 +56,10 @@
                   no-data-text="暂无可以使用的版本"
                   no-match-text="无此版本"
                   placeholder="选择一个版本"
-                  v-model="tag">
+                  v-model="tag"
+                >
                   <dao-option-group>
-                    <dao-option
-                      v-for="item in tags"
-                      :key="item"
-                      :value="item"
-                      :label="item">
+                    <dao-option v-for="item in tags" :key="item" :value="item" :label="item">
                     </dao-option>
                   </dao-option-group>
                 </dao-select>
@@ -121,7 +117,8 @@
       :url="imageURL"
       @authorization="onAuthorization"
       :visible="dialogConfigs.imageAuth.visible"
-      @close="dialogConfigs.imageAuth.visible = false">
+      @close="dialogConfigs.imageAuth.visible = false"
+    >
     </image-auth-dialog>
     <!-- dialog end -->
   </div>
@@ -198,8 +195,7 @@ export default {
     loadImageTags(url) {
       this.loadings.images = true;
       this.imageStatus = 'loading';
-      return UtilService
-        .getDockerImageTags(this.orgId, this.zoneId, url)
+      return UtilService.getDockerImageTags(this.orgId, this.zoneId, url)
         .then(tags => {
           this.tags = tags;
           this.tag = first(tags);
@@ -254,13 +250,7 @@ export default {
     },
 
     providePartialModel() {
-      const {
-        repository,
-        registryuser,
-        registrypassword,
-        warPkg: deployfile,
-        deployMode,
-      } = this;
+      const { repository, registryuser, registrypassword, warPkg: deployfile, deployMode } = this;
 
       if (this.deployMode === 'image') {
         return {

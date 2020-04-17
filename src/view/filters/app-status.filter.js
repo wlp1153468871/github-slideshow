@@ -1,5 +1,4 @@
-import { APPROVAL_PROCESS_TYPES as APPROVE }
-  from '@/core/constants/constants';
+import { APPROVAL_PROCESS_TYPES as APPROVE } from '@/core/constants/constants';
 
 const statusMap = {
   'create.building_image': '构建中',

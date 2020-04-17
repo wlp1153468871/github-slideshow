@@ -3,21 +3,21 @@
     <circle-loading v-if="loading.page"></circle-loading>
     <template v-else>
       <resource-header :resource="resource">
-
         <template #status v-if="status === 'approving'">
-          <labels highLight :labels="{'状态': '审批中'}"></labels>
+          <labels highLight :labels="{ 状态: '审批中' }"></labels>
         </template>
         <template #labels>
           <labels :labels="labels"></labels>
         </template>
 
         <template
-          v-if="$can('update') || $can('delete')"
-          #action-buttons>
-          <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-end">
+          v-if="
+            $can('deploymentConfig.update', 'deploymentConfig') ||
+              $can('deploymentConfig.delete', 'deploymentConfig')
+          "
+          #action-buttons
+        >
+          <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
             <button class="dao-btn ghost has-icon">
               操作
               <svg class="icon">
@@ -28,28 +28,28 @@
             <template #list>
               <dao-dropdown-menu>
                 <dao-dropdown-item
-                  v-if="$can('update')"
-                  @click="yamlVisible = true">
+                  v-if="$can('deploymentConfig.update', 'deploymentConfig')"
+                  @click="yamlVisible = true"
+                >
                   <span>更新</span>
                 </dao-dropdown-item>
                 <dao-dropdown-item
-                  v-if="$can('update')"
-                  @click="onRestartClick">
+                  v-if="$can('deploymentConfig.update', 'deploymentConfig')"
+                  @click="onRestartClick"
+                >
                   <span>重启</span>
                 </dao-dropdown-item>
                 <dao-dropdown-item
-                  v-if="$can('delete')"
+                  v-if="$can('deploymentConfig.delete', 'deploymentConfig')"
                   class="dao-dropdown-item-red dao-dropdown-item-hover-red"
-                  @click="onDeleteClick">
+                  @click="onDeleteClick"
+                >
                   <span>删除</span>
                 </dao-dropdown-item>
               </dao-dropdown-menu>
             </template>
           </dao-dropdown>
-          <button
-            class="dao-btn csp-table-update-btn"
-            @click="loadData"
-            style="margin-left: 10px">
+          <button class="dao-btn csp-table-update-btn" @click="loadData" style="margin-left: 10px;">
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
@@ -57,94 +57,59 @@
         </template>
       </resource-header>
 
-      <el-tabs
-        v-model="tab"
-        @tab-click="handleTabClick">
-        <el-tab-pane
-          :label="TABS.INFO.label"
-          :name="TABS.INFO.name"
-          :lazy="true">
+      <el-tabs v-model="tab" @tab-click="handleTabClick">
+        <el-tab-pane :label="TABS.INFO.label" :name="TABS.INFO.name" :lazy="true">
           <info-panel
             :images-by-docker-reference="imagesByDockerReference"
             :projectName="projectName"
             :dc="dc"
             :autoscalers="autoscalers"
             @extend="onExtend"
-            @refresh="loadData">
+            @refresh="loadData"
+          >
           </info-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.PODS.label"
-          :name="TABS.PODS.name"
-          :lazy="true">
-          <pods-panel
-            :spaceId="space.id"
-            :zone="zone.id"
-            :name="this.name"></pods-panel>
+        <el-tab-pane :label="TABS.PODS.label" :name="TABS.PODS.name" :lazy="true">
+          <pods-panel :spaceId="space.id" :zone="zone.id" :name="this.name"></pods-panel>
         </el-tab-pane>
         <!-- 实时日志 -->
-        <el-tab-pane
-          lazy
-          :label="TABS.LOG.label"
-          :name="TABS.LOG.name">
-          <log-panel
-            v-if="tab === TABS.LOG.name"
-            type="deploymentConfig">
-          </log-panel>
+        <el-tab-pane lazy :label="TABS.LOG.label" :name="TABS.LOG.name">
+          <log-panel v-if="tab === TABS.LOG.name" type="deploymentConfig"> </log-panel>
         </el-tab-pane>
 
         <!-- 历史日志 -->
         <el-tab-pane :label="TABS.OFFLINE_LOG.label" :name="TABS.OFFLINE_LOG.name">
-          <log-offline-panel
-            type="deploymentConfig">
-          </log-offline-panel>
+          <log-offline-panel type="deploymentConfig"> </log-offline-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.ENV.label"
-          :name="TABS.ENV.name"
-          :lazy="true">
-          <env-panel
-            :dcEnv="dcEnv"
-            @envUpdate="onEnvUpdate"></env-panel>
+        <el-tab-pane :label="TABS.ENV.label" :name="TABS.ENV.name" :lazy="true">
+          <env-panel :dcEnv="dcEnv" @envUpdate="onEnvUpdate"></env-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.EVENT.label"
-          :name="TABS.EVENT.name"
-          :lazy="true">
+        <el-tab-pane :label="TABS.EVENT.label" :name="TABS.EVENT.name" :lazy="true">
           <events-table
             v-if="tab === TABS.EVENT.name"
             :loading="loading.event"
             :events="events"
-            @refresh="getEvents">
+            @refresh="getEvents"
+          >
           </events-table>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.HISTORY.label"
-          :name="TABS.HISTORY.name"
-          :lazy="true">
-          <history-panel
-            :dc="dc"
-            @rollback="loadData"
-            :name="this.name"></history-panel>
+        <el-tab-pane :label="TABS.HISTORY.label" :name="TABS.HISTORY.name" :lazy="true">
+          <history-panel :dc="dc" @rollback="loadData" :name="this.name"></history-panel>
         </el-tab-pane>
         <el-tab-pane
           :label="TABS.OPERATING_DATA.label"
           :name="TABS.OPERATING_DATA.name"
-          :lazy="true">
-          <operating-data
-            v-if="tab === TABS.OPERATING_DATA.name"
-            :name="name">
-          </operating-data>
+          :lazy="true"
+        >
+          <operating-data v-if="tab === TABS.OPERATING_DATA.name" :name="name"> </operating-data>
         </el-tab-pane>
         <el-tab-pane
           v-if="pods.length"
           :label="TABS.MONITOR.label"
           :name="TABS.MONITOR.name"
-          :lazy="true">
-          <monitor-panel
-            v-if="tab === TABS.MONITOR.name"
-            :pods="pods"
-            :name="name">
+          :lazy="true"
+        >
+          <monitor-panel v-if="tab === TABS.MONITOR.name" :pods="pods" :name="name">
           </monitor-panel>
         </el-tab-pane>
       </el-tabs>
@@ -177,7 +142,6 @@ import PodsPanel from './panels/pods';
 import EnvPanel from './panels/env';
 import HistoryPanel from './panels/history';
 import MonitorPanel from './panels/monitor';
-
 
 export default {
   name: 'Resource-Deployment-Config',
@@ -261,10 +225,9 @@ export default {
     poll() {
       this.pollTimer = setTimeout(() => {
         clearTimeout(this.pollTimer);
-        Promise.all([this.getDeployment(), this.listHPA()])
-          .then(() => {
-            this.poll();
-          });
+        Promise.all([this.getDeployment(), this.listHPA()]).then(() => {
+          this.poll();
+        });
       }, POLL_INTERVAL);
     },
     unsetPolling() {
@@ -296,11 +259,7 @@ export default {
 
     listHPA() {
       return HPAService.list().then(res => {
-        this.autoscalers = HPAService.filterHPA(
-          res.items,
-          'DeploymentConfig',
-          this.name,
-        );
+        this.autoscalers = HPAService.filterHPA(res.items, 'DeploymentConfig', this.name);
       });
     },
 
@@ -332,12 +291,7 @@ export default {
 
     updateByYaml(updatedDeploymentConfig) {
       this.loading.tabs = true;
-      DCService.put(
-        this.space.id,
-        this.zone.id,
-        this.name,
-        updatedDeploymentConfig,
-      )
+      DCService.put(this.space.id, this.zone.id, this.name, updatedDeploymentConfig)
         .then(() => {
           return this.getDeployment();
         })

@@ -45,19 +45,15 @@ export default {
     async init() {
       this.applications = await this.fetchApplications();
       const { tab, id, app } = this.$route.query;
-      this.filters.app = tab === 'app'
-        ? { name: app, id }
-        : this.applications[0] || { name: '' };
+      this.filters.app = tab === 'app' ? { name: app, id } : this.applications[0] || { name: '' };
       await this.onClickApp();
     },
     async fetchApplications() {
       this.setFilters(true);
       let appList;
       try {
-        const list = await ApplicationService
-          .listInstance(this.space.id, this.zone.id);
-        appList = list
-          .map(({ name, id }) => ({ name, id }));
+        const list = await ApplicationService.listInstance(this.space.id, this.zone.id);
+        appList = list.map(({ name, id }) => ({ name, id }));
         appList.unshift({ name: '全部', id: '' });
       } finally {
         this.setFilters(false);

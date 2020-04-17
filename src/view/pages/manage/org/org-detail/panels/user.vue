@@ -3,14 +3,14 @@
     <dao-table-view
       :rows="rows"
       :config="tConfig"
+      :showRefresh="canView"
       @refresh="loadOrgUsers"
       :loading="this.loadings.all"
       @update-user-dialog="updateUserDialog"
-      @confirm-remove-user="confirmRemoveUser">
+      @confirm-remove-user="confirmRemoveUser"
+    >
       <div slot="tool">
-        <div
-          class="dao-btn has-icon white"
-          @click="openAddUserDialog()">
+        <div v-if="canCreat" class="dao-btn has-icon white" @click="openAddUserDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -21,28 +21,28 @@
 
     <!--dialog start -->
     <add-user-dialog
-      :roles="ROLES"
+      :roles="roles"
       :users="availableUsers"
       @add="addUser"
       @search="searchUser"
       :visible="dialogConfigs.addUser.visible"
-      @close="dialogConfigs.addUser.visible = false">
+      @close="dialogConfigs.addUser.visible = false"
+    >
     </add-user-dialog>
 
     <update-org-user-dialog
       :user="selectedUser"
-      :user-role="selectedUser.organization_role"
-      :roles="ROLES"
+      :roles="roles"
       @update="updateUser"
       :visible="dialogConfigs.updateUser.visible"
-      @close="dialogConfigs.updateUser.visible = false">
+      @close="dialogConfigs.updateUser.visible = false"
+    >
     </update-org-user-dialog>
     <!-- dialog end -->
   </div>
 </template>
 
 <script>
-import { ORG_ROLE } from '@/core/constants/role';
 import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
@@ -67,6 +67,10 @@ export default {
 
   props: {
     orgId: { type: String, default: () => '' },
+    canCreat: { type: Boolean, default: () => false },
+    canUpdate: { type: Boolean, default: () => false },
+    canDelete: { type: Boolean, default: () => false },
+    canView: { type: Boolean, default: () => false },
   },
 
   data() {
@@ -82,22 +86,22 @@ export default {
         addUser: { visible: false },
         updateUser: { visible: false },
       },
-      // TODO: replace with ORG_ROLE_LABEL
-      ROLES: [
-        { value: ORG_ROLE.MEMBER, text: '租户普通用户' },
-        { value: ORG_ROLE.ADMIN, text: '租户管理员' },
-      ],
+      roles: [],
     };
   },
 
   computed: {
-    ...mapState(['user']),
-    ...mapGetters(['userName']),
+    ...mapState(['user', 'isManageView']),
+    ...mapGetters(['userName', 'isOrganizationAdmin']),
   },
 
   created() {
     this.initTableView();
-    this.loadOrgRoles();
+    if (this.canView) {
+      this.loadOrgRoles();
+    } else {
+      this.$noty.error('您暂无查询项目组权限');
+    }
   },
 
   watch: {
@@ -117,7 +121,6 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        // { id: 'organization_role', name: '租户权限', filter: 'org_role' },
         {
           id: 'roles',
           name: '租户权限',
@@ -133,18 +136,21 @@ export default {
           filter: 'role_format',
         },
       ]);
-      const isSelf = item => item.username === this.userName && this.$can('organization.manage', 'organization');
-      const isManageView = this.$route.path.includes('manage/org');
+      const isSelf = item => item.username === this.userName && this.isOrganizationAdmin;
       this.setTableOperations([
         {
           name: '修改权限',
           event: 'update-user-dialog',
-          disabled: isManageView ? false : isSelf,
+          disabled: this.isManageView ? false : isSelf,
           tooltip: '无法对自己操作',
+          visible: this.canUpdate,
         },
         {
           name: '移除',
           event: 'confirm-remove-user',
+          disabled: this.isManageView ? false : isSelf,
+          tooltip: '无法对自己操作',
+          visible: this.canDelete,
         },
       ]);
     },
@@ -166,7 +172,7 @@ export default {
         scope: 'organization',
         organizationId: this.orgId,
       }).then(roles => {
-        this.ROLES = roles;
+        this.roles = roles;
       });
     },
 
@@ -181,15 +187,11 @@ export default {
     },
 
     addUser({ user, role }, isNewUser) {
-      console.log(isNewUser);
-      this.setOrgRole(role, user.id, isNewUser);
-      const params = {
-        organization_role: 'organization_admin',
-      };
-      UserService.addOrgUser(this.orgId, user.id, params)
+      UserService.addOrgUser(this.orgId, user.id)
         .then(newUsers => {
           this.rows.push(newUsers);
           this.$noty.success('添加用户成功');
+          this.setOrgRole(role, user.id, isNewUser);
         })
         .catch(() => {
           this.$noty.error('添加用户失败');
@@ -229,20 +231,8 @@ export default {
       this.dialogConfigs.updateUser.visible = true;
     },
 
-    updateUser(role, newRole) {
-      const params = {
-        organization_role: role,
-      };
-      this.setOrgRole(newRole, this.selectedUser.id);
-      return UserService.updateOrgUser(
-        this.orgId,
-        this.selectedUser.id,
-        params,
-      ).then(newUser => {
-        const index = this.rows.findIndex(x => x.id === this.selectedUser.id);
-        this.rows.splice(index, 1, newUser);
-        // this.$noty.success('权限修改成功');
-      });
+    updateUser(role) {
+      this.setOrgRole(role, this.selectedUser.id);
     },
 
     setOrgRole(role, userId, isNewUser) {
@@ -260,7 +250,7 @@ export default {
           this.loadOrgUsers();
         })
         .catch(() => {
-          this.$noty.error(isNewUser ? '权限初始化失败' : '添加用户失败');
+          this.$noty.error(isNewUser ? '权限初始化失败' : '权限修改失败');
         });
     },
 

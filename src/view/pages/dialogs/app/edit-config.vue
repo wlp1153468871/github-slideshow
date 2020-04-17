@@ -6,7 +6,8 @@
     :status="status"
     :is-saving="loadings.updating"
     @confirm="onConfirm"
-    @cancel="onCancel">
+    @cancel="onCancel"
+  >
     <dao-tab :current-tab.sync="currentTab">
       <dao-tab-item :heading="APP_CONFIG_TYPE.IMAGE">
         <image-info
@@ -14,14 +15,12 @@
           :repository="app.imagename"
           :tag="image.tag"
           :tags="tags"
-          :is-loading="isLoadingImage">
+          :is-loading="isLoadingImage"
+        >
         </image-info>
       </dao-tab-item>
       <dao-tab-item :heading="APP_CONFIG_TYPE.LB">
-        <load-balance
-          :ref="APP_CONFIG_TYPE.LB"
-          :host="host"
-          :port="app.containerport">
+        <load-balance :ref="APP_CONFIG_TYPE.LB" :host="host" :port="app.containerport">
         </load-balance>
       </dao-tab-item>
       <dao-tab-item :heading="APP_CONFIG_TYPE.ENVS">
@@ -30,7 +29,8 @@
             :configMaps="configMaps"
             :secrets="secrets"
             :ref="APP_CONFIG_TYPE.ENVS"
-            :envs="app.envs">
+            :envs="app.envs"
+          >
           </environment>
         </dao-setting-layout>
       </dao-tab-item>
@@ -40,7 +40,8 @@
             :configMaps="configMaps"
             :secrets="secrets"
             :ref="APP_CONFIG_TYPE.MOUNT_FILE"
-            :config-files="configFiles">
+            :config-files="configFiles"
+          >
           </mount-file>
         </dao-setting-layout>
       </dao-tab-item>
@@ -48,14 +49,12 @@
         <cmd
           :ref="APP_CONFIG_TYPE.CMD"
           :containercmd="app.containercmd"
-          :containerparams="app.containerparams">
+          :containerparams="app.containerparams"
+        >
         </cmd>
       </dao-tab-item>
       <dao-tab-item :heading="APP_CONFIG_TYPE.VOLUME">
-        <volume
-          :ref="APP_CONFIG_TYPE.VOLUME"
-          :all-volumes="allVolumes"
-          :volumes="app.volumes">
+        <volume :ref="APP_CONFIG_TYPE.VOLUME" :all-volumes="allVolumes" :volumes="app.volumes">
         </volume>
       </dao-tab-item>
     </dao-tab>
@@ -189,9 +188,7 @@ export default {
     },
 
     mergePartialModel(app = {}) {
-      const {
-        IMAGE, LB, ENVS, MOUNT_FILE, VOLUME,
-      } = APP_CONFIG_TYPE;
+      const { IMAGE, LB, ENVS, MOUNT_FILE, VOLUME } = APP_CONFIG_TYPE;
 
       [IMAGE, LB, ENVS, MOUNT_FILE, VOLUME].forEach(tab => {
         const ref = this.$refs[tab];

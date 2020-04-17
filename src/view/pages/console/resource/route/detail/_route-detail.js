@@ -84,20 +84,16 @@ export default {
           this.route = res.originData || {};
           // this.cert.ref = getValue(res, 'instance_metadata.parameters.certificateRef') || {};
           this.information.basic = {
-            '租户 / 项目组': `${res.organizationName ||
-              this.space.name} / ${res.spaceName ||
-              this.space.organization.name}`,
+            '租户 / 项目组': `${res.organizationName || this.space.name} / ${
+              res.spaceName || this.space.organization.name
+            }`,
             '区域 / 环境': res.zoneName || this.zone.name,
             创建者: res.owner.name || '暂无',
           };
           this.information.config = {
             请求路径: `${this.route.spec.path || '暂无'}`,
             服务: `${this.route.spec.to.name}`,
-            容器组端口: `${getValue(
-              this.route.spec.port,
-              'targetPort',
-              '任意',
-            )}`,
+            容器组端口: `${getValue(this.route.spec.port, 'targetPort', '任意')}`,
           };
         })
         .finally(() => {

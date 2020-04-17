@@ -12,7 +12,6 @@ import PodStatusPanel from './panels/pod-status';
 import PodTemplatePanel from './panels/pod-template';
 import MonitorPanel from './panels/monitor';
 
-
 const TABS = {
   OVERVIEW: { label: '容器组', name: 'overview' },
   TERMINAL: { label: '控制台', name: 'terminal' },
@@ -183,8 +182,7 @@ export default {
     },
 
     updateContainersYet(pod) {
-      this.noContainersYet =
-        this.getContainersRunning(pod.status.containerStatuses) === 0;
+      this.noContainersYet = this.getContainersRunning(pod.status.containerStatuses) === 0;
     },
 
     updateTerminals(terminals) {

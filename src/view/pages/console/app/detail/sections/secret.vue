@@ -1,8 +1,5 @@
 <template>
-  <dao-table-view
-    ref="tableView"
-    :rows="secrets"
-    :config="tConfig">
+  <dao-table-view ref="tableView" :rows="secrets" :config="tConfig">
     <div slot="tool" class="dao-table-view-left-bar">
       <span style="line-height: 32px;">Secret</span>
     </div>

@@ -1,9 +1,10 @@
 <template>
   <dao-dialog
-    :header="isUpdate? '更新用户权限' : '添加用户'"
+    :header="isUpdate ? '更新用户权限' : '添加用户'"
     :visible.sync="isShow"
     @before-open="init"
-    @closed="closed">
+    @closed="closed"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <template #label>用户信息</template>
@@ -17,12 +18,14 @@
               placeholder="请输入一位用户的邮箱"
               search-placeholder="请输入一位用户的邮箱"
               no-data-text="无用户"
-              no-match-text="无匹配用户">
+              no-match-text="无匹配用户"
+            >
               <dao-option
                 v-for="(option, index) in options"
                 :key="index"
                 :value="option.id"
-                :label="option.value">
+                :label="option.value"
+              >
                 <!-- {{ option.text }} -->
               </dao-option>
             </dao-select>
@@ -38,53 +41,57 @@
         <template #label>项目组权限</template>
         <template #content>
           <dao-select
-            @change="$set(formModel, formModel.space_role, $event)"
-            :placeholder="isUpdate?'无权限':'请选择'"
+            placeholder="请选择"
             name="space_role"
             v-validate.immediate="'required'"
-            :disabled="model.username===userName && $can('project.manage','project')"
-            v-model="formModel.space_role">
+            v-model="formModel.space_role"
+          >
             <dao-option
               v-for="(value, key) in spacerole"
               :key="key"
               :value="value"
-              :label="value.name">
+              :label="value.name"
+            >
             </dao-option>
           </dao-select>
         </template>
       </dao-setting-item>
+      <template>
+        <el-alert
+          style="margin-top: 12px;"
+          v-if="model.username === userName && spaceMenus.some(m => m === 'space.manage')"
+          title="请注意！您是项目组管理员，请谨慎操作防止降级。"
+          type="warning"
+          show-icon
+        >
+        </el-alert>
+      </template>
     </dao-setting-section>
     <dao-setting-section>
       <dao-setting-item>
         <template #label>可用区权限</template>
         <template #content>
           <div class="dao-setting-patch role">
-            <div
-              class="sub-setting-layout role"
-              v-for="(zone, index) in zones"
-              :key="index">
-              <div
-                class="sub-setting-section"
-                v-if="zone.name.includes('k8s')"
-              >
+            <div class="sub-setting-layout role" v-for="(zone, index) in zones" :key="index">
+              <div class="sub-setting-section">
                 <div class="sub-setting-item">
-                  <p style="font-size: 13px">可用区</p>
+                  <p style="font-size: 13px;">可用区</p>
                   <div class="zone">{{ zone.name }}</div>
                 </div>
                 <div class="sub-setting-item">
-                  <p style="font-size: 13px">权限</p>
+                  <p style="font-size: 13px;">权限</p>
                   <dao-select
-                    @change="$set(result, result[zone.name], $event)"
-                    :placeholder="isUpdate?'无权限':'请选择'"
+                    placeholder="请选择"
                     name="zone_space_roles"
-                    v-validate.immediate="'required'"
                     style="width: 157px;"
-                    v-model="result[zone.name]">
+                    v-model="formModel.zoneRoles[zone.name]"
+                  >
                     <dao-option
                       v-for="(role, key) in zonerole[zone.name]"
                       :key="key"
                       :value="role"
-                      :label="role.name">
+                      :label="role.name"
+                    >
                     </dao-option>
                   </dao-select>
                 </div>
@@ -95,15 +102,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!valid"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!valid" @click="onConfirm">
         确定
       </button>
     </div>
@@ -123,16 +125,19 @@ export default {
     spaceId: { type: String, default: '' },
     visible: { type: Boolean, default: false },
     users: { type: Array, default: () => [] },
+    zones: { type: Array, default: () => [] },
     model: { type: Object, default: () => ({}) },
     zonerole: { type: Object, default: () => ({}) },
-    spacerole: [Array, Object],
+    spacerole: { type: Array, default: () => [] },
   },
 
   data() {
     return {
       roleOptions: [],
       formModel: {
-        name: 1,
+        user_id: null,
+        space_role: null,
+        zoneRoles: {},
       },
       result: {},
       user: {},
@@ -149,7 +154,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['zones', 'org', 'zone']),
+    ...mapState(['org', 'spaceMenus']),
     ...mapGetters(['userName']),
     isShow: {
       set() {
@@ -182,33 +187,22 @@ export default {
   methods: {
     init() {
       if (this.isUpdate) {
-        this.formModel.user_id = this.model.id;
         // 进入到更新 初始化角色
-        const { roles } = this.model;
-        // spacerole
-        const [space_role] = this.spacerole.filter(role => role.name === '无权限');
-        this.$set(this.formModel, 'space_role', space_role);
-        // zonrole
-        Object.keys(this.zonerole).forEach(z => {
-          const [zone_role] = this.zonerole[z].filter(x => x.name === '无权限');
-          this.$set(this.result, this.getZoneName(z), zone_role);
+        this.formModel.user_id = this.user.id;
+
+        // 设置项目组权限
+        this.formModel.space_role = this.user.roles.find(r => r.scope === 'space');
+
+        // 设置可用区权限
+        const zoneRoles = {};
+        this.zones.forEach(z => {
+          const userZoneRoleName = this.user.zone_space_roles.find(r => r.zone_name === z.name);
+          const userZoneRole = this.zonerole[userZoneRoleName.zone_name].find(
+            r => r.name === userZoneRoleName.zone_role,
+          );
+          zoneRoles[z.name] = userZoneRole;
         });
-        if (roles) {
-          roles.forEach(role => {
-            if (role.scope.includes('space')) {
-              // space
-              this.$set(this.formModel, 'space_role', role);
-            } else if (role.scope.includes('k8s')) {
-              // zone k8s
-              // this.$set(this.result, 'k8s-dev', role);
-              this.$set(this.result, this.getZoneName('k8s'), role);
-            } else if (role.scope.includes('ocp')) {
-              // zone ocp
-              // this.$set(this.result, 'office-openshift-dev', role);
-              this.$set(this.result, this.getZoneName('openshift'), role);
-            }
-          });
-        }
+        this.formModel.zoneRoles = zoneRoles;
       } else {
         // this.formModel.name = '';
         // this.formModel.user_id = getValue(first(this.users), 'id');
@@ -217,17 +211,29 @@ export default {
     onConfirm() {
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          this.setUserRole();
+          if (this.isUpdate) {
+            this.setUserRole();
+          } else {
+            this.addUser()
+              .then(() => {
+                return this.setUserRole();
+              })
+              .then(() => {
+                this.$store.dispatch('loadSpaceRole');
+                this.$store.dispatch('loadZoneRole');
+              });
+          }
         }
       });
     },
 
     setUserRole() {
-      this.setSpaceRole();
-      this.setZoneRole();
+      return Promise.all([this.setUserSpaceRole(), this.setUserZoneRole()]).then(() => {
+        this.onRefresh();
+      });
     },
 
-    setSpaceRole() {
+    setUserSpaceRole() {
       // 修改项目组角色（权限）
       const spaceParams = {
         userId: this.formModel.user_id,
@@ -238,7 +244,7 @@ export default {
           scope: this.formModel.scope,
         },
       };
-      RoleService.setRole(spaceParams)
+      return RoleService.setRole(spaceParams)
         .then(() => {
           this.$noty.success(this.isUpdate ? '更新项目组权限成功' : '初始化项目组权限成功');
         })
@@ -247,44 +253,43 @@ export default {
         });
     },
 
-    setZoneRole() {
-      this.zones
-        .filter(zone => zone.name.includes('k8s'))
-        .forEach(zone => {
+    setUserZoneRole() {
+      return Promise.all(
+        this.zones.map(zone => {
           const { name, id } = zone;
-          const key = name;
-          const zoneParams = {
-            userId: this.formModel.user_id,
-            roleId: this.result[key].id,
-            data: {
-              organizationId: this.org.id,
-              spaceId: this.spaceId,
-              zoneId: id,
-              scope: this.result[key].scope,
-            },
-          };
-          RoleService.setRole(zoneParams)
-            .then(() => {
-              this.onRefresh();
-              this.$noty.success(this.isUpdate ? '更新可用区权限成功' : '初始化可用区权限成功');
-            })
-            .catch(() => {
-              this.$noty.error(this.isUpdate ? '更新可用区权限失败' : '初始化可用区权限失败');
-            })
-            .finally(() => {
-              if (!this.isUpdate) {
-                this.addUser();
-              }
-            });
-        });
+          if (this.formModel.zoneRoles[name]) {
+            const zoneParams = {
+              userId: this.formModel.user_id,
+              roleId: this.formModel.zoneRoles[name].id,
+              data: {
+                organizationId: this.org.id,
+                spaceId: this.spaceId,
+                zoneId: id,
+                scope: this.formModel.zoneRoles[name].scope,
+              },
+            };
+            return RoleService.setRole(zoneParams)
+              .then(() => {
+                this.$noty.success(
+                  this.isUpdate ? `更新可用区${name}权限成功` : `初始化可用区${name}权限成功`,
+                );
+              })
+              .catch(() => {
+                this.$noty.error(
+                  this.isUpdate ? `更新可用区${name}权限失败` : `初始化可用区${name}权限失败`,
+                );
+              });
+          }
+          return Promise.resolve();
+        }),
+      );
     },
     addUser() {
-      UserService.updateSpaceUser(this.spaceId, {
+      return UserService.updateSpaceUser(this.spaceId, {
         user_id: this.formModel.user_id,
-        space_role: this.formModel.space_role.name,
-      }).then(() => {
-        this.onRefresh();
-        this.$noty.success('添加用户成功');
+      }).catch(err => {
+        this.$noty.error('添加用户失败');
+        throw err;
       });
     },
 
@@ -302,8 +307,8 @@ export default {
       this.formModel = {
         user_id: null,
         space_role: null,
+        zoneRoles: {},
       };
-      this.result = {};
     },
 
     getZoneName(type) {

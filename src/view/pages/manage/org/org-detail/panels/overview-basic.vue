@@ -12,7 +12,8 @@
             data-vv-as="租户名称"
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
-            v-model="name">
+            v-model="name"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -21,11 +22,7 @@
       <dao-setting-item>
         <div slot="label">唯一标识</div>
         <div slot="content">
-          <dao-input
-            type="text"
-            v-model="org.short_name"
-            placeholder="shortname"
-            :disabled="true">
+          <dao-input type="text" v-model="org.short_name" placeholder="shortname" :disabled="true">
           </dao-input>
         </div>
       </dao-setting-item>
@@ -36,11 +33,12 @@
         <div slot="content">
           <textarea
             class="dao-control"
-            :class="{ 'error': veeErrors.first('description') }"
+            :class="{ error: veeErrors.first('description') }"
             v-model="description"
             name="description"
             rows="3"
-            v-validate="'max:80'">
+            v-validate="'max:80'"
+          >
           </textarea>
           <p class="text-danger" v-show="veeErrors.first('description')">
             租户备注不能超过80字
@@ -50,9 +48,11 @@
     </dao-setting-section>
     <div slot="footer">
       <button
+        v-if="$can('platform.organization.update', 'platform.organization')"
         class="dao-btn blue"
         :disabled="!isValidForm"
-        @click="save()">
+        @click="save()"
+      >
         保存
       </button>
     </div>
@@ -89,10 +89,7 @@ export default {
   },
   methods: {
     save() {
-      const {
-        name,
-        description,
-      } = this;
+      const { name, description } = this;
 
       this.$emit('save', {
         name,

@@ -4,11 +4,9 @@
 
     <template v-else>
       <resource-header :resource="resource">
-        <template #creationTime>
-          创建于{{ route.metadata.creationTimestamp | date }}
-        </template>
+        <template #creationTime> 创建于{{ route.metadata.creationTimestamp | date }} </template>
         <template #status v-if="status === 'approving'">
-          <labels highLight :labels="{'状态': '审批中'}"></labels>
+          <labels highLight :labels="{ 状态: '审批中' }"></labels>
         </template>
 
         <template #labels>
@@ -17,10 +15,11 @@
 
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('delete')"
+            v-if="$can('route.delete', 'route')"
             trigger="click"
             :append-to-body="true"
-            placement="bottom-end">
+            placement="bottom-end"
+          >
             <button class="dao-btn ghosthas-icon">
               操作
               <svg class="icon">
@@ -34,63 +33,43 @@
               </dao-dropdown-item>
               <dao-dropdown-item
                 @click="removeConfirm"
-                class="dao-dropdown-item-red dao-dropdown-item-hover-red">
+                class="dao-dropdown-item-red dao-dropdown-item-hover-red"
+              >
                 <span>删除</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>
 
-          <button
-            class="dao-btn csp-table-update-btn"
-            @click="getRoute"
-            style="margin-left: 10px">
+          <button class="dao-btn csp-table-update-btn" @click="getRoute" style="margin-left: 10px;">
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
           </button>
-
         </template>
-
       </resource-header>
       <el-tabs v-model="tab">
-        <el-tab-pane
-          :label="TABS.OVERVIEW.label"
-          :name="TABS.OVERVIEW.name">
+        <el-tab-pane :label="TABS.OVERVIEW.label" :name="TABS.OVERVIEW.name">
           <overview-panel
             :route="route"
             :information="information"
             :jobs="jobs"
             :services="services"
-            @change-tab="tab = $event">
+            @change-tab="tab = $event"
+          >
           </overview-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.RULE.label"
-          :name="TABS.RULE.name"
-          :lazy="true">
-          <rule-panel
-            :route="route"
-            @update="getRoute">
-          </rule-panel>
+        <el-tab-pane :label="TABS.RULE.label" :name="TABS.RULE.name" :lazy="true">
+          <rule-panel :route="route" @update="getRoute"> </rule-panel>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.JOBS.label"
-          :name="TABS.JOBS.name"
-          :lazy="true">
+        <el-tab-pane :label="TABS.JOBS.label" :name="TABS.JOBS.name" :lazy="true">
           <jobs-panel :jobs="jobs"></jobs-panel>
         </el-tab-pane>
       </el-tabs>
     </template>
 
-
-    <edit-yaml-dialog
-      :value="route"
-      :visible.sync="dialogConfigs.yamlEdit"
-      @update="updateByYaml"
-    >
+    <edit-yaml-dialog :value="route" :visible.sync="dialogConfigs.yamlEdit" @update="updateByYaml">
     </edit-yaml-dialog>
   </div>
 </template>
 
-<script src="./_route-detail.js">
-</script>
+<script src="./_route-detail.js"></script>

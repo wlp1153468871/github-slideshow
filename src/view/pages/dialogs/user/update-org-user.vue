@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @before-open="init"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户名</div>
@@ -17,16 +18,14 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select
-            placeholder="请选择"
-            v-model="role">
+          <dao-select placeholder="请选择" v-model="role">
             <dao-option
               v-for="(r, index) in roles"
-              :disabled="user.username === 'admin'
-                && r.value === 'organization_member'"
+              :disabled="user.username === 'admin' && r.value === 'organization_member'"
               :key="index"
               :value="r"
-              :label="r.name">
+              :label="r.name"
+            >
             </dao-option>
           </dao-select>
         </div>
@@ -34,15 +33,10 @@
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -57,7 +51,7 @@ export default {
   extends: dialog('修改用户权限'),
   props: {
     user: { type: Object, default: () => ({}) },
-    userRole: { type: String, default: '' },
+    // userRole: { type: String, default: '' },
     roles: { type: Array, default: () => [] },
   },
   data() {
@@ -92,7 +86,7 @@ export default {
     onConfirm() {
       // this.$emit('update', this.role);
       // 之前传的role 管理员对应的 organization_admin
-      this.$emit('update', 'organization_admin', this.role);
+      this.$emit('update', this.role);
       this.onClose();
     },
   },

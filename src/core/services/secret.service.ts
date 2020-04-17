@@ -60,7 +60,7 @@ class SecretService {
     };
   }
 
-  updateByYaml({ name, data }: { name: string, data: object }) {
+  updateByYaml({ name, data }: { name: string; data: object }) {
     if (!name) Promise.reject('缺少名称');
     return this.api.put(`/spaces/${this.space}/secrets/${name}/yaml`, data, {
       params: { zone: this.zone },

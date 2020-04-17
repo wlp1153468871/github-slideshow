@@ -5,9 +5,9 @@
     role="tabpanel"
     :id="tabId"
     :aria-hidden="!active"
-    :aria-labelledby="`step-${tabId}`">
-    <slot :active="active">
-    </slot>
+    :aria-labelledby="`step-${tabId}`"
+  >
+    <slot :active="active"> </slot>
   </div>
 </template>
 

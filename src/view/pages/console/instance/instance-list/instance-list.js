@@ -6,11 +6,7 @@ import InstanceService from '@/core/services/instance.service';
 
 import ErrorInfo from '@/view/mixins/error-info';
 import isApprove from '@/core/utils/is-approve';
-import {
-  INSTANCE_STATUS,
-  STATUS_COLOR,
-  SERVICE_STATUS,
-} from '@/core/constants/constants';
+import { INSTANCE_STATUS, STATUS_COLOR, SERVICE_STATUS } from '@/core/constants/constants';
 
 import planDescMixin from '@/view/mixins/plan-desc';
 
@@ -39,8 +35,7 @@ export default {
       loadings: {
         instances: false,
       },
-      filterMethod: (data, filterKey) =>
-        data.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.name.toLowerCase().includes(filterKey),
       other: {
         status: (_, item) => {
           const { status } = item;
@@ -77,7 +72,7 @@ export default {
       } catch (e) {
         console.error(e);
         this.$router.push({
-          name: 'console.dashboard',
+          name: 'console.gateway',
         });
       }
       return {};
@@ -121,64 +116,6 @@ export default {
           this.loadings.instances = false;
         });
     },
-
-    // initTable() {
-    //   const statusOther = {
-    //     onClick: this.showErrorInfo,
-    //     status: this.getStatus,
-    //   };
-    //   const plan = (item, instance) => {
-    //     return this.getPlanDetails(item, instance.service.name);
-    //   };
-
-    //   this.setTableProps([
-    //     {
-    //       id: 'name',
-    //       name: '实例',
-    //       type: 'goto',
-    //       other: { onClick: this.gotoDetail },
-    //     },
-    //     {
-    //       id: 'plan',
-    //       name: '规格',
-    //       value: plan,
-    //       sort: 'plan.name',
-    //     },
-    //     { id: 'created_at', name: '创建时间', filter: 'unix_date' },
-    //     {
-    //       id: 'owner',
-    //       name: '创建者',
-    //       value: 'owner.name',
-    //       sort: 'owner.name',
-    //     },
-    //     {
-    //       id: 'status',
-    //       name: '状态',
-    //       type: 'status',
-    //       filter: 'instance_status',
-    //       other: statusOther,
-    //     },
-    //   ]);
-    //   const toolTips = this.brokerService.instances_deletable
-    //     ? '暂无权限删除实例'
-    //     : '无法删除实例';
-    //   const disableDelete = item => {
-    //     return (
-    //       !this.$can('delete') ||
-    //       isApprove(item.status) ||
-    //       !this.brokerService.instances_deletable ||
-    //       this.isZoneSyncing
-    //     );
-    //   };
-    //   this.setTableOperations([
-    //     {
-    //       name: '删除',
-    //       event: 'remove-confirm',
-    //       disabled: disableDelete,
-    //       tooltip: toolTips,
-    //     },
-    //   ]);
-    // },
 
     deployService() {
       const { serviceId, brokerServiceId } = this;
@@ -258,12 +195,9 @@ export default {
 
     disableDelete(item) {
       return (
-        isApprove(item.status) ||
-        !this.brokerService.instances_deletable ||
-        this.isZoneSyncing
+        isApprove(item.status) || !this.brokerService.instances_deletable || this.isZoneSyncing
       );
     },
-
   },
 
   watch: {

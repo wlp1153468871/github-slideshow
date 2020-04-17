@@ -5,24 +5,17 @@
     @before-open="onBeforeOpen"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
-      <dao-editable-table
-        :config="config"
-        v-model="labels"
-        @valid="validChange">
+      <dao-editable-table :config="config" v-model="labels" @valid="validChange">
       </dao-editable-table>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        :disabled="!isValid"
-        class="dao-btn blue"
-        @click="onConfirm">
+      <button :disabled="!isValid" class="dao-btn blue" @click="onConfirm">
         确定
       </button>
     </div>
@@ -48,53 +41,52 @@ export default {
       isValid: false,
       labels: [],
       config: {
-        header: [
-          '键',
-          '值',
-        ],
-        body: [{
-          type: 'input',
-          name: 'id',
-          default: '',
-          validate(row, all) {
-            if (row.id === '') {
-              return '键不能为空';
-            }
-            if (all.filter(r => r.id === row.id).length > 1) {
-              return '变量 ID 不能重复';
-            }
-            const slashLen = row.id.split('/').length;
-            if (slashLen > 2) {
-              return '只允许有一个前缀';
-            }
-            // 没有‘/’
-            if (slashLen === 1 && !isAnnotationName(row.id)) {
-              return '名字最多63个字符，只能使用"-"、"_"、"."和数字、字母，并且以字母、数字、字符开头和结尾';
-            }
-            // 有一个 ‘/’
-            if (slashLen === 2) {
-              const [prefix, name] = row.id.split('/');
-              if (!isDNS1123(prefix)) {
-                return '前缀需要满足 DNS1123 规范';
+        header: ['键', '值'],
+        body: [
+          {
+            type: 'input',
+            name: 'id',
+            default: '',
+            validate(row, all) {
+              if (row.id === '') {
+                return '键不能为空';
               }
-              if (!isAnnotationName(name)) {
+              if (all.filter(r => r.id === row.id).length > 1) {
+                return '变量 ID 不能重复';
+              }
+              const slashLen = row.id.split('/').length;
+              if (slashLen > 2) {
+                return '只允许有一个前缀';
+              }
+              // 没有‘/’
+              if (slashLen === 1 && !isAnnotationName(row.id)) {
                 return '名字最多63个字符，只能使用"-"、"_"、"."和数字、字母，并且以字母、数字、字符开头和结尾';
               }
-            }
-            return true;
+              // 有一个 ‘/’
+              if (slashLen === 2) {
+                const [prefix, name] = row.id.split('/');
+                if (!isDNS1123(prefix)) {
+                  return '前缀需要满足 DNS1123 规范';
+                }
+                if (!isAnnotationName(name)) {
+                  return '名字最多63个字符，只能使用"-"、"_"、"."和数字、字母，并且以字母、数字、字符开头和结尾';
+                }
+              }
+              return true;
+            },
           },
-        },
-        {
-          type: 'input',
-          name: 'name',
-          default: '',
-          validate(row) {
-            if (row.name === '') {
-              return '值不能为空';
-            }
-            return true;
+          {
+            type: 'input',
+            name: 'name',
+            default: '',
+            validate(row) {
+              if (row.name === '') {
+                return '值不能为空';
+              }
+              return true;
+            },
           },
-        }],
+        ],
       },
     };
   },
