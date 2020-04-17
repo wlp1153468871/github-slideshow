@@ -189,9 +189,8 @@ export default {
           this.zones.forEach(zone => {
             const { id, name } = zone;
             RoleService.getRoles({
-              scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
-              // scope: `zone.${zone.type}`,
-              // scope: `zone.${zone.version.type}`,
+              // scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+              scope: `zone.${zone.type}`,
               space: this.spaceId,
               zone: id,
             }).then(roleList => {
