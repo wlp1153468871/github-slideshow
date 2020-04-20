@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="container space-view-list"
-    v-if="$can('organization.space.get', 'organization.space')"
-  >
+  <div class="container space-view-list" v-if="$can('organization.space.get')">
     <div class="space-tool row">
       <button
-        v-if="$can('organization.space.create', 'organization.space')"
+        v-if="$can('organization.space.create')"
         class="dao-btn white has-icon"
         @click="openAddSpaceDialog()"
       >
@@ -17,7 +14,7 @@
     </div>
     <div class="row">
       <div
-        v-if="$can('organization.space.get', 'organization.space')"
+        v-if="$can('organization.space.get')"
         style="padding: 5px;"
         class="col-md-3"
         v-for="space in spaces"

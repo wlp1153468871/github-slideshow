@@ -16,7 +16,7 @@ export default {
     ExceptionPage,
   },
   computed: {
-    ...mapGetters(['menus']),
+    ...mapGetters(['pages']),
   },
   mounted() {
     this.gotoNextPage();
@@ -24,9 +24,9 @@ export default {
 
   methods: {
     gotoNextPage() {
-      if (store.getters.menus.some(m => m === 'space.overview')) {
+      if (store.getters.pages.some(m => m === 'space.overview')) {
         this.$router.push({ name: 'console.dashboard' });
-      } else if (store.getters.menus.some(m => m === 'organization.space')) {
+      } else if (store.getters.pages.some(m => m === 'organization.space')) {
         this.$router.push({ name: 'console.space-settings' });
       } else {
         Vue.noty.error('您暂未加入任何项目组');
@@ -36,7 +36,7 @@ export default {
   },
 
   watch: {
-    menus() {
+    pages() {
       this.gotoNextPage();
     },
   },

@@ -16,7 +16,7 @@ export default {
     };
   },
   async created() {
-    if (this.$can('platform.alert.get', 'platform.alert')) {
+    if (this.$can('platform.alert.get')) {
       this.rules = await this.initMetrics();
     } else {
       this.$noty.error('您暂无告警指标查看权限');

@@ -7,7 +7,7 @@ export default {
     AddOrgDialog,
   },
   created() {
-    if (this.$can('platform.organization.get', 'platform.organization')) {
+    if (this.$can('platform.organization.get')) {
       this.loadOrgs();
     } else {
       this.$noty.error('您暂无组织管理查看权限');

@@ -8,7 +8,7 @@ export default {
     CatalogPanel,
   },
   created() {
-    if (this.$can('platform.settings.assets', 'platform.settings')) {
+    if (this.$can('platform.settings.assets')) {
       this.getAllService();
     } else {
       this.$noty.error('您暂无首页编辑权限');

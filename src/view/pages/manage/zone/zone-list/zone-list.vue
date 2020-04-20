@@ -5,7 +5,7 @@
     </div>
     <div class="dao-view-main">
       <x-table
-        :showRefresh="$can('platform.zone.get', 'platform.zone')"
+        :showRefresh="$can('platform.zone.get')"
         :loading="loadings.zone"
         :data="rows"
         @refresh="loadZones"
@@ -14,7 +14,7 @@
       >
         <template #operation>
           <button
-            v-if="$can('platform.zone.create', 'platform.zone')"
+            v-if="$can('platform.zone.create')"
             class="dao-btn has-icon blue"
             @click="deployZone"
           >
@@ -61,7 +61,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="$can('platform.zone.update', 'platform.zone')"
+          v-if="$can('platform.zone.update')"
           fixed="right"
           label=""
           align="center"
@@ -77,20 +77,17 @@
               </span>
 
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  v-if="$can('platform.zone.update', 'platform.zone')"
-                  command="edit"
-                >
+                <el-dropdown-item v-if="$can('platform.zone.update')" command="edit">
                   基础设置
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-if="!zone.available && $can('platform.zone.update', 'platform.zone')"
+                  v-if="!zone.available && $can('platform.zone.update')"
                   command="enable"
                 >
                   显示
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-if="zone.available && $can('platform.zone.update', 'platform.zone')"
+                  v-if="zone.available && $can('platform.zone.update')"
                   command="disable"
                 >
                   隐藏

@@ -5,7 +5,7 @@
         <div class="quota-section">
           <h4 class="quota-section-head">{{ spaceDescription }}配额审批</h4>
           <quota-approval-table
-            :can-update="$can('organization.approval', 'organization-root')"
+            :can-update="$can('organization.approval')"
             :loading="approvalLoading"
             :approvals="quotaApproval"
             :showSpaceCol="true"
@@ -18,7 +18,7 @@
         <div class="quota-section">
           <h4 class="quota-section-head">{{ orgDescription }}配额审批</h4>
           <quota-approval-table
-            :can-update="$can('organization.approval', 'organization-root')"
+            :can-update="$can('organization.approval')"
             :loading="requestLoading"
             @refresh="getOrgApprovals"
             :approvals="quotaRequests"
@@ -58,7 +58,7 @@ export default {
     };
   },
   created() {
-    if (this.$can('organization.approval', 'organization-root')) {
+    if (this.$can('organization.approval')) {
       this.getSpaceApprovals();
       this.getOrgApprovals();
     } else {
