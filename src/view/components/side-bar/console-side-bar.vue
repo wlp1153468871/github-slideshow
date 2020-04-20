@@ -240,6 +240,7 @@ export default {
           id: org.id,
           children: [],
         };
+
         for (let j = 0; j < org.children.length; j += 1) {
           const space = org.children[j];
           if (space.name.indexOf('/') === -1) {
@@ -260,6 +261,9 @@ export default {
               const name = spaceNames[k];
               let nameObj = find(curChildren, { name });
               if (nameObj) {
+                if (!nameObj.children && k !== spaceNames.length - 1) {
+                  nameObj.children = [];
+                }
                 curChildren = nameObj.children;
                 ids.push(nameObj.id);
               } else {
@@ -270,7 +274,7 @@ export default {
                   };
                   ids.push(nameObj.id);
                 } else {
-                  nameObj = { id: name, name, children: [] };
+                  nameObj = { id: `${name}-${org.id}-${k}`, name, children: [] };
                   ids.push(nameObj.id);
                 }
                 curChildren.push(nameObj);
