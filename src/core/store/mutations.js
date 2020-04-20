@@ -113,7 +113,7 @@ function flat(
     // result.actions[featureCode] = access;
     if (children) {
       children.forEach(action => {
-        if (action.type === 'feature' && action.access) {
+        if ((action.type === 'page' || action.type === 'feature') && action.access) {
           if (result.actions[featureCode]) {
             result.actions[featureCode].push(action.featureCode);
           } else {
