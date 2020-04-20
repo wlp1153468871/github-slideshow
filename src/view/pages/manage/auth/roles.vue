@@ -10,7 +10,7 @@
       <template #operation>
         <button
           class="dao-btn blue has-icon"
-          v-if="$can('platform.rolePermission.create', 'platform.rolePermission')"
+          v-if="$can('platform.rolePermission.create')"
           :disabled="loading"
           @click="addRole"
         >
@@ -34,7 +34,7 @@
             详情
           </button>
           <button
-            v-if="!role.preset && $can('platform.rolePermission.delete', 'platform.rolePermission')"
+            v-if="!role.preset && $can('platform.rolePermission.delete')"
             class="dao-btn btn-sm mini red"
             @click="confirmDelete(role)"
           >

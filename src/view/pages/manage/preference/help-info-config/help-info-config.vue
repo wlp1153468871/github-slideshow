@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$can('platform.settings.assets', 'platform.settings')">
+  <div v-if="$can('platform.settings.assets')">
     <dao-setting-layout>
       <div slot="layout-title">帮助信息设置</div>
       <dao-setting-section v-if="helpURLDictIsEmpty">
@@ -45,7 +45,7 @@ export default {
     },
   },
   created() {
-    if (!this.$can('platform.settings.assets', 'platform.settings')) {
+    if (!this.$can('platform.settings.assets')) {
       this.$noty.error('您暂无帮助信息设置权限');
     }
   },

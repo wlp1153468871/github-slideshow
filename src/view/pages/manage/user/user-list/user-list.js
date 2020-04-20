@@ -15,7 +15,7 @@ export default {
   },
 
   created() {
-    if (this.$can('platform.user.get', 'platform.user')) {
+    if (this.$can('platform.user.get')) {
       this.loadUsers();
       this.loadPlatformRoles();
     } else {
@@ -45,7 +45,6 @@ export default {
   computed: {
     ...mapState({
       self: 'user',
-      platformMenus: 'platformMenus',
     }),
     ...mapGetters(['userName', 'isPlatformAdmin']),
   },

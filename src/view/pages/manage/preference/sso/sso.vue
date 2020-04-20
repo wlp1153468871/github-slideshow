@@ -1,5 +1,5 @@
 <template>
-  <div class="sso" v-if="$can('platform.settings.third-party', 'platform.settings')">
+  <div class="sso" v-if="$can('platform.settings.third-party')">
     <dao-setting-layout>
       <div slot="layout-title">
         SSO 认证
@@ -82,7 +82,7 @@ export default {
   },
 
   created() {
-    if (this.$can('platform.settings.third-party', 'platform.settings')) {
+    if (this.$can('platform.settings.third-party')) {
       this.loadSSOInfo();
     } else {
       this.$noty.error('您暂无SSO设置权限');

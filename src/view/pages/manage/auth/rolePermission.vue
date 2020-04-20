@@ -116,7 +116,7 @@
         class="dao-btn blue"
         @click="save"
         :disabled="loading"
-        v-if="!isPreset && $can('platform.rolePermission.update', 'platform.rolePermission')"
+        v-if="!isPreset && $can('platform.rolePermission.update')"
       >
         更新
       </button>

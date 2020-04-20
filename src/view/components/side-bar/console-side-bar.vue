@@ -197,11 +197,11 @@ export default {
       'defaultActiveMenu',
       'apiResource',
     ]),
-    ...mapGetters(['menus']),
+    ...mapGetters(['pages']),
 
     isShowZoneSelect() {
       // 只要加入项目就可以切换可用区
-      return this.menus.some(m => m === 'space-root');
+      return this.pages.some(m => m === 'space-root');
     },
 
     orgSpaceValue() {

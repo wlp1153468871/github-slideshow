@@ -173,7 +173,7 @@ export default {
 
   computed: {
     deleteable() {
-      return this.$can('pod.delete', 'pod') && this.canSelect;
+      return this.$can('pod.delete') && this.canSelect;
     },
 
     podsFilteredByKey() {
@@ -202,10 +202,8 @@ export default {
     },
 
     podFailureReason(pod) {
-      return `${
-        this.podFailureReasons[pod.status.phase] ||
-        'This pod has no endpoints and is not accepting traffic.'
-      }`;
+      return `${this.podFailureReasons[pod.status.phase] ||
+        'This pod has no endpoints and is not accepting traffic.'}`;
     },
 
     sortReStartTimes(a, b) {

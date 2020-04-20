@@ -53,7 +53,7 @@ export default function ensureHooks(router) {
 
   router.afterEach(to => {
     if (!hasPermission(to)) {
-      console.error('全局 afterEach 无权限访问此页面', to, store.getters.menus);
+      console.error('全局 afterEach 无权限访问此页面', to, store.getters.pages);
       Vue.noty.error(`无权限访问此页面 ${to.path}`);
       router.push({ name: 'console.profile' });
       NProgress.done();

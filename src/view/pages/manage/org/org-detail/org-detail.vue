@@ -15,10 +15,10 @@
         <user-panel
           :users="users"
           :org-id="orgId"
-          :canDelete="$can('platform.organization.user', 'platform.organization')"
-          :canCreat="$can('platform.organization.user', 'platform.organization')"
-          :canUpdate="$can('platform.organization.user', 'platform.organization')"
-          :canView="$can('platform.organization.user', 'platform.organization')"
+          :canDelete="$can('platform.organization.user')"
+          :canCreat="$can('platform.organization.user')"
+          :canUpdate="$can('platform.organization.user')"
+          :canView="$can('platform.organization.user')"
         >
         </user-panel>
       </el-tab-pane>

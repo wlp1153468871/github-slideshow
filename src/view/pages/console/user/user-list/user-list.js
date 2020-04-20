@@ -16,9 +16,7 @@ export default {
       SIDE_BAR: {
         MEBMBER: {
           id: 'mebmber',
-          canShow:
-            this.$can('space.manage.users', 'space.manage') ||
-            this.$can('organization.space', 'organization-root'),
+          canShow: this.$can('space.manage.users') || this.$can('organization.space'),
           name: '成员',
         },
         ZONE: {
@@ -33,7 +31,7 @@ export default {
         },
         APPROVE: {
           id: 'approve',
-          canShow: this.$can('space.manage.approval', 'space.manage'),
+          canShow: this.$can('space.manage.approval'),
           name: '审批',
         },
         ADVANCED_SETTING: {
