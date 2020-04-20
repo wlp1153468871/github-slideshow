@@ -26,7 +26,7 @@ export default {
 
   created() {
     // 有权限查看 无权限则提示
-    if (this.$can('platform.zone.get', 'platform.zone')) {
+    if (this.$can('platform.zone.get')) {
       this.loadZones();
     } else {
       this.$noty.error('您暂无可用区查看权限');

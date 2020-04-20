@@ -1,6 +1,6 @@
 <template>
   <catalog-panel
-    v-if="$can('platform.settings.assets', 'platform.settings')"
+    v-if="$can('platform.settings.assets')"
     v-show="content === TABS.CATALOG"
     :services="services"
   >

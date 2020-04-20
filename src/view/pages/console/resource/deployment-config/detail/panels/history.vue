@@ -80,8 +80,7 @@
         <template #default="{ row: rc }">
           <el-button
             v-if="
-              $can('deploymentConfig.update', 'deploymentConfig') &&
-                dc.status.latestVersion !== rc.deploymentVersion
+              $can('deploymentConfig.update') && dc.status.latestVersion !== rc.deploymentVersion
             "
             type="text"
             size="small"

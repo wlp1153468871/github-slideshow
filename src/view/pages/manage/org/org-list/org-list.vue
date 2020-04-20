@@ -6,7 +6,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <x-table
-          :showRefresh="this.$can('platform.organization.get', 'platform.organization')"
+          :showRefresh="this.$can('platform.organization.get')"
           :loading="loadings.orgs"
           :data="rows"
           @refresh="loadOrgs"
@@ -16,7 +16,7 @@
           <template #operation>
             <button
               class="dao-btn has-icon blue"
-              v-if="$can('platform.organization.create', 'platform.organization')"
+              v-if="$can('platform.organization.create')"
               @click="addOrgDialog()"
             >
               <svg class="icon">

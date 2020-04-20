@@ -47,7 +47,7 @@ export default {
       return this.registry.password;
     },
     hasPermission() {
-      return this.$can('platform.organization.imageRepository', 'platform.organization');
+      return this.$can('platform.organization.imageRepository');
     },
   },
 

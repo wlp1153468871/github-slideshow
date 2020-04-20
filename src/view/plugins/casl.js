@@ -4,17 +4,14 @@ import store from '@/core/store';
 
 function defineAbilitiesFor(actions) {
   return AbilityBuilder.define(can => {
-    Object.entries(actions).forEach(([value, code]) => {
-      can(code, value);
-    });
+    can(actions, 'all');
   });
 }
 
 function updateVueUsedCaslPluginWeWillInjectWatcher(Vue) {
   store.watch(
-    x => {
-      const action = Object.assign({}, x.zoneAction, x.spaceAction, x.orgAction, x.platformAction);
-      return action;
+    (state, getter) => {
+      return getter.actions;
     },
     action => {
       if (Vue.prototype.$ability) {
@@ -26,7 +23,7 @@ function updateVueUsedCaslPluginWeWillInjectWatcher(Vue) {
 }
 
 export default function caslPlugin(Vue) {
-  const ability = defineAbilitiesFor({});
+  const ability = defineAbilitiesFor([]);
   Vue.use(abilitiesPlugin, ability);
 
   updateVueUsedCaslPluginWeWillInjectWatcher(Vue);

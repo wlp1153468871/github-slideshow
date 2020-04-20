@@ -81,20 +81,20 @@ export const state = {
   isFullscreened: false,
   localLogin: true,
   zoneRole: {},
-  zoneMenus: [],
-  zoneAction: {},
+  zonePages: [],
+  zoneAction: [],
   zonePermission: {},
   spaceRole: {},
-  spaceMenus: [],
-  spaceAction: {},
+  spacePages: [],
+  spaceAction: [],
   spacePermission: {},
   orgRole: {},
-  orgMenus: [],
-  orgAction: {},
+  orgPages: [],
+  orgAction: [],
   orgPermission: {},
   platformRole: {},
-  platformMenus: [],
-  platformAction: {},
+  platformPages: [],
+  platformAction: [],
   platformPermission: {},
   isManageView: false,
 };
@@ -102,23 +102,24 @@ export const state = {
 function flat(
   tree = [],
   result = {
-    menus: [],
-    actions: {},
+    pages: [],
+    actions: [],
   },
 ) {
   tree.forEach(({ featureCode, type, children, access }) => {
     if ((type === 'page' || type === 'feature' || type === 'root') && access) {
-      result.menus.push(featureCode);
+      result.pages.push(featureCode);
     }
     // result.actions[featureCode] = access;
     if (children) {
       children.forEach(action => {
         if ((action.type === 'page' || action.type === 'feature') && action.access) {
-          if (result.actions[featureCode]) {
-            result.actions[featureCode].push(action.featureCode);
-          } else {
-            result.actions[featureCode] = [action.featureCode];
-          }
+          result.actions.push(action.featureCode);
+          // if (result.actions[featureCode]) {
+          //   result.actions[featureCode].push(action.featureCode);
+          // } else {
+          //   result.actions[featureCode] = [action.featureCode];
+          // }
         }
       });
       flat(children, result);
@@ -154,19 +155,19 @@ export const getters = {
   },
 
   isPlatformAdmin(state) {
-    return state.platformMenus.some(m => m === 'platform-root');
+    return state.platformPages.some(m => m === 'platform-root');
   },
 
   isOrganizationAdmin(state, getters) {
-    return getters.isPlatformAdmin || state.orgMenus.some(m => m === 'organization-root');
+    return getters.isPlatformAdmin || state.orgPages.some(m => m === 'organization-root');
   },
 
   isSpaceAdmin(state, getters) {
-    return getters.isPlatformAdmin || state.spaceMenus.some(m => m === 'space.manage');
+    return getters.isPlatformAdmin || state.spacePages.some(m => m === 'space.manage');
   },
 
   zoneUnauthorized(state, getters) {
-    return getters.menus.indexOf('serviceBroker') === -1;
+    return getters.pages.indexOf('serviceBroker') === -1;
   },
 
   isZoneSyncing(state) {
@@ -254,12 +255,12 @@ export const getters = {
 
   actions(state) {
     const { zoneAction, spaceAction, orgAction, platformAction } = state;
-    return Object.assign({}, zoneAction, spaceAction, orgAction, platformAction);
+    return [...zoneAction, ...spaceAction, ...orgAction, ...platformAction];
   },
 
-  menus(state) {
-    const { zoneMenus, spaceMenus, orgMenus, platformMenus } = state;
-    return [...zoneMenus, ...spaceMenus, ...orgMenus, ...platformMenus];
+  pages(state) {
+    const { zonePages, spacePages, orgPages, platformPages } = state;
+    return [...zonePages, ...spacePages, ...orgPages, ...platformPages];
   },
 };
 
@@ -781,29 +782,29 @@ export const mutations = {
   setZoneRole(state, { data, role }) {
     state.zoneRole = role;
     state.zonePermission = data;
-    const { menus, actions } = flat([data || {}]);
-    state.zoneMenus = menus;
+    const { pages, actions } = flat([data || {}]);
+    state.zonePages = pages;
     state.zoneAction = actions;
   },
   setSpaceRole(state, { data, role }) {
     state.spaceRole = role;
     state.spacePermission = data;
-    const { menus, actions } = flat([data || {}]);
-    state.spaceMenus = menus;
+    const { pages, actions } = flat([data || {}]);
+    state.spacePages = pages;
     state.spaceAction = actions;
   },
   setOrgRole(state, { data, role }) {
     state.orgRole = role;
     state.orgPermission = data;
-    const { menus, actions } = flat([data || {}]);
-    state.orgMenus = menus;
+    const { pages, actions } = flat([data || {}]);
+    state.orgPages = pages;
     state.orgAction = actions;
   },
   setPlatformRole(state, { data, role }) {
     state.platformRole = role;
     state.platformPermission = data;
-    const { menus, actions } = flat([data || {}]);
-    state.platformMenus = menus;
+    const { pages, actions } = flat([data || {}]);
+    state.platformPages = pages;
     state.platformAction = actions;
   },
 

@@ -5,7 +5,7 @@
     </div>
     <div class="dao-view-main">
       <x-table
-        :showRefresh="$can('platform.serviceBroker.get', 'platform.serviceBroker')"
+        :showRefresh="$can('platform.serviceBroker.get')"
         :loading="loadings.maps"
         :data="rows"
         :filter-method="filterMethod"

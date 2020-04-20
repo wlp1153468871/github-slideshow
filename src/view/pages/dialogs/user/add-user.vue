@@ -7,7 +7,9 @@
   >
     <dao-setting-section>
       <dao-setting-item>
-        <template #label>用户信息</template>
+        <template #label
+          >用户信息</template
+        >
         <template #content>
           <template v-if="!isUpdate">
             <dao-select
@@ -38,7 +40,9 @@
     </dao-setting-section>
     <dao-setting-section>
       <dao-setting-item>
-        <template #label>项目组权限</template>
+        <template #label
+          >项目组权限</template
+        >
         <template #content>
           <dao-select
             placeholder="请选择"
@@ -59,7 +63,7 @@
       <template>
         <el-alert
           style="margin-top: 12px;"
-          v-if="model.username === userName && spaceMenus.some(m => m === 'space.manage')"
+          v-if="model.username === userName && spacePages.some(m => m === 'space.manage')"
           title="请注意！您是项目组管理员，请谨慎操作防止降级。"
           type="warning"
           show-icon
@@ -69,7 +73,9 @@
     </dao-setting-section>
     <dao-setting-section>
       <dao-setting-item>
-        <template #label>可用区权限</template>
+        <template #label
+          >可用区权限</template
+        >
         <template #content>
           <div class="dao-setting-patch role">
             <div class="sub-setting-layout role" v-for="(zone, index) in zones" :key="index">
@@ -154,7 +160,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['org', 'spaceMenus']),
+    ...mapState(['org', 'spacePages']),
     ...mapGetters(['userName']),
     isShow: {
       set() {

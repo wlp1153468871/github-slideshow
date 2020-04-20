@@ -48,7 +48,7 @@
     </dao-setting-section>
     <div slot="footer">
       <button
-        v-if="$can('platform.organization.update', 'platform.organization')"
+        v-if="$can('platform.organization.update')"
         class="dao-btn blue"
         :disabled="!isValidForm"
         @click="save()"

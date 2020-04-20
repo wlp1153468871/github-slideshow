@@ -15,7 +15,7 @@
             <dao-dropdown
               trigger="click"
               :append-to-body="true"
-              v-if="$can('serviceInstance.create', 'serviceInstance')"
+              v-if="$can('serviceInstance.create')"
               placement="bottom-start"
             >
               <save-button

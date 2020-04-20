@@ -7,7 +7,7 @@
       <div class="dao-view-content">
         <!-- 用户列表 -->
         <x-table
-          :showRefresh="$can('platform.user.get', 'platform.user')"
+          :showRefresh="$can('platform.user.get')"
           :loading="loadings.users"
           :data="rows"
           @refresh="loadUsers"
@@ -17,7 +17,7 @@
           <template #operation>
             <button
               class="dao-btn has-icon blue"
-              v-if="$can('platform.user.create', 'platform.user')"
+              v-if="$can('platform.user.create')"
               @click="openCreateUserDialog()"
             >
               <svg class="icon">
@@ -67,10 +67,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            v-if="
-              $can('platform.user.update', 'platform.user') ||
-                $can('platform.user.freeze', 'platform.user')
-            "
+            v-if="$can('platform.user.update') || $can('platform.user.freeze')"
             fixed="right"
             label=""
             align="center"
@@ -86,7 +83,7 @@
                 </span>
 
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-if="$can('platform.user.update', 'platform.user')">
+                  <el-dropdown-item v-if="$can('platform.user.update')">
                     <el-tooltip
                       :disabled="!(user.username === userName && isPlatformAdmin)"
                       class="item"
@@ -104,9 +101,7 @@
                       </div>
                     </el-tooltip>
                   </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="user.is_frozen && $can('platform.user.freeze', 'platform.user')"
-                  >
+                  <el-dropdown-item v-if="user.is_frozen && $can('platform.user.freeze')">
                     <el-tooltip
                       :disabled="!(user.username === userName && isPlatformAdmin)"
                       class="item"
@@ -124,9 +119,7 @@
                       </div>
                     </el-tooltip>
                   </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="!user.is_frozen && $can('platform.user.freeze', 'platform.user')"
-                  >
+                  <el-dropdown-item v-if="!user.is_frozen && $can('platform.user.freeze')">
                     <el-tooltip
                       :disabled="!(user.username === userName && isPlatformAdmin)"
                       class="item"
