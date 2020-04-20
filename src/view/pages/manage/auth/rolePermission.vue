@@ -54,11 +54,14 @@
             check-strictly
             highlight-current
             default-expand-all
-            :show-checkbox="!isPreset"
+            :show-checkbox="true"
             node-key="featureCode"
             :expand-on-click-node="false"
             :data="treeData.children"
             :props="{
+              disabled: () => {
+                return isPreset ? true : false;
+              },
               children: 'children',
               label: 'name',
             }"
