@@ -368,7 +368,7 @@ export default {
                   };
                   ids.push(nameObj.id);
                 } else {
-                  nameObj = { id: name, name, children: [] };
+                  nameObj = { id: `${name}-${org.id}-${k}`, name, children: [] };
                   ids.push(nameObj.id);
                 }
                 curChildren.push(nameObj);
