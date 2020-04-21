@@ -8,10 +8,22 @@
     </div>
 
     <el-tabs v-model="tab">
-      <el-tab-pane :label="SIDE_BAR.TEAM" :name="SIDE_BAR.TEAM">
+      <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
+        <overview-panel :org-id="orgId" :org="org" :users="users" @save="updateOrg">
+        </overview-panel>
+      </el-tab-pane>
+      <el-tab-pane
+        v-if="$can('platform.organization.space')"
+        :label="SIDE_BAR.TEAM"
+        :name="SIDE_BAR.TEAM"
+      >
         <space-panel :org-id="orgId"> </space-panel>
       </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.USER" :name="SIDE_BAR.USER">
+      <el-tab-pane
+        v-if="$can('platform.organization.user')"
+        :label="SIDE_BAR.USER"
+        :name="SIDE_BAR.USER"
+      >
         <user-panel
           :users="users"
           :org-id="orgId"
@@ -22,10 +34,18 @@
         >
         </user-panel>
       </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.QUOTA" :name="SIDE_BAR.QUOTA">
+      <el-tab-pane
+        v-if="$can('platform.organization.quota')"
+        :label="SIDE_BAR.QUOTA"
+        :name="SIDE_BAR.QUOTA"
+      >
         <org-quota-panel :tab="tab" :defautlTab="SIDE_BAR.QUOTA"> </org-quota-panel>
       </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.QUOTA_APPROVAL" :name="SIDE_BAR.QUOTA_APPROVAL">
+      <el-tab-pane
+        v-if="$can('platform.organization.approval')"
+        :label="SIDE_BAR.QUOTA_APPROVAL"
+        :name="SIDE_BAR.QUOTA_APPROVAL"
+      >
         <org-quota-approval-panel
           :tab="tab"
           :defautlTab="SIDE_BAR.QUOTA_APPROVAL"
@@ -33,15 +53,20 @@
         >
         </org-quota-approval-panel>
       </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.ZONE" :name="SIDE_BAR.ZONE">
+      <el-tab-pane
+        v-if="$can('platform.organization.zone')"
+        :label="SIDE_BAR.ZONE"
+        :name="SIDE_BAR.ZONE"
+      >
         <zone-panel :org-id="orgId"> </zone-panel>
       </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.REGISTRY" :name="SIDE_BAR.REGISTRY" :lazy="true">
+      <el-tab-pane
+        v-if="$can('platform.organization.imageRepository')"
+        :label="SIDE_BAR.REGISTRY"
+        :name="SIDE_BAR.REGISTRY"
+        :lazy="true"
+      >
         <registry-panel :org-id="orgId"></registry-panel>
-      </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
-        <overview-panel :org-id="orgId" :org="org" :users="users" @save="updateOrg">
-        </overview-panel>
       </el-tab-pane>
     </el-tabs>
   </div>
