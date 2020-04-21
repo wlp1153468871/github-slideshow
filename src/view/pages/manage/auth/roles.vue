@@ -136,7 +136,7 @@ export default {
     },
 
     onUpdateSuccess() {
-      this.onUpdateClose();
+      // this.onUpdateClose();
       this.listRoles();
     },
 
