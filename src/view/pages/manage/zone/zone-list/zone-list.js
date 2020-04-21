@@ -74,10 +74,17 @@ export default {
         })
         .then(willAgree => {
           if (willAgree) {
-            this.updateZone(zone.id, {
+            ZoneService.updateZone(zone.id, {
               ...zone,
               available: true,
-            });
+            })
+              .then(() => {
+                this.loadZones();
+                this.$noty.success('操作成功');
+              })
+              .catch(() => {
+                this.$noty.error('操作失败');
+              });
           }
         });
     },
@@ -92,10 +99,17 @@ export default {
         })
         .then(willAgree => {
           if (willAgree) {
-            this.updateZone(zone.id, {
+            ZoneService.updateZone(zone.id, {
               ...zone,
               available: false,
-            });
+            })
+              .then(() => {
+                this.loadZones();
+                this.$noty.success('操作成功');
+              })
+              .catch(() => {
+                this.$noty.error('操作失败');
+              });
           }
         });
     },
