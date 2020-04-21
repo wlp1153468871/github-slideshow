@@ -87,7 +87,7 @@ export default {
     if (/^20\d/.test(res.status)) {
       if (res.headers.authorizationresult) {
         console.error(res.headers.authorizationresult);
-        console.error(res.request.responseURL);
+        console.error(res.config.method, res.request.responseURL);
         notifyErrorResponse({}, '后端无权限, 请联系管理员');
       }
       return res.data;
