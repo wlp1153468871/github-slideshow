@@ -70,7 +70,10 @@
               <!-- 资源 子菜单 -->
               <template v-for="resource in apiResource">
                 <el-menu-item
-                  v-if="item.meta.code === 'resource' && !hiddenMenu({ meta: resource.kind })"
+                  v-if="
+                    item.meta.code === 'resource' &&
+                      pages.some(m => m === resource.kind.toLowerCase())
+                  "
                   :key="resource.name"
                   :index="resource.route.name"
                   :route="resource.route"
