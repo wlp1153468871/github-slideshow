@@ -60,7 +60,7 @@
             :data="treeData.children"
             :props="{
               disabled: () => {
-                return isPreset ? true : false;
+                return isDisabled ? true : false;
               },
               children: 'children',
               label: 'name',
@@ -72,6 +72,7 @@
         </div>
         <div class="actions">
           <el-checkbox
+            :disabled="isDisabled"
             :indeterminate="isIndeterminate"
             v-model="checkAll"
             v-if="!isPreset && actions.length"
@@ -93,7 +94,7 @@
             <div class="m-xs" v-for="action in actions" :key="action.featureCode">
               <el-checkbox
                 border
-                :disabled="isPreset"
+                :disabled="isDisabled"
                 v-model="action.access"
                 :label="action.name"
                 @change="handleCheckedActionsChange"
@@ -171,6 +172,9 @@ export default {
   computed: {
     isPreset() {
       return this.role.preset;
+    },
+    isDisabled() {
+      return this.isPreset || !this.$can('platform.rolePermission.update');
     },
   },
 
