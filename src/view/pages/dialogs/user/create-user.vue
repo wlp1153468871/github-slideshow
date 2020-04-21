@@ -65,7 +65,7 @@
     </dao-setting-section>
     <dao-setting-section>
       <dao-setting-item>
-        <div slot="label">权限</div>
+        <div slot="label">平台权限</div>
         <div slot="content">
           <dao-select v-model="role" placeholder="请选择">
             <!-- <dao-option
