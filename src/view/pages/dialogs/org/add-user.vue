@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { first } from 'lodash';
+import { first, isEmpty } from 'lodash';
 import dialog from '@/view/mixins/dialog';
 
 export default {
@@ -75,7 +75,7 @@ export default {
       }));
     },
     isValidForm() {
-      return this.userId !== '' && this.role !== '';
+      return this.userId !== '' && !isEmpty(this.role);
     },
   },
 
