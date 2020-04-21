@@ -216,8 +216,8 @@ export default {
           id: 'name',
           name: '服务名称',
           value: 'name',
-          type: 'goto',
-          other: { onClick },
+          // type: 'goto',
+          // other: { onClick },
         },
         {
           id: 'planCount',
