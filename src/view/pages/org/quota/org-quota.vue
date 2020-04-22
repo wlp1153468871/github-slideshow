@@ -1,18 +1,23 @@
 <template>
   <div class="org-quota">
-    <div class="dao-view-main">
+    <div class="dao-view-main" v-if="$can('organization.quota.get')">
       <div class="dao-view-content">
         <div class="quota-section">
           <h4 class="quota-section-head">{{ orgDescription }}总配额</h4>
           <quota-cards
-            v-if="$can('organization.quota.get')"
+            :showRefresh="$can('organization.quota.approval.create')"
             :hard="OrgQuota.hard"
             :sub-hard="OrgQuota.subHard"
             :scope="`${orgDescription}配额`"
             :sub-scope="`${spaceDescription}配额总和`"
             @refresh="getOrgAndSpaceQuotas"
           >
-            <button class="dao-btn blue" slot="action" @click="applyDialog.visible = true">
+            <button
+              v-if="$can('organization.quota.approval.createorganization.space.quota.update')"
+              class="dao-btn blue"
+              slot="action"
+              @click="applyDialog.visible = true"
+            >
               申请{{ orgDescription }}配额
             </button>
           </quota-cards>
