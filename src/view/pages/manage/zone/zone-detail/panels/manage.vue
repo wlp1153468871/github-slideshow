@@ -15,7 +15,7 @@
       <div class="panel-manage" v-if="zone.syncStatus === SYNC_STATUS.SYNCED">
         <div class="panel-manage-header" ref="panelHeader" :class="{ active: headerActive }">
           <button
-            v-if="$can('platform.zone.create')"
+            v-if="$can('platform.serviceBroker.create')"
             class="dao-btn blue has-icon"
             @click="addBroker"
           >

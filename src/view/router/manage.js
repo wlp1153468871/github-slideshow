@@ -99,6 +99,7 @@ export default [
           icon: '#icon_users',
           title: '用户管理',
           code: 'platform.user',
+          hidden: false,
         },
       },
       {
@@ -117,6 +118,7 @@ export default [
             scope: 'platform',
           },
           activeMenu: 'manage.auth',
+          hidden: false,
         },
         children: [
           {
@@ -135,7 +137,7 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceBroker;platform.zone;platform.alert',
+      code: 'platform.serviceInstance;platform.zone;platform.alert',
       type: 'submenu',
     },
     children: [
@@ -146,7 +148,8 @@ export default [
         meta: {
           icon: '#icon_stack-alt',
           title: '服务管理',
-          code: 'platform.serviceBroker',
+          code: 'platform.serviceInstance',
+          hidden: false,
         },
       },
       {
@@ -166,6 +169,7 @@ export default [
           icon: '#icon_globe-alt',
           title: '可用区设置',
           code: 'platform.zone',
+          hidden: false,
         },
       },
       {
@@ -185,6 +189,7 @@ export default [
           icon: '#icon_bell',
           title: '告警指标',
           code: 'platform.alert',
+          hidden: false,
         },
       },
     ],
