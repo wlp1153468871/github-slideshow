@@ -12,11 +12,24 @@
           ]"
         >
         </breadcrumb>
-        <div class="header-btn-group">
-          <button class="dao-btn blue" :disabled="serviceAvailable" @click="confirmStackService()">
+        <div class="header-btn-group" v-if="$can('platform.serviceBroker.delete')">
+          <button
+            v-if="serviceAvailable"
+            class="dao-btn blue"
+            :disabled="serviceUnavailable"
+            @click="confirmUnStackService()"
+          >
+            立即下架
+          </button>
+          <button
+            v-else
+            class="dao-btn blue"
+            :disabled="serviceAvailable"
+            @click="confirmStackService()"
+          >
             立即上架
           </button>
-          <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
+          <!-- <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
             <button class="dao-btn has-icon">
               <span class="text">操作</span>
               <svg class="icon">
@@ -28,7 +41,7 @@
                 <span>立即下架</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
-          </dao-dropdown>
+          </dao-dropdown> -->
         </div>
       </div>
       <div class="header-content-status">

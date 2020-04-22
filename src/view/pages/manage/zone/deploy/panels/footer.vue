@@ -2,7 +2,12 @@
   <div class="checkout-module-footer">
     <div class="container checkout-select">
       <div class="step-btns" v-if="step === steps.CONFIG">
-        <button title="下一步:参数设置" class="dao-btn blue" @click="$emit('next', step)">
+        <button
+          v-if="$can('platform.zone.update')"
+          title="下一步:参数设置"
+          class="dao-btn blue"
+          @click="$emit('next', step)"
+        >
           下一步:确认{{ operationLabel }}
         </button>
       </div>

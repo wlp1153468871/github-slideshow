@@ -78,16 +78,16 @@
 
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-if="$can('platform.zone.update')" command="edit">
-                  基础设置
+                  修改可用区
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-if="!zone.available && $can('platform.zone.update')"
+                  v-if="!zone.available && $can('platform.zone.hide')"
                   command="enable"
                 >
                   显示
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-if="zone.available && $can('platform.zone.update')"
+                  v-if="zone.available && $can('platform.zone.hide')"
                   command="disable"
                 >
                   隐藏
