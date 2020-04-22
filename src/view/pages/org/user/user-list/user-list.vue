@@ -3,7 +3,7 @@
     <div class="row">
       <org-user-list
         :canView="$can('organization.user.get')"
-        :canDelete="$can('organization.user.create')"
+        :canDelete="$can('organization.user.delete')"
         :canCreat="$can('organization.user.create')"
         :canUpdate="$can('organization.user.update')"
         :org-id="org.id"
