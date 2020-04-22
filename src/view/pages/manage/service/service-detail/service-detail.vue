@@ -12,7 +12,7 @@
           ]"
         >
         </breadcrumb>
-        <div class="header-btn-group" v-if="$can('platform.serviceBroker.delete')">
+        <div class="header-btn-group" v-if="$can('platform.serviceInstance.delete')">
           <button
             v-if="serviceAvailable"
             class="dao-btn blue"
