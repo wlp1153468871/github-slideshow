@@ -60,7 +60,7 @@ export default {
 
   methods: {
     loadZones() {
-      ZoneService.getOrgZones(this.$route.params.org).then(zones => {
+      ZoneService.getAvailableZones().then(zones => {
         this.zones = differenceBy(zones, this.zoneList, 'id');
         this.loading = false;
       });
