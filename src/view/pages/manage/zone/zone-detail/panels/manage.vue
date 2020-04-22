@@ -204,20 +204,20 @@ export default {
       this.setTableConfig({
         hideToolbar: true,
       });
-      const onClick = service => {
-        this.$router.push({
-          name: 'manage.broker-service.detail',
-          params: { service: service.id },
-        });
-      };
+      // const onClick = service => {
+      //   this.$router.push({
+      //     name: 'manage.broker-service.detail',
+      //     params: { service: service.id },
+      //   });
+      // };
 
       this.setTableProps([
         {
           id: 'name',
           name: '服务名称',
           value: 'name',
-          type: 'goto',
-          other: { onClick },
+          // type: 'goto',
+          // other: { onClick },
         },
         {
           id: 'planCount',

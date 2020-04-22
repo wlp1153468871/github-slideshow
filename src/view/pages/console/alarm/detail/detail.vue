@@ -4,7 +4,12 @@
     <template>
       <resource-header :resource="resource">
         <template #action-buttons>
-          <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
+          <dao-dropdown
+            v-if="$can('space.alert.delete') || $can('space.alert.update')"
+            trigger="click"
+            :append-to-body="true"
+            placement="bottom-end"
+          >
             <button class="dao-btn ghost has-icon">
               操作
               <svg class="icon">
@@ -13,7 +18,7 @@
             </button>
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
-                v-if="$can('space.alert.delete', 'space.alert')"
+                v-if="$can('space.alert.delete')"
                 id="remove"
                 @click="onRemove"
                 :disabled="loadings.submitRemove"
@@ -22,7 +27,7 @@
                 <span>删除</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('space.alert.update', 'space.alert')"
+                v-if="$can('space.alert.update')"
                 @click="onConfirm"
                 :disabled="loadings.submitUpdate"
               >
@@ -34,7 +39,7 @@
       </resource-header>
       <div class="btn-group">
         <button
-          v-if="$can('space.alert.update', 'space.alert')"
+          v-if="$can('space.alert.update')"
           class="dao-btn has-icon blue"
           id="confirmed"
           @click="onConfirm"
@@ -52,7 +57,7 @@
             <div class="card-header">
               <span>规则详情</span>
               <button
-                v-if="$can('space.alert.update', 'space.alert')"
+                v-if="$can('space.alert.update')"
                 class="dao-btn mini blue"
                 type="text"
                 @click="onClickDetail"
@@ -160,7 +165,7 @@
             <div class="card-header">
               <span>作用范围</span>
               <button
-                v-if="$can('space.alert.update', 'space.alert')"
+                v-if="$can('space.alert.update')"
                 class="dao-btn mini blue"
                 type="text"
                 @click="onClickScope"
@@ -224,7 +229,7 @@
             <div class="card-header">
               <span>收件人</span>
               <button
-                v-if="$can('space.alert.update', 'space.alert')"
+                v-if="$can('space.alert.update')"
                 class="dao-btn mini blue"
                 @click="onClickEmail"
                 v-show="!email.changeView"

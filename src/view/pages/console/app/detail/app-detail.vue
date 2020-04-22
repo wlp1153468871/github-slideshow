@@ -6,7 +6,7 @@
         <template #action-buttons>
           <div class="header-btn-group">
             <save-button
-              v-if="$can('serviceInstance.update', 'serviceInstance')"
+              v-if="$can('serviceInstance.update')"
               :saving="loadings.updateByYaml"
               @click="toggleYamlDialog"
               text="编辑 YAML"
@@ -110,7 +110,7 @@
         <!-- 设置 -->
         <el-tab-pane
           :label="TABS.PARAMETER"
-          v-if="$can('serviceInstance.delete', 'serviceInstance')"
+          v-if="$can('serviceInstance.delete')"
           name="TABS.PARAMETER"
         >
           <parameter-panel :instance="instance"> </parameter-panel>

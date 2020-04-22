@@ -104,7 +104,7 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button class="dao-btn ghost" @click="onClose">
+      <button class="dao-btn ghost" @click="onClose(false)">
         取消
       </button>
       <button class="dao-btn blue" :disabled="formInvalidate" @click="onConfirm">

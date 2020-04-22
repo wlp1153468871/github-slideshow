@@ -14,7 +14,9 @@
                   :key="selectorLabel"
                 >
                   {{ selectorLabel }}={{ selectorValue }}
-                  <template v-if="index !== size(service.spec.selector.length)">,&nbsp;</template>
+                  <template v-if="index !== size(service.spec.selector.length)"
+                    >,&nbsp;</template
+                  >
                 </span>
               </dd>
             </div>
@@ -68,7 +70,7 @@
               <dt>Routes:</dt>
               <dd>
                 <router-link
-                  v-if="$can('service.create', 'service')"
+                  v-if="$can('service.create')"
                   :to="{ name: 'deploy.routes', query: { service: service.metadata.name } }"
                 >
                   创建 Route

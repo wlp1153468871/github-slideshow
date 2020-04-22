@@ -18,7 +18,7 @@
                 <dt>实例数:</dt>
                 <dd>
                   <inline-extend
-                    :updateable="$can('statefulSet.update', 'statefulSet')"
+                    :updateable="$can('statefulSet.update')"
                     :data="statefulset"
                     @extend="replicas => $emit('extend', replicas)"
                   ></inline-extend>
@@ -57,7 +57,7 @@
           <volumes
             v-if="
               statefulset.spec.template.spec.volumes &&
-              statefulset.spec.template.spec.volumes.length
+                statefulset.spec.template.spec.volumes.length
             "
             :volumes="statefulset.spec.template.spec.volumes"
           ></volumes>
