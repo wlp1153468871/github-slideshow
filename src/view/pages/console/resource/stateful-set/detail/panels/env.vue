@@ -2,7 +2,7 @@
   <env-editor
     :initEnvs="ssEnv"
     :secrets="secrets"
-    :editable="$can('statefulSet.update', 'statefulSet')"
+    :editable="$can('statefulSet.update')"
     @envUpdate="onEnvUpdate"
     :configMaps="configMaps"
   ></env-editor>

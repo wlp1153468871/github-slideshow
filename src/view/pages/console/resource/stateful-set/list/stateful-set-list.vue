@@ -9,7 +9,7 @@
             <div class="table-toolbar-left">
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('statefulSet.create', 'statefulSet')"
+                v-if="$can('statefulSet.create')"
                 @click="dialog.isOpen = true"
               >
                 <svg class="icon">
@@ -60,7 +60,7 @@
               <template slot-scope="{ row: statefulSet }">
                 {{
                   statefulSet.status &&
-                  statefulSet.status.replicas + '/' + statefulSet.spec.replicas + ' replicas'
+                    statefulSet.status.replicas + '/' + statefulSet.spec.replicas + ' replicas'
                 }}
               </template>
             </el-table-column>
