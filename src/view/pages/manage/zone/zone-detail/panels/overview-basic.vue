@@ -236,7 +236,12 @@
       </dao-setting-section>
     </dao-setting-layout>
 
-    <button style="margin-top: 20px;" class="dao-btn blue has-icon pull-right" @click="updateZone">
+    <button
+      v-if="$can('platform.zone.update')"
+      style="margin-top: 20px;"
+      class="dao-btn blue has-icon pull-right"
+      @click="updateZone"
+    >
       <svg class="icon">
         <use xlink:href="#icon_pencil-edit"></use>
       </svg>

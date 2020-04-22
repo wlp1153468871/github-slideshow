@@ -7,7 +7,11 @@
           <p class="delete-notice">
             同步可用区需要谨慎操作，这是一个不可逆的操作。
           </p>
-          <button @click="$emit('syncService', 'catalog')" class="dao-btn blue">
+          <button
+            v-if="$can('platform.zone.sync')"
+            @click="$emit('syncService', 'catalog')"
+            class="dao-btn blue"
+          >
             同步
           </button>
         </div>

@@ -114,7 +114,12 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button class="dao-btn blue" :disabled="!isValidForm" @click="onUpdate">
+      <button
+        v-if="$can('platform.serviceBroker.update')"
+        class="dao-btn blue"
+        :disabled="!isValidForm"
+        @click="onUpdate"
+      >
         保存
       </button>
     </div>
