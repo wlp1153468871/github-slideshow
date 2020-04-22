@@ -44,6 +44,12 @@
             </dao-input>
           </div>
         </dao-setting-item>
+        <dao-setting-item v-if="isShowNote">
+          <div slot="content">
+            <el-alert title="项目组部分权限需要相应可用区权限支持" type="warning" show-icon>
+            </el-alert>
+          </div>
+        </dao-setting-item>
       </dao-setting-section>
 
       <div class="auth-content">
@@ -175,6 +181,9 @@ export default {
     },
     isDisabled() {
       return this.isPreset || !this.$can('platform.rolePermission.update');
+    },
+    isShowNote() {
+      return this.$route.params.scope === 'space';
     },
   },
 
