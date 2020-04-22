@@ -12,7 +12,7 @@
 
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('service.update', 'service') || $can('service.delete', 'service')"
+            v-if="$can('service.update') || $can('service.delete')"
             trigger="click"
             :append-to-body="true"
             placement="bottom-end"
@@ -25,11 +25,11 @@
             </button>
 
             <dao-dropdown-menu slot="list">
-              <dao-dropdown-item v-if="$can('service.update', 'service')" @click="openUpdateDialog">
+              <dao-dropdown-item v-if="$can('service.update')" @click="openUpdateDialog">
                 <span>更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('service.delete', 'service')"
+                v-if="$can('service.delete')"
                 @click="ensureRemove"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >

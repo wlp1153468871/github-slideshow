@@ -16,7 +16,7 @@
         <button
           class="dao-btn blue has-icon add-rules"
           @click.prevent="onAddRules"
-          v-if="$can('space.alert.create', 'space.alert')"
+          v-if="$can('space.alert.create')"
         >
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>

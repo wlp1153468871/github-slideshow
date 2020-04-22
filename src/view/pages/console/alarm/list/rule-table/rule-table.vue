@@ -36,7 +36,7 @@
       <el-table-column show-overflow-tooltip prop="description" label="告警内容" v-slot="{ row }">
         <span>{{ row.description || '_' }}</span>
       </el-table-column>
-      <el-table-column label="操作" v-slot="{ row }">
+      <el-table-column label="操作" v-slot="{ row }" v-if="$can('space.alert.delete')">
         <span class="action">
           <dao-dropdown trigger="click" placement="bottom-end">
             <slot>
@@ -45,11 +45,7 @@
               </svg>
             </slot>
             <dao-dropdown-menu slot="list">
-              <dao-dropdown-item
-                v-if="$can('space.alert.delete', 'space.alert')"
-                @click="onClickRemove(row)"
-                >删除</dao-dropdown-item
-              >
+              <dao-dropdown-item @click="onClickRemove(row)">删除</dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>
         </span>
