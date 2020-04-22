@@ -6,7 +6,7 @@ export default {
   name: 'ServiceList',
   created() {
     // 有权限查看 无权限提示
-    if (this.$can('platform.serviceBroker.get')) {
+    if (this.$can('platform.serviceInstance.get')) {
       this.loadService();
     } else {
       this.$noty.error('您暂无服务列表查看权限');

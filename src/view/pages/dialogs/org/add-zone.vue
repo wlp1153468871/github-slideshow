@@ -52,6 +52,7 @@ export default {
 
   data() {
     return {
+      orgId: '',
       zones: [],
       zoneIds: [],
       loading: false,
@@ -60,7 +61,7 @@ export default {
 
   methods: {
     loadZones() {
-      ZoneService.getOrgZones(this.$route.params.org).then(zones => {
+      ZoneService.getAvailableZones(this.orgId).then(zones => {
         this.zones = differenceBy(zones, this.zoneList, 'id');
         this.loading = false;
       });
@@ -78,6 +79,8 @@ export default {
     },
 
     bopen() {
+      const { org } = this.$route.params;
+      this.orgId = org;
       this.loadZones();
       setTimeout(() => {
         // this.$refs.select1.initialInputHeight = 32;

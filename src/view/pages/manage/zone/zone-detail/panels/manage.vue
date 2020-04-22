@@ -14,7 +14,11 @@
 
       <div class="panel-manage" v-if="zone.syncStatus === SYNC_STATUS.SYNCED">
         <div class="panel-manage-header" ref="panelHeader" :class="{ active: headerActive }">
-          <button class="dao-btn blue has-icon" @click="addBroker">
+          <button
+            v-if="$can('platform.serviceBroker.create')"
+            class="dao-btn blue has-icon"
+            @click="addBroker"
+          >
             <svg class="icon">
               <use xlink:href="#icon_plus-circled"></use>
             </svg>
@@ -41,7 +45,12 @@
               <div class="card-broker-title">
                 <div class="title-desc">
                   <p>{{ broker.name }}</p>
-                  <dao-dropdown trigger="hover" :append-to-body="false" placement="bottom-start">
+                  <dao-dropdown
+                    trigger="hover"
+                    :append-to-body="false"
+                    placement="bottom-start"
+                    v-if="$can('platform.zone.delete')"
+                  >
                     <svg class="icon icon-more">
                       <use xlink:href="#icon_more"></use>
                     </svg>
@@ -73,6 +82,7 @@
       <dao-panel size="l" :visible.sync="panelVisible">
         <dao-panel-item heading="Broker 详情">
           <button
+            v-if="$can('platform.zone.sync')"
             style="margin-bottom: 15px;"
             class="dao-btn blue"
             @click="$emit('syncService', 'broker')"
