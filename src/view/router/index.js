@@ -111,9 +111,9 @@ const router = new Router({
           }
         });
       },
-      redirect: {
-        name: 'manage.org.list',
-      },
+      // redirect: {
+      //   name: 'manage.org.list',
+      // },
       component: ManageContainer,
       children: ManageRouters,
     },

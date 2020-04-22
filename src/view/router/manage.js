@@ -54,6 +54,7 @@ export default [
     name: 'account-permissions',
     component: RouteView,
     meta: {
+      hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
       code: 'platform.organization;platform.user;platform.rolePermission',
@@ -68,6 +69,7 @@ export default [
           icon: '#icon_users',
           title: '组织管理',
           code: 'platform.organization',
+          hidden: false,
         },
         children: [],
       },
@@ -125,6 +127,9 @@ export default [
             path: ':scope',
             name: 'manage.auth.roles',
             component: AuthRoles,
+            meta: {
+              hidden: false,
+            },
           },
         ],
       },
