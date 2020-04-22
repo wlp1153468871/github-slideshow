@@ -56,6 +56,7 @@ export default {
       // TODO(jerry) this part will update;
       return (
         !this.$route.path.startsWith('/manage/') &&
+        !this.$route.path.startsWith('/seeting/') &&
         !this.$route.path.startsWith('/console/deploy/') &&
         !this.$route.path.startsWith('/product/checkout/')
       );
