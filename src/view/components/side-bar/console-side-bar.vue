@@ -52,7 +52,10 @@
                 </svg>
                 <span>{{ item.meta.title }}</span>
               </template>
-              <template v-for="(menuItem, index) in item.children">
+              <template
+                v-if="item.meta.code !== 'resource'"
+                v-for="(menuItem, index) in item.children"
+              >
                 <el-menu-item
                   :key="index"
                   :route="{ name: menuItem.name }"
@@ -68,8 +71,27 @@
                 </el-menu-item>
               </template>
               <!-- 资源 子菜单 -->
-              <template v-for="resource in apiResource">
+              <template
+                v-if="item.meta.code === 'resource'"
+                v-for="(menuItem, index) in item.children"
+              >
                 <el-menu-item
+                  :key="index"
+                  :route="{ name: menuItem.name }"
+                  :index="menuItem.name"
+                  v-if="
+                    !hiddenMenu(menuItem) &&
+                      Object.keys(apiResource).some(a => a === menuItem.meta.resourceName)
+                  "
+                >
+                  <svg class="icon">
+                    <use :xlink:href="menuItem.meta.icon"></use>
+                  </svg>
+                  <span>
+                    <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
+                  </span>
+                </el-menu-item>
+                <!-- <el-menu-item
                   v-if="
                     item.meta.code === 'resource' &&
                       pages.some(m => m === resource.kind.toLowerCase())
@@ -82,7 +104,7 @@
                     <use :xlink:href="resource.icon"></use>
                   </svg>
                   <overflow-tooltip slot="title" :text="resource.kind"> </overflow-tooltip>
-                </el-menu-item>
+                </el-menu-item> -->
               </template>
               <!-- <template v-for="menu in apiResource">
                 <el-menu-item
