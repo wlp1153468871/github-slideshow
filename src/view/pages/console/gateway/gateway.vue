@@ -45,7 +45,7 @@ export default {
     getActiveMenu(menus, result = []) {
       // TODO:服务根据后端数据渲染 无服务id 无法跳转到服务页面
       menus
-        .filter(menu => !menu.meta.hidden || menu.meta.isExempt)
+        .filter(menu => !menu.meta.hidden || menu.meta.resourceName)
         .forEach(menu => {
           const codes = menu.meta.code.split(';');
           if (this.pages.some(m => codes.some(c => c === m))) {
