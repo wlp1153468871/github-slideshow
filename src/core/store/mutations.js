@@ -382,7 +382,7 @@ export const actions = {
       });
   },
 
-  initConsoleView({ dispatch, state }) {
+  initConsoleView({ dispatch }) {
     return dispatch('loadOrgsAndSpaces')
       .then(() => {
         return dispatch('loadZones');

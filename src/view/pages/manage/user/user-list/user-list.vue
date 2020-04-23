@@ -84,22 +84,7 @@
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item v-if="$can('platform.user.update')">
-                    <el-tooltip
-                      :disabled="!(user.username === userName && isPlatformAdmin)"
-                      class="item"
-                      effect="dark"
-                      content="无法对自己操作"
-                      placement="top"
-                    >
-                      <div>
-                        <el-button
-                          @click="updateUserDialog(user)"
-                          :disabled="user.username === userName && isPlatformAdmin"
-                          type="text"
-                          >修改权限</el-button
-                        >
-                      </div>
-                    </el-tooltip>
+                    <el-button @click="updateUserDialog(user)" type="text">修改权限</el-button>
                   </el-dropdown-item>
                   <el-dropdown-item v-if="user.is_frozen && $can('platform.user.freeze')">
                     <el-tooltip
