@@ -48,11 +48,11 @@ export default {
 
   props: {
     zoneList: { type: Array, default: () => [] },
+    orgId: { type: String, default: () => '' },
   },
 
   data() {
     return {
-      orgId: '',
       zones: [],
       zoneIds: [],
       loading: false,
@@ -79,8 +79,6 @@ export default {
     },
 
     bopen() {
-      const { org } = this.$route.params;
-      this.orgId = org;
       this.loadZones();
       setTimeout(() => {
         // this.$refs.select1.initialInputHeight = 32;
