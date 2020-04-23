@@ -90,6 +90,7 @@ export default [
       title: '总览',
       icon: '#icon_microsoft',
       code: 'space.overview',
+      hidden: false,
     },
   },
   {
@@ -100,6 +101,7 @@ export default [
       title: '应用',
       icon: '#icon_application',
       code: 'serviceInstance',
+      hidden: false,
     },
   },
   /**
@@ -121,6 +123,7 @@ export default [
       title: '资源',
       icon: '#icon_resource',
       code: 'resource',
+      hidden: false,
     },
     children: [
       {
@@ -132,6 +135,7 @@ export default [
           hidden: true,
           icon: '#icon_deployments',
           code: 'deployment',
+          isExempt: true,
         },
       },
       {
@@ -153,6 +157,7 @@ export default [
           hidden: true,
           code: 'deploymentConfig',
           icon: '#icon_deploymentconfigs',
+          isExempt: true,
         },
       },
       {
@@ -174,6 +179,7 @@ export default [
           hidden: true,
           icon: '#icon_statefulsets',
           code: 'statefulSet',
+          isExempt: true,
         },
       },
       {
@@ -195,6 +201,7 @@ export default [
           title: 'Pods',
           icon: '#icon_pods',
           code: 'pod',
+          isexempt: true,
         },
       },
       {
@@ -216,6 +223,7 @@ export default [
           title: 'Service',
           icon: '#icon_services',
           code: 'service',
+          isExempt: true,
         },
       },
       {
@@ -237,6 +245,7 @@ export default [
           title: 'Route',
           icon: '#icon_routes',
           code: 'route',
+          isExempt: true,
         },
       },
       {
@@ -258,6 +267,7 @@ export default [
           title: 'Ingress',
           icon: '#icon_ingresses',
           code: 'ingress',
+          isExempt: true,
         },
       },
       {
@@ -280,6 +290,7 @@ export default [
           title: 'ConfigMap',
           icon: '#icon_configmaps',
           code: 'configMap',
+          isExempt: true,
         },
       },
       {
@@ -301,6 +312,7 @@ export default [
           title: 'Secret',
           icon: '#icon_secrets',
           code: 'secret',
+          isExempt: true,
         },
       },
       {
@@ -322,6 +334,7 @@ export default [
           title: 'PersistentVolumeClaim',
           icon: '#icon_persistentvolumeclaims',
           code: 'pvc',
+          isExempt: true,
         },
       },
       {
@@ -344,6 +357,7 @@ export default [
       title: '服务',
       icon: '#icon_service-category',
       code: 'serviceBroker',
+      hidden: false,
     },
     children: [
       {
@@ -375,6 +389,7 @@ export default [
       title: '镜像',
       icon: '#icon_docker-image',
       code: 'space.image',
+      hidden: false,
     },
   },
   {
@@ -395,6 +410,7 @@ export default [
       title: '监控',
       icon: '#icon_monitor',
       code: 'space.monitor',
+      hidden: false,
     },
   },
   {
@@ -405,6 +421,7 @@ export default [
       title: '告警',
       icon: '#icon_bell',
       code: 'space.alert',
+      hidden: false,
     },
   },
   {
@@ -443,6 +460,7 @@ export default [
       title: '审批',
       icon: '#icon_audit',
       code: 'space.approval',
+      hidden: false,
     },
     children: [
       {
@@ -453,6 +471,7 @@ export default [
           title: '审批请求',
           code: 'space.approval.view',
           icon: '#icon_outgoing',
+          hidden: false,
         },
       },
       {
@@ -463,6 +482,7 @@ export default [
           title: '审批记录',
           code: 'space.approval.log',
           icon: '#icon_log',
+          hidden: false,
         },
       },
     ],
@@ -475,6 +495,7 @@ export default [
       title: '配额',
       icon: '#icon_quota',
       code: 'space.quota',
+      hidden: false,
     },
   },
   {
@@ -485,6 +506,7 @@ export default [
       title: '管理',
       icon: '#icon_setting',
       code: 'space.manage;organization.space',
+      hidden: false,
     },
   },
   // deploy

@@ -13,7 +13,7 @@
             @refresh="getOrgAndSpaceQuotas"
           >
             <button
-              v-if="$can('organization.quota.approval.createorganization.space.quota.update')"
+              v-if="$can('organization.space.quota.update')"
               class="dao-btn blue"
               slot="action"
               @click="applyDialog.visible = true"
