@@ -31,7 +31,7 @@ export default {
 
   created() {
     this.loadOrg();
-    this.loadUsersByOrgId();
+    // this.loadUsersByOrgId();
   },
 
   data() {
