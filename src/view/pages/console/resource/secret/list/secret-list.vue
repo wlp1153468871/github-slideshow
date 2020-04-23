@@ -16,7 +16,7 @@
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('secret.create', 'secret')"
+                v-if="$can('secret.create')"
                 @click="createSecret"
               >
                 <svg class="icon">
@@ -71,7 +71,7 @@
                     </el-dropdown-item>
                     <el-dropdown-item
                       class="dropdown-item-error"
-                      v-if="$can('secret.delete', 'secret')"
+                      v-if="$can('secret.delete')"
                       :disabled="disableDelete(secret)"
                       command="delete"
                       icon="el-icon-delete"

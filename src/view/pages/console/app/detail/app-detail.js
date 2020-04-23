@@ -184,7 +184,7 @@ export default {
     },
 
     loadInstanceYAML() {
-      if (this.$can('read', 'Secret')) {
+      if (this.$can('serviceInstance.update')) {
         ApplicationService.getInstanceYaml(this.instanceId).then(yaml => {
           this.yaml = yaml;
         });
