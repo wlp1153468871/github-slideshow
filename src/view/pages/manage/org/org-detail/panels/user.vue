@@ -141,7 +141,6 @@ export default {
         {
           name: '修改权限',
           event: 'update-user-dialog',
-          disabled: this.isManageView ? false : isSelf,
           tooltip: '无法对自己操作',
           visible: this.canUpdate,
         },

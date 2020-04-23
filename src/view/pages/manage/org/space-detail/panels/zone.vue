@@ -12,6 +12,7 @@
     </dao-table-view>
     <!-- dialog start -->
     <add-zone-dialog
+      :orgId="orgId"
       :zone-list="rows"
       @add="addZone"
       :visible="dialogConfigs.addZone.visible"
@@ -48,10 +49,13 @@ export default {
       dialogConfigs: {
         addZone: { visible: false },
       },
+      orgId: '',
     };
   },
 
   created() {
+    const { org } = this.$route.params;
+    this.orgId = org;
     this.initTableView();
     this.loadSpaceZones();
   },

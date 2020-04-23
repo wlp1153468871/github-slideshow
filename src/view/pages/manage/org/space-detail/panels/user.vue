@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
@@ -53,6 +53,7 @@ export default {
   mixins: [userManage],
 
   computed: {
+    ...mapState(['isManageView']),
     ...mapGetters(['userName']),
   },
 
@@ -138,19 +139,16 @@ export default {
           name: '修改用户权限',
           event: 'update-user-dialog',
           // disabled: item => item.username === this.userName,
-          tooltip: '无法修改本人权限，防止降级',
+          // tooltip: '无法修改本人权限，防止降级',
         },
         {
           name: '移除',
           event: 'confirm-remove-user',
           visible: item => {
-            let status = '';
-            if (item.username === this.userName) {
-              status = false;
-            } else {
-              status = true;
-            }
-            return status;
+            // 平台试图：有权限就可以移除；项目组试图：不是自己可以移除
+            return this.isManageView
+              ? this.$can('platform.organization.space')
+              : item.username !== this.userName;
           },
         },
       ]);

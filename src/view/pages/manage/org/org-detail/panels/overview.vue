@@ -6,12 +6,13 @@
           <li
             class="dao-list-item"
             v-for="tab in TABS"
-            :key="tab"
-            :class="{ active: content === tab }"
-            @click="content = tab"
+            :key="tab.name"
+            :class="{ active: content === tab.name }"
+            @click="content = tab.name"
+            v-if="tab.canShow"
           >
             <div>
-              {{ tab }}
+              {{ tab.name }}
               <span class="icon">
                 <svg><use xlink:href="#icon_caret-right"></use></svg>
               </span>
@@ -21,8 +22,13 @@
       </div>
     </div>
     <div class="dao-view-content with-sidebar">
-      <basic-panel v-if="content === TABS.BASIC" :org="org" @save="updateOrg"> </basic-panel>
-      <senior-panel v-if="content === TABS.SENIOR" @delete="deleteOrg()" :users="users" :org="org">
+      <basic-panel v-if="content === TABS.BASIC.name" :org="org" @save="updateOrg"> </basic-panel>
+      <senior-panel
+        v-if="content === TABS.SENIOR.name && $can('platform.organization.delete')"
+        @delete="deleteOrg()"
+        :users="users"
+        :org="org"
+      >
       </senior-panel>
     </div>
   </div>
@@ -47,12 +53,18 @@ export default {
   },
   data() {
     const TABS = {
-      BASIC: '基础设置',
-      SENIOR: '高级设置',
+      BASIC: {
+        name: '基础设置',
+        canShow: true,
+      },
+      SENIOR: {
+        name: '高级设置',
+        canShow: this.$can('platform.organization.delete'),
+      },
     };
     return {
       TABS,
-      content: TABS.BASIC,
+      content: TABS.BASIC.name,
     };
   },
   methods: {
