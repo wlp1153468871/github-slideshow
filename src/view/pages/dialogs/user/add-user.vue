@@ -62,9 +62,9 @@
       </dao-setting-item>
       <template>
         <el-alert
-          style="margin-top: 12px;"
+          style="margin-top: 15px;"
           v-if="model.username === userName && spacePages.some(m => m === 'space.manage')"
-          title="请注意！您是项目组管理员，请谨慎操作防止降级。"
+          title="请注意！您具有项目组管理权限，请谨慎操作防止降级。"
           type="warning"
           show-icon
         >

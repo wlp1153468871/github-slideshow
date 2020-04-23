@@ -37,6 +37,16 @@
           </dao-select>
         </div>
       </dao-setting-item>
+      <template>
+        <el-alert
+          v-if="user.username === userName && isPlatformAdmin"
+          style="margin-top: 15px;"
+          title="请注意！您具有平台管理权限，请谨慎操作防止降级。"
+          type="warning"
+          show-icon
+        >
+        </el-alert>
+      </template>
     </dao-setting-section>
 
     <div slot="footer">
@@ -51,6 +61,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { PLATFORM_ROLE } from '@/core/constants/role';
 import dialog from '@/view/mixins/dialog';
 
@@ -79,6 +90,7 @@ export default {
     formValidate() {
       return this.role === this.user.platform_role;
     },
+    ...mapGetters(['userName', 'isPlatformAdmin']),
   },
   methods: {
     onConfirm() {

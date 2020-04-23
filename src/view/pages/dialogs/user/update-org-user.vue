@@ -19,17 +19,19 @@
         <div slot="label">权限</div>
         <div slot="content">
           <dao-select placeholder="请选择" v-model="role">
-            <dao-option
-              v-for="(r, index) in roles"
-              :disabled="user.username === 'admin' && r.value === 'organization_member'"
-              :key="index"
-              :value="r"
-              :label="r.name"
-            >
+            <dao-option v-for="(r, index) in roles" :key="index" :value="r" :label="r.name">
             </dao-option>
           </dao-select>
         </div>
       </dao-setting-item>
+      <el-alert
+        v-if="isManageView ? false : user.username === userName && isOrganizationAdmin"
+        style="margin-top: 15px;"
+        title="请注意！您具有租户管理权限，请谨慎操作防止降级。"
+        type="warning"
+        show-icon
+      >
+      </el-alert>
     </dao-setting-section>
 
     <div slot="footer">
@@ -44,6 +46,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import dialog from '@/view/mixins/dialog';
 
 export default {
@@ -71,6 +74,8 @@ export default {
     isValidForm() {
       return this.role !== this.userRole;
     },
+    ...mapState(['isManageView']),
+    ...mapGetters(['userName', 'isOrganizationAdmin']),
   },
   methods: {
     init() {
