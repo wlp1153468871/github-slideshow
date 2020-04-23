@@ -395,10 +395,7 @@ export const actions = {
         ]);
       })
       .then(() => {
-        if (state.zones.length) {
-          return dispatch('initPortal');
-        }
-        return Promise.resolve();
+        return dispatch('initPortal');
       });
   },
 
@@ -521,10 +518,13 @@ export const actions = {
     });
   },
 
-  initPortal({ dispatch, commit }) {
-    Promise.all([dispatch('loadBrokerService'), dispatch('loadAPIResource')]).then(() => {
-      commit(types.INIT_TENANT_VIEW_SUCCESS);
-    });
+  initPortal({ dispatch, commit, state }) {
+    if (state.zoneRole) {
+      return Promise.all([dispatch('loadBrokerService'), dispatch('loadAPIResource')]).then(() => {
+        commit(types.INIT_TENANT_VIEW_SUCCESS);
+      });
+    }
+    return Promise.resolve();
   },
 
   loadBrokerService({ commit, state, dispatch }) {
