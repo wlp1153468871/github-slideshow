@@ -385,14 +385,13 @@ export const actions = {
   initConsoleView({ dispatch }) {
     return dispatch('loadOrgsAndSpaces')
       .then(() => {
+        return Promise.all([dispatch('loadSpaceRole'), dispatch('loadOrgRole')]);
+      })
+      .then(() => {
         return dispatch('loadZones');
       })
       .then(() => {
-        return Promise.all([
-          dispatch('loadSpaceRole'),
-          dispatch('loadOrgRole'),
-          dispatch('loadZoneRole'),
-        ]);
+        return dispatch('loadZoneRole');
       })
       .then(() => {
         return dispatch('initPortal');
@@ -518,8 +517,8 @@ export const actions = {
     });
   },
 
-  initPortal({ dispatch, commit, state }) {
-    if (state.zoneRole) {
+  initPortal({ dispatch, commit, getters }) {
+    if (getters.actions.some(a => a === 'zone')) {
       return Promise.all([dispatch('loadBrokerService'), dispatch('loadAPIResource')]).then(() => {
         commit(types.INIT_TENANT_VIEW_SUCCESS);
       });
