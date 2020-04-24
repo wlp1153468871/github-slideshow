@@ -6,13 +6,7 @@
       </ul>
       <ul class="dao-tab-nav dao-tab-nav-tab">
         <template v-for="tab in TABS">
-          <router-link
-            v-if="tab.canShow"
-            :key="tab.name"
-            class="dao-tab-nav-item"
-            tag="li"
-            :to="tab.to"
-          >
+          <router-link v-if="tab.canShow" :key="tab.name" class="dao-tab-nav-item" :to="tab.to">
             {{ tab.name }}
           </router-link>
         </template>

@@ -33,11 +33,9 @@ export default {
     ...mapGetters(['isOrganizationAdmin']),
   },
 
-  created() {
+  mounted() {
     // this.mounted;
     const activeTab = Object.values(this.TABS).filter(tab => tab.canShow);
-    // TODO：created 两次 检查SET_DEFAULT_ACTIVE_MENU 和查看$route
-    // console.log(activeTab, this.$route);
     if (activeTab.length) {
       const { to } = first(activeTab);
       this.$router.push({ name: to.name });
