@@ -664,13 +664,13 @@ export default [
         NProgress.done();
       }
     },
-    redirect: {
-      name: 'org.space',
-    },
+    // redirect: {
+    //   name: 'org.space',
+    // },
     component: OrgContainer,
     meta: {
       hidden: true,
-      code: 'organization',
+      // code: 'organization',
     },
     children: [
       {
@@ -688,7 +688,7 @@ export default [
         component: OrgUserList,
         meta: {
           hidden: true,
-          code: 'organization.user',
+          // code: 'organization.user',
         },
       },
       {

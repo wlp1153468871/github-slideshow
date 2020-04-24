@@ -30,7 +30,7 @@
             <button
               class="dao-btn blue has-icon"
               :disabled="loadings.instances || isZoneSyncing || isDeleted"
-              v-if="$can('serviceBroker.create', 'serviceBroker')"
+              v-if="$can('serviceBroker.create')"
               @click="deployService"
             >
               <svg class="icon">
@@ -66,8 +66,23 @@
               </x-table-status>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="" align="center" header-align="center" width="80">
+          <el-table-column
+            v-if="$can('serviceBroker.delete')"
+            fixed="right"
+            label=""
+            align="center"
+            header-align="center"
+            width="80"
+          >
             <template slot-scope="{ row: instances }">
+              <el-button
+                type="text"
+                :disabled="disableDelete(instances)"
+                @click="ensureRemove(instances)"
+                >删除
+              </el-button>
+            </template>
+            <!-- <template slot-scope="{ row: instances }">
               <el-dropdown @command="handleOperate($event, instances)" trigger="click">
                 <span>
                   <svg class="icon dropdown-trigger">
@@ -77,16 +92,16 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     class="dropdown-item-error"
-                    v-if="$can('serviceBroker.delete', 'serviceBroker')"
+                    v-if="$can('serviceBroker.delete')"
                     :disabled="disableDelete(instances)"
                     command="delete"
                     icon="el-icon-delete"
                   >
-                    删除
+                    删除 - 01
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-            </template>
+            </template> -->
           </el-table-column>
         </x-table>
       </div>

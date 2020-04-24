@@ -182,11 +182,11 @@ export default {
       });
     },
 
-    handleOperate(command, instance) {
-      if (command === 'delete') {
-        this.ensureRemove(instance);
-      }
-    },
+    // handleOperate(command, instance) {
+    //   if (command === 'delete') {
+    //     this.ensureRemove(instance);
+    //   }
+    // },
 
     renderStatus(status) {
       const filters = Vue.filter('filters');
