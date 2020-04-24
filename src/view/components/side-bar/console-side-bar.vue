@@ -81,7 +81,7 @@
                   :index="menuItem.name"
                   v-if="
                     !hiddenMenu(menuItem) &&
-                      Object.keys(apiResource).some(a => a === menuItem.meta.resourceName)
+                      Object.keys(apiResource || {}).some(a => a === menuItem.meta.resourceName)
                   "
                 >
                   <svg class="icon">
