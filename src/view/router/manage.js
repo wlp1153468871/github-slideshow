@@ -209,6 +209,9 @@ export default [
       code: 'platform.settings',
       type: 'menuItem',
     },
+    redirect: {
+      name: 'manage.preference.home',
+    },
     children: [
       {
         path: 'home',
@@ -217,6 +220,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
+          activeMenu: 'manage.preference',
         },
       },
       {
@@ -226,7 +230,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
-          activeMenu: 'manage.preference.home',
+          activeMenu: 'manage.preference',
         },
       },
       {
@@ -236,7 +240,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
-          activeMenu: 'manage.preference.home',
+          activeMenu: 'manage.preference',
         },
       },
       {
@@ -246,7 +250,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
-          activeMenu: 'manage.preference.home',
+          activeMenu: 'manage.preference',
         },
       },
     ],

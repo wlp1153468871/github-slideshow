@@ -55,7 +55,7 @@
               <th>操作</th>
             </tr>
           </thead>
-          <draggable element="tbody" class="dao-table-main" v-model="users" :options="option">
+          <draggable tag="tbody" class="dao-table-main" v-model="users" :options="option">
             <tr v-for="(user, index) in users" :key="index">
               <td class="td-name" v-show="isEnableOrder">
                 <span class="drag-handle">☰</span>
