@@ -44,7 +44,7 @@
             </dao-input>
           </div>
         </dao-setting-item>
-        <dao-setting-item v-if="isShowNote">
+        <dao-setting-item v-if="isShowNote && !isPreset">
           <div slot="content">
             <el-alert title="项目组部分权限需要相应可用区权限支持" type="warning" show-icon>
             </el-alert>

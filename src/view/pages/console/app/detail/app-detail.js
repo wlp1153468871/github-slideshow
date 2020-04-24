@@ -166,7 +166,7 @@ export default {
     },
 
     loadInstanceSecrets() {
-      if (!this.$can('read', 'Secret')) {
+      if (!this.$can('secret.view')) {
         return Promise.resolve([]);
       }
 

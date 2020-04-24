@@ -32,7 +32,7 @@
       ></dao-input>
       <!-- SECRET -->
       <div v-else-if="env.valueFrom && env.valueFrom.secretKeyRef" class="half-select">
-        <span class="text-muted secret-value" v-if="!$can('read', 'Secret')">
+        <span class="text-muted secret-value" v-if="!$can('secret.view')">
           <span class="text-overflow-ellipsis">{{ env.valueFrom.secretKeyRef.name }}</span>
           <span class="text-overflow-ellipsis">{{ env.valueFrom.secretKeyRef.key }}</span>
         </span>
