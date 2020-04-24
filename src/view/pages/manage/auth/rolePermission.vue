@@ -50,6 +50,11 @@
             </el-alert>
           </div>
         </dao-setting-item>
+        <dao-setting-item v-if="isShowZoneNote && !isPreset">
+          <div slot="content">
+            <el-alert title="该角色必须有项目组权限" type="warning" show-icon> </el-alert>
+          </div>
+        </dao-setting-item>
       </dao-setting-section>
 
       <div class="auth-content">
@@ -184,6 +189,9 @@ export default {
     },
     isShowNote() {
       return this.$route.params.scope === 'space';
+    },
+    isShowZoneNote() {
+      return this.$route.params.scope === 'zone.ocp' || this.$route.params.scope === 'zone.k8s';
     },
   },
 
