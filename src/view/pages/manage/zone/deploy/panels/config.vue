@@ -584,8 +584,9 @@ export default {
 
     handleValidationErrorBasic() {
       this.$nextTick(() => {
-        const domRect = document.querySelector('.error').getBoundingClientRect();
-        if (!domRect) return;
+        const errDom = document.querySelector('.error');
+        if (!errDom) return;
+        const domRect = errDom.getBoundingClientRect();
         const domRectDistance = domRect.top + document.documentElement.scrollTop;
         window.scrollTo(0, domRectDistance - 175);
       });

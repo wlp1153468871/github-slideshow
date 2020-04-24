@@ -61,7 +61,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="$can('platform.zone.update')"
+          v-if="$can('platform.zone.update') || $can('platform.zone.hide')"
           fixed="right"
           label=""
           align="center"
