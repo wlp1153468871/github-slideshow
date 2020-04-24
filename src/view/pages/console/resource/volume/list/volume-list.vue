@@ -9,7 +9,7 @@
             <div class="table-toolbar-left">
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('pvc.delete')"
+                v-if="$can('pvc.create')"
                 @click="createInstance()"
               >
                 <svg class="icon">
