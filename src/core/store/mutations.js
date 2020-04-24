@@ -462,7 +462,7 @@ export const actions = {
             commit(types.SWITCH_ORG, { org });
           } else {
             // 如果org为空，也就是org没有space，则跳转到profile页面，onInitTenantView设为true防止循环调用
-            Vue.noty.error(`您暂未加入任何${getters.spaceDescription}`);
+            Vue.noty.error(`您暂未加入任何${getters.orgDescription}`);
             router.push({ name: 'console.profile', query: { onInitTenantView: true } });
             reject(new Error('no space'));
             return;

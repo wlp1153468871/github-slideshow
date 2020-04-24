@@ -94,9 +94,8 @@
                       content="无法对自己操作"
                       placement="bottom"
                     >
-                      <div>
+                      <div @click="enableConfirm(user)">
                         <el-button
-                          @click="enableUser(user)"
                           type="text"
                           :disabled="user.username === userName && isPlatformAdmin"
                           >激活</el-button
@@ -112,9 +111,8 @@
                       content="无法对自己操作"
                       placement="bottom"
                     >
-                      <div>
+                      <div @click="disableConfirm(user)">
                         <el-button
-                          @click="disableUser(user)"
                           type="text"
                           :disabled="user.username === userName && isPlatformAdmin"
                           >冻结</el-button

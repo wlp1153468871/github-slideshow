@@ -201,7 +201,7 @@ export default [
   },
   {
     path: 'setting',
-    name: 'manage.preference.home',
+    name: 'manage.preference',
     component: Preference,
     meta: {
       title: '设置',
