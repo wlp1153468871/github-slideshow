@@ -26,7 +26,7 @@ export default {
 
   computed: {
     displaySecret() {
-      return this.$can('read', 'Secret');
+      return this.$can('secret.view');
     },
   },
 };

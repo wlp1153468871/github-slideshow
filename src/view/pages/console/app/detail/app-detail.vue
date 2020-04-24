@@ -48,13 +48,17 @@
         </el-tab-pane>
 
         <!-- Deployment -->
-        <el-tab-pane v-if="resources.Deployment" :label="TABS.DEPLOYMENT" :name="TABS.DEPLOYMENT">
+        <el-tab-pane
+          v-if="resources.Deployment && $can('deployment.view')"
+          :label="TABS.DEPLOYMENT"
+          :name="TABS.DEPLOYMENT"
+        >
           <deployment-panel :deployments="resources.Deployment"> </deployment-panel>
         </el-tab-pane>
 
         <!-- Deployment Config-->
         <el-tab-pane
-          v-if="resources.DeploymentConfig"
+          v-if="resources.DeploymentConfig && $can('deploymentConfig.view')"
           :label="TABS.DEPLOYMENT_CONFIG"
           :name="TABS.DEPLOYMENT_CONFIG"
         >
@@ -63,33 +67,41 @@
         </el-tab-pane>
 
         <!-- 四层负载均衡 -->
-        <el-tab-pane :label="TABS.SERVICE" :name="TABS.SERVICE">
+        <el-tab-pane v-if="$can('service.view')" :label="TABS.SERVICE" :name="TABS.SERVICE">
           <service-panel :services="resources.Service"> </service-panel>
         </el-tab-pane>
 
         <!-- 七层负载均衡 -->
-        <el-tab-pane v-if="resources.Route" :label="TABS.ROUTE" :name="TABS.ROUTE">
+        <el-tab-pane
+          v-if="resources.Route && $can('route.view')"
+          :label="TABS.ROUTE"
+          :name="TABS.ROUTE"
+        >
           <route-panel :routes="resources.Route"> </route-panel>
         </el-tab-pane>
 
-        <el-tab-pane v-if="resources.Ingress" :label="TABS.INGRESS" :name="TABS.INGRESS">
+        <el-tab-pane
+          v-if="resources.Ingress && $can('ingress.view')"
+          :label="TABS.INGRESS"
+          :name="TABS.INGRESS"
+        >
           <ingress-panel :ingresses="resources.Ingress"> </ingress-panel>
         </el-tab-pane>
 
         <!-- 容器组 -->
-        <el-tab-pane :label="TABS.POD" :name="TABS.POD">
+        <el-tab-pane v-if="$can('pod.view')" :label="TABS.POD" :name="TABS.POD">
           <pod-table :can-refresh="false" :pods="resources.Pod" :loading="loadings.instance">
           </pod-table>
         </el-tab-pane>
 
         <!--  Config Map  -->
-        <el-tab-pane :label="TABS.CONFIGMAP" :name="TABS.CONFIGMAP">
+        <el-tab-pane v-if="$can('configMap.view')" :label="TABS.CONFIGMAP" :name="TABS.CONFIGMAP">
           <config-panel :config-maps="resources.ConfigMap" :secrets="resources.Secret">
           </config-panel>
         </el-tab-pane>
 
         <!-- 存储申领 -->
-        <el-tab-pane :label="TABS.VOLUME" :name="TABS.VOLUME">
+        <el-tab-pane v-if="$can('pvc.view')" :label="TABS.VOLUME" :name="TABS.VOLUME">
           <pvc-table :loading="loadings.instance" :pvcs="resources.PersistentVolumeClaim">
           </pvc-table>
         </el-tab-pane>
