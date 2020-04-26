@@ -65,7 +65,7 @@
             <span>告警指标</span>
           </el-menu-item>
         </el-submenu>
-        <el-menu-item index="manage.preference.home" :route="{ name: 'manage.preference.home' }">
+        <el-menu-item index="manage.preference" :route="{ path: 'manage.preference' }">
           <i class="el-icon-setting"></i>
           <span slot="title">设置</span>
         </el-menu-item>

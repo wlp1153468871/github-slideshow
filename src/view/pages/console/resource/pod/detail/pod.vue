@@ -4,7 +4,9 @@
 
     <template v-if="!loading">
       <resource-header :resource="resource">
-        <template #creationTime> 创建于{{ pod.metadata.creationTimestamp | date }} </template>
+        <template #creationTime>
+          创建于{{ pod.metadata.creationTimestamp | date }}
+        </template>
 
         <template #labels>
           <labels :labels="pod.metadata.labels || {}"></labels>
@@ -24,7 +26,7 @@
                 <span>查看 YAML</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('pod.delete', 'pod')"
+                v-if="$can('pod.delete')"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
                 @click="ensureRemove"
               >
@@ -63,7 +65,12 @@
           </div>
         </el-tab-pane>
 
-        <el-tab-pane :label="TABS.TERMINAL.label" :name="TABS.TERMINAL.name" lazy>
+        <el-tab-pane
+          v-if="$can('pod.container.exec')"
+          :label="TABS.TERMINAL.label"
+          :name="TABS.TERMINAL.name"
+          lazy
+        >
           <div v-if="noContainersYet" class="empty-state-message">
             <h2>
               该 Pod 没有正在运行的容器
@@ -134,7 +141,12 @@
           </div>
         </el-tab-pane>
 
-        <el-tab-pane :label="TABS.REALTIME_LOG.label" :name="TABS.REALTIME_LOG.name" lazy>
+        <el-tab-pane
+          v-if="$can('pod.container.get')"
+          :label="TABS.REALTIME_LOG.label"
+          :name="TABS.REALTIME_LOG.name"
+          lazy
+        >
           <pod-log-panel
             v-if="activeTab === TABS.REALTIME_LOG.name"
             :containers="containerTerminals"
@@ -143,7 +155,12 @@
           </pod-log-panel>
         </el-tab-pane>
 
-        <el-tab-pane :label="TABS.OFFLINE_LOG.label" :name="TABS.OFFLINE_LOG.name" lazy>
+        <el-tab-pane
+          v-if="$can('pod.container.get')"
+          :label="TABS.OFFLINE_LOG.label"
+          :name="TABS.OFFLINE_LOG.name"
+          lazy
+        >
           <pod-log-offline-panel v-if="activeTab === TABS.OFFLINE_LOG.name" :pod="pod">
           </pod-log-offline-panel>
         </el-tab-pane>
@@ -167,7 +184,7 @@
           </terminal-history-panel>
         </el-tab-pane>
         <el-tab-pane
-          v-if="$can('space.monitor.view', 'space.monitor')"
+          v-if="$can('space.monitor.view')"
           :label="TABS.MONITOR.label"
           :name="TABS.MONITOR.name"
           lazy

@@ -8,7 +8,7 @@
         </template>
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('secret.delete', 'secret') || $can('secret.update', 'secret')"
+            v-if="$can('secret.delete') || $can('secret.update')"
             trigger="click"
             :append-to-body="true"
             placement="bottom-end"
@@ -21,13 +21,13 @@
             </button>
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
-                v-if="$can('secret.update', 'secret')"
+                v-if="$can('secret.update')"
                 @click="dialogConfigs.yamlEdit = true"
               >
                 <span>Yaml 更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('secret.delete', 'secret') && !objrefs.length"
+                v-if="$can('secret.delete') && !objrefs.length"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >
@@ -65,6 +65,7 @@
           </d-alert>
 
           <labels-table
+            :canEdit="$can('secret.update')"
             :is-secret="true"
             :data="data"
             :dialog-title="CONFIG_TITLE_TYPE.DATA"
@@ -72,10 +73,16 @@
           >
           </labels-table>
 
-          <labels-table :data="labels" :dialog-title="CONFIG_TITLE_TYPE.LABEL" @edit="editLabel">
+          <labels-table
+            :canEdit="$can('secret.update')"
+            :data="labels"
+            :dialog-title="CONFIG_TITLE_TYPE.LABEL"
+            @edit="editLabel"
+          >
           </labels-table>
 
           <labels-table
+            :canEdit="$can('secret.update')"
             :data="annotations"
             :dialog-title="CONFIG_TITLE_TYPE.ANNOTATIONS"
             @edit="editAnnotations"

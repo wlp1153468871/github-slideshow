@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import ZoneService from '@/core/services/zone.service';
 import ConfigPanel from './panels/config';
 import OverviewPanel from './panels/overview';
@@ -86,7 +87,10 @@ export default {
     },
 
     updateZone() {
-      ZoneService.updateZone(this.zoneId, this.zoneModel)
+      // registry url 去掉末尾/
+      const model = cloneDeep(this.zoneModel);
+      model.registry.url = model.registry.url.replace(/\/$/g, '');
+      ZoneService.updateZone(this.zoneId, model)
         .then(zone => {
           this.zoneInstance = zone;
         })

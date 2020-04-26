@@ -11,7 +11,7 @@
               </svg>
               <span style="vertical-align: middle;">&nbsp;创建分类</span>
             </button>
-            <draggable class="dao-list-group catalog-list" v-model="categoryList" element="ul">
+            <draggable class="dao-list-group catalog-list" v-model="categoryList" tag="ul">
               <li
                 class="dao-list-item drag-drop-list-item pri"
                 v-for="tab in categoryList"
@@ -52,7 +52,7 @@
             <draggable
               class="dao-list-group catalog-list"
               v-model="selectedCategory.children"
-              element="ul"
+              tag="ul"
             >
               <li
                 class="dao-list-item drag-drop-list-item"
@@ -97,7 +97,7 @@
           <draggable
             class="dao-sequare-warpper"
             v-model="selectedSubCategory.services"
-            element="div"
+            tag="div"
           >
             <div
               class="dao-sequare-item"

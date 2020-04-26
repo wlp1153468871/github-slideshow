@@ -160,7 +160,7 @@ export default {
   },
 
   created() {
-    Promise.all([this.$can('read', 'Secret') && this.listSecrets(), this.listConfigMaps()]).finally(
+    Promise.all([this.$can('secret.view') && this.listSecrets(), this.listConfigMaps()]).finally(
       () => {
         this.loading = false;
       },

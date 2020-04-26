@@ -8,7 +8,7 @@
         </span>
       </p>
       <dl class="dl-horizontal">
-        <template v-if="volume.secret && $can('read', 'secret')">
+        <template v-if="volume.secret && $can('secret.view')">
           <dt>Type:</dt>
           <dd>
             secret

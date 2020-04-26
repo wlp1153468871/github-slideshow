@@ -201,13 +201,16 @@ export default [
   },
   {
     path: 'setting',
-    name: 'manage.preference.home',
+    name: 'manage.preference',
     component: Preference,
     meta: {
       title: '设置',
       icon: '#icon_setting',
       code: 'platform.settings',
       type: 'menuItem',
+    },
+    redirect: {
+      name: 'manage.preference.home',
     },
     children: [
       {
@@ -217,6 +220,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
+          activeMenu: 'manage.preference',
         },
       },
       {
@@ -226,7 +230,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
-          activeMenu: 'manage.preference.home',
+          activeMenu: 'manage.preference',
         },
       },
       {
@@ -236,7 +240,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
-          activeMenu: 'manage.preference.home',
+          activeMenu: 'manage.preference',
         },
       },
       {
@@ -246,7 +250,7 @@ export default [
         meta: {
           hidden: true,
           code: 'platform.settings',
-          activeMenu: 'manage.preference.home',
+          activeMenu: 'manage.preference',
         },
       },
     ],

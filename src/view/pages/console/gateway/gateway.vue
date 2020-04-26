@@ -38,14 +38,14 @@ export default {
       } else if (store.getters.pages.some(m => m === 'organization.space')) {
         this.$router.push({ name: 'console.space-settings' });
       } else {
-        Vue.noty.error('您暂未加入任何项目组');
+        Vue.noty.error('无当前项目组权限');
         // this.$router.push({ name: 'console.profile' });
       }
     },
     getActiveMenu(menus, result = []) {
       // TODO:服务根据后端数据渲染 无服务id 无法跳转到服务页面
       menus
-        .filter(menu => !menu.meta.hidden || menu.meta.isExempt)
+        .filter(menu => !menu.meta.hidden || menu.meta.resourceName)
         .forEach(menu => {
           const codes = menu.meta.code.split(';');
           if (this.pages.some(m => codes.some(c => c === m))) {

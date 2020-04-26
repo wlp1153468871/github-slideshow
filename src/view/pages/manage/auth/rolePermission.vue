@@ -44,10 +44,15 @@
             </dao-input>
           </div>
         </dao-setting-item>
-        <dao-setting-item v-if="isShowNote">
+        <dao-setting-item v-if="isShowNote && !isPreset">
           <div slot="content">
             <el-alert title="项目组部分权限需要相应可用区权限支持" type="warning" show-icon>
             </el-alert>
+          </div>
+        </dao-setting-item>
+        <dao-setting-item v-if="isShowZoneNote && !isPreset">
+          <div slot="content">
+            <el-alert title="该角色必须有项目组权限" type="warning" show-icon> </el-alert>
           </div>
         </dao-setting-item>
       </dao-setting-section>
@@ -184,6 +189,9 @@ export default {
     },
     isShowNote() {
       return this.$route.params.scope === 'space';
+    },
+    isShowZoneNote() {
+      return this.$route.params.scope === 'zone.ocp' || this.$route.params.scope === 'zone.k8s';
     },
   },
 

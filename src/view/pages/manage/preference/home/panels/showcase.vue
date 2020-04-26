@@ -5,7 +5,7 @@
         <!-- 租户 -->
         <div class="dao-view-sidebar">
           <div class="dao-list-group-container">
-            <draggable class="dao-list-group" v-model="showcaseList" element="ul">
+            <draggable class="dao-list-group" v-model="showcaseList" tag="ul">
               <li
                 class="dao-list-item drag-drop-list-item"
                 v-for="(tab, index) in showcaseList"
@@ -31,7 +31,7 @@
               </a>
               <span class="pull-right">{{ showcase.name }}</span>
             </div>
-            <draggable class="dao-sequare-warpper" v-model="showcase.services" element="div">
+            <draggable class="dao-sequare-warpper" v-model="showcase.services" tag="div">
               <div class="dao-sequare-item" v-for="item in showcase.services" :key="item.id">
                 <a
                   class="dao-sequare-item-close"

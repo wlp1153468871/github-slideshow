@@ -16,7 +16,7 @@
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('secret.create', 'secret')"
+                v-if="$can('secret.create')"
                 @click="createSecret"
               >
                 <svg class="icon">
@@ -47,6 +47,7 @@
             </el-table-column>
 
             <el-table-column
+              v-if="$can('secret.update') || $can('secret.delete')"
               fixed="right"
               label="操作"
               align="center"
@@ -64,6 +65,7 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
                       command="edit"
+                      v-if="$can('secret.update')"
                       :disabled="disableDelete(secret)"
                       icon="el-icon-edit-outline"
                     >
@@ -71,7 +73,7 @@
                     </el-dropdown-item>
                     <el-dropdown-item
                       class="dropdown-item-error"
-                      v-if="$can('secret.delete', 'secret')"
+                      v-if="$can('secret.delete')"
                       :disabled="disableDelete(secret)"
                       command="delete"
                       icon="el-icon-delete"

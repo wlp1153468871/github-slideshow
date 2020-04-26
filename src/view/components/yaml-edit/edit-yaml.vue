@@ -15,12 +15,19 @@
     </dao-setting-section>
     <div slot="footer">
       <slot name="footer">
-        <button class="dao-btn ghost" @click="onClose">
-          取消
-        </button>
-        <button class="dao-btn blue" @click="tryConfirm">
-          确定
-        </button>
+        <template v-if="readOnly">
+          <button class="dao-btn ghost" @click="onClose">
+            关闭
+          </button>
+        </template>
+        <template v-else>
+          <button class="dao-btn ghost" @click="onClose">
+            取消
+          </button>
+          <button class="dao-btn blue" @click="tryConfirm">
+            确定
+          </button>
+        </template>
       </slot>
     </div>
   </dao-dialog>

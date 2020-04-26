@@ -1,4 +1,5 @@
 import { mapState, mapGetters } from 'vuex';
+import { first } from 'lodash';
 
 export default {
   name: 'TenantContainer',
@@ -6,15 +7,19 @@ export default {
   data() {
     return {
       TABS: {
-        TEAMS: { canShow: true, name: '项目组', to: { name: 'org.space' } },
-        USERS: { canShow: true, name: '用户', to: { name: 'org.user' } },
+        TEAMS: {
+          canShow: this.$can('organization.space'),
+          name: '项目组',
+          to: { name: 'org.space' },
+        },
+        USERS: { canShow: this.$can('organization.user'), name: '用户', to: { name: 'org.user' } },
         QUOTA: {
-          canShow: false,
+          canShow: this.$can('organization.quota'),
           name: '配额管理',
           to: { name: 'org.quota' },
         },
         QUOTA_REQUEST: {
-          canShow: false,
+          canShow: this.$can('organization.approval'),
           name: '配额更新请求',
           to: { name: 'org.quota-approval' },
         },
@@ -28,8 +33,16 @@ export default {
     ...mapGetters(['isOrganizationAdmin']),
   },
 
-  created() {
-    this.TABS.QUOTA.canShow = this.isOrganizationAdmin;
-    this.TABS.QUOTA_REQUEST.canShow = this.isOrganizationAdmin;
+  mounted() {
+    // this.mounted;
+    const activeTab = Object.values(this.TABS).filter(tab => tab.canShow);
+    if (activeTab.length) {
+      const { to } = first(activeTab);
+      this.$router.push({ name: to.name });
+    } else {
+      this.$noty.error('您暂无租户权限');
+    }
+    // this.TABS.QUOTA.canShow = this.isOrganizationAdmin;
+    // this.TABS.QUOTA_REQUEST.canShow = this.isOrganizationAdmin;
   },
 };

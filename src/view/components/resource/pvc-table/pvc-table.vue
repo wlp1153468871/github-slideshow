@@ -153,7 +153,9 @@ export default {
         const split = /(-?[0-9.]+)\s*(.*)/.exec(storageWithUnit);
         const amount = split[1];
         const unit = `${split[2]}B`;
-        return convert(amount).from(unit).to('MB');
+        return convert(amount)
+          .from(unit)
+          .to('MB');
       }
       return 0;
     },

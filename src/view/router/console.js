@@ -132,10 +132,10 @@ export default [
         component: Deployments,
         meta: {
           title: 'Deployments',
-          hidden: true,
+          hidden: false,
           icon: '#icon_deployments',
           code: 'deployment',
-          isExempt: true,
+          resourceName: 'Deployment',
         },
       },
       {
@@ -154,10 +154,10 @@ export default [
         component: DeploymentConfigList,
         meta: {
           title: 'DeploymentConfig',
-          hidden: true,
+          hidden: false,
           code: 'deploymentConfig',
           icon: '#icon_deploymentconfigs',
-          isExempt: true,
+          resourceName: 'DeploymentConfig',
         },
       },
       {
@@ -176,10 +176,10 @@ export default [
         component: StatefulSetList,
         meta: {
           title: 'StatefulSet',
-          hidden: true,
+          hidden: false,
           icon: '#icon_statefulsets',
           code: 'statefulSet',
-          isExempt: true,
+          resourceName: 'StatefulSet',
         },
       },
       {
@@ -197,11 +197,11 @@ export default [
         name: 'resource.pods.list',
         component: Pods,
         meta: {
-          hidden: true,
+          hidden: false,
           title: 'Pods',
           icon: '#icon_pods',
           code: 'pod',
-          isexempt: true,
+          resourceName: 'Pod',
         },
       },
       {
@@ -219,11 +219,11 @@ export default [
         name: 'resource.services.list',
         component: ServiceList,
         meta: {
-          hidden: true,
+          hidden: false,
           title: 'Service',
           icon: '#icon_services',
           code: 'service',
-          isExempt: true,
+          resourceName: 'Service',
         },
       },
       {
@@ -241,11 +241,11 @@ export default [
         name: 'resource.routes.list',
         component: RouteList,
         meta: {
-          hidden: true,
+          hidden: false,
           title: 'Route',
           icon: '#icon_routes',
           code: 'route',
-          isExempt: true,
+          resourceName: 'Route',
         },
       },
       {
@@ -263,11 +263,11 @@ export default [
         name: 'resource.ingresses.list',
         component: IngressList,
         meta: {
-          hidden: true,
+          hidden: false,
           title: 'Ingress',
           icon: '#icon_ingresses',
           code: 'ingress',
-          isExempt: true,
+          resourceName: 'Ingress',
         },
       },
       {
@@ -286,11 +286,11 @@ export default [
         name: 'resource.configmaps.list',
         component: ConfigMapList,
         meta: {
-          hidden: true,
+          hidden: false,
           title: 'ConfigMap',
           icon: '#icon_configmaps',
           code: 'configMap',
-          isExempt: true,
+          resourceName: 'ConfigMap',
         },
       },
       {
@@ -308,11 +308,11 @@ export default [
         name: 'resource.secrets.list',
         component: SecretList,
         meta: {
-          hidden: true,
+          hidden: false,
           title: 'Secret',
           icon: '#icon_secrets',
           code: 'secret',
-          isExempt: true,
+          resourceName: 'Secret',
         },
       },
       {
@@ -330,11 +330,11 @@ export default [
         name: 'resource.persistentvolumeclaims.list',
         component: VolumeList,
         meta: {
-          hidden: true,
+          hidden: false,
           title: 'PersistentVolumeClaim',
           icon: '#icon_persistentvolumeclaims',
           code: 'pvc',
-          isExempt: true,
+          resourceName: 'PersistentVolumeClaim',
         },
       },
       {
@@ -664,13 +664,13 @@ export default [
         NProgress.done();
       }
     },
-    redirect: {
-      name: 'org.space',
-    },
+    // redirect: {
+    //   name: 'org.space',
+    // },
     component: OrgContainer,
     meta: {
       hidden: true,
-      code: 'organization',
+      // code: 'organization',
     },
     children: [
       {
@@ -688,7 +688,7 @@ export default [
         component: OrgUserList,
         meta: {
           hidden: true,
-          code: 'organization.user',
+          // code: 'organization.user',
         },
       },
       {

@@ -137,21 +137,23 @@ export default {
         },
       ]);
       const isSelf = item => item.username === this.userName && this.isOrganizationAdmin;
-      this.setTableOperations([
-        {
-          name: '修改权限',
-          event: 'update-user-dialog',
-          tooltip: '无法对自己操作',
-          visible: this.canUpdate,
-        },
-        {
-          name: '移除',
-          event: 'confirm-remove-user',
-          disabled: this.isManageView ? false : isSelf,
-          tooltip: '无法对自己操作',
-          visible: this.canDelete,
-        },
-      ]);
+      if (this.canUpdate || this.canDelete) {
+        this.setTableOperations([
+          {
+            name: '修改权限',
+            event: 'update-user-dialog',
+            tooltip: '无法对自己操作',
+            visible: this.canUpdate,
+          },
+          {
+            name: '移除',
+            event: 'confirm-remove-user',
+            disabled: this.isManageView ? false : isSelf,
+            tooltip: '无法对自己操作',
+            visible: this.canDelete,
+          },
+        ]);
+      }
     },
 
     loadOrgUsers() {

@@ -385,14 +385,13 @@ export const actions = {
   initConsoleView({ dispatch }) {
     return dispatch('loadOrgsAndSpaces')
       .then(() => {
+        return Promise.all([dispatch('loadSpaceRole'), dispatch('loadOrgRole')]);
+      })
+      .then(() => {
         return dispatch('loadZones');
       })
       .then(() => {
-        return Promise.all([
-          dispatch('loadSpaceRole'),
-          dispatch('loadOrgRole'),
-          dispatch('loadZoneRole'),
-        ]);
+        return dispatch('loadZoneRole');
       })
       .then(() => {
         return dispatch('initPortal');
@@ -463,7 +462,7 @@ export const actions = {
             commit(types.SWITCH_ORG, { org });
           } else {
             // 如果org为空，也就是org没有space，则跳转到profile页面，onInitTenantView设为true防止循环调用
-            Vue.noty.error(`您暂未加入任何${getters.spaceDescription}`);
+            Vue.noty.error(`您暂未加入任何${getters.orgDescription}`);
             router.push({ name: 'console.profile', query: { onInitTenantView: true } });
             reject(new Error('no space'));
             return;
@@ -518,8 +517,8 @@ export const actions = {
     });
   },
 
-  initPortal({ dispatch, commit, state }) {
-    if (state.zoneRole) {
+  initPortal({ dispatch, commit, getters }) {
+    if (getters.actions.some(a => a === 'zone')) {
       return Promise.all([dispatch('loadBrokerService'), dispatch('loadAPIResource')]).then(() => {
         commit(types.INIT_TENANT_VIEW_SUCCESS);
       });
