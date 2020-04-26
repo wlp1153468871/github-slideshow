@@ -614,7 +614,7 @@ export default [
         component: ProductCheckout,
         meta: {
           hidden: true,
-          code: 'service',
+          code: 'serviceBroker',
         },
       },
     ],
