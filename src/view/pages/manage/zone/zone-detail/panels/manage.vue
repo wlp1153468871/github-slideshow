@@ -49,7 +49,7 @@
                     trigger="hover"
                     :append-to-body="false"
                     placement="bottom-start"
-                    v-if="$can('platform.zone.delete')"
+                    v-if="$can('platform.serviceBroker.delete')"
                   >
                     <svg class="icon icon-more">
                       <use xlink:href="#icon_more"></use>

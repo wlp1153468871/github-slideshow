@@ -65,6 +65,7 @@
           </d-alert>
 
           <labels-table
+            :canEdit="$can('secret.update')"
             :is-secret="true"
             :data="data"
             :dialog-title="CONFIG_TITLE_TYPE.DATA"
@@ -72,10 +73,16 @@
           >
           </labels-table>
 
-          <labels-table :data="labels" :dialog-title="CONFIG_TITLE_TYPE.LABEL" @edit="editLabel">
+          <labels-table
+            :canEdit="$can('secret.update')"
+            :data="labels"
+            :dialog-title="CONFIG_TITLE_TYPE.LABEL"
+            @edit="editLabel"
+          >
           </labels-table>
 
           <labels-table
+            :canEdit="$can('secret.update')"
             :data="annotations"
             :dialog-title="CONFIG_TITLE_TYPE.ANNOTATIONS"
             @edit="editAnnotations"

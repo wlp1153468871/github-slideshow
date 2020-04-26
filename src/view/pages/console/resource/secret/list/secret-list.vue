@@ -47,6 +47,7 @@
             </el-table-column>
 
             <el-table-column
+              v-if="$can('secret.update') || $can('secret.delete')"
               fixed="right"
               label="操作"
               align="center"
@@ -64,6 +65,7 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
                       command="edit"
+                      v-if="$can('secret.update')"
                       :disabled="disableDelete(secret)"
                       icon="el-icon-edit-outline"
                     >

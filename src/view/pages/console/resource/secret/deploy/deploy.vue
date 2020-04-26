@@ -17,10 +17,14 @@
         <space-zone ref="spaceZone"> </space-zone>
 
         <dao-setting-layout>
-          <template slot="layout-title">名称</template>
+          <template slot="layout-title"
+            >名称</template
+          >
           <dao-setting-section>
             <dao-setting-item>
-              <template slot="label">名称</template>
+              <template slot="label"
+                >名称</template
+              >
               <template slot="content">
                 <dao-input
                   icon-inside
@@ -38,10 +42,14 @@
         </dao-setting-layout>
 
         <dao-setting-layout>
-          <template slot="layout-title">类型</template>
+          <template slot="layout-title"
+            >类型</template
+          >
           <dao-setting-section>
             <dao-setting-item>
-              <template slot="label">类型</template>
+              <template slot="label"
+                >类型</template
+              >
               <template slot="content">
                 <dao-select v-model="secretType">
                   <dao-option
