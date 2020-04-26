@@ -40,7 +40,7 @@
             </table>
             <empty-state v-if="isDateEmpty"></empty-state>
             <div slot="footer" style="margin-top: 10px;">
-              <button class="dao-btn blue" @click="openEditDialog()">
+              <button v-if="canEdit" class="dao-btn blue" @click="openEditDialog()">
                 编辑
               </button>
             </div>
@@ -88,6 +88,7 @@ export default {
     data: { type: Object, default: () => ({}) },
     validator: { type: Object, default: () => ({}) },
     isSecret: { type: Boolean, default: false },
+    canEdit: { type: Boolean, default: false },
   },
 
   data() {
