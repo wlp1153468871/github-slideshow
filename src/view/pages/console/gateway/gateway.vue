@@ -60,7 +60,8 @@ export default {
   },
 
   watch: {
-    pages() {
+    // eslint-disable-next-line func-names
+    '$route.query.t': function () {
       this.gotoNextPage();
     },
   },

@@ -158,12 +158,12 @@ export const getters = {
     return state.platformPages.some(m => m === 'platform-root');
   },
 
-  isOrganizationAdmin(state, getters) {
-    return getters.isPlatformAdmin || state.orgPages.some(m => m === 'organization-root');
+  isOrganizationAdmin(state) {
+    return state.orgPages.some(m => m === 'organization-root');
   },
 
-  isSpaceAdmin(state, getters) {
-    return getters.isPlatformAdmin || state.spacePages.some(m => m === 'space.manage');
+  isSpaceAdmin(state) {
+    return state.spacePages.some(m => m === 'space.manage');
   },
 
   zoneUnauthorized(state, getters) {
@@ -373,7 +373,7 @@ export const actions = {
   // 初始化项目组视图，获取sso、配额、项目组的信息
   initTenantView({ dispatch, commit }) {
     commit(types.INIT_TENANT_VIEW_REQUEST);
-    return Promise.all([dispatch('loadQuotaField'), dispatch('initConsoleView')])
+    return dispatch('initConsoleView')
       .then(() => {
         commit(types.INIT_TENANT_VIEW_SUCCESS);
       })
@@ -398,9 +398,9 @@ export const actions = {
       });
   },
 
-  initView({ dispatch }) {
-    dispatch('loadQuotaField');
-  },
+  // initView({ dispatch }) {
+  //   dispatch('loadQuotaField');
+  // },
 
   loadQuotaField({ commit }) {
     QuotaService.listQuotaFields().then(res => {
@@ -610,6 +610,9 @@ export const actions = {
       .then(() => {
         router.push({
           name: 'console.gateway',
+          query: {
+            t: new Date().getTime(),
+          },
         });
       });
   },

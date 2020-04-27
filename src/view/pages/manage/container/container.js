@@ -1,16 +1,10 @@
-import store from '@/core/store';
+// import store from '@/core/store';
 import { mapState, mapGetters } from 'vuex';
 import { first } from 'lodash';
 import ManageMenus from '@/view/router/manage.js';
 
 export default {
   name: 'ManageContainer',
-
-  beforeRouteEnter(to, from, next) {
-    store.dispatch('initView').then(() => {
-      next();
-    });
-  },
   data() {
     return {
       ManageMenus,
