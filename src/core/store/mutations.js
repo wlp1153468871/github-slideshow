@@ -295,12 +295,15 @@ export const actions = {
     return dispatch('loadRole', { scope: 'space', spaceId: getters.spaceId });
   },
   loadZoneRole({ dispatch, getters }) {
-    return dispatch('loadRole', {
-      // scope: state.zone.name && state.zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
-      scope: getters.zoneScope,
-      spaceId: getters.spaceId,
-      zoneId: getters.zoneId,
-    });
+    if (getters.zoneId) {
+      return dispatch('loadRole', {
+        // scope: state.zone.name && state.zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+        scope: getters.zoneScope,
+        spaceId: getters.spaceId,
+        zoneId: getters.zoneId,
+      });
+    }
+    return null;
   },
   // 获取指定用户角色，使用返回的可以用区id和项目组id 分别请获取这两个角色权限详情
   loadRole({ getters, dispatch, commit }, params) {

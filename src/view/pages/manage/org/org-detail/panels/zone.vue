@@ -76,7 +76,7 @@ export default {
         {
           id: 'name',
           name: '可用区',
-          type: 'goto',
+          type: this.$can('platform.zone.get') ? 'goto' : 'text',
           other: { onClick },
         },
         {
