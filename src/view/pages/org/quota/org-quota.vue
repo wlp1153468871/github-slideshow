@@ -1,4 +1,5 @@
 <template>
+  <!-- 配额管理 -->
   <div class="org-quota">
     <div class="dao-view-main" v-if="$can('organization.quota.get')">
       <div class="dao-view-content">

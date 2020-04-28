@@ -88,7 +88,7 @@ export default {
       if (res.headers.authorizationresult) {
         console.error(res.headers.authorizationresult);
         console.error(res.config.method, res.request.responseURL);
-        notifyErrorResponse({}, '后端无权限, 请联系管理员');
+        // notifyErrorResponse({}, '后端无权限, 请联系管理员');
       }
       return res.data;
     }

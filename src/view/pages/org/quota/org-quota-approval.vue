@@ -1,11 +1,12 @@
 <template>
+  <!-- 配额更新请求 -->
   <div class="org-quota-approval">
-    <div class="dao-view-main">
+    <div class="dao-view-main" v-if="$can('organization.quota.get')">
       <div class="dao-view-content">
         <div class="quota-section">
           <h4 class="quota-section-head">{{ spaceDescription }}配额审批</h4>
           <quota-approval-table
-            :can-update="$can('organization.approval')"
+            :can-update="$can('organization.space.quota.approval.update')"
             :loading="approvalLoading"
             :approvals="quotaApproval"
             :showSpaceCol="true"
@@ -18,7 +19,7 @@
         <div class="quota-section">
           <h4 class="quota-section-head">{{ orgDescription }}配额审批</h4>
           <quota-approval-table
-            :can-update="$can('organization.approval')"
+            :can-update="$can('organization.quota.approval.create')"
             :loading="requestLoading"
             @refresh="getOrgApprovals"
             :approvals="quotaRequests"
@@ -58,11 +59,11 @@ export default {
     };
   },
   created() {
-    if (this.$can('organization.approval')) {
+    if (this.$can('organization.quota.get')) {
       this.getSpaceApprovals();
       this.getOrgApprovals();
     } else {
-      this.$noty.error('您暂无租户审批权限');
+      this.$noty.error('您暂无查看配额更新权限');
     }
   },
   methods: {
