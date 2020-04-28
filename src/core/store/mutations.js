@@ -154,16 +154,16 @@ export const getters = {
     return state.user.registry_location === LOCAL_ACCOUNT_KEY;
   },
 
-  isPlatformAdmin(state) {
-    return state.platformPages.some(m => m === 'platform-root');
+  isPlatformAdmin(state, getters) {
+    return getters.pages.some(m => m === 'platform-root');
   },
 
-  isOrganizationAdmin(state) {
-    return state.orgPages.some(m => m === 'organization-root');
+  isOrganizationAdmin(state, getters) {
+    return getters.pages.some(m => m === 'organization-root');
   },
 
-  isSpaceAdmin(state) {
-    return state.spacePages.some(m => m === 'space.manage');
+  isSpaceAdmin(state, getters) {
+    return getters.pages.some(m => m === 'space.manage');
   },
 
   zoneUnauthorized(state, getters) {
@@ -521,7 +521,7 @@ export const actions = {
   },
 
   initPortal({ dispatch, commit, getters }) {
-    if (getters.actions.some(a => a === 'zone')) {
+    if (getters.pages.some(a => a === 'k8s-root' || a === 'ocp-root')) {
       return Promise.all([dispatch('loadBrokerService'), dispatch('loadAPIResource')]).then(() => {
         commit(types.INIT_TENANT_VIEW_SUCCESS);
       });
