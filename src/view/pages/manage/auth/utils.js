@@ -14,7 +14,7 @@ export function permission2treeData(permission) {
   return {
     ...permission,
     children: (permission.children || [])
-      .filter(p => p.type !== 'feature')
+      .filter(p => p.type !== 'feature' && p.type !== 'required')
       .map(permission2treeData)
       .sort(perCompare),
     actions: (permission.children || []).filter(p => p.type === 'feature').sort(perCompare),
