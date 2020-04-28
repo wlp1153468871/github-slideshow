@@ -19,7 +19,7 @@ export default {
           to: { name: 'org.quota' },
         },
         QUOTA_REQUEST: {
-          canShow: this.$can('organization.approval'),
+          canShow: this.$can('organization.quota'),
           name: '配额更新请求',
           to: { name: 'org.quota-approval' },
         },
