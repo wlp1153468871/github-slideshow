@@ -1,7 +1,7 @@
 # ===========
 # build stage
 # ===========
-FROM harbor.dsp.local/dsp-system/rhel8-nodejs-10:1-31 as build-stage
+FROM daocloud.io/atsctoo/rhel8-nodejs-10:1-87 as build-stage
 
 # make the 'app' folder the current working directory
 WORKDIR /app
@@ -27,7 +27,7 @@ RUN npm run build
 # ================
 # production stage
 # ================
-FROM harbor.dsp.local/dsp-system/rhel8-nginx-114:1-40 as production-stage
+FROM daocloud.io/atsctoo/rhel8-nginx-114:1-87 as production-stage
 MAINTAINER zhenghao.zhu@daocloud.io
 
 USER root
