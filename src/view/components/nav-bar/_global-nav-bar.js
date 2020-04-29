@@ -45,7 +45,8 @@ export default {
     },
 
     isDisplayAppSelect() {
-      return this.orgs.length && this.isConsoleView;
+      // return this.orgs.length && this.isConsoleView;
+      return this.isConsoleView;
     },
 
     selectedServices() {
