@@ -122,7 +122,7 @@ export default {
 
     deploy(img) {
       let imgUrl = `${this.zone.registry.url}/${img.name}`;
-      imgUrl = imgUrl.replace(/http[s]:\/\//, '');
+      imgUrl = imgUrl.replace(/http[s]?:\/\//, '');
 
       this.$router.push({
         name: 'deploy.applications',
