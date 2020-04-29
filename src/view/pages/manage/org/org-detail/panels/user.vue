@@ -4,6 +4,7 @@
       :rows="rows"
       :config="tConfig"
       :showRefresh="canView"
+      :hideRefresh="canView"
       @refresh="loadOrgUsers"
       :loading="this.loadings.all"
       @update-user-dialog="updateUserDialog"
@@ -99,8 +100,6 @@ export default {
     this.initTableView();
     if (this.canView) {
       this.loadOrgRoles();
-    } else {
-      this.$noty.error('您暂无查询项目组权限');
     }
   },
 
@@ -108,8 +107,13 @@ export default {
     orgId: {
       immediate: true,
       handler(orgId, prevOrgId) {
+        // loadOrgUsers 之前需要判断查看权限 this.canView
         if (orgId !== '' && orgId !== prevOrgId) {
-          this.loadOrgUsers(orgId);
+          if (this.canView) {
+            this.loadOrgUsers(orgId);
+          } else {
+            this.$noty.error('您暂无查询项目组权限');
+          }
         }
       },
     },

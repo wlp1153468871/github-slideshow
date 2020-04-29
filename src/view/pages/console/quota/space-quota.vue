@@ -61,6 +61,7 @@
         <div class="quota-section" v-if="$can('space.quota.update')">
           <h4 class="quota-section-head">{{ spaceDescription }}配额更新请求</h4>
           <quota-approval-table
+            :can-update="$can('space.quota.update')"
             :loading="quotaApprovalLoading"
             :approvals="quotaApproval"
             :showSpaceCol="false"
