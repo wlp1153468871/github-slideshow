@@ -69,7 +69,7 @@
           <el-table-column
             v-if="$can('serviceBroker.delete')"
             fixed="right"
-            label=""
+            label="操作"
             align="center"
             header-align="center"
             width="80"

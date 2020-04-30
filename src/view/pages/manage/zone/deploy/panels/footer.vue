@@ -3,7 +3,7 @@
     <div class="container checkout-select">
       <div class="step-btns" v-if="step === steps.CONFIG">
         <button
-          v-if="$can('platform.zone.update')"
+          v-if="$can('platform.zone.create')"
           title="下一步:参数设置"
           class="dao-btn blue"
           @click="$emit('next', step)"
