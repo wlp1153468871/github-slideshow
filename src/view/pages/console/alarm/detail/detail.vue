@@ -4,67 +4,61 @@
     <template>
       <resource-header :resource="resource">
         <template #action-buttons>
-          <dao-dropdown
-            v-if="$can('space.alert.delete') || $can('space.alert.update')"
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-end"
-          >
-            <button class="dao-btn ghost has-icon">
-              操作
-              <svg class="icon">
-                <use xlink:href="#icon_caret-down"></use>
+          <template v-if="scope.changeView">
+            <button
+              v-if="$can('space.alert.update')"
+              class="dao-btn has-icon blue"
+              id="confirmed"
+              @click="onConfirm"
+              :disabled="loadings.submitUpdate"
+            >
+              <svg class="icon icon-edit">
+                <use xlink:href="#icon_pencil-edit"></use>
               </svg>
+              <span class="text">确认修改</span>
             </button>
-            <dao-dropdown-menu slot="list">
-              <dao-dropdown-item
-                v-if="$can('space.alert.delete')"
-                id="remove"
-                @click="onRemove"
-                :disabled="loadings.submitRemove"
-                class="dao-dropdown-item-red dao-dropdown-item-hover-red"
-              >
-                <span>删除</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item
-                v-if="$can('space.alert.update')"
-                @click="onConfirm"
-                :disabled="loadings.submitUpdate"
-              >
-                <span>修改</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown>
+            <button class="dao-btn" @click="initAll">取消</button>
+          </template>
+          <template v-else>
+            <dao-dropdown
+              v-if="$can('space.alert.delete') || $can('space.alert.update')"
+              trigger="click"
+              :append-to-body="true"
+              placement="bottom-end"
+            >
+              <button class="dao-btn ghost has-icon">
+                操作
+                <svg class="icon">
+                  <use xlink:href="#icon_caret-down"></use>
+                </svg>
+              </button>
+              <dao-dropdown-menu slot="list">
+                <dao-dropdown-item
+                  v-if="$can('space.alert.delete')"
+                  id="remove"
+                  @click="onRemove"
+                  :disabled="loadings.submitRemove"
+                  class="dao-dropdown-item-red dao-dropdown-item-hover-red"
+                >
+                  <span>删除</span>
+                </dao-dropdown-item>
+                <dao-dropdown-item
+                  v-if="$can('space.alert.update')"
+                  @click="onClickEdit"
+                  :disabled="loadings.submitUpdate"
+                >
+                  <span>修改</span>
+                </dao-dropdown-item>
+              </dao-dropdown-menu>
+            </dao-dropdown>
+          </template>
         </template>
       </resource-header>
-      <div class="btn-group">
-        <button
-          v-if="$can('space.alert.update')"
-          class="dao-btn has-icon blue"
-          id="confirmed"
-          @click="onConfirm"
-          :disabled="loadings.submitUpdate"
-        >
-          <svg class="icon icon-edit">
-            <use xlink:href="#icon_pencil-edit"></use>
-          </svg>
-          <span class="text">确认修改</span>
-        </button>
-      </div>
       <div class="card-wrapper">
         <el-card class="card">
           <template #header>
             <div class="card-header">
               <span>规则详情</span>
-              <button
-                v-if="$can('space.alert.update')"
-                class="dao-btn mini blue"
-                type="text"
-                @click="onClickDetail"
-                v-show="!detail.changeView"
-              >
-                编辑
-              </button>
             </div>
           </template>
           <div class="row">
@@ -74,11 +68,11 @@
           <div class="row">
             <label for="">告警内容</label>
             <div class="content">
-              <span v-if="!detail.changeView">
+              <span v-show="!detail.changeView">
                 {{ rule.description || '-' }}
               </span>
               <dao-input
-                v-else
+                v-show="detail.changeView"
                 block
                 icon-inside
                 v-model.trim="detail.description"
@@ -164,15 +158,6 @@
           <template #header>
             <div class="card-header">
               <span>作用范围</span>
-              <button
-                v-if="$can('space.alert.update')"
-                class="dao-btn mini blue"
-                type="text"
-                @click="onClickScope"
-                v-show="!scope.changeView"
-              >
-                编辑
-              </button>
             </div>
           </template>
           <div class="row">
@@ -228,14 +213,6 @@
           <template #header>
             <div class="card-header">
               <span>收件人</span>
-              <button
-                v-if="$can('space.alert.update')"
-                class="dao-btn mini blue"
-                @click="onClickEmail"
-                v-show="!email.changeView"
-              >
-                添加
-              </button>
             </div>
           </template>
           <el-table :data="cViewReceivers" v-if="!email.changeView">
