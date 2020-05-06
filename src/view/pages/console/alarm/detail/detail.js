@@ -127,13 +127,9 @@ export default {
     updateChangeView(prop, state = false) {
       prop.changeView = state;
     },
-    onClickScope() {
+    onClickEdit() {
       this.scope.changeView = true;
-    },
-    onClickEmail() {
       this.email.changeView = true;
-    },
-    onClickDetail() {
       this.detail.changeView = true;
     },
     wrapInstances(instances) {
