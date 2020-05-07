@@ -11,6 +11,7 @@
         filterable
         v-model="logOptions.container"
         placeholder="Container Name"
+        @change="swichContainer"
       >
         <el-option
           v-for="container in pod.spec.containers"
@@ -406,6 +407,16 @@ export default {
         this.visible = true;
       }
     },
+
+    swichContainer() {
+      this.reConnect();
+    },
+
+    reConnect() {
+      this.disconnect();
+      this.logs = [];
+      this.connect();
+    },
   },
 
   watch: {
@@ -418,9 +429,7 @@ export default {
 
     podName: {
       handler() {
-        this.disconnect();
-        this.logs = [];
-        this.connect();
+        this.reConnect();
       },
     },
   },
