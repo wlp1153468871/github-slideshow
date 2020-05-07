@@ -45,45 +45,6 @@
               width="200"
             >
             </el-table-column>
-
-            <el-table-column
-              v-if="$can('configMap.update') || $can('configMap.delete')"
-              fixed="right"
-              label="操作"
-              align="center"
-              header-align="center"
-              width="80"
-            >
-              <template slot-scope="{ row: configMap }">
-                <el-dropdown @command="handleOperate($event, configMap)">
-                  <span>
-                    <svg class="icon dropdown-trigger">
-                      <use xlink:href="#icon_more"></use>
-                    </svg>
-                  </span>
-
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      command="edit"
-                      v-if="$can('configMap.update')"
-                      :disabled="disableDelete(configMap)"
-                      icon="el-icon-edit-outline"
-                    >
-                      编辑
-                    </el-dropdown-item>
-                    <el-dropdown-item
-                      class="dropdown-item-error"
-                      v-if="$can('configMap.delete')"
-                      :disabled="disableDelete(configMap)"
-                      command="delete"
-                      icon="el-icon-delete"
-                    >
-                      删除
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-            </el-table-column>
           </x-table>
         </div>
       </div>

@@ -17,10 +17,14 @@
         <space-zone ref="spaceZone"> </space-zone>
 
         <dao-setting-layout>
-          <template slot="layout-title">名称</template>
+          <template slot="layout-title"
+            >名称</template
+          >
           <dao-setting-section>
             <dao-setting-item>
-              <template slot="label">名称</template>
+              <template slot="label"
+                >名称</template
+              >
               <template slot="content">
                 <dao-input
                   icon-inside
@@ -38,13 +42,24 @@
           </dao-setting-section>
         </dao-setting-layout>
 
-        <labels-table :data="data" :dialog-title="CONFIG_TITLE_TYPE.DATA" @edit="editData">
-        </labels-table>
-
-        <labels-table :data="labels" :dialog-title="CONFIG_TITLE_TYPE.LABEL" @edit="editLabel">
+        <labels-table
+          :canEdit="$can('configMap.create')"
+          :data="data"
+          :dialog-title="CONFIG_TITLE_TYPE.DATA"
+          @edit="editData"
+        >
         </labels-table>
 
         <labels-table
+          :canEdit="$can('configMap.create')"
+          :data="labels"
+          :dialog-title="CONFIG_TITLE_TYPE.LABEL"
+          @edit="editLabel"
+        >
+        </labels-table>
+
+        <labels-table
+          :canEdit="$can('configMap.create')"
           :data="annotations"
           :dialog-title="CONFIG_TITLE_TYPE.ANNOTATIONS"
           @edit="editAnnotations"
