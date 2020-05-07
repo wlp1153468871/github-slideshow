@@ -66,6 +66,7 @@
         </dao-setting-layout>
 
         <labels-table
+          :canEdit="$can('secret.create')"
           :data="data"
           :dialog-title="CONFIG_TITLE_TYPE.DATA"
           :is-secret="true"
@@ -73,10 +74,16 @@
         >
         </labels-table>
 
-        <labels-table :data="labels" :dialog-title="CONFIG_TITLE_TYPE.LABEL" @edit="editLabel">
+        <labels-table
+          :canEdit="$can('secret.create')"
+          :data="labels"
+          :dialog-title="CONFIG_TITLE_TYPE.LABEL"
+          @edit="editLabel"
+        >
         </labels-table>
 
         <labels-table
+          :canEdit="$can('secret.create')"
           :data="annotations"
           :dialog-title="CONFIG_TITLE_TYPE.ANNOTATIONS"
           @edit="editAnnotations"
