@@ -3,13 +3,10 @@
     <circle-loading v-if="loadings.detail"></circle-loading>
     <template v-else-if="ingress">
       <resource-header :resource="resource">
-
-        <template #creationTime>
-          创建于{{ ingress.metadata.creationTimestamp | date }}
-        </template>
+        <template #creationTime> 创建于{{ ingress.metadata.creationTimestamp | date }} </template>
 
         <template #status v-if="status === 'approving'">
-          <labels highLight :labels="{'状态': '审批中'}"></labels>
+          <labels highLight :labels="{ 状态: '审批中' }"></labels>
         </template>
 
         <template #labels>
@@ -18,10 +15,11 @@
 
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('update') || $can('delete')"
+            v-if="$can('ingress.delete', 'ingress') || $can('ingress.update', 'ingress')"
             trigger="click"
             :append-to-body="true"
-            placement="bottom-end">
+            placement="bottom-end"
+          >
             <button class="dao-btn ghosthas-icon">
               操作
               <svg class="icon">
@@ -31,27 +29,25 @@
 
             <dao-dropdown-menu slot="list">
               <dao-dropdown-item
-                v-if="$can('update')"
-                @click="dialogs.update = true">
+                v-if="$can('ingress.update', 'ingress')"
+                @click="dialogs.update = true"
+              >
                 <span>更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
-                v-if="$can('delete')"
+                v-if="$can('ingress.delete', 'ingress')"
                 @click="ensureRemove"
-                class="dao-dropdown-item-red dao-dropdown-item-hover-red">
+                class="dao-dropdown-item-red dao-dropdown-item-hover-red"
+              >
                 <span>删除</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>
-          <button
-            class="dao-btn csp-table-update-btn"
-            @click="init"
-            style="margin-left: 10px">
+          <button class="dao-btn csp-table-update-btn" @click="init" style="margin-left: 10px;">
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
           </button>
-
         </template>
       </resource-header>
 
@@ -61,11 +57,9 @@
             <h3>Rules</h3>
             <div class="panel-resource-content">
               <p class="sub-title">
-                These rules are handled by a routing layer (Ingress Controller)
-                which is updated as the rules are modified.
-                The Ingress controller implementation defines how headers
-                and other metadata are forwarded or
-                manipulated.
+                These rules are handled by a routing layer (Ingress Controller) which is updated as
+                the rules are modified. The Ingress controller implementation defines how headers
+                and other metadata are forwarded or manipulated.
               </p>
               <div class="ingress-table">
                 <div class="row ingress-table-head">
@@ -77,9 +71,7 @@
                 <div class="ingress-table-body">
                   <template v-for="(rule, ruleIndex) in ingress.spec.rules">
                     <template v-for="(path, pathIndex) in rule.http.paths">
-                      <div
-                        :key="ruleIndex + '-' + pathIndex"
-                        class="row">
+                      <div :key="ruleIndex + '-' + pathIndex" class="row">
                         <div class="col-xs-4 break-word">
                           <a :href="ingress | ingress_web_url(rule, path)" target="_blank">
                             {{ rule.host }}
@@ -92,9 +84,7 @@
                           <div>{{ path.path }}</div>
                         </div>
                         <div class="col-xs-3">
-                          <resource-link
-                            kind="Service"
-                            :name="path.backend.serviceName">
+                          <resource-link kind="Service" :name="path.backend.serviceName">
                           </resource-link>
                         </div>
                         <div class="col-xs-2">
@@ -111,11 +101,7 @@
           <div class="panel-resource">
             <h3>Pod</h3>
             <div class="panel-resource-content">
-              <pod-table
-                :loading="loadings.pod"
-                :pods="pods"
-                @refresh="getPods">
-              </pod-table>
+              <pod-table :loading="loadings.pod" :pods="pods" @refresh="getPods"> </pod-table>
             </div>
           </div>
 
@@ -128,10 +114,7 @@
                   <div class="col-xs-6">Secret</div>
                 </div>
                 <div class="ingress-table-body">
-                  <div
-                    class="row"
-                    v-for="(tls, index) in ingress.spec.tls"
-                    :key="index">
+                  <div class="row" v-for="(tls, index) in ingress.spec.tls" :key="index">
                     <div class="col-xs-6 break-word">
                       <template v-if="tls.hosts">
                         {{ tls.hosts.join() }}
@@ -141,10 +124,7 @@
                       </template>
                     </div>
                     <div class="col-xs-6">
-                      <resource-link
-                        kind="Secret"
-                        :name="tls.secretName">
-                      </resource-link>
+                      <resource-link kind="Secret" :name="tls.secretName"> </resource-link>
                     </div>
                   </div>
                 </div>
@@ -153,9 +133,7 @@
             </div>
           </div>
 
-          <annotations
-            style="margin-top: 15px;"
-            :annotations="ingress.metadata.annotations">
+          <annotations style="margin-top: 15px;" :annotations="ingress.metadata.annotations">
           </annotations>
         </div>
       </div>
@@ -165,7 +143,8 @@
       :value="ingress"
       :visible.sync="dialogs.update"
       :header="'更新 ' + name"
-      @update="updateIngress">
+      @update="updateIngress"
+    >
     </edit-yaml-dialog>
   </div>
 </template>
@@ -266,44 +245,44 @@ export default {
 </script>
 
 <style lang="scss">
-  .ingress-detail {
-    .ingress-table {
-      .ingress-table-head,
-      .ingress-table-body .row {
-        border-bottom: solid 1px #eee;
-      }
-
-      .row,
-      [class*='col-'] {
-        vertical-align: middle;
-      }
-
-      .row {
-        line-height: normal;
-        margin: 0;
-      }
+.ingress-detail {
+  .ingress-table {
+    .ingress-table-head,
+    .ingress-table-body .row {
+      border-bottom: solid 1px #eee;
     }
 
-    .ingress-table-head {
-      padding: 0 0 10px 0;
-      color: #666;
-      text-transform: uppercase;
-      padding: 10px 0;
+    .row,
+    [class*='col-'] {
+      vertical-align: middle;
     }
 
-    .ingress-table-body {
-      min-height: 50px;
-      position: relative;
-      width: 100%;
-
-      .row {
-        padding: 10px 0;
-      }
-    }
-
-    .break-word {
-      overflow-wrap: break-word;
-      word-wrap: break-word;
+    .row {
+      line-height: normal;
+      margin: 0;
     }
   }
+
+  .ingress-table-head {
+    padding: 0 0 10px 0;
+    color: #666;
+    text-transform: uppercase;
+    padding: 10px 0;
+  }
+
+  .ingress-table-body {
+    min-height: 50px;
+    position: relative;
+    width: 100%;
+
+    .row {
+      padding: 10px 0;
+    }
+  }
+
+  .break-word {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+}
 </style>

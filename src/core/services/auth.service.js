@@ -22,10 +22,16 @@ class AuthService {
 
   login(username, password) {
     return this.api
-      .post('/login', {
-        username,
-        password,
-      })
+      .post(
+        '/login',
+        {
+          username,
+          password,
+        },
+        {
+          noNotify: true,
+        },
+      )
       .then(res => {
         const { token, refresh_token } = res;
         Vue.ls.set('refresh_token', refresh_token);
@@ -54,10 +60,12 @@ class AuthService {
     return this.api.post('/logout');
   }
 
-  getUserInfo(query = {
-    zone_id: this.zone,
-    space_id: this.space,
-  }) {
+  getUserInfo(
+    query = {
+      zone_id: this.zone,
+      space_id: this.space,
+    },
+  ) {
     return this.api.get('/user/info', query);
   }
 

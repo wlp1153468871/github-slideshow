@@ -6,14 +6,13 @@
         <div class="sub-setting-item">
           <p class="top-label">类型</p>
           <div style="width: 150px; margin-right: 8px;">
-            <dao-select
-              v-model="source"
-              class="select-full-width">
+            <dao-select v-model="source" class="select-full-width">
               <dao-option
                 v-for="type in SOURCE_TYPES"
                 :key="type.value"
                 :value="type.value"
-                :label="type.label">
+                :label="type.label"
+              >
               </dao-option>
             </dao-select>
           </div>
@@ -30,7 +29,8 @@
               :status="veeErrors.has('key') ? 'error' : ''"
               data-vv-as="匹配名称"
               block
-              :placeholder="SOURCE_TYPES[source].placeholder">
+              :placeholder="SOURCE_TYPES[source].placeholder"
+            >
             </dao-input>
           </div>
         </div>
@@ -39,14 +39,13 @@
         <div class="sub-setting-item">
           <p class="top-label">匹配规则</p>
           <div style="width: 150px; margin-right: 8px;">
-            <dao-select
-              v-model="pattern"
-              class="select-full-width">
+            <dao-select v-model="pattern" class="select-full-width">
               <dao-option
                 v-for="type in PATTERN_TYPES"
                 :key="type.value"
                 :value="type.value"
-                :label="type.label">
+                :label="type.label"
+              >
               </dao-option>
             </dao-select>
           </div>
@@ -63,32 +62,28 @@
               :status="veeErrors.has('value') ? 'error' : ''"
               data-vv-as="匹配值"
               block
-              :placeholder="PATTERN_TYPES[pattern].placeholder">
+              :placeholder="PATTERN_TYPES[pattern].placeholder"
+            >
             </dao-input>
           </div>
         </div>
       </div>
     </div>
-    <p style="margin: 5px 0;">请求将被路由到 <b> 新版本 Service </b> 否则到 <b> 当前 Service</b>：</p>
+    <p style="margin: 5px 0;">
+      请求将被路由到 <b> 新版本 Service </b> 否则到 <b> 当前 Service</b>：
+    </p>
     <div class="sub-setting-layout">
       <div class="sub-setting-section level">
-        <div class="sub-setting-item level-item" style="margin-right: 4px">
+        <div class="sub-setting-item level-item" style="margin-right: 4px;">
           <p class="top-label">新版本应用</p>
           <dao-select v-model="nextModel" class="select-full-width">
-            <dao-option
-              v-for="app in apps"
-              :key="app.id"
-              :value="app.name"
-              :label="app.name">
+            <dao-option v-for="app in apps" :key="app.id" :value="app.name" :label="app.name">
             </dao-option>
           </dao-select>
         </div>
-        <div class="sub-setting-item level-item" style="margin-left: 4px">
+        <div class="sub-setting-item level-item" style="margin-left: 4px;">
           <p class="top-label">当前 Service</p>
-          <dao-select
-            v-model="current"
-            class="select-full-width"
-            :disabled="true">
+          <dao-select v-model="current" class="select-full-width" :disabled="true">
             <dao-option :value="current" :label="current"></dao-option>
           </dao-select>
         </div>
@@ -133,8 +128,9 @@ export default {
   },
   computed: {
     isValidForm() {
-      return Boolean(this.key && this.value && this.nextModel && this.current) &&
-        !this.veeErrors.any();
+      return (
+        Boolean(this.key && this.value && this.nextModel && this.current) && !this.veeErrors.any()
+      );
     },
   },
 

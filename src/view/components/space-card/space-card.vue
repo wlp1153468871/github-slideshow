@@ -1,11 +1,7 @@
 <template>
   <div class="space-card">
     <div class="space-card-top">
-      <a
-        class="big"
-        href="javascript:void(0)"
-        :title="space.short_name"
-        @click="gotoSpace()">
+      <a class="big" href="javascript:void(0)" :title="space.short_name" @click="gotoSpace()">
         {{ space.name }}
       </a>
       <p>{{ space.description }}</p>

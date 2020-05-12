@@ -26,11 +26,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'isPlatformAdmin',
-      'zoneUnauthorized',
-      'isOrganizationAdmin',
-    ]),
+    ...mapGetters(['isPlatformAdmin', 'zoneUnauthorized', 'isOrganizationAdmin']),
     ...mapState([
       'org',
       'orgs',
@@ -41,6 +37,7 @@ export default {
       'services',
       'filteredCategory',
       'isFullscreened',
+      'zoneRole',
     ]),
 
     isDisplayOrgSelect() {
@@ -48,19 +45,19 @@ export default {
     },
 
     isDisplayAppSelect() {
-      return this.orgs.length && this.isConsoleView;
+      // return this.orgs.length && this.isConsoleView;
+      return this.isConsoleView;
     },
 
     selectedServices() {
-      return this.headerMenus[this.selectedIndex].children[
-        this.selectedSubIndex
-      ].services;
+      return this.headerMenus[this.selectedIndex].children[this.selectedSubIndex].services;
     },
 
     isConsoleView() {
       // TODO(jerry) this part will update;
       return (
         !this.$route.path.startsWith('/manage/') &&
+        !this.$route.path.startsWith('/seeting/') &&
         !this.$route.path.startsWith('/console/deploy/') &&
         !this.$route.path.startsWith('/product/checkout/')
       );
@@ -105,9 +102,7 @@ export default {
       const filterValue = cloneDeep(categories).filter(category => {
         const filterCategory = category.children.filter(child => {
           const serviceList = child.services.filter(({ id, available }) => {
-            return (
-              available === 'available' && includes(this.availableServices, id)
-            );
+            return available === 'available' && includes(this.availableServices, id);
           });
           child.services = serviceList;
           return serviceList.length;
@@ -117,11 +112,7 @@ export default {
       });
 
       this.headerMenus.splice(0, this.headerMenus.length, ...this.defaultMenus);
-      this.headerMenus.splice(
-        this.headerMenus.length,
-        filterValue.length,
-        ...filterValue,
-      );
+      this.headerMenus.splice(this.headerMenus.length, filterValue.length, ...filterValue);
     },
 
     space() {
@@ -219,7 +210,7 @@ export default {
 
     gotoDashboard() {
       this.$router.push({
-        name: 'console.dashboard',
+        name: 'console.gateway',
       });
     },
 

@@ -3,7 +3,8 @@
     :config="config"
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">唯一标识</div>
@@ -14,13 +15,15 @@
             :with-search="true"
             search-placeholder="请输入种类的唯一标识"
             no-data-text="无选项"
-            no-match-text="无匹配选项">
+            no-match-text="无匹配选项"
+          >
             <dao-option-group>
               <dao-option
                 v-for="(option, index) in fields"
                 :key="index"
                 :value="option.code"
-                :label="option.code">
+                :label="option.code"
+              >
               </dao-option>
             </dao-option-group>
           </dao-select>
@@ -28,15 +31,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!fieldCode"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!fieldCode" @click="onConfirm">
         确定
       </button>
     </div>

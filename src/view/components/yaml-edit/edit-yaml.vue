@@ -3,29 +3,32 @@
     class="edit-yaml"
     :header="header"
     size="lg"
-    :footer="{confirmText}"
+    :footer="{ confirmText }"
     :visible.sync="isShow"
     @before-open="init"
     @cancel="onClose"
-    @confirm="onConfirm">
+    @confirm="onConfirm"
+  >
     <slot name="extra"></slot>
     <dao-setting-section>
       <dao-code-mirror v-model="yamlData" :read-only="readOnly"></dao-code-mirror>
     </dao-setting-section>
     <div slot="footer">
       <slot name="footer">
-        <button
-          class="dao-btn ghost"
-          @click="onClose">
-          取消
-        </button>
-        <button
-          class="dao-btn blue"
-          @click="tryConfirm">
-          确定
-        </button>
+        <template v-if="readOnly">
+          <button class="dao-btn ghost" @click="onClose">
+            关闭
+          </button>
+        </template>
+        <template v-else>
+          <button class="dao-btn ghost" @click="onClose">
+            取消
+          </button>
+          <button class="dao-btn blue" @click="tryConfirm">
+            确定
+          </button>
+        </template>
       </slot>
-
     </div>
   </dao-dialog>
 </template>
@@ -68,35 +71,35 @@ export default {
         if (isEmpty(value)) {
           return;
         }
-        this.yamlData = (typeof value === 'string')
-          ? value
-          : this.$jsyaml.safeDump(value);
-      } catch (e) { // eslint-disable
+        this.yamlData = typeof value === 'string' ? value : this.$jsyaml.safeDump(value);
+      } catch (e) {
+        // eslint-disable
         this.$noty.error('Yaml 格式不对');
       }
     },
 
     tryConfirm() {
-      this.$tada.confirm({
-        title: '保存 YAML',
-        text: '您确定需要保存此 YAML 吗？',
-        dangerMode: false,
-        primaryText: '确认',
-      }).then(ok => {
-        if (ok) {
-          this.onConfirm();
-          this.onClose();
-        } else {
-          this.onClose();
-        }
-      });
+      this.$tada
+        .confirm({
+          title: '保存 YAML',
+          text: '您确定需要保存此 YAML 吗？',
+          dangerMode: false,
+          primaryText: '确认',
+        })
+        .then(ok => {
+          if (ok) {
+            this.onConfirm();
+            this.onClose();
+          } else {
+            this.onClose();
+          }
+        });
     },
 
     onConfirm() {
       try {
-        const yaml = (typeof this.value === 'string')
-          ? this.yamlData
-          : this.$jsyaml.safeLoad(this.yamlData);
+        const yaml =
+          typeof this.value === 'string' ? this.yamlData : this.$jsyaml.safeLoad(this.yamlData);
         this.$emit('update', yaml);
       } catch (e) {
         this.$noty.error('Yaml 格式不对');

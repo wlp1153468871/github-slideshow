@@ -11,27 +11,22 @@
           @edit="editPlan"
           @checked-rows-change="showPanel"
           @enable-plan="confirmEnablePlan"
-          @disable-plan="confirmDisablePlan">
+          @disable-plan="confirmDisablePlan"
+        >
         </dao-table-view>
       </div>
     </div>
 
     <!-- detail panel start -->
     <div class="fixed-bottom-panels">
-      <dao-panel
-        size="l"
-        class="bottom-body"
-        :visible.sync="panelConfigs.planOverview.visible">
+      <dao-panel size="l" class="bottom-body" :visible.sync="panelConfigs.planOverview.visible">
         <dao-panel-item heading="配额详情">
           <div class="row">
             <div class="col-md-6">
-              <dao-info-sheet :table="planDetail.table">
-              </dao-info-sheet>
+              <dao-info-sheet :table="planDetail.table"> </dao-info-sheet>
             </div>
             <div class="col-md-6" v-if="chargingEnable">
-              <dao-info-card
-                size="md"
-                :table-value="chargDetail.table">
+              <dao-info-card size="md" :table-value="chargDetail.table">
                 <div slot="title">
                   计费详情
                 </div>
@@ -49,7 +44,8 @@
       :plan="plan"
       @save="updatePlan"
       :visible="dialogConfigs.editPlan.visible"
-      @close="dialogConfigs.editPlan.visible = false">
+      @close="dialogConfigs.editPlan.visible = false"
+    >
     </edit-plan-dialog>
     <!--dialog end -->
   </div>
@@ -226,11 +222,7 @@ export default {
       const params = {
         available: SERVICE_STATUS.UNAVAILABLE,
       };
-      BrokerServiceService.updateServicePlan(
-        this.serviceId,
-        plan.id,
-        params,
-      ).then(() => {
+      BrokerServiceService.updateServicePlan(this.serviceId, plan.id, params).then(() => {
         plan.available = SERVICE_STATUS.UNAVAILABLE;
         this.$noty.success('规格下架成功');
       });
@@ -254,11 +246,7 @@ export default {
       const params = {
         available: SERVICE_STATUS.AVAILABLE,
       };
-      BrokerServiceService.updateServicePlan(
-        this.serviceId,
-        plan.id,
-        params,
-      ).then(() => {
+      BrokerServiceService.updateServicePlan(this.serviceId, plan.id, params).then(() => {
         plan.available = SERVICE_STATUS.AVAILABLE;
         this.$noty.success('规格上架成功');
       });
@@ -286,15 +274,11 @@ export default {
         let { description, custom_description } = editedPlan;
         if (isNil(description)) description = '';
         if (isNil(custom_description)) custom_description = '';
-        updatePlan = BrokerServiceService.updateServicePlan(
-          this.serviceId,
-          plan.id,
-          {
-            name,
-            description,
-            custom_description,
-          },
-        );
+        updatePlan = BrokerServiceService.updateServicePlan(this.serviceId, plan.id, {
+          name,
+          description,
+          custom_description,
+        });
       }
 
       // update plan requires

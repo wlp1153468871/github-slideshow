@@ -3,7 +3,8 @@
     class="add-broker-dialog"
     header="添加 Broker"
     :visible.sync="isShow"
-    @before-open="init">
+    @before-open="init"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">名称</div>
@@ -19,9 +20,10 @@
             v-validate="{
               required: true,
               dns_1123_sub_domain: true,
-              max: nameValidation.maxlength
+              max: nameValidation.maxlength,
             }"
-            v-model="brokerModel.name">
+            v-model="brokerModel.name"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -38,7 +40,8 @@
             :message="veeErrors.first('url')"
             :status="veeErrors.has('url') ? 'error' : ''"
             v-validate="'required|url'"
-            v-model="brokerModel.url">
+            v-model="brokerModel.url"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -47,23 +50,10 @@
       <dao-setting-item>
         <div slot="label">授权信息</div>
         <template slot="content">
-          <dao-radio-group
-            name="authType"
-            class="radio-inline">
-            <dao-radio
-              label="none"
-              v-model="authType">无
-            </dao-radio>
-            <dao-radio
-              label="account"
-              v-model="authType"
-              class="m-l-sm">密码登录
-            </dao-radio>
-            <dao-radio
-              label="token"
-              v-model="authType"
-              class="m-l-sm">TOKEN登录
-            </dao-radio>
+          <dao-radio-group name="authType" class="radio-inline">
+            <dao-radio label="none" v-model="authType">无 </dao-radio>
+            <dao-radio label="account" v-model="authType" class="m-l-sm">密码登录 </dao-radio>
+            <dao-radio label="token" v-model="authType" class="m-l-sm">TOKEN登录 </dao-radio>
           </dao-radio-group>
           <template v-if="authType === 'token'">
             <dao-input
@@ -74,12 +64,11 @@
               :message="veeErrors.first('token')"
               :status="veeErrors.has('token') ? 'error' : ''"
               v-validate="'required'"
-              v-model="brokerModel.token">
+              v-model="brokerModel.token"
+            >
             </dao-input>
           </template>
-          <div
-            class="account-group"
-            v-if="authType === 'account'">
+          <div class="account-group" v-if="authType === 'account'">
             <div class="input-group">
               <span class="input-label">用户名</span>
               <dao-input
@@ -91,7 +80,8 @@
                 :message="veeErrors.first('userName')"
                 :status="veeErrors.has('userName') ? 'error' : ''"
                 v-validate="'required|max:25'"
-                v-model="brokerModel.userName">
+                v-model="brokerModel.userName"
+              >
               </dao-input>
             </div>
             <div class="input-group">
@@ -105,7 +95,8 @@
                 :message="veeErrors.first('password')"
                 :status="veeErrors.has('password') ? 'error' : ''"
                 v-validate="'required|max:25'"
-                v-model="brokerModel.password">
+                v-model="brokerModel.password"
+              >
               </dao-input>
             </div>
           </div>
@@ -113,15 +104,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose(false)">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="formInvalidate"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="formInvalidate" @click="onConfirm">
         添加
       </button>
     </div>
@@ -191,9 +177,7 @@ export default {
     },
 
     formInvalidate() {
-      const {
-        name, url, userName, password, token,
-      } = this.brokerModel;
+      const { name, url, userName, password, token } = this.brokerModel;
       let valid = true;
       if (this.authType === 'account') {
         valid = valid && userName && password;

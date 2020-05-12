@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-layout>
       <dao-setting-section>
         <dao-setting-item>
@@ -20,7 +21,8 @@
               icon-inside
               :message="veeErrors.first('name')"
               :status="veeErrors.has('name') ? 'error' : ''"
-              data-vv-as="用户名">
+              data-vv-as="用户名"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -39,7 +41,8 @@
               icon-inside
               :message="veeErrors.first('pwd')"
               :status="veeErrors.has('pwd') ? 'error' : ''"
-              data-vv-as="密码">
+              data-vv-as="密码"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -49,9 +52,7 @@
       {{ errorMsg }}
     </div>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
       <save-button
@@ -59,7 +60,8 @@
         text="确定"
         :disabled="veeErrors.any()"
         :saving="loadings.tags"
-        @click="onConfirm">
+        @click="onConfirm"
+      >
       </save-button>
     </div>
   </dao-dialog>
@@ -98,8 +100,7 @@ export default {
     onConfirm() {
       const { url, username, pwd } = this;
       this.loadings.tags = true;
-      UtilService
-        .getDockerImageTags(this.orgId, this.zoneId, url, username, pwd)
+      UtilService.getDockerImageTags(this.orgId, this.zoneId, url, username, pwd)
         .then(tags => {
           this.$emit('authorization', {
             tags,
@@ -107,11 +108,13 @@ export default {
             password: pwd,
           });
           this.onClose();
-        }).catch(err => {
+        })
+        .catch(err => {
           if (err.status === 403) {
             this.errorMsg = '用户名或密码错误';
           }
-        }).finally(() => {
+        })
+        .finally(() => {
           this.loadings.tags = false;
         });
     },

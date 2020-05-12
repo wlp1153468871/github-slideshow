@@ -21,10 +21,7 @@ export default function podStatus(pod) {
     pod.status.initContainerStatuses.forEach(initContainerStatus => {
       const initContainerState = getValue(initContainerStatus, 'state');
 
-      if (
-        initContainerState.terminated &&
-        initContainerState.terminated.exitCode === 0
-      ) {
+      if (initContainerState.terminated && initContainerState.terminated.exitCode === 0) {
         // initialization is complete
         return;
       }
@@ -35,9 +32,7 @@ export default function podStatus(pod) {
           if (initContainerState.terminated.signal) {
             reason = `Init Signal: ${initContainerState.terminated.signal}`;
           } else {
-            reason = `Init Exit Code: ${
-              initContainerState.terminated.exitCode
-            }`;
+            reason = `Init Exit Code: ${initContainerState.terminated.exitCode}`;
           }
         } else {
           reason = `Init ${initContainerState.terminated.reason}`;

@@ -15,14 +15,13 @@
               <div class="dl-item">
                 <dt>实例数:</dt>
                 <dd>
-                  <span>{{deployment.spec.replicas}} replica
+                  <span
+                    >{{ deployment.spec.replicas }} replica
                     <span v-if="deployment.spec.replicas !== 1">s</span>
                   </span>
                   <span v-if="autoscalers.length">
                     (autoscaled)
-                    <el-tooltip
-                      content="自动水平扩展"
-                      placement="top">
+                    <el-tooltip content="自动水平扩展" placement="top">
                       <svg class="icon text-muted" style="height: 12px;">
                         <use xlink:href="#icon_info-line"></use>
                       </svg>
@@ -30,19 +29,22 @@
                   </span>
                   <template v-else>
                     <button
-                      v-if="$can('update')"
+                      v-if="$can('deployment.update', 'deployment')"
                       class="dao-btn mini blue"
-                      @click="visible = true">弹性扩展
+                      @click="visible = true"
+                    >
+                      弹性扩展
                     </button>
                   </template>
                   <div v-if="deployment.status.updatedReplicas">
-                    {{deployment.status.updatedReplicas}} up to date
+                    {{ deployment.status.updatedReplicas }} up to date
                   </div>
                   <div v-if="replicasExtraInfo">
-                    <span v-if="availableReplicas">{{availableReplicas}} available
+                    <span v-if="availableReplicas"
+                      >{{ availableReplicas }} available
                       <span v-if="unavailableReplicas">,</span>
                     </span>
-                    <span v-if="unavailableReplicas">{{unavailableReplicas}} unavailable</span>
+                    <span v-if="unavailableReplicas">{{ unavailableReplicas }} unavailable</span>
                   </div>
                 </dd>
               </div>
@@ -53,15 +55,19 @@
                     {{ hpa.metadata.name }}
                     <button
                       style="margin-left: 3px;"
-                      v-if="$can('update')"
+                      v-if="$can('deployment.update', 'deployment')"
                       class="dao-btn btn-sm mini blue"
-                      @click="updateHPA(hpa)">编辑
+                      @click="updateHPA(hpa)"
+                    >
+                      编辑
                     </button>
                     <button
                       style="margin-left: 0;"
-                      v-if="$can('delete')"
+                      v-if="$can('deployment.delete', 'deployment')"
                       class="dao-btn btn-sm mini red"
-                      @click="confirmDeleteHPA(hpa.metadata.name)">删除
+                      @click="confirmDeleteHPA(hpa.metadata.name)"
+                    >
+                      删除
                     </button>
                   </div>
                 </dd>
@@ -69,38 +75,34 @@
               <div class="dl-item" v-if="deployment.spec.strategy">
                 <dt>策略（Strategy）：</dt>
                 <dd>
-                  {{deployment.spec.strategy.type | sentence_case}}
+                  {{ deployment.spec.strategy.type | sentence_case }}
                 </dd>
               </div>
               <div class="dl-item" v-if="deployment.spec.strategy.rollingUpdate">
                 <dt>Max Unavailable：</dt>
                 <dd>
-                  {{deployment.spec.strategy.rollingUpdate.maxUnavailable}}
+                  {{ deployment.spec.strategy.rollingUpdate.maxUnavailable }}
                 </dd>
               </div>
               <div class="dl-item" v-if="deployment.spec.strategy.rollingUpdate">
                 <dt>Max Surge：</dt>
                 <dd>
-                  {{deployment.spec.strategy.rollingUpdate.maxSurge}}
+                  {{ deployment.spec.strategy.rollingUpdate.maxSurge }}
                 </dd>
               </div>
               <div class="dl-item">
                 <dt>Min Ready：</dt>
-                <dd>
-                  {{deployment.spec.minReadySeconds || 0}} sec
-                </dd>
+                <dd>{{ deployment.spec.minReadySeconds || 0 }} sec</dd>
               </div>
               <div class="dl-item">
                 <dt>Revision History Limit：</dt>
                 <dd>
-                  {{deployment.spec.revisionHistoryLimit || 2}}
+                  {{ deployment.spec.revisionHistoryLimit || 2 }}
                 </dd>
               </div>
               <div class="dl-item">
                 <dt>Progress Deadline：</dt>
-                <dd>
-                  {{deployment.spec.progressDeadlineSeconds || 600}} sec
-                </dd>
+                <dd>{{ deployment.spec.progressDeadlineSeconds || 600 }} sec</dd>
               </div>
             </dl>
           </div>
@@ -109,16 +111,13 @@
       <div class="panel-resource container-content">
         <h3>Containers</h3>
         <div class="panel-resource-content">
-          <div
-            v-if="detailed && !hasHealthChecks(deployment)"
-            class="alert alert-info">
+          <div v-if="detailed && !hasHealthChecks(deployment)" class="alert alert-info">
             <div class="alert-description">
               <svg class="icon">
                 <use xlink:href="#icon_warning-line"></use>
               </svg>
               <span v-if="deployment.spec.template.spec.containers.length === 1">
-                Container
-                &nbsp;{{deployment.spec.template.spec.containers[0].name}}
+                Container &nbsp;{{ deployment.spec.template.spec.containers[0].name }}
                 &nbsp;does not have health checks
               </span>
               <span v-if="deployment.spec.template.spec.containers.length > 1">
@@ -131,14 +130,15 @@
           <div class="pod-template-container">
             <div
               :key="index"
-              v-for="(container, index) in deployment.spec.template.spec.containers">
-
+              v-for="(container, index) in deployment.spec.template.spec.containers"
+            >
               <pod-template-container
                 :pod-template="deployment.spec.template"
                 :container="container"
                 :images-by-docker-reference="imagesByDockerReference"
                 :builds="builds"
-                :detailed="true">
+                :detailed="true"
+              >
               </pod-template-container>
             </div>
           </div>
@@ -151,7 +151,8 @@
         <div class="panel-resource-content">
           <volumes
             v-if="deployment.spec.template.spec.volumes"
-            :volumes="deployment.spec.template.spec.volumes">
+            :volumes="deployment.spec.template.spec.volumes"
+          >
           </volumes>
           <div v-else>暂无</div>
         </div>
@@ -162,8 +163,8 @@
       :visible.sync="visible"
       header="修改实例数"
       @before-open="initReplicas"
-      @confirm="confirmScale">
-
+      @confirm="confirmScale"
+    >
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">实例数</div>
@@ -180,20 +181,17 @@
               :class="veeErrors.has('replicas') ? 'error' : ''"
               :status="veeErrors.has('replicas') ? 'error' : ''"
               :message="veeErrors.first('replicas')"
-              data-vv-as="实例数">
+              data-vv-as="实例数"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
       </dao-setting-section>
       <div slot="footer">
-        <button
-          class="dao-btn ghost"
-          @click="visible = false">
+        <button class="dao-btn ghost" @click="visible = false">
           取消
         </button>
-        <button
-          class="dao-btn blue"
-          @click="confirmScale">
+        <button class="dao-btn blue" @click="confirmScale">
           确定
         </button>
       </div>
@@ -203,7 +201,8 @@
       header="更新 HPA"
       :value="selectedHPA"
       :visible.sync="dialogConfigs.hpaEdit"
-      @update="updateHPAByYaml">
+      @update="updateHPAByYaml"
+    >
     </edit-yaml-dialog>
   </div>
 </template>

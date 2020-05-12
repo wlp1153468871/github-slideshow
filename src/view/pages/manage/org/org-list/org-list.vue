@@ -1,31 +1,31 @@
 <template>
   <div>
     <div class="layout-content-header bg-white">
-      租户管理
+      组织管理
     </div>
     <div class="dao-view-main">
       <div class="dao-view-content">
         <x-table
+          :showRefresh="this.$can('platform.organization.get')"
           :loading="loadings.orgs"
           :data="rows"
           @refresh="loadOrgs"
           :filter-method="filterMethod"
-          style="width: 100%"
+          style="width: 100%;"
         >
           <template #operation>
             <button
               class="dao-btn has-icon blue"
-              @click="addOrgDialog()">
+              v-if="$can('platform.organization.create')"
+              @click="addOrgDialog()"
+            >
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
               <span class="text">添加租户</span>
             </button>
           </template>
-          <el-table-column
-            prop="name"
-            sortable
-            label="租户名">
+          <el-table-column prop="name" sortable label="租户名">
             <template slot-scope="{ row: org }">
               <router-link
                 :to="{
@@ -42,10 +42,7 @@
               {{ org.short_name }}
             </template>
           </el-table-column>
-          <el-table-column
-            prop="description"
-            label="备注"
-            :show-overflow-tooltip="true">
+          <el-table-column prop="description" label="备注" :show-overflow-tooltip="true">
             <template slot-scope="{ row: org }">
               {{ org.description | otherwise }}
             </template>
@@ -56,7 +53,8 @@
     <add-org-dialog
       :visible="dialogConfigs.addOrg.visible"
       @create="createOrg"
-      @close="dialogConfigs.addOrg.visible = false">
+      @close="dialogConfigs.addOrg.visible = false"
+    >
     </add-org-dialog>
   </div>
 </template>

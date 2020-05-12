@@ -11,9 +11,9 @@
         <dao-setting-item>
           <div slot="label">CPU</div>
           <div slot="content-helper">
-            {{helperTextPrefix}}:{{cpu.subHard + 'Core'}}
+            {{ helperTextPrefix }}:{{ cpu.subHard + 'Core' }}
             <br />
-            当前配额: {{cpu.hard + 'Core'}}
+            当前配额: {{ cpu.hard + 'Core' }}
           </div>
           <div slot="content">
             <dao-input
@@ -35,9 +35,9 @@
         <dao-setting-item>
           <div slot="label">内存</div>
           <div slot="content-helper">
-            {{helperTextPrefix}}：{{memory.subHard}}G
+            {{ helperTextPrefix }}：{{ memory.subHard }}G
             <br />
-            当前配额： {{memory.hard}}G
+            当前配额： {{ memory.hard }}G
           </div>
           <div slot="content">
             <dao-input
@@ -59,9 +59,9 @@
         <dao-setting-item>
           <div slot="label">存储</div>
           <div slot="content-helper">
-            {{helperTextPrefix}}:{{storage.subHard}}G
+            {{ helperTextPrefix }}:{{ storage.subHard }}G
             <br />
-            当前配额: {{storage.hard}}G
+            当前配额: {{ storage.hard }}G
           </div>
           <div slot="content">
             <dao-input
@@ -95,9 +95,9 @@
               :placeholder="remarkPlaceholder"
               v-model="remark"
             >
-    </textarea>
+            </textarea>
             <div class="dao-input-message error">
-              <span>{{veeErrors.first('remark')}}</span>
+              <span>{{ veeErrors.first('remark') }}</span>
             </div>
           </div>
         </dao-setting-item>
@@ -105,17 +105,11 @@
     </div>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose"
-      >
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        @click="onSubmit"
-      >
-        {{isApply ? '提交审批' : '更新'}}
+      <button class="dao-btn blue" @click="onSubmit">
+        {{ isApply ? '提交审批' : '更新' }}
       </button>
     </div>
   </dao-dialog>

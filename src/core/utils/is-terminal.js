@@ -3,10 +3,7 @@
  * @param {String} name name
  */
 function isTerminal(name) {
-  const nameSet = new Set([
-    '控制台地址',
-    'dashboard_url',
-  ]);
+  const nameSet = new Set(['控制台地址', 'dashboard_url']);
   return nameSet.has(name);
 }
 

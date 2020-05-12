@@ -5,9 +5,7 @@
       <dao-setting-section>
         <dao-setting-item>
           <div slot="label">项目信息</div>
-          <div slot="content">
-            租户：{{ org.name }}，项目：{{ space.name }}
-          </div>
+          <div slot="content">租户：{{ org.name }}，项目：{{ space.name }}</div>
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section>

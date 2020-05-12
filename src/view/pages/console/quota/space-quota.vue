@@ -6,7 +6,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <div class="quota-section">
-          <h4 class="quota-section-head">{{spaceDescription}}总配额</h4>
+          <h4 class="quota-section-head">{{ spaceDescription }}总配额</h4>
           <quota-cards
             :hard="spaceQuota.hard"
             :sub-hard="spaceQuota.subHard"
@@ -19,25 +19,21 @@
               slot="action"
               :loading="true"
               @click="applyDialog.visible = true"
-              v-if="isAdmin"
+              v-if="$can('space.quota.update')"
             >
-              申请{{spaceDescription}}配额
+              申请{{ spaceDescription }}配额
             </button>
           </quota-cards>
-          <p
-            style="color: red; padding-bottom: 15px;"
-            v-if="warning.length > 0"
-          >
-            检测到该{{spaceDescription}}下的【{{warning.join('、')}}】可用区
-            配额总和大于{{spaceDescription}}的当前配额，
-            可能是底层错误修改了配额，请更新可用区或{{spaceDescription}}配额以保证可用区配额的总和小于{{spaceDescription}}配额。
+          <p style="color: red; padding-bottom: 15px;" v-if="warning.length > 0">
+            检测到该{{ spaceDescription }}下的【{{ warning.join('、') }}】可用区 配额总和大于{{
+              spaceDescription
+            }}的当前配额， 可能是底层错误修改了配额，请更新可用区或{{
+              spaceDescription
+            }}配额以保证可用区配额的总和小于{{ spaceDescription }}配额。
           </p>
         </div>
-        <div
-          class="quota-section"
-          v-if="!zoneUnauthorized || isPlatformAdmin"
-        >
-          <h4 class="quota-section-head"> {{ zone.name }} 可用区配额</h4>
+        <div class="quota-section" v-if="$can('space.quota.view')">
+          <h4 class="quota-section-head">{{ zone.name }} 可用区配额</h4>
           <quota-cards
             :hard="zoneQuota.hard"
             :sub-hard="zoneQuota.subHard"
@@ -50,29 +46,22 @@
               class="dao-btn blue"
               slot="action"
               @click="updateDialog.visible = true"
-              v-if="isAdmin && $can('update')"
-            >更新可用区配额</button>
+              v-if="$can('space.quota.update')"
+            >
+              更新可用区配额
+            </button>
           </quota-cards>
-          <p
-            v-else
-            class="empty-msg"
-          >
+          <p v-else class="empty-msg">
             当前可用区未设置资源配额，不纳入配额计算范围。
           </p>
-          <p
-            style="color: red; padding-bottom: 15px;"
-            v-if="zoneWarning.length > 0"
-          >
-            检测到该{{zone.name}}可用区的【{{zoneWarning.join('、')}}】已用
-            资源大于配额。
+          <p style="color: red; padding-bottom: 15px;" v-if="zoneWarning.length > 0">
+            检测到该{{ zone.name }}可用区的【{{ zoneWarning.join('、') }}】已用 资源大于配额。
           </p>
         </div>
-        <div
-          class="quota-section"
-          v-if="isAdmin"
-        >
-          <h4 class="quota-section-head"> {{spaceDescription}}配额更新请求 </h4>
+        <div class="quota-section" v-if="$can('space.quota.update')">
+          <h4 class="quota-section-head">{{ spaceDescription }}配额更新请求</h4>
           <quota-approval-table
+            :can-update="$can('space.quota.update')"
             :loading="quotaApprovalLoading"
             :approvals="quotaApproval"
             :showSpaceCol="false"
@@ -163,7 +152,7 @@ export default {
   },
   created() {
     this.getSpaceQuota();
-    if (!this.zoneUnauthorized || this.isPlatformAdmin) this.getZoneQuota();
+    if (this.$can('space.quota.view')) this.getZoneQuota();
     this.getSpaceQuotaApplyList();
   },
   components: {
@@ -208,22 +197,24 @@ export default {
       });
     },
     getZoneQuota() {
-      zoneService.getResourceQuota().then(res => {
-        const hard = gatValue(res, 'status.hard', {});
-        const used = gatValue(res, 'status.used', {});
-        this.zoneQuota = {
-          hard: {
-            cpu: hard['limits.cpu'],
-            memory: hard['limits.memory'],
-            storage: hard['requests.storage'],
-          },
-          subHard: {
-            cpu: used['limits.cpu'],
-            memory: used['limits.memory'],
-            storage: used['requests.storage'],
-          },
-        };
-      })
+      zoneService
+        .getResourceQuota()
+        .then(res => {
+          const hard = gatValue(res, 'status.hard', {});
+          const used = gatValue(res, 'status.used', {});
+          this.zoneQuota = {
+            hard: {
+              cpu: hard['limits.cpu'],
+              memory: hard['limits.memory'],
+              storage: hard['requests.storage'],
+            },
+            subHard: {
+              cpu: used['limits.cpu'],
+              memory: used['limits.memory'],
+              storage: used['requests.storage'],
+            },
+          };
+        })
         .catch(err => {
           if (err.status === 404) {
             this.noZoneQuota = true;

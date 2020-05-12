@@ -1,9 +1,9 @@
 <template>
   <ul class="quota-cards">
     <div class="action">
-      <slot name="action">
-      </slot>
+      <slot name="action"> </slot>
       <button
+        v-if="showRefresh"
         class="dao-btn"
         style="margin-left: 10px;"
         @click="$emit('refresh')"
@@ -48,7 +48,7 @@ import QuotaCard from './quota-card.vue';
 
 export default {
   name: 'quota-cards',
-  props: ['scope', 'subScope', 'hard', 'subHard'],
+  props: ['scope', 'subScope', 'hard', 'subHard', 'showRefresh'],
   components: {
     QuotaCard,
   },

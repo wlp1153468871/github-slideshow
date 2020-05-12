@@ -10,37 +10,37 @@
           <div class="csp-table-container">
             <table class="csp-table-layout">
               <thead>
-              <tr>
-                <th>键</th>
-                <th>值
-                  <svg
-                    class="icon"
-                    @click="isCipherText = false"
-                    v-show="isCipherText && isSecret">
-                    <use xlink:href="#icon_eye-slash"></use>
-                  </svg>
-                  <svg
-                    class="icon"
-                    @click="isCipherText = true"
-                    v-show="!isCipherText && isSecret">
-                    <use xlink:href="#icon_eye"></use>
-                  </svg>
-                </th>
-              </tr>
+                <tr>
+                  <th>键</th>
+                  <th>
+                    值
+                    <svg
+                      class="icon"
+                      @click="isCipherText = false"
+                      v-show="isCipherText && isSecret"
+                    >
+                      <use xlink:href="#icon_eye-slash"></use>
+                    </svg>
+                    <svg
+                      class="icon"
+                      @click="isCipherText = true"
+                      v-show="!isCipherText && isSecret"
+                    >
+                      <use xlink:href="#icon_eye"></use>
+                    </svg>
+                  </th>
+                </tr>
               </thead>
               <tbody v-if="!isDateEmpty">
-              <tr v-for="(item, index) in data" :key="index">
-                <td>{{ index }}</td>
-                <td>{{ isCipherText && isSecret ? '******' : item }}</td>
-              </tr>
+                <tr v-for="(item, index) in data" :key="index">
+                  <td>{{ index }}</td>
+                  <td>{{ isCipherText && isSecret ? '******' : item }}</td>
+                </tr>
               </tbody>
             </table>
             <empty-state v-if="isDateEmpty"></empty-state>
             <div slot="footer" style="margin-top: 10px;">
-              <button
-                v-if="$can('create')"
-                class="dao-btn blue"
-                @click="openEditDialog()">
+              <button v-if="canEdit" class="dao-btn blue" @click="openEditDialog()">
                 编辑
               </button>
             </div>
@@ -54,7 +54,8 @@
       :visible="dialogConfigs.editLabel.visible"
       :data="currentData"
       @edit="edit"
-      @close="dialogConfigs.editLabel.visible = false">
+      @close="dialogConfigs.editLabel.visible = false"
+    >
     </edit-labels-dialog>
 
     <edit-data-dialog
@@ -63,7 +64,8 @@
       @check="setCheck"
       @edit="edit"
       :visible="dialogConfigs.editdata.visible"
-      @close="dialogConfigs.editdata.visible = false">
+      @close="dialogConfigs.editdata.visible = false"
+    >
     </edit-data-dialog>
   </dao-setting-layout>
 </template>
@@ -86,6 +88,7 @@ export default {
     data: { type: Object, default: () => ({}) },
     validator: { type: Object, default: () => ({}) },
     isSecret: { type: Boolean, default: false },
+    canEdit: { type: Boolean, default: false },
   },
 
   data() {

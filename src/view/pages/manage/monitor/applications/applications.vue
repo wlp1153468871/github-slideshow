@@ -22,7 +22,8 @@
               :value="app"
               :label="app.name"
               v-for="app in applications"
-              :key="app.id"></el-option>
+              :key="app.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="类型">
@@ -34,11 +35,7 @@
             placeholder=""
             @change="onClickKind"
           >
-            <el-option
-              :value="k"
-              :label="k"
-              v-for="k in kinds"
-              :key="k"></el-option>
+            <el-option :value="k" :label="k" v-for="k in kinds" :key="k"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="实例">
@@ -51,11 +48,7 @@
             placeholder=""
             @change="onClickInstance"
           >
-            <el-option
-              :value="i"
-              :label="i.name"
-              v-for="i in instances"
-              :key="i.id"></el-option>
+            <el-option :value="i" :label="i.name" v-for="i in instances" :key="i.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="pod">
@@ -72,7 +65,8 @@
               :value="pod"
               :label="pod.name"
               v-for="pod in pods"
-              :key="pod.name"></el-option>
+              :key="pod.name"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -96,16 +90,13 @@
               <el-option
                 :value="t"
                 :label="t"
-                v-for= "(t, index) in timeRanges"
-                :key="index"></el-option>
+                v-for="(t, index) in timeRanges"
+                :key="index"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-form>
-        <iframe
-          class="monitor-frame"
-          :src="url"
-          frameborder="0">
-        </iframe>
+        <iframe class="monitor-frame" :src="url" frameborder="0"> </iframe>
       </template>
       <p v-else class="empty-message">您选择的类型没有开启监控或没有任何实例</p>
     </template>

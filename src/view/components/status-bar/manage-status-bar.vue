@@ -1,12 +1,8 @@
 <template>
   <div>
-    <section class="versatile-bar">
-    </section>
+    <section class="versatile-bar"></section>
     <section class="user-bar">
-      <dao-dropdown
-        trigger="click"
-        :append-to-body="true"
-        placement="bottom-end">
+      <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
         <div class="user-profile">
           <div class="info">
             <span class="name">{{ user.username }}</span>
@@ -144,8 +140,7 @@ $radial-blue-border: #c1ddff;
         svg.notification-icon {
           color: $grey-light;
           transform: scale(1);
-          transition: 700ms * $animation-speed 300ms * $animation-speed linear
-            all;
+          transition: 700ms * $animation-speed 300ms * $animation-speed linear all;
           opacity: 1;
 
           fill: $grey-light;
@@ -204,8 +199,7 @@ $radial-blue-border: #c1ddff;
           border-color: transparent;
           svg.radial-progress-bar {
             content: '';
-            animation: change-border 300ms * $animation-speed 500ms *
-              $animation-speed forwards;
+            animation: change-border 300ms * $animation-speed 500ms * $animation-speed forwards;
             @keyframes change-border {
               from {
                 transform: scale(1.15);
@@ -226,8 +220,7 @@ $radial-blue-border: #c1ddff;
             opacity: 0;
           }
           span.task-number {
-            animation: number-show 700ms * $animation-speed 900ms *
-              $animation-speed forwards;
+            animation: number-show 700ms * $animation-speed 900ms * $animation-speed forwards;
             // animation-direction: alternate;
             @keyframes number-show {
               from {

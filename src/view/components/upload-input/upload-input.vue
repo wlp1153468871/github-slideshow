@@ -1,11 +1,7 @@
 <template>
   <div class="dao-input-container">
     <div class="dao-input-inner">
-      <input
-        type="text"
-        v-model="filename"
-        placeholder="选择文件..."
-        readonly="readonly"/>
+      <input type="text" v-model="filename" placeholder="选择文件..." readonly="readonly" />
       <span class="file-upload-btn">
         <file-upload
           class="dao-btn btn-sm blue uploadFile"
@@ -14,7 +10,8 @@
           :name="name"
           :extensions="extensions"
           v-model="filenames"
-          @input="handleFileInput">
+          @input="handleFileInput"
+        >
           浏览
         </file-upload>
       </span>
@@ -69,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .file-upload-btn {
+.file-upload-btn {
   position: absolute;
   top: 3px;
   right: 3px;

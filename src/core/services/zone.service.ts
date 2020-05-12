@@ -97,9 +97,7 @@ class ZoneService {
     return this.api.post('/zone/check', cluster).then(res => {
       // 三种状态 'True', 'False', 'Unknow'
       // @ts-ignore
-      return res.status.status === 'True'
-        ? Promise.resolve()
-        : Promise.reject(res);
+      return res.status.status === 'True' ? Promise.resolve() : Promise.reject(res);
     });
   }
 
@@ -119,9 +117,13 @@ class ZoneService {
   }
 
   getResourceQuota() {
-    return this.api.get(`spaces/${this.spaceId}/resourcequota`, {
-      zone: this.zoneId,
-    }, { noNotify: true });
+    return this.api.get(
+      `spaces/${this.spaceId}/resourcequota`,
+      {
+        zone: this.zoneId,
+      },
+      { noNotify: true },
+    );
   }
 
   checkRegistryAccount(data: any) {

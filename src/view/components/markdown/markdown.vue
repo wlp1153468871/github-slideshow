@@ -1,9 +1,5 @@
 <template>
-  <article
-    @click="preventAnchor"
-    class="markdown-body"
-    v-html="markdownHtml">
-  </article>
+  <article @click="preventAnchor" class="markdown-body" v-html="markdownHtml"></article>
 </template>
 
 <script>
@@ -47,10 +43,7 @@ export default {
       });
     },
     preventAnchor(event) {
-      if (
-        event.type === 'click' &&
-        event.target.tagName.toUpperCase() === 'A'
-      ) {
+      if (event.type === 'click' && event.target.tagName.toUpperCase() === 'A') {
         event.preventDefault();
         event.stopPropagation();
         const { href } = event.target;

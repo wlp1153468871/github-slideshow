@@ -126,9 +126,7 @@ export default {
 
       if (tKeyword !== '') {
         keyword = keyword.toLowerCase();
-        const handler =
-          this.tKeywordHandler ||
-          (item => this.defaultSearchHandler(keyword, item));
+        const handler = this.tKeywordHandler || (item => this.defaultSearchHandler(keyword, item));
         this.tCriteria.setFilter(key, handler);
       } else if (tKeyword === '' && old !== '') {
         this.tCriteria.removeFilter(key);

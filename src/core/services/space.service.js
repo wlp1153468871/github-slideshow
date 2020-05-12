@@ -88,10 +88,9 @@ class SpaceService {
   }
 
   getInstances(serviceId) {
-    return this.api.get(
-      `/spaces/${this.spaceId}/services/${serviceId}/instances`,
-      { zoneId: this.zoneId },
-    );
+    return this.api.get(`/spaces/${this.spaceId}/services/${serviceId}/instances`, {
+      zoneId: this.zoneId,
+    });
   }
 
   deleteSpaceService(spaceId, serviceId) {
@@ -106,15 +105,7 @@ class SpaceService {
     return this.api.get(`spaces/${spaceId || this.spaceId}/space_quota`);
   }
 
-  getServiceMonitor(
-    service_name,
-    spaceId,
-    zone,
-    type,
-    from = '',
-    to = '',
-    refresh = '30s',
-  ) {
+  getServiceMonitor(service_name, spaceId, zone, type, from = '', to = '', refresh = '30s') {
     return this.api.get(`spaces/${spaceId}/monitoring/service/${service_name}/type/${type}`, {
       zone,
       from,
@@ -139,6 +130,11 @@ class SpaceService {
 
   getResourceQuotaApprovals(type = 'apply') {
     return this.api.get('/quota/approval/space', { space_id: this.spaceId, type });
+  }
+
+  // 根据scope的id，获取其所有users和与user拥有的roles。
+  getScopeUsers(spaceId) {
+    return this.api.get(`/spaces/${spaceId}/users`);
   }
 }
 

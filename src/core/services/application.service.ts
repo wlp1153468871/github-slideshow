@@ -55,12 +55,7 @@ class ApplicationService {
    * @param limit request events' size
    * @param timestamp begin time's timestamp, default are now
    */
-  async listEvent(
-    instanceId: string,
-    zone: string,
-    limit: number,
-    timestamp: number,
-  ) {
+  async listEvent(instanceId: string, zone: string, limit: number, timestamp: number) {
     return this.api.get(`/instances/${instanceId}/events`, {
       zone,
       limit,
@@ -84,11 +79,7 @@ class ApplicationService {
     });
   }
 
-  async getInstancePod(
-    spaceId: string,
-    zone: string,
-    appName: string,
-  ) {
+  async getInstancePod(spaceId: string, zone: string, appName: string) {
     return this.api.get(`/spaces/${spaceId}/monitoring/app/${appName}`, {
       zone,
     });

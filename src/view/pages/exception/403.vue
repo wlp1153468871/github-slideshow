@@ -1,5 +1,5 @@
 <template>
-  <exception-page type="40301" ></exception-page>
+  <exception-page type="40301"></exception-page>
 </template>
 
 <script>

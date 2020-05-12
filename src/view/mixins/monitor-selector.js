@@ -4,7 +4,12 @@ import DeploymentConfigResourceService from '@/core/services/deployment-config.r
 import StatefulSetService from '@/core/services/stateful-set.service.ts';
 import { mapState } from 'vuex';
 
-import { MONITOR_KIND, MONITOR_TIME_MAP, MONITOR_KIND_MAP_FLIP, MONITOR_KIND_MAP } from '@/core/constants/constants';
+import {
+  MONITOR_KIND,
+  MONITOR_TIME_MAP,
+  MONITOR_KIND_MAP_FLIP,
+  MONITOR_KIND_MAP,
+} from '@/core/constants/constants';
 import { pick, intersection } from 'lodash';
 
 export default {
@@ -24,8 +29,7 @@ export default {
       return intersection(
         Object.keys(this.apiResource || {}),
         Object.values(MONITOR_KIND_MAP_FLIP),
-      )
-        .map(kind => MONITOR_KIND_MAP[kind]);
+      ).map(kind => MONITOR_KIND_MAP[kind]);
     },
   },
   methods: {
@@ -47,11 +51,11 @@ export default {
           break;
         default:
       }
-      return list.items
-        .map(({ metadata: meta }) => ({ name: meta.name, id: meta.uid, kind }));
+      return list.items.map(({ metadata: meta }) => ({ name: meta.name, id: meta.uid, kind }));
     },
     filterInstances(instances, kind) {
-      return instances.filter(instance => instance.kind === kind)
+      return instances
+        .filter(instance => instance.kind === kind)
         .map(instance => pick(instance, ['name', 'id']));
     },
     async getPods(instanceName) {
@@ -101,7 +105,7 @@ export default {
         this.instances = await this.fetchInstancesBasedKind(this.filters.kind);
       } else {
         this.instances = this.filterInstances(
-          (await this.fetchInstancesBasedApp()),
+          await this.fetchInstancesBasedApp(),
           this.filters.kind,
         );
       }
@@ -143,7 +147,7 @@ export default {
   },
   watch: {
     kinds() {
-      this.init();
+      this.initAll();
     },
   },
 };

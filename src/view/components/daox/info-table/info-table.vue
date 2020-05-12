@@ -6,22 +6,17 @@
     </div>
     <table v-show="list.length">
       <tbody class="ins-card-body">
-      <tr
-        class="ins-info-item"
-        v-for="item in list"
-        :key="item.name">
-        <td class="info-item-label">
-          {{ item.name }}
-        </td>
-        <td class="info-item-content" v-if="!isArray(item.value)">
-          {{ item.value }}
-        </td>
-        <td class="info-item-content" v-else>
-          <slot
-            name="self"
-            v-bind:item="item.value"></slot>
-        </td>
-      </tr>
+        <tr class="ins-info-item" v-for="item in list" :key="item.name">
+          <td class="info-item-label">
+            {{ item.name }}
+          </td>
+          <td class="info-item-content" v-if="!isArray(item.value)">
+            {{ item.value }}
+          </td>
+          <td class="info-item-content" v-else>
+            <slot name="self" v-bind:item="item.value"></slot>
+          </td>
+        </tr>
       </tbody>
     </table>
     <slot name="content"></slot>
@@ -56,7 +51,7 @@ export default {
 
   &.ins-setting-card-box {
     background-color: #fff;
-    box-shadow: 0 1px 4px rgba(204, 209, 217, .3);
+    box-shadow: 0 1px 4px rgba(204, 209, 217, 0.3);
     border: 1px solid #e4e7ed;
     border-radius: 4px;
   }

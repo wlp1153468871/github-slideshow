@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-layout>
       <dao-setting-section>
         <dao-setting-item>
@@ -15,7 +16,8 @@
                 v-for="(item, idx) in volumes"
                 :key="idx"
                 :value="item.name"
-                :label="item.name">
+                :label="item.name"
+              >
               </dao-option>
             </dao-select>
           </div>
@@ -25,22 +27,16 @@
         <dao-setting-item>
           <div slot="label">容器路径</div>
           <div slot="content">
-            <dao-input
-              v-model="path">
-            </dao-input>
+            <dao-input v-model="path"> </dao-input>
           </div>
         </dao-setting-item>
       </dao-setting-section>
     </dao-setting-layout>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        @click="onConfirm">
+      <button class="dao-btn blue" @click="onConfirm">
         确定
       </button>
     </div>

@@ -4,30 +4,32 @@
     <h2>Env</h2>
     <table class="dao-table flexrow">
       <thead>
-      <tr>
-        <th>type</th>
-        <th style="flex: 2;">name</th>
-        <th style="flex: 4;">value</th>
-        <th v-if="editable" class="dee-edit-col"></th>
-      </tr>
+        <tr>
+          <th>type</th>
+          <th style="flex: 2;">name</th>
+          <th style="flex: 4;">value</th>
+          <th v-if="editable" class="dee-edit-col"></th>
+        </tr>
       </thead>
       <tbody v-if="container.env && container.env.length > 0">
-      <env-tr
-        v-for="(env, index) in container.env"
-        :key="index"
-        :env="env"
-        :index="index"
-        :editable="editable"
-        :formatedSecrets="formatedSecrets"
-        :formatedConfigMaps="formatedConfigMaps"
-        @removeEnv="removeEnvRow"
-        @envChange="onEnvChange"
-        @validBlur="onValidBlur"
-        :ref="'env-' + index"
-      ></env-tr>
+        <env-tr
+          v-for="(env, index) in container.env"
+          :key="index"
+          :env="env"
+          :index="index"
+          :editable="editable"
+          :formatedSecrets="formatedSecrets"
+          :formatedConfigMaps="formatedConfigMaps"
+          @removeEnv="removeEnvRow"
+          @envChange="onEnvChange"
+          @validBlur="onValidBlur"
+          :ref="'env-' + index"
+        ></env-tr>
       </tbody>
       <tbody v-else>
-      <tr class="dee-empty-tr">无</tr>
+        <tr class="dee-empty-tr">
+          无
+        </tr>
       </tbody>
     </table>
     <div class="det-add" v-if="editable">
@@ -51,42 +53,38 @@
     </h2>
     <table class="dao-table flexrow">
       <thead>
-      <tr>
-        <th>type</th>
-        <th style="flex-grow: 3;">Config Map/Secret</th>
-        <th style="flex-grow: 3;">Prefix (optional)
-          <dao-popover
-            content="可以给每个环境变量添加前缀"
-            trigger="hover"
-            placement="top"
-          >
-            <svg
-              class="question"
-              style="width: 12px;height: 12px;"
-              fill="#595f69">
-              <use xlink:href="#icon_question-mark"></use>
-            </svg>
-          </dao-popover>
-        </th>
-        <th class="dee-edit-col" v-if="editable"></th>
-      </tr>
+        <tr>
+          <th>type</th>
+          <th style="flex-grow: 3;">Config Map/Secret</th>
+          <th style="flex-grow: 3;">
+            Prefix (optional)
+            <dao-popover content="可以给每个环境变量添加前缀" trigger="hover" placement="top">
+              <svg class="question" style="width: 12px; height: 12px;" fill="#595f69">
+                <use xlink:href="#icon_question-mark"></use>
+              </svg>
+            </dao-popover>
+          </th>
+          <th class="dee-edit-col" v-if="editable"></th>
+        </tr>
       </thead>
       <tbody v-if="container.envFrom && container.envFrom.length > 0">
-      <form-tr
-        v-for="(form, index) in container.envFrom"
-        :key="index"
-        :form="form"
-        :index="index"
-        :editable="editable"
-        :formatedSecrets="formatedSecrets"
-        :formatedConfigMaps="formatedConfigMaps"
-        @removeEnvForm="removeEnvFormRow"
-        @envChange="onEnvChange"
-        :ref="'form-' + index"
-      ></form-tr>
+        <form-tr
+          v-for="(form, index) in container.envFrom"
+          :key="index"
+          :form="form"
+          :index="index"
+          :editable="editable"
+          :formatedSecrets="formatedSecrets"
+          :formatedConfigMaps="formatedConfigMaps"
+          @removeEnvForm="removeEnvFormRow"
+          @envChange="onEnvChange"
+          :ref="'form-' + index"
+        ></form-tr>
       </tbody>
       <tbody v-else>
-      <tr class="dee-empty-tr">无</tr>
+        <tr class="dee-empty-tr">
+          无
+        </tr>
       </tbody>
     </table>
     <div class="det-add" v-if="editable">
@@ -162,12 +160,11 @@ export default {
   },
 
   created() {
-    Promise.all([
-      this.$can('read', 'Secret') && this.listSecrets(),
-      this.listConfigMaps(),
-    ]).finally(() => {
-      this.loading = false;
-    });
+    Promise.all([this.$can('secret.view') && this.listSecrets(), this.listConfigMaps()]).finally(
+      () => {
+        this.loading = false;
+      },
+    );
   },
 
   methods: {

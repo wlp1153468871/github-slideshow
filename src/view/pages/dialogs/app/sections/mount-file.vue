@@ -1,8 +1,5 @@
 <template>
-  <section-mount-file
-    :configMaps="configMaps"
-    :secrets="secrets"
-    v-model="editFiles">
+  <section-mount-file :configMaps="configMaps" :secrets="secrets" v-model="editFiles">
   </section-mount-file>
 </template>
 

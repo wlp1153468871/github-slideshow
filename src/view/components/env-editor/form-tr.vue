@@ -2,10 +2,8 @@
   <tr class="dee-tr">
     <td class="dee-td">{{ form | envFromType }}</td>
     <td class="dee-td" style="flex-grow: 3;">
-      <span class="text-muted secret-value" v-if="!$can('read', 'Secret')">
-        <span
-          style="width: 100%;"
-          class="text-overflow-ellipsis">{{ form.secretRef.name }}</span>
+      <span class="text-muted secret-value" v-if="!$can('secret.view')">
+        <span style="width: 100%;" class="text-overflow-ellipsis">{{ form.secretRef.name }}</span>
       </span>
       <template v-else>
         <dao-select
@@ -40,16 +38,19 @@
         ></dao-option>
       </dao-select>
       <a
-        v-if="($can('read', 'Secret') && form.secretRef && form.secretRef.name)
-          || (form.configMapRef && form.configMapRef.name)"
+        v-if="
+          ($can('secret.view') && form.secretRef && form.secretRef.name) ||
+            (form.configMapRef && form.configMapRef.name)
+        "
         @click="showDetail"
         style="margin-left: 5px;"
-      >详情</a>
+        >详情</a
+      >
       <dao-dialog
         :visible.sync="dialog.open"
         :header="form.secretRef ? 'Secret 详情' : 'Config Map 详情'"
         closeOnClickOutside
-        :size="{width: 'auto', height: 'auto'}"
+        :size="{ width: 'auto', height: 'auto' }"
       >
         <form-tr-dialog
           :form="form"

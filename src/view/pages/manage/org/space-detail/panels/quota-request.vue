@@ -5,7 +5,8 @@
       :config="tConfig"
       @refresh="loadQuotaRequests"
       @open-agree-dialog="openAgreeDialog"
-      @confirm-disagree="confirmDisagree">
+      @confirm-disagree="confirmDisagree"
+    >
     </dao-table-view>
 
     <!-- dialog start -->
@@ -14,7 +15,8 @@
       :visible="dialogConfigs.editQuota.visible"
       :is-confirming="dialogConfigs.isConfirming"
       @apply="applyRequest"
-      @close="closeDialog">
+      @close="closeDialog"
+    >
     </edit-quota-dialog>
     <!-- dialog end -->
   </div>
@@ -82,17 +84,10 @@ export default {
 
     applyRequest(request) {
       this.dialogConfigs.isConfirming = true;
-      QuotaService.updateSpaceQuotaApproval(
-        this.spaceId,
-        request.approvalId,
-        request.data,
-      )
+      QuotaService.updateSpaceQuotaApproval(this.spaceId, request.approvalId, request.data)
         .then(() => {
           this.$noty.success('配额修改成功');
-          const index = findIndex(this.rows, [
-            'approval_id',
-            request.approvalId,
-          ]);
+          const index = findIndex(this.rows, ['approval_id', request.approvalId]);
           this.rows.splice(index, 1);
           this.$emit('update-quota');
           this.closeDialog();

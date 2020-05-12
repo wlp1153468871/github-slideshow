@@ -6,11 +6,10 @@
       :loading="loadings.addService"
       @refresh="loadSpaces"
       @goto-space="gotoSpace"
-      @confirm-delete-space="confirmDeleteSpace">
+      @confirm-delete-space="confirmDeleteSpace"
+    >
       <div slot="tool" class="dao-table-view-left-bar">
-        <button
-          class="dao-btn white has-icon"
-          @click="openAddSpaceDialog()">
+        <button class="dao-btn white has-icon" @click="openAddSpaceDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -23,7 +22,8 @@
       @create="createSpace"
       :visible="dialogConfigs.addSpace.visible"
       :orgId="orgId"
-      @close="dialogConfigs.addSpace.visible = false">
+      @close="dialogConfigs.addSpace.visible = false"
+    >
     </add-space-dialog>
     <!-- dialog end -->
   </div>
@@ -59,7 +59,6 @@ export default {
         },
       });
     };
-    const renderAdmin = (admins = []) => admins.map(x => x.username).join(',');
     this.setTableProps([
       {
         id: 'name',
@@ -68,7 +67,6 @@ export default {
         other: { onClick: gotoDetail },
       },
       { id: 'short_name', name: '唯一标识' },
-      { id: 'admins', name: '管理员', value: renderAdmin },
       { id: 'created_at', name: '创建日期', filter: 'unix_date' },
     ]);
     this.setTableOperations([

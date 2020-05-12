@@ -1,14 +1,4 @@
-import {
-  isString,
-  each,
-  size,
-  get,
-  find,
-  groupBy,
-  orderBy,
-  some,
-  isEmpty,
-} from 'lodash';
+import { isString, each, size, get, find, groupBy, orderBy, some, isEmpty } from 'lodash';
 
 export default class RoutesService {
   constructor(route, services) {
@@ -68,10 +58,10 @@ export default class RoutesService {
     const targetPort = route.spec.port ? route.spec.port.targetPort : null;
     if (!targetPort) {
       if (size(service.spec.ports) > 1) {
-        warnings.push(`Route has no target port, but service "${
-          service.metadata.name
-        }" has multiple ports. ` +
-            'The route will round robin traffic across all exposed ports on the service.');
+        warnings.push(
+          `Route has no target port, but service "${service.metadata.name}" has multiple ports. ` +
+            'The route will round robin traffic across all exposed ports on the service.',
+        );
       }
 
       // Nothing else to check.
@@ -83,13 +73,13 @@ export default class RoutesService {
 
     if (!servicePort) {
       if (this.isPortNamed(targetPort)) {
-        warnings.push(`Route target port is set to "${targetPort}", but service "${
-          service.metadata.name
-        }" has no port with that name.`);
+        warnings.push(
+          `Route target port is set to "${targetPort}", but service "${service.metadata.name}" has no port with that name.`,
+        );
       } else {
-        warnings.push(`Route target port is set to "${targetPort}", but service "${
-          service.metadata.name
-        }" does not expose that port.`);
+        warnings.push(
+          `Route target port is set to "${targetPort}", but service "${service.metadata.name}" does not expose that port.`,
+        );
       }
     }
   }
@@ -100,13 +90,15 @@ export default class RoutesService {
     }
 
     if (!route.spec.tls.termination) {
-      warnings.push('Route has a TLS configuration, but no TLS termination type is specified. TLS will not be enabled until a termination type is set.');
+      warnings.push(
+        'Route has a TLS configuration, but no TLS termination type is specified. TLS will not be enabled until a termination type is set.',
+      );
     }
 
     if (route.spec.tls.termination === 'passthrough' && route.spec.path) {
-      warnings.push(`Route path "${
-        route.spec.path
-      }" will be ignored since the route uses passthrough termination.`);
+      warnings.push(
+        `Route path "${route.spec.path}" will be ignored since the route uses passthrough termination.`,
+      );
     }
   }
 
@@ -118,8 +110,9 @@ export default class RoutesService {
         status: 'False',
       });
       if (condition) {
-        let message = `Requested host ${ingress.host ||
-          '<unknown host>'} was rejected by the router.`;
+        let message = `Requested host ${
+          ingress.host || '<unknown host>'
+        } was rejected by the router.`;
         if (condition.message || condition.reason) {
           message += ` Reason: ${condition.message || condition.reason}.`;
         }
@@ -132,11 +125,9 @@ export default class RoutesService {
         wildcardPolicy === 'Subdomain' &&
         ingress.wildcardPolicy !== wildcardPolicy
       ) {
-        warnings.push(`Router "${
-          ingress.routerName
-        }" does not support wildcard subdomains. Your route will only be available at host ${
-          ingress.host
-        }.`);
+        warnings.push(
+          `Router "${ingress.routerName}" does not support wildcard subdomains. Your route will only be available at host ${ingress.host}.`,
+        );
       }
     });
   }
@@ -157,12 +148,7 @@ export default class RoutesService {
   }
 
   isOverviewAppRoute(route) {
-    return (
-      this.annotation(
-        route,
-        'console.alpha.openshift.io/overview-app-route',
-      ) === 'true'
-    );
+    return this.annotation(route, 'console.alpha.openshift.io/overview-app-route') === 'true';
   }
 
   // Gets a score for the route to decide which to show on the overview.

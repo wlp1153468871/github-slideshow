@@ -1,12 +1,9 @@
 <template>
   <span class="description">
-    <svg
-      :style="{fill: color}"
-      class="icon scan-status"
-      v-if="icon">
+    <svg :style="{ fill: color }" class="icon scan-status" v-if="icon">
       <use :xlink:href="icon"></use>
     </svg>
-    <span class="description">{{text}}</span>
+    <span class="description">{{ text }}</span>
   </span>
 </template>
 
@@ -73,15 +70,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .icon.scan-status {
-    width: 14px;
-    height: 14px;
-    margin-right: 5px;
-  }
-  // .text {
-  //   width: 56px;
-  //   height: 20px;
-  //   font-size: 14px;
-  //   color: rgba(0,0,0,0.85);
-  // }
+.icon.scan-status {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+}
+// .text {
+//   width: 56px;
+//   height: 20px;
+//   font-size: 14px;
+//   color: rgba(0,0,0,0.85);
+// }
 </style>

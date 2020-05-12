@@ -5,16 +5,14 @@
         <!-- 租户 -->
         <div class="dao-view-sidebar">
           <div class="dao-list-group-container">
-            <draggable
-              class="dao-list-group"
-              v-model="showcaseList"
-              element="ul">
+            <draggable class="dao-list-group" v-model="showcaseList" tag="ul">
               <li
                 class="dao-list-item drag-drop-list-item"
                 v-for="(tab, index) in showcaseList"
                 :key="tab.name"
-                :class="{ 'active': showcase.name === tab.name }"
-                @click="switchShowcase(tab)">
+                :class="{ active: showcase.name === tab.name }"
+                @click="switchShowcase(tab)"
+              >
                 <span class="icon icon-prepend">
                   <svg><use xlink:href="#icon_drag-point"></use></svg>
                 </span>
@@ -27,43 +25,29 @@
         <div class="dao-view-content dao-square-container">
           <dao-setting-layout>
             <div class="dao-square-table-title clearfix">
-              <a
-                class="pull-left has-icon"
-                @click="openAddServiceDialog(showcase.services)">
+              <a class="pull-left has-icon" @click="openAddServiceDialog(showcase.services)">
                 <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
                 添加服务
               </a>
               <span class="pull-right">{{ showcase.name }}</span>
             </div>
-            <draggable
-              class="dao-sequare-warpper"
-              v-model="showcase.services"
-              element="div">
-              <div
-                class="dao-sequare-item"
-                v-for="item in showcase.services"
-                :key="item.id">
+            <draggable class="dao-sequare-warpper" v-model="showcase.services" tag="div">
+              <div class="dao-sequare-item" v-for="item in showcase.services" :key="item.id">
                 <a
                   class="dao-sequare-item-close"
                   href="javascript:void(0)"
-                  @click="comfirmDeleteService(item)">
+                  @click="comfirmDeleteService(item)"
+                >
                   <svg class="icon">
                     <use xlink:href="#icon_close-circled"></use>
                   </svg>
                 </a>
                 <div class="box-wrap">
-                  <div
-                    class="logo-box"
-                    v-if="item.logo_url"
-                    v-bg-image="item.logo_url">
-                  </div>
-                  <logo-placeholder size="medium" v-if="!item.logo_url">
-                  </logo-placeholder>
+                  <div class="logo-box" v-if="item.logo_url" v-bg-image="item.logo_url"></div>
+                  <logo-placeholder size="medium" v-if="!item.logo_url"> </logo-placeholder>
                 </div>
                 <div class="service-name">{{ item.name }}</div>
-                <div
-                  class="service-content"
-                  v-if="item.short_description">
+                <div class="service-content" v-if="item.short_description">
                   {{ item.short_description }}
                 </div>
               </div>
@@ -75,9 +59,7 @@
         </div>
       </div>
       <template slot="footer">
-        <button
-          class="dao-btn blue"
-          @click="onSave()">
+        <button class="dao-btn blue" @click="onSave()">
           保存
         </button>
       </template>
@@ -89,7 +71,8 @@
       :used-services="usedServices"
       @create="addService"
       :visible="dialogConfigs.addService.visible"
-      @close="dialogConfigs.addService.visible = false">
+      @close="dialogConfigs.addService.visible = false"
+    >
     </add-service-dialog>
     <!-- dialogs end -->
   </div>
@@ -148,11 +131,13 @@ export default {
         sc[item.orderName] = item;
         return sc;
       }, saveCase);
-      this.updateSchema(saveCase).then(() => {
-        this.$noty.success('保存成功');
-      }).catch(() => {
-        this.$noty.error('保存失败，请重试');
-      });
+      this.updateSchema(saveCase)
+        .then(() => {
+          this.$noty.success('保存成功');
+        })
+        .catch(() => {
+          this.$noty.error('保存失败，请重试');
+        });
       this.isSaved = true;
     },
 
@@ -167,14 +152,16 @@ export default {
     },
 
     comfirmDeleteService(service) {
-      this.$tada.confirm({
-        title: '移除服务',
-        text: `您确定要移除服务 ${service.name} 吗？`,
-      }).then(willDelete => {
-        if (willDelete) {
-          this.removeService(service.id);
-        }
-      });
+      this.$tada
+        .confirm({
+          title: '移除服务',
+          text: `您确定要移除服务 ${service.name} 吗？`,
+        })
+        .then(willDelete => {
+          if (willDelete) {
+            this.removeService(service.id);
+          }
+        });
     },
 
     removeService(serviceId) {
@@ -295,4 +282,3 @@ export default {
   }
 }
 </style>
-

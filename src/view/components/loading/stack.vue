@@ -1,8 +1,8 @@
 <template>
   <div>
-    <i class='layer'></i>
-    <i class='layer'></i>
-    <i class='layer'></i>
+    <i class="layer"></i>
+    <i class="layer"></i>
+    <i class="layer"></i>
   </div>
 </template>
 
@@ -24,16 +24,10 @@ $dimension: 3em;
   0%,
   60%,
   100% {
-    transform: rotateX(50deg)
-    rotateY(0deg)
-    rotateZ(45deg)
-    translateZ(0);
+    transform: rotateX(50deg) rotateY(0deg) rotateZ(45deg) translateZ(0);
   }
   25% {
-    transform: rotateX(50deg)
-    rotateY(0deg)
-    rotateZ(45deg)
-    translateZ(1em);
+    transform: rotateX(50deg) rotateY(0deg) rotateZ(45deg) translateZ(1em);
   }
 }
 
@@ -41,16 +35,10 @@ $dimension: 3em;
   0%,
   60%,
   100% {
-    transform: rotateX(50deg)
-    rotateY(0deg)
-    rotateZ(45deg)
-    translateZ(0);
+    transform: rotateX(50deg) rotateY(0deg) rotateZ(45deg) translateZ(0);
   }
   25% {
-    transform: rotateX(50deg)
-    rotateY(0deg)
-    rotateZ(45deg)
-    translateZ(-1em);
+    transform: rotateX(50deg) rotateY(0deg) rotateZ(45deg) translateZ(-1em);
   }
 }
 
@@ -62,16 +50,14 @@ $dimension: 3em;
   display: block;
   width: $dimension;
   height: $dimension;
-  box-shadow: 3px 3px 2px rgba(0,0,0,.2);
-  transform: rotateX(50deg)
-  rotateY(0deg)
-  rotateZ(45deg);
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);
+  transform: rotateX(50deg) rotateY(0deg) rotateZ(45deg);
   &:nth-of-type(1) {
     margin-top: $dimension/2;
     background: #534a47;
-    animation: movedown $duration cubic-bezier(.39, .575, .565, 1) $duration/2 infinite normal;
+    animation: movedown $duration cubic-bezier(0.39, 0.575, 0.565, 1) $duration/2 infinite normal;
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       width: 85%;
       height: 85%;
@@ -83,8 +69,8 @@ $dimension: 3em;
     background: #5a96bc;
   }
   &:nth-of-type(3) {
-    background: rgba(255,255,255,.6);
-    animation: moveup $duration cubic-bezier(.39, .575, .565, 1) infinite normal;
+    background: rgba(255, 255, 255, 0.6);
+    animation: moveup $duration cubic-bezier(0.39, 0.575, 0.565, 1) infinite normal;
   }
 }
 </style>

@@ -60,7 +60,6 @@ class DeploymentResourceService {
     });
   }
 
-
   getHistory(spaceId: string, zone: string, name: string) {
     return this.api.get(`/spaces/${spaceId}/deployments/${name}/replicasets`, {
       zone,
@@ -68,15 +67,14 @@ class DeploymentResourceService {
   }
 
   getLatestHistoryEvents(spaceId: string, zone: string, name: string) {
-    return this.getHistory(spaceId, zone, name)
-      .then<any>((res: any) => {
-        try {
-          const rsname = res.items[0].metadata.name;
-          return this.getHistoryEvents(spaceId, zone, rsname);
-        } catch (error) {
-          return { items: [] };
-        }
-      });
+    return this.getHistory(spaceId, zone, name).then<any>((res: any) => {
+      try {
+        const rsname = res.items[0].metadata.name;
+        return this.getHistoryEvents(spaceId, zone, rsname);
+      } catch (error) {
+        return { items: [] };
+      }
+    });
   }
 
   getHistoryEvents(spaceId: string, zone: string, name: string) {
@@ -107,15 +105,11 @@ class DeploymentResourceService {
   }
 
   restart(spaceId: string, zone: string, name: string) {
-    return this.api.put(
-      `/spaces/${spaceId}/deployments/${name}/restart`,
-      null,
-      {
-        params: {
-          zone,
-        },
+    return this.api.put(`/spaces/${spaceId}/deployments/${name}/restart`, null, {
+      params: {
+        zone,
       },
-    );
+    });
   }
 
   delete(spaceId: string, zone: string, name: string) {
@@ -131,16 +125,12 @@ class DeploymentResourceService {
   }
 
   rollback(spaceId: string, zone: string, name: string, revision: string) {
-    return this.api.post(
-      `/spaces/${spaceId}/deployments/${name}/rollback`,
-      null,
-      {
-        params: {
-          zone,
-          revision,
-        },
+    return this.api.post(`/spaces/${spaceId}/deployments/${name}/rollback`, null, {
+      params: {
+        zone,
+        revision,
       },
-    );
+    });
   }
 }
 

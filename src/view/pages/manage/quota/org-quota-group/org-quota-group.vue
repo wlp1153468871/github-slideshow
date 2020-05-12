@@ -12,11 +12,10 @@
           @refresh="loadQuotaGroups"
           @checked-rows-change="onCheckedRowsChange"
           @confirm-delete-quota-group="confirmDeleteQuotaGroup"
-          @open-update-quota-group-dialog="openUpdateQuotaGroupDialog">
+          @open-update-quota-group-dialog="openUpdateQuotaGroupDialog"
+        >
           <div slot="tool">
-            <button
-              class="dao-btn blue has-icon"
-              @click="openCreateQuotaGroupDialog()">
+            <button class="dao-btn blue has-icon" @click="openCreateQuotaGroupDialog()">
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
@@ -27,15 +26,9 @@
       </div>
     </div>
     <div class="fixed-bottom-panels">
-      <dao-panel
-        size="l"
-        class="bottom-body"
-        :visible.sync="panelConfigs.visible">
+      <dao-panel size="l" class="bottom-body" :visible.sync="panelConfigs.visible">
         <dao-panel-item heading="配额详情">
-          <dao-info-sheet
-            style="width: 50%"
-            :table="planDetail.table">
-          </dao-info-sheet>
+          <dao-info-sheet style="width: 50%;" :table="planDetail.table"> </dao-info-sheet>
         </dao-panel-item>
       </dao-panel>
     </div>
@@ -48,11 +41,11 @@
       :is-creating="isCreating"
       @create="onCreateQuotaGroup"
       @update="confirmUpdateQuotaGroup"
-      @close="closeQuotaDialog">
+      @close="closeQuotaDialog"
+    >
     </edit-quota-group-dialog>
     <!-- dialog end -->
   </div>
 </template>
 
-<script src="./org-quota-group.js">
-</script>
+<script src="./org-quota-group.js"></script>

@@ -10,37 +10,25 @@
         v-model="fileNames"
         @input="handleFileInput"
         input-id="addPicture"
-        ref="upload">
+        ref="upload"
+      >
       </file-upload>
-      <label
-        class="dao-btn blue has-icon"
-        for="addPicture"
-        @click="selectedIndex = undefined">
+      <label class="dao-btn blue has-icon" for="addPicture" @click="selectedIndex = undefined">
         <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
         <span class="text">添加配图</span>
       </label>
-      <span class="table-count">
-        共 {{ pictures.length }} 张图片
-      </span>
+      <span class="table-count"> 共 {{ pictures.length }} 张图片 </span>
     </div>
     <dao-setting-layout>
-      <dao-setting-section
-        v-for="(pic, index) in pictures"
-        :key="index">
+      <dao-setting-section v-for="(pic, index) in pictures" :key="index">
         <dao-setting-item>
           <div slot="label">网站截图</div>
           <div slot="content" class="service-snapshot">
             <div class="dao-btn-group operation">
-              <label
-                class="dao-btn ghost"
-                for="addPicture"
-                @click="replacePicture(index)">
+              <label class="dao-btn ghost" for="addPicture" @click="replacePicture(index)">
                 更改
               </label>
-              <dao-dropdown
-                trigger="click"
-                :append-to-body="true"
-                placement="bottom-end">
+              <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
                 <div class="dao-btn has-icon dao-icon ghost">
                   <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
                 </div>
@@ -52,24 +40,14 @@
                 </dao-dropdown-menu>
               </dao-dropdown>
             </div>
-            <div
-              class="img-snapshot"
-              v-bg-image="pic"
-              @click="showPic(pic)">
-            </div>
+            <div class="img-snapshot" v-bg-image="pic" @click="showPic(pic)"></div>
           </div>
         </dao-setting-item>
       </dao-setting-section>
-      <empty-state
-        style="margin-left: -20px;"
-        v-if="!pictures.length"
-        title="暂无配图">
+      <empty-state style="margin-left: -20px;" v-if="!pictures.length" title="暂无配图">
       </empty-state>
       <div slot="footer">
-        <button
-          class="dao-btn blue"
-          :disabled="hasChanged"
-          @click="onUpdate">
+        <button class="dao-btn blue" :disabled="hasChanged" @click="onUpdate">
           保存
         </button>
       </div>
@@ -79,7 +57,8 @@
     <show-picture-dialog
       :pic="selectedPic"
       :visible="dialogConfigs.showPicture.visible"
-      @close="dialogConfigs.showPicture.visible = false">
+      @close="dialogConfigs.showPicture.visible = false"
+    >
     </show-picture-dialog>
     <!-- dialog end -->
   </div>
@@ -154,12 +133,10 @@ export default {
 
     onUpdate() {
       const { pictures } = this;
-      return ServiceService
-        .updateService(this.service.id, { pictures })
-        .then(service => {
-          this.$noty.success('修改服务网站截图成功');
-          this.$emit('input', service);
-        });
+      return ServiceService.updateService(this.service.id, { pictures }).then(service => {
+        this.$noty.success('修改服务网站截图成功');
+        this.$emit('input', service);
+      });
     },
   },
 

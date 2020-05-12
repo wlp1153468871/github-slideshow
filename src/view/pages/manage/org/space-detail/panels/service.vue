@@ -6,13 +6,10 @@
       :config="tConfig"
       :loading="loading"
       @refresh="loadSpaceServices"
-      @remove-space-service="onDelete">
-      <div
-        slot="tool"
-        class="dao-table-view-left-bar">
-        <button
-          class="dao-btn has-icon white"
-          @click="openAddServiceDialog()">
+      @remove-space-service="onDelete"
+    >
+      <div slot="tool" class="dao-table-view-left-bar">
+        <button class="dao-btn has-icon white" @click="openAddServiceDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -28,7 +25,8 @@
       :used-services="services"
       :visible="dialogConfigs.addService.visible"
       @create="addSpaceService"
-      @close="dialogConfigs.addService.visible = false">
+      @close="dialogConfigs.addService.visible = false"
+    >
     </add-service-dialog>
     <!-- dialog end -->
   </div>

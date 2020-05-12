@@ -1,5 +1,5 @@
 <template>
-  <div class="appearance">
+  <div class="appearance" v-if="$can('platform.settings.assets')">
     <dao-setting-layout>
       <div slot="layout-title">
         产品文案
@@ -17,12 +17,10 @@
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
             v-validate="'max:25'"
-            data-vv-as="产品名称">
+            data-vv-as="产品名称"
+          >
           </dao-input>
-          <button
-            class="dao-btn blue"
-            :disabled="!isValidForm"
-            @click="updateProduceName">
+          <button class="dao-btn blue" :disabled="!isValidForm" @click="updateProduceName">
             <span class="text">保存</span>
           </button>
         </div>
@@ -42,10 +40,9 @@
             <div
               class="service-new-logo"
               v-if="theme.appPicture.loginPicture"
-              v-bg-image="theme.appPicture.loginPicture">
-            </div>
-            <logo-placeholder v-if="!theme.appPicture.loginPicture">
-            </logo-placeholder>
+              v-bg-image="theme.appPicture.loginPicture"
+            ></div>
+            <logo-placeholder v-if="!theme.appPicture.loginPicture"> </logo-placeholder>
           </div>
           <file-upload
             class="dao-btn blue"
@@ -53,7 +50,8 @@
             accept="image/*"
             name="loginPic"
             v-model="loginPicture"
-            @input="handleLoginPicture">
+            @input="handleLoginPicture"
+          >
             <span class="text">选择图片，文件大小请勿超过 1M</span>
           </file-upload>
         </div>
@@ -66,10 +64,9 @@
             <div
               class="service-new-logo"
               v-if="theme.appPicture.navPicture"
-              v-bg-image="theme.appPicture.navPicture">
-            </div>
-            <logo-placeholder v-if="!theme.appPicture.navPicture">
-            </logo-placeholder>
+              v-bg-image="theme.appPicture.navPicture"
+            ></div>
+            <logo-placeholder v-if="!theme.appPicture.navPicture"> </logo-placeholder>
           </div>
           <file-upload
             class="dao-btn blue"
@@ -77,7 +74,8 @@
             accept="image/*"
             name="navPic"
             v-model="navPicture"
-            @input="handleNavPicture">
+            @input="handleNavPicture"
+          >
             <span class="text">选择图片，文件大小请勿超过 1M</span>
           </file-upload>
         </div>
@@ -90,10 +88,9 @@
             <div
               class="service-new-logo"
               v-if="theme.appPicture.favicon"
-              v-bg-image="theme.appPicture.favicon">
-            </div>
-            <logo-placeholder v-if="!theme.appPicture.favicon">
-            </logo-placeholder>
+              v-bg-image="theme.appPicture.favicon"
+            ></div>
+            <logo-placeholder v-if="!theme.appPicture.favicon"> </logo-placeholder>
           </div>
           <file-upload
             class="dao-btn blue"
@@ -101,7 +98,8 @@
             accept="image/*"
             name="favicon"
             v-model="favicon"
-            @input="handleFavicon">
+            @input="handleFavicon"
+          >
             <span class="text">选择图片，文件大小请勿超过 1M</span>
           </file-upload>
         </div>
@@ -140,7 +138,11 @@ export default {
     },
   },
   created() {
-    this.productName = this.theme.productName;
+    if (this.$can('platform.settings.assets')) {
+      this.productName = this.theme.productName;
+    } else {
+      this.$noty.error('您暂无外观设置权限');
+    }
   },
   watch: {
     theme() {
@@ -175,11 +177,7 @@ export default {
       this.handleFileInput(file).then(url => {
         const newTheme = new ThemeModel(
           this.theme.productName,
-          new AppPictureModel(
-            url,
-            this.theme.appPicture.navPicture,
-            this.theme.appPicture.favicon,
-          ),
+          new AppPictureModel(url, this.theme.appPicture.navPicture, this.theme.appPicture.favicon),
         );
         this.$store.dispatch('updateTheme', newTheme);
       });

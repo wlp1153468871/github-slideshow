@@ -75,21 +75,21 @@ class DeploymentConfigService {
     });
   }
 
-
   getHistoryList(spaceId: string, zone: string, name: string) {
-    return this.api.get(`spaces/${spaceId}/deploymentconfigs/${name}/replicationcontrollers`, { zone });
+    return this.api.get(`spaces/${spaceId}/deploymentconfigs/${name}/replicationcontrollers`, {
+      zone,
+    });
   }
 
   getLatestHistoryEvents(spaceId: string, zone: string, name: string) {
-    return this.getHistoryList(spaceId, zone, name)
-      .then<any>((res: any) => {
-        try {
-          const rcname = res.items[0].metadata.name;
-          return this.getHistoryEvents(spaceId, zone, rcname);
-        } catch (error) {
-          return { items: [] };
-        }
-      });
+    return this.getHistoryList(spaceId, zone, name).then<any>((res: any) => {
+      try {
+        const rcname = res.items[0].metadata.name;
+        return this.getHistoryEvents(spaceId, zone, rcname);
+      } catch (error) {
+        return { items: [] };
+      }
+    });
   }
 
   getHistoryEvents(spaceId: string, zone: string, name: string) {
@@ -99,13 +99,12 @@ class DeploymentConfigService {
   }
 
   rollbackToHistoryVersion(spaceId: string, zone: string, name: string, revision: string) {
-    return this.api.put(`spaces/${spaceId}/deploymentconfigs/${name}/rollback`, null,
-      {
-        params: {
-          zone,
-          revision,
-        },
-      });
+    return this.api.put(`spaces/${spaceId}/deploymentconfigs/${name}/rollback`, null, {
+      params: {
+        zone,
+        revision,
+      },
+    });
   }
 
   updateReplica(spaceId: string, zone: string, name: string, replicas: number) {

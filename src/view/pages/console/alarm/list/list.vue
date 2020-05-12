@@ -8,31 +8,14 @@
       </h2>
       <div v-else>
         <el-tabs>
-          <el-tab-pane
-            label="容器"
-          >
-            <container
-              :rules="containerRules"
-              @updateRules="updateRules"
-            ></container>
+          <el-tab-pane label="容器">
+            <container :rules="containerRules" @updateRules="updateRules"></container>
           </el-tab-pane>
-          <el-tab-pane
-            lazy
-            label="应用"
-          >
-            <app
-              :rules="appRules"
-              @updateRules="updateRules"
-            ></app>
+          <el-tab-pane lazy label="应用">
+            <app :rules="appRules" @updateRules="updateRules"></app>
           </el-tab-pane>
-          <el-tab-pane
-            lazy
-            label="服务"
-          >
-            <service
-              :rules="serviceRules"
-              @updateRules="updateRules"
-            ></service>
+          <el-tab-pane lazy label="服务">
+            <service :rules="serviceRules" @updateRules="updateRules"></service>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -41,5 +24,5 @@
 </template>
 <script src="./list.js"></script>
 <style lang="scss">
-  @import './list';
+@import './list';
 </style>

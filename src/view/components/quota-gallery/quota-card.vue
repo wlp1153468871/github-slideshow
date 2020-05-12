@@ -9,12 +9,9 @@
       <big>{{ item.limit | otherwise('不限额度') }}</big>
       <small v-if="item.limit || item.limit === 0">{{ item.unit }}</small>
       <small v-if="item.limit || item.limit === 0">
-        / 剩余 {{ item.limit - item.used | floor(1) }} {{ item.unit }}
+        / 剩余 {{ (item.limit - item.used) | floor(1) }} {{ item.unit }}
       </small>
-      <dao-progress
-        type="usage"
-        :progress="item.used / item.limit">
-      </dao-progress>
+      <dao-progress type="usage" :progress="item.used / item.limit"> </dao-progress>
     </div>
   </li>
 </template>

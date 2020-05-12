@@ -1,17 +1,12 @@
 <template>
-  <dao-dialog
-    header="确认配额"
-    :visible.sync="isShow"
-    @closed="onClosed">
+  <dao-dialog header="确认配额" :visible.sync="isShow" @closed="onClosed">
     <div class="dao-setting-warning">
       <svg class="tip-icon icon">
         <use xlink:href="#icon_bell"></use>
       </svg>
       提示: 您可以对申请的配额进行调整。
     </div>
-    <dao-setting-section
-      v-for="q in quota_extend_items"
-      :key="q.name">
+    <dao-setting-section v-for="q in quota_extend_items" :key="q.name">
       <dao-setting-item>
         <div slot="label">{{ q.quota_field.name }}</div>
         <div slot="content" class="quota-content">
@@ -21,19 +16,14 @@
               {{ q.in_use }} {{ q.quota_field.unit }}
               <span v-if="q.rate >= 1">0%</span>
               <span v-else>{{ q.rate | percent }}</span>
-              <dao-progress
-                class="quota-progress"
-                type="usage"
-                :progress="q.rate > 1 ? 0 : q.rate">
+              <dao-progress class="quota-progress" type="usage" :progress="q.rate > 1 ? 0 : q.rate">
               </dao-progress>
               {{ q.in_use }}/{{ q.limit | otherwise('不限额度') }} {{ q.quota_field.unit }}
             </div>
           </div>
           <div class="apply-quota">
             <p>申请配额</p>
-            <dao-input
-              type="text"
-              v-model="q.value">
+            <dao-input type="text" v-model="q.value">
               <span slot="append">{{ q.quota_field.unit }}</span>
             </dao-input>
           </div>
@@ -42,15 +32,10 @@
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="isConfirming"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="isConfirming" @click="onConfirm">
         确定
       </button>
     </div>

@@ -81,6 +81,7 @@ import zoneAuth from './zone-auth.filter';
 import threshold from './threshold.filter';
 import alarmScope from './alarm-scope.filter';
 import scanOverviewStatus from './resource/scan-overview-status.filter.js';
+import roleFormat from './roleFormat.filter';
 
 const filters = {
   accessModes,
@@ -164,6 +165,7 @@ const filters = {
   threshold,
   alarmScope,
   scanOverviewStatus,
+  roleFormat,
 };
 
 Object.keys(filters).forEach(key => {

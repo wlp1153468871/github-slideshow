@@ -17,8 +17,7 @@ export default {
         zone: false,
       },
       isCreating: false,
-      filterMethod: (data, filterKey) =>
-        data.name.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.name.toLowerCase().includes(filterKey),
       other: {
         status: (_, item) => (!item.available ? 'STOPED' : 'SUCCESS'),
       },
@@ -26,7 +25,12 @@ export default {
   },
 
   created() {
-    this.loadZones();
+    // 有权限查看 无权限则提示
+    if (this.$can('platform.zone.get')) {
+      this.loadZones();
+    } else {
+      this.$noty.error('您暂无可用区查看权限');
+    }
   },
 
   methods: {
@@ -70,10 +74,17 @@ export default {
         })
         .then(willAgree => {
           if (willAgree) {
-            this.updateZone(zone.id, {
+            ZoneService.updateZone(zone.id, {
               ...zone,
               available: true,
-            });
+            })
+              .then(() => {
+                this.loadZones();
+                this.$noty.success('操作成功');
+              })
+              .catch(() => {
+                this.$noty.error('操作失败');
+              });
           }
         });
     },
@@ -88,10 +99,17 @@ export default {
         })
         .then(willAgree => {
           if (willAgree) {
-            this.updateZone(zone.id, {
+            ZoneService.updateZone(zone.id, {
               ...zone,
               available: false,
-            });
+            })
+              .then(() => {
+                this.loadZones();
+                this.$noty.success('操作成功');
+              })
+              .catch(() => {
+                this.$noty.error('操作失败');
+              });
           }
         });
     },

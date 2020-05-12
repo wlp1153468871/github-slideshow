@@ -1,9 +1,10 @@
 <template>
   <catalog-panel
+    v-if="$can('platform.settings.assets')"
     v-show="content === TABS.CATALOG"
-    :services="services">
+    :services="services"
+  >
   </catalog-panel>
 </template>
 
-<script src="./home.js">
-</script>
+<script src="./home.js"></script>

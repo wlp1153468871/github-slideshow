@@ -1,15 +1,14 @@
 <template>
   <div class="volumes">
-    <div
-      v-for="(volume, index) in volumes"
-      :key="index">
+    <div v-for="(volume, index) in volumes" :key="index">
       <p class="volume-name">
-        {{volume.name}}<span v-if="canRemove" class="header-actions">
+        {{ volume.name
+        }}<span v-if="canRemove" class="header-actions">
           <a href="" @click="removeFn({ volume })">Remove</a>
         </span>
       </p>
       <dl class="dl-horizontal">
-        <template v-if="volume.secret && $can('read', 'secret')">
+        <template v-if="volume.secret && $can('secret.view')">
           <dt>Type:</dt>
           <dd>
             secret
@@ -20,18 +19,17 @@
             <span>
               <router-link
                 :to="{
-                name: 'resource.secrets.detail',
-                params: { name: volume.secret.secretName }
-              }">
-                {{volume.secret.secretName}}
+                  name: 'resource.secrets.detail',
+                  params: { name: volume.secret.secretName },
+                }"
+              >
+                {{ volume.secret.secretName }}
               </router-link>
             </span>
           </dd>
-          <div
-            v-for="item in volume.secret.items"
-            :key="item.key">
+          <div v-for="item in volume.secret.items" :key="item.key">
             <dt>Key to File:</dt>
-            <dd>{{item.key}}&#8201;&#8594;&#8201;{{item.path}}</dd>
+            <dd>{{ item.key }}&#8201;&#8594;&#8201;{{ item.path }}</dd>
           </div>
         </template>
 
@@ -45,10 +43,11 @@
           <dd>
             <router-link
               :to="{
-                     name: 'resource.persistentvolumeclaims.detail',
-                     params: { name: volume.persistentVolumeClaim.claimName },
-                   }">
-              {{volume.persistentVolumeClaim.claimName}}
+                name: 'resource.persistentvolumeclaims.detail',
+                params: { name: volume.persistentVolumeClaim.claimName },
+              }"
+            >
+              {{ volume.persistentVolumeClaim.claimName }}
             </router-link>
           </dd>
           <dt>Mode:</dt>
@@ -65,7 +64,7 @@
             <span class="small text-muted">(bare host directory volume)</span>
           </dd>
           <dt>Path:</dt>
-          <dd>{{volume.hostPath.path}}</dd>
+          <dd>{{ volume.hostPath.path }}</dd>
         </template>
 
         <template v-if="volume.emptyDir">
@@ -77,7 +76,7 @@
           <dt>Medium:</dt>
           <dd>
             <span v-if="!volume.emptyDir.medium">node's default</span>
-            <span v-if="volume.emptyDir.medium">{{volume.emptyDir.medium}}</span>
+            <span v-if="volume.emptyDir.medium">{{ volume.emptyDir.medium }}</span>
           </dd>
         </template>
 
@@ -88,7 +87,7 @@
             <span class="small text-muted">(pulled from git when the pod is created)</span>
           </dd>
           <dt>Repository:</dt>
-          <dd>{{volume.gitRepo.repository}}</dd>
+          <dd>{{ volume.gitRepo.repository }}</dd>
           <!--&lt;!&ndash;<dt ng-if-start="volume.gitRepo.revision">Revision:</dt>&ndash;&gt;-->
           <!--&lt;!&ndash;<dd ng-if-end>{{volume.gitRepo.revision}}</dd>&ndash;&gt;-->
         </template>
@@ -99,11 +98,9 @@
             downward API
             <span class="small text-muted">(populated with information about the pod)</span>
           </dd>
-          <div
-            v-for="(item, idx) in volume.downwardAPI.items"
-            :key="idx">
+          <div v-for="(item, idx) in volume.downwardAPI.items" :key="idx">
             <dt>Volume File:</dt>
-            <dd>{{item.fieldRef.fieldPath}}&#8201;&#8594;&#8201;{{item.path}}</dd>
+            <dd>{{ item.fieldRef.fieldPath }}&#8201;&#8594;&#8201;{{ item.path }}</dd>
           </div>
         </template>
 
@@ -117,17 +114,16 @@
           <dd>
             <router-link
               :to="{
-                    name: 'resource.configmaps.detail',
-                    params: { name: volume.configMap.name },
-                  }">
-              {{volume.configMap.name}}
+                name: 'resource.configmaps.detail',
+                params: { name: volume.configMap.name },
+              }"
+            >
+              {{ volume.configMap.name }}
             </router-link>
           </dd>
-          <div
-            v-for="item in volume.configMap.items"
-            :key="item.key">
+          <div v-for="item in volume.configMap.items" :key="item.key">
             <dt>Key to File:</dt>
-            <dd>{{item.key}}&#8201;&#8594;&#8201;{{item.path}}</dd>
+            <dd>{{ item.key }}&#8201;&#8594;&#8201;{{ item.path }}</dd>
           </div>
         </template>
       </dl>
@@ -155,7 +151,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss">
 .volume-name {

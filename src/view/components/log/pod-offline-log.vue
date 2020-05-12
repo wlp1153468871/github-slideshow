@@ -11,12 +11,14 @@
         size="small"
         filterable
         v-model="logOptions.container"
-        placeholder="Container Name">
+        placeholder="Container Name"
+      >
         <el-option
           v-for="container in pod.spec.containers"
           :key="container.name"
           :label="container.name"
-          :value="container.name">
+          :value="container.name"
+        >
         </el-option>
       </el-select>
     </div>
@@ -32,7 +34,8 @@
           type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+        >
         </el-date-picker>
       </div>
 
@@ -43,26 +46,20 @@
           type="text"
           v-model="filters.keyword"
           placeholder="支持ES查询语法,例: *keyword*"
-          search>
+          search
+        >
         </dao-input>
       </div>
     </div>
 
-    <div
-      class="log-view"
-      v-loading="loading">
+    <div class="log-view" v-loading="loading">
       <div class="log-view-output">
         <table>
           <tbody>
-          <tr
-            class="log-line"
-            v-for="(log, index) in currentLogs"
-            :key="index">
-            <td
-              class="log-line-number"
-              :data-line-number="index+1"></td>
-            <td class="log-line-text">{{ log }}</td>
-          </tr>
+            <tr class="log-line" v-for="(log, index) in currentLogs" :key="index">
+              <td class="log-line-number" :data-line-number="index + 1"></td>
+              <td class="log-line-text">{{ log }}</td>
+            </tr>
           </tbody>
         </table>
         <p v-if="!logs.length" class="no-log">暂无日志</p>
@@ -92,11 +89,7 @@
           </svg>
         </button>
       </div>
-      <a
-        download
-        target="_blank"
-        class="dao-btn ghost has-icon"
-        :href="downloadUrl">
+      <a download target="_blank" class="dao-btn ghost has-icon" :href="downloadUrl">
         <svg class="icon">
           <use xlink:href="#icon_download"></use>
         </svg>
@@ -159,11 +152,11 @@ export default {
       const query = Object.entries(this.getSearchQuery())
         .map(pair => pair.join('='))
         .join('&');
-      return `/app-server/api/v1/zones/${this.zone.id}/namespaces/${
+      return `/app-server/api/v1/zones/${
+        this.zone.id
+      }/namespaces/${
         this.pod.metadata.namespace
-      }/pods/${this.pod.metadata.name}/containers/${
-        this.logOptions.container
-      }/log/download?${query}`;
+      }/pods/${this.pod.metadata.name}/containers/${this.logOptions.container}/log/download?${query}`;
     },
   },
 
@@ -382,8 +375,7 @@ export default {
           rgba(204, 209, 216, 0.1),
           rgba(204, 209, 216, 0.1)
         );
-        box-shadow: inset 0 0 4px 0 rgba(0, 0, 0, 0.08),
-          inset 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+        box-shadow: inset 0 0 4px 0 rgba(0, 0, 0, 0.08), inset 0 1px 3px 0 rgba(0, 0, 0, 0.06);
       }
 
       &:focus {

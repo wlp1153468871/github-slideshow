@@ -1,4 +1,3 @@
-
 export default function scanOverviewStatus(scan_overview) {
   if (!scan_overview) return 'unScan';
   if (scan_overview.scan_status === 'pending') {

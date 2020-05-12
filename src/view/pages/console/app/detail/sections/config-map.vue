@@ -1,8 +1,5 @@
 <template>
-  <dao-table-view
-    ref="tableView"
-    :rows="configMaps"
-    :config="tConfig">
+  <dao-table-view ref="tableView" :rows="configMaps" :config="tConfig">
     <div slot="tool" class="dao-table-view-left-bar">
       <span style="line-height: 32px;">Config Map</span>
     </div>

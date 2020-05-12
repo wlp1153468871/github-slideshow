@@ -4,7 +4,8 @@
     header="环境配置 | 环境变量"
     :visible.sync="isShow"
     @before-open="init"
-    @closed="onClosed">
+    @closed="onClosed"
+  >
     <dao-setting-layout>
       <dao-setting-section>
         <dao-setting-item>
@@ -15,8 +16,9 @@
                 v-model="formModel.type"
                 :label="item.value"
                 v-for="(item, index) in types"
-                :key="index">
-                {{item.label}}
+                :key="index"
+              >
+                {{ item.label }}
               </dao-radio>
             </dao-radio-group>
           </div>
@@ -35,7 +37,8 @@
               :message="veeErrors.first('name')"
               :status="veeErrors.has('name') ? 'error' : ''"
               v-validate="'required|env_variables_name'"
-              v-model="formModel.name">
+              v-model="formModel.name"
+            >
             </dao-input>
           </div>
         </dao-setting-item>
@@ -54,31 +57,23 @@
                 :message="veeErrors.first('value')"
                 :status="veeErrors.has('value') ? 'error' : ''"
                 v-validate="'required'"
-                v-model="formModel.value.value">
+                v-model="formModel.value.value"
+              >
               </dao-input>
             </template>
 
             <div class="select-group" v-else>
-              <dao-select
-                with-search
-                @change="onFileNameChanged"
-                v-model="formModel.value.name">
+              <dao-select with-search @change="onFileNameChanged" v-model="formModel.value.name">
                 <dao-option
                   v-for="item in files"
                   :key="item.id"
                   :value="item.metadata.name"
-                  :label="item.metadata.name">
+                  :label="item.metadata.name"
+                >
                 </dao-option>
               </dao-select>
-              <dao-select
-                with-search
-                v-if="formModel.value.name"
-                v-model="formModel.value.value">
-                <dao-option
-                  v-for="item in keys"
-                  :key="item"
-                  :value="item"
-                  :label="item">
+              <dao-select with-search v-if="formModel.value.name" v-model="formModel.value.value">
+                <dao-option v-for="item in keys" :key="item" :value="item" :label="item">
                 </dao-option>
               </dao-select>
             </div>
@@ -87,15 +82,10 @@
       </dao-setting-section>
     </dao-setting-layout>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!valid"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!valid" @click="onConfirm">
         添加
       </button>
     </div>
@@ -219,11 +209,7 @@ export default {
     },
 
     valid() {
-      return (
-        this.formModel.name &&
-        this.formModel.value.value &&
-        !this.veeErrors.any()
-      );
+      return this.formModel.name && this.formModel.value.value && !this.veeErrors.any();
     },
 
     files() {

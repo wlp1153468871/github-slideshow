@@ -64,10 +64,7 @@ export default {
     },
 
     removeServiceQuota(quota) {
-      return QuotaService.deleteServiceQuota(
-        this.brokerService.id,
-        quota.id,
-      ).then(() => {
+      return QuotaService.deleteServiceQuota(this.brokerService.id, quota.id).then(() => {
         this.loadService();
         this.$noty.success('删除字段成功');
       });

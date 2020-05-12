@@ -79,7 +79,6 @@ const ModalMixin = {
 
   methods: {
     active() {
-      console.log('active');
       this.isActive = true;
     },
     handleOk() {

@@ -31,9 +31,7 @@ class Kind {
   constructor(kind, description, createMessage, route, deployRoute) {
     this.name = kind;
     this.kind = kind;
-    this.services = [
-      new Service(kind, description, createMessage, route, deployRoute),
-    ];
+    this.services = [new Service(kind, description, createMessage, route, deployRoute)];
   }
 }
 

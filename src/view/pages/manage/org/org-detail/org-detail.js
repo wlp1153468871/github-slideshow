@@ -31,7 +31,7 @@ export default {
 
   created() {
     this.loadOrg();
-    this.loadUsersByOrgId();
+    // this.loadUsersByOrgId();
   },
 
   data() {
@@ -47,7 +47,7 @@ export default {
       ZONE: '可用区',
     };
     const orgId = this.$route.params.org;
-    const { tab = SIDE_BAR.TEAM } = this.$route.query;
+    const { tab = SIDE_BAR.OVERVIEW } = this.$route.query;
     return {
       tab,
       SIDE_BAR,
@@ -117,10 +117,12 @@ export default {
 
     updateServiceFromOrg(request) {
       const orgId = this.org.id;
-      Promise.all(request.map(quota => {
-        const { quotaUnitId, limit } = quota;
-        return OrgService.updateOrgQuota(orgId, quotaUnitId, { limit });
-      })).then(() => {
+      Promise.all(
+        request.map(quota => {
+          const { quotaUnitId, limit } = quota;
+          return OrgService.updateOrgQuota(orgId, quotaUnitId, { limit });
+        }),
+      ).then(() => {
         this.$noty.success('保存配额成功');
       });
     },

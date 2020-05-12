@@ -166,7 +166,7 @@ export default {
     },
 
     loadInstanceSecrets() {
-      if (!this.$can('read', 'Secret')) {
+      if (!this.$can('secret.view')) {
         return Promise.resolve([]);
       }
 
@@ -184,7 +184,7 @@ export default {
     },
 
     loadInstanceYAML() {
-      if (this.$can('read', 'Secret')) {
+      if (this.$can('serviceInstance.update')) {
         ApplicationService.getInstanceYaml(this.instanceId).then(yaml => {
           this.yaml = yaml;
         });
@@ -205,8 +205,7 @@ export default {
     },
 
     toggleYamlDialog() {
-      this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml
-        .visible;
+      this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml.visible;
     },
 
     gotoJobsTab() {

@@ -1,21 +1,9 @@
 <template>
   <span class="logo-wrapper">
-    <img
-      v-if="isSelfDefined"
-      :src="logoUrl"
-      class="logo"
-      alt="logo"/>
+    <img v-if="isSelfDefined" :src="logoUrl" class="logo" alt="logo" />
     <template v-else>
-      <img
-        v-if="inverse"
-        class="logo"
-        src="~@/assets/images/logo.png"
-        alt="logo"/>
-      <img
-        v-else
-        src="~@/assets/images/logo-white.png"
-        class="logo"
-        alt="logo"/>
+      <img v-if="inverse" class="logo" src="~@/assets/images/logo.png" alt="logo" />
+      <img v-else src="~@/assets/images/logo-white.png" class="logo" alt="logo" />
     </template>
   </span>
 </template>

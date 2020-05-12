@@ -32,7 +32,7 @@
       ></dao-input>
       <!-- SECRET -->
       <div v-else-if="env.valueFrom && env.valueFrom.secretKeyRef" class="half-select">
-        <span class="text-muted secret-value" v-if="!$can('read', 'Secret')">
+        <span class="text-muted secret-value" v-if="!$can('secret.view')">
           <span class="text-overflow-ellipsis">{{ env.valueFrom.secretKeyRef.name }}</span>
           <span class="text-overflow-ellipsis">{{ env.valueFrom.secretKeyRef.key }}</span>
         </span>
@@ -60,9 +60,9 @@
           >
             <dao-option
               v-for="item in findRelatedOptionsByName(
-                    formatedSecrets,
-                    env.valueFrom.secretKeyRef.name
-                  )"
+                formatedSecrets,
+                env.valueFrom.secretKeyRef.name,
+              )"
               :key="item.value"
               :value="item.value"
               :label="item.label"
@@ -98,9 +98,9 @@
           <dao-option-group>
             <dao-option
               v-for="item in findRelatedOptionsByName(
-                      formatedConfigMaps,
-                      env.valueFrom.configMapKeyRef.name
-                    )"
+                formatedConfigMaps,
+                env.valueFrom.configMapKeyRef.name,
+              )"
               :key="item.value"
               :value="item.value"
               :label="item.label"

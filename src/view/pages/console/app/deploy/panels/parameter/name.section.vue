@@ -16,7 +16,8 @@
           data-vv-as="应用名"
           v-validate="'required|namespace_code|dns_1035_label|min:6|max:20'"
           :message="veeErrors.first('name')"
-          :status="veeErrors.has('name') ? 'error' : ''">
+          :status="veeErrors.has('name') ? 'error' : ''"
+        >
         </dao-input>
       </template>
       <template slot="content-helper" v-if="recommendNames.length">
@@ -25,7 +26,8 @@
           href="javascript:void(0)"
           @click="name = rName"
           v-for="rName in recommendNames"
-          :key="rName">
+          :key="rName"
+        >
           {{ rName }}
         </a>
       </template>
@@ -57,7 +59,8 @@
             v-validate="'required|namespace_code|min:2|max:20'"
             :message="veeErrors.first('version')"
             :status="veeErrors.has('version') ? 'error' : ''"
-            data-vv-as="应用版本">
+            data-vv-as="应用版本"
+          >
           </dao-input>
         </template>
       </dao-setting-item>
@@ -69,13 +72,13 @@
         <label-tip text="作为部署应用的资源对象"></label-tip>
       </template>
       <template #content>
-        <dao-select
-          v-model="_deploymentKind">
+        <dao-select v-model="_deploymentKind">
           <dao-option
             v-for="option in deploymentKinds"
             :key="option.name"
             :value="option.kind"
-            :label="option.kind">
+            :label="option.kind"
+          >
           </dao-option>
         </dao-select>
       </template>

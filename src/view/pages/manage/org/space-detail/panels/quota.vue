@@ -9,11 +9,10 @@
           :config="tConfig"
           @refresh="loadData"
           @checked-rows-change="onCheckedRowsChange"
-          @confirm-remove-quota-group="confirmRemoveQuotaDialog">
+          @confirm-remove-quota-group="confirmRemoveQuotaDialog"
+        >
           <div slot="tool" class="dao-table-view-left-bar">
-            <button
-              class="dao-btn white has-icon"
-              @click="openAddQutoaGroupDialog">
+            <button class="dao-btn white has-icon" @click="openAddQutoaGroupDialog">
               <svg class="icon">
                 <use xlink:href="#icon_plus-circled"></use>
               </svg>
@@ -25,15 +24,9 @@
     </div>
 
     <div class="fixed-bottom-panels">
-      <dao-panel
-        size="l"
-        class="bottom-body"
-        :visible.sync="dialogConfigs.panelConfigs.visible">
+      <dao-panel size="l" class="bottom-body" :visible.sync="dialogConfigs.panelConfigs.visible">
         <dao-panel-item heading="配额详情">
-          <dao-info-sheet
-            style="width: 50%"
-            :table="planDetail.table">
-          </dao-info-sheet>
+          <dao-info-sheet style="width: 50%;" :table="planDetail.table"> </dao-info-sheet>
         </dao-panel-item>
       </dao-panel>
     </div>
@@ -44,7 +37,8 @@
       :org-quota-groups="quotaGroups"
       @add="addOrgQuotaGroup"
       :visible="dialogConfigs.addQuotaGroup.visible"
-      @close="dialogConfigs.addQuotaGroup.visible = false">
+      @close="dialogConfigs.addQuotaGroup.visible = false"
+    >
     </add-quota-group-dialog>
     <!-- dialog end -->
   </div>
@@ -102,9 +96,7 @@ export default {
       const { quotaFields, quotaGroups, quotaUsages } = this;
       const memory = find(quotaFields, { code: MEMORY });
       return quotaFields.map(field => {
-        const {
-          name, unit, id, code,
-        } = field;
+        const { name, unit, id, code } = field;
         const usage = quotaUsages.find(x => x.quota_field_id === field.id);
         const groupFieldLimits = quotaGroups.map(group => {
           const { quota_group_limits = [] } = group;
@@ -160,9 +152,7 @@ export default {
         { id: 'name', name: '配额组名' },
         { id: 'description', name: '描述' },
       ]);
-      this.setTableOperations([
-        { name: '移除', event: 'confirm-remove-quota-group' },
-      ]);
+      this.setTableOperations([{ name: '移除', event: 'confirm-remove-quota-group' }]);
     },
 
     loadQuotaFields() {
@@ -224,10 +214,7 @@ export default {
       const orgUsedQuotaGroups = quotaGroups.map(x => ({
         quota_group_id: x.id,
       }));
-      QuotaService.updateSpaceUsedQuotaGroup(
-        this.spaceId,
-        orgUsedQuotaGroups,
-      ).then(list => {
+      QuotaService.updateSpaceUsedQuotaGroup(this.spaceId, orgUsedQuotaGroups).then(list => {
         this.initQuotaGroups(list);
         this.$noty.success(`添加配额组${quotaGroup.name}成功`);
       });
@@ -240,10 +227,7 @@ export default {
       const orgUsedQuotaGroups = quotaGroups.map(x => ({
         quota_group_id: x.id,
       }));
-      QuotaService.updateSpaceUsedQuotaGroup(
-        this.spaceId,
-        orgUsedQuotaGroups,
-      ).then(list => {
+      QuotaService.updateSpaceUsedQuotaGroup(this.spaceId, orgUsedQuotaGroups).then(list => {
         this.initQuotaGroups(list);
         this.onCheckedRowsChange();
         this.dialogConfigs.panelConfigs.visible = false;

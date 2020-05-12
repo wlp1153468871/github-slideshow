@@ -4,13 +4,12 @@
     <dao-setting-section>
       <div slot="label">
         <span>创建访问域名</span>
-        <label-tip text="为应用创建一个访问域名, 可用于版本灰度发布。创建成功后将生成一个和应用同名的 Route 或者 Ingress"></label-tip>
+        <label-tip
+          text="为应用创建一个访问域名, 可用于版本灰度发布。创建成功后将生成一个和应用同名的 Route 或者 Ingress"
+        ></label-tip>
       </div>
       <div slot="content">
-        <dao-switch
-          :with-notice="true"
-          v-model="autoRoute">
-        </dao-switch>
+        <dao-switch :with-notice="true" v-model="autoRoute"> </dao-switch>
       </div>
     </dao-setting-section>
 
@@ -20,13 +19,13 @@
         <label-tip text="提供负载均衡的资源对象"></label-tip>
       </template>
       <template #content>
-        <dao-select
-          v-model="_exposeKind">
+        <dao-select v-model="_exposeKind">
           <dao-option
             v-for="option in exposeKinds"
             :key="option.name"
             :value="option.kind"
-            :label="option.kind">
+            :label="option.kind"
+          >
           </dao-option>
         </dao-select>
       </template>
@@ -44,7 +43,8 @@
           v-validate="'required|resource_name|max:63'"
           :message="veeErrors.first('host')"
           :status="veeErrors.has('host') ? 'error' : ''"
-          data-vv-as="访问域名">
+          data-vv-as="访问域名"
+        >
           <span slot="append" v-if="domain">.{{ domain }}</span>
         </dao-input>
       </template>
@@ -63,7 +63,8 @@
           :status="veeErrors.has('port') ? 'error' : ''"
           v-validate="'required|port'"
           data-vv-as="端口"
-          placeholder="端口号；例如 80">
+          placeholder="端口号；例如 80"
+        >
         </dao-input>
       </div>
     </dao-setting-section>
@@ -80,7 +81,8 @@
           :message="veeErrors.first('path')"
           :status="veeErrors.has('path') ? 'error' : ''"
           v-validate="'required|absolute_path'"
-          data-vv-as="访问路径">
+          data-vv-as="访问路径"
+        >
         </dao-input>
       </div>
     </dao-setting-section>

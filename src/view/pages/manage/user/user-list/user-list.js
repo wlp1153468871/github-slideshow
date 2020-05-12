@@ -1,6 +1,7 @@
 import { orderBy } from 'lodash';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import UserService from '@/core/services/user.service';
+import RoleService from '@/core/services/role.service';
 // dialogs
 import UpdatePlatformUserDialog from '@/view/pages/dialogs/user/update-platform-user';
 import CreateUserDialog from '@/view/pages/dialogs/user/create-user';
@@ -14,7 +15,12 @@ export default {
   },
 
   created() {
-    this.loadUsers();
+    if (this.$can('platform.user.get')) {
+      this.loadUsers();
+      this.loadPlatformRoles();
+    } else {
+      this.$noty.error('您暂无用户列表查看前看');
+    }
   },
 
   data() {
@@ -30,9 +36,9 @@ export default {
         users: false,
         create: false,
       },
-      filterMethod: (data, filterKey) =>
-        data.username.toLowerCase().includes(filterKey),
+      filterMethod: (data, filterKey) => data.username.toLowerCase().includes(filterKey),
       other: { status: (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER') },
+      ROLES: [],
     };
   },
 
@@ -40,6 +46,7 @@ export default {
     ...mapState({
       self: 'user',
     }),
+    ...mapGetters(['userName', 'isPlatformAdmin']),
   },
 
   methods: {
@@ -58,6 +65,15 @@ export default {
         .finally(() => {
           this.loadings.users = false;
         });
+    },
+
+    loadPlatformRoles() {
+      RoleService.getRoles({
+        scope: 'platform',
+        platformId: 'dsp',
+      }).then(roles => {
+        this.ROLES = roles;
+      });
     },
 
     openCreateUserDialog() {
@@ -117,24 +133,50 @@ export default {
       });
     },
 
-    updateUser(user) {
-      return UserService.updateUser(
-        user.id, // userId
-        { platform_role: user.role }, // platform role
-      )
-        .then(newUser => {
-          try {
-            this.applyUserChange(newUser);
-            this.$noty.success('设置用户权限成功');
-          } catch (err) {
-            const { data = {} } = err;
-            this.$noty.error(data.error_info);
-          }
+    setPlatformRole(role, userId, isNewUser) {
+      const platformParams = {
+        userId,
+        roleId: role.id,
+        data: {
+          scope: role.scope,
+          platformId: 'dsp',
+        },
+      };
+      RoleService.setRole(platformParams)
+        .then(() => {
+          this.$noty.success(isNewUser ? '权限初始化成功' : '权限修改成功');
+          this.loadUsers();
+        })
+        .catch(() => {
+          this.$noty.error(isNewUser ? '权限初始化失败' : '添加用户失败');
         })
         .finally(() => {
-          this.dialogConfigs.updateUser.visible = false;
-          this.selectedUser = {};
+          if (!isNewUser) {
+            this.dialogConfigs.updateUser.visible = false;
+            this.selectedUser = {};
+          }
         });
+    },
+
+    updateUser(user, role) {
+      this.setPlatformRole(role, user.id);
+      // return UserService.updateUser(
+      //   user.id, // userId
+      //   { platform_role: user.role }, // platform role
+      // )
+      //   .then(newUser => {
+      //     try {
+      //       this.applyUserChange(newUser);
+      //       // this.$noty.success('设置用户权限成功');
+      //     } catch (err) {
+      //       const { data = {} } = err;
+      //       this.$noty.error(data.error_info);
+      //     }
+      //   })
+      //   .finally(() => {
+      //     this.dialogConfigs.updateUser.visible = false;
+      //     this.selectedUser = {};
+      //   });
     },
 
     applyUserChange(newItem) {
@@ -146,34 +188,42 @@ export default {
       });
     },
 
-    createUser(vars) {
-      const {
-        pwd, confirm_pwd, phone, ...user
-      } = vars;
+    createUser(vars, role, isNewUser) {
+      const { pwd, confirm_pwd, phone, ...user } = vars;
       user.password = pwd;
       user.phone_number = phone;
 
       this.loadings.create = true;
-      UserService.createUser(user)
+
+      UserService.createUser(user, role, isNewUser)
         .then(newUser => {
+          this.setPlatformRole(role, newUser.id, isNewUser);
           this.rows.push(newUser);
           this.$refs.createUser.onClose();
           this.$noty.success('创建用户成功');
+        })
+        .catch(() => {
+          this.$noty.error('创建用户失败');
         })
         .finally(() => {
           this.loadings.create = false;
         });
     },
-    handleOperate(command, zone) {
-      if (command === 'enable') {
-        this.enableUser(zone);
+  },
+  filters: {
+    roleFormat: val => {
+      if (!val) {
+        return '无权限';
       }
-      if (command === 'disable') {
-        this.disableUser(zone);
+      let text = '';
+      if (val) {
+        val.forEach(role => {
+          if (role.scope === 'platform') {
+            text = role.name;
+          }
+        });
       }
-      if (command === 'edit') {
-        this.updateUserDialog(zone);
-      }
+      return text;
     },
   },
 };

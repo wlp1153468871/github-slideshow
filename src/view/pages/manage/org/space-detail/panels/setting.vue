@@ -10,11 +10,9 @@
           <dao-tooltip
             content="项目组中存在用户，无法删除项目组"
             :disabled="!users.length"
-            placement="right">
-            <button
-              @click="deleteConfirm()"
-              :disabled="Boolean(users.length)"
-              class="dao-btn red">
+            placement="right"
+          >
+            <button @click="deleteConfirm()" :disabled="Boolean(users.length)" class="dao-btn red">
               删除
             </button>
           </dao-tooltip>
@@ -33,15 +31,17 @@ export default {
   },
   methods: {
     deleteConfirm() {
-      this.$tada.confirm({
-        title: '删除项目组',
-        text: `您确定要删除项目组 ${this.space.name} 吗？`,
-        primaryText: '删除',
-      }).then(willDel => {
-        if (willDel) {
-          this.$emit('delete');
-        }
-      });
+      this.$tada
+        .confirm({
+          title: '删除项目组',
+          text: `您确定要删除项目组 ${this.space.name} 吗？`,
+          primaryText: '删除',
+        })
+        .then(willDel => {
+          if (willDel) {
+            this.$emit('delete');
+          }
+        });
     },
   },
 };
@@ -53,4 +53,3 @@ export default {
   font-weight: 600;
 }
 </style>
-

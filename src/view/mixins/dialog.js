@@ -90,7 +90,9 @@ export default function dialogFactory(title = '', config = {}) {
 
     computed: {
       computedCloseOnClickOutside() {
-        if (typeof this.config.closeOnClickOutside === 'boolean') return this.config.closeOnClickOutside;
+        if (typeof this.config.closeOnClickOutside === 'boolean') {
+          return this.config.closeOnClickOutside;
+        }
         return this.closeOnClickOutside;
       },
     },

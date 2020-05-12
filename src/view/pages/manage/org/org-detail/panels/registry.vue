@@ -1,5 +1,5 @@
 <template>
-  <div class="register-info">
+  <div class="register-info" v-if="hasPermission">
     <template v-if="hasRegistry">
       <div class="info-detail">
         <span class="detail-key">镜像仓库用户名</span>
@@ -8,10 +8,8 @@
       <div class="info-detail">
         <span class="detail-key">镜像仓库密码</span>
         <span class="detail-value">{{ password }}</span>
-        <button
-          class="dao-btn blue"
-          @click="passwordVisible = !passwordVisible">
-          {{ passwordVisible? '隐藏' : '查看' }}
+        <button class="dao-btn blue" @click="passwordVisible = !passwordVisible">
+          {{ passwordVisible ? '隐藏' : '查看' }}
         </button>
       </div>
     </template>
@@ -48,10 +46,17 @@ export default {
       }
       return this.registry.password;
     },
+    hasPermission() {
+      return this.$can('platform.organization.imageRepository');
+    },
   },
 
   created() {
-    this.getRegistry();
+    if (this.hasPermission) {
+      this.getRegistry();
+    } else {
+      this.$noty.error('暂无镜像仓库查看权限');
+    }
   },
 
   methods: {

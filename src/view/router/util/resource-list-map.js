@@ -2,10 +2,7 @@ import { RESOURCE_TYPE } from '@/core/constants/resource';
 import Resource from '@/view/components/resource/resource-link/resource';
 
 export default function getListPath(resource) {
-  const getParams = ({
-    id: serviceId,
-    services: [{ id: brokerServiceId }],
-  }) => {
+  const getParams = ({ id: serviceId, services: [{ id: brokerServiceId }] }) => {
     return {
       params: {
         serviceId,

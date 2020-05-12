@@ -14,10 +14,10 @@ const notyErrorOption = {
   layout: 'topCenter',
   type: 'error',
 };
+// const debug = process.env.NODE_ENV !== 'production';
 
 function notifyErrorResponse(response, defaultMessage) {
-  const msg =
-    getValue(response, 'data.error_info') || getValue(response, 'data');
+  const msg = JSON.stringify(getValue(response, 'data.error_info') || getValue(response, 'data'));
   new Noty({
     ...notyErrorOption,
     text: msg || defaultMessage,
@@ -27,17 +27,17 @@ function notifyErrorResponse(response, defaultMessage) {
 const refreshToken = (params, cb) => {
   if (!store.state.auth.isRefreshing) {
     store.commit('setRefreshingState', true);
-    store.commit('setRefreshingCall', axios
-      .get('/v1/auth_token', { params })
-      .then(({ data: { token } }) => {
+    store.commit(
+      'setRefreshingCall',
+      axios.get('/v1/auth_token', { params }).then(({ data: { token } }) => {
         store.commit('saveToken', token);
         store.commit('setRefreshingState', false);
         store.commit('setRefreshingCall', null);
         return Promise.resolve(true);
-      }));
+      }),
+    );
   }
-  return store.state.auth.refreshingCall
-    .then(() => cb());
+  return store.state.auth.refreshingCall.then(() => cb());
 };
 
 const toLogin = (res = {}) => {
@@ -62,6 +62,22 @@ export default {
     if (!config.headers.Authorization && AuthService.getToken()) {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
+    if (!config.headers.AuthorizationScope) {
+      if (store.state.isManageView) {
+        config.headers.AuthorizationScope = JSON.stringify({
+          platform_id: 'dsp',
+        });
+      } else {
+        const { spaceId, orgId, zoneId } = store.getters;
+        if (spaceId || orgId || zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: spaceId,
+            organization_id: orgId,
+            zone_id: zoneId,
+          });
+        }
+      }
+    }
     saveRefreshTime();
     return config;
   },
@@ -69,6 +85,11 @@ export default {
   // global ajax success handler
   response(res) {
     if (/^20\d/.test(res.status)) {
+      if (res.headers.authorizationresult) {
+        console.error(res.headers.authorizationresult);
+        console.error(res.config.method, res.request.responseURL);
+        // notifyErrorResponse({}, '后端无权限, 请联系管理员');
+      }
       return res.data;
     }
     return res;
@@ -77,10 +98,9 @@ export default {
   // global ajax error handler
   responseError(error) {
     const { response = {} } = error;
-
     if (response.status === 502) {
       notifyErrorResponse({}, '后端出问题了, 请联系管理员');
-    } else if (response.status === 401) {
+    } else if (response.status === 401 && response.data.message === 'token has expired') {
       const nowTime = new Date();
       const refreshTime = new Date(Date.parse(Vue.ls.get('refreshTime')));
       // 在用户操作的活跃期内

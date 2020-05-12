@@ -15,7 +15,8 @@
             :status="veeErrors.has('cmd') ? 'error' : ''"
             data-vv-delay="500"
             v-validate="'shell_quota'"
-            placeholder="默认会使用镜像里面的 entrypoint">
+            placeholder="默认会使用镜像里面的 entrypoint"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -33,7 +34,8 @@
             :status="veeErrors.has('args') ? 'error' : ''"
             data-vv-delay="500"
             v-validate="'shell_quota'"
-            placeholder="用空格隔开，默认会使用镜像里面的 cmd">
+            placeholder="用空格隔开，默认会使用镜像里面的 cmd"
+          >
           </dao-input>
         </div>
       </dao-setting-item>

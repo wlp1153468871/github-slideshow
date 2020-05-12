@@ -53,9 +53,5 @@ export default function routeTargetPortMappingFilter(route, service) {
     return portDisplayValue(null, targetPort);
   }
 
-  return portDisplayValue(
-    servicePort.port,
-    servicePort.targetPort,
-    servicePort.protocol,
-  );
+  return portDisplayValue(servicePort.port, servicePort.targetPort, servicePort.protocol);
 }

@@ -9,19 +9,27 @@
           :links="[
             { text: '服务列表', route: { name: 'manage.service.list' } },
             { text: service.name },
-        ]">
+          ]"
+        >
         </breadcrumb>
-        <div class="header-btn-group">
+        <div class="header-btn-group" v-if="$can('platform.serviceInstance.hide')">
           <button
+            v-if="serviceAvailable"
+            class="dao-btn blue"
+            :disabled="serviceUnavailable"
+            @click="confirmUnStackService()"
+          >
+            立即下架
+          </button>
+          <button
+            v-else
             class="dao-btn blue"
             :disabled="serviceAvailable"
-            @click="confirmStackService()">
+            @click="confirmStackService()"
+          >
             立即上架
           </button>
-          <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-end">
+          <!-- <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
             <button class="dao-btn has-icon">
               <span class="text">操作</span>
               <svg class="icon">
@@ -29,13 +37,11 @@
               </svg>
             </button>
             <dao-dropdown-menu slot="list">
-              <dao-dropdown-item
-                :is-disabled="serviceUnavailable"
-                @click="confirmUnStackService()">
+              <dao-dropdown-item :is-disabled="serviceUnavailable" @click="confirmUnStackService()">
                 <span>立即下架</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
-          </dao-dropdown>
+          </dao-dropdown> -->
         </div>
       </div>
       <div class="header-content-status">
@@ -46,8 +52,9 @@
               class="icon"
               :class="{
                 'text-success': serviceAvailable,
-                'text-undefined': !serviceAvailable
-            }">
+                'text-undefined': !serviceAvailable,
+              }"
+            >
               <use xlink:href="#icon_status-dot"></use>
             </svg>
             {{ service.available | service_status }}
@@ -60,17 +67,16 @@
       <dao-tab-item :heading="SIDE_BAR.ZONES">
         <div class="dao-view-main">
           <div class="dao-view-content">
-            <zone-panel :service="service">
-            </zone-panel>
+            <zone-panel :service="service"> </zone-panel>
           </div>
         </div>
       </dao-tab-item>
       <!--<dao-tab-item :heading="SIDE_BAR.SOURCES">-->
-        <!--<div class="dao-view-main">-->
-          <!--<div class="dao-view-content">-->
-            <!--<source-panel v-model="service"></source-panel>-->
-          <!--</div>-->
-        <!--</div>-->
+      <!--<div class="dao-view-main">-->
+      <!--<div class="dao-view-content">-->
+      <!--<source-panel v-model="service"></source-panel>-->
+      <!--</div>-->
+      <!--</div>-->
       <!--</dao-tab-item>-->
       <dao-tab-item :heading="SIDE_BAR.OVERVIEW">
         <div class="dao-view-content">
@@ -81,8 +87,7 @@
   </div>
 </template>
 
-<script src="./service-detail.js">
-</script>
+<script src="./service-detail.js"></script>
 
 <style lang="scss">
 @import 'service-detail';

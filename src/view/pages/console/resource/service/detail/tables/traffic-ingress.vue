@@ -2,89 +2,70 @@
   <div class="traffic-table">
     <table class="dao-table row">
       <thead>
-      <tr>
-        <th>Ingress<span v-if="showNodePorts"> / Node Port</span></th>
-        <th role="presentation"></th>
-        <th>Service Port</th>
-        <th role="presentation"></th>
-        <th>Target Port</th>
-        <th>Hostname</th>
-        <th>TLS Termination</th>
-      </tr>
+        <tr>
+          <th>Ingress<span v-if="showNodePorts"> / Node Port</span></th>
+          <th role="presentation"></th>
+          <th>Service Port</th>
+          <th role="presentation"></th>
+          <th>Target Port</th>
+          <th>Hostname</th>
+          <th>TLS Termination</th>
+        </tr>
       </thead>
       <tbody v-if="noPorts">
-      <tr>
-        <td colspan="7"><em>No ingresses or ports to show</em></td>
-      </tr>
+        <tr>
+          <td colspan="7"><em>No ingresses or ports to show</em></td>
+        </tr>
       </tbody>
 
       <tbody v-else>
+        <template v-for="(ports, key) in portsByIngress">
+          <tr v-for="(port, index) in ports" v-if="key !== ''" :key="key + index">
+            <td>
+              <resource-link kind="Ingress" :name="ingressMap[key].name"> </resource-link>
+              <span v-if="showNodePorts">
+                <span v-if="port.nodePort"> / {{ port.nodePort }}</span>
+              </span>
+            </td>
 
-      <template v-for="(ports, key) in portsByIngress">
-
-        <tr
-          v-for="(port, index) in ports"
-          v-if="key !== ''"
-          :key="key + index">
-
-          <td>
-            <resource-link
-              kind="Ingress"
-              :name="ingressMap[key].name"
-            >
-            </resource-link>
-            <span v-if="showNodePorts">
-              <span v-if="port.nodePort"> / {{port.nodePort}}</span>
-            </span>
-          </td>
-
-          <td role="presentation" class="text-muted text-center">
-            <svg class="icon text-muted">
-              <use xlink:href="#icon_arrow-right"></use>
-            </svg>
-          </td>
-
-          <td>
-            {{port.port}}/{{port.protocol}}
-            <span v-if="port.name">({{port.name}})</span>
-          </td>
-
-          <td role="presentation" class="text-muted text-center">
-            <svg class="icon">
-              <use xlink:href="#icon_arrow-right"></use>
-            </svg>
-          </td>
-
-          <td>
-            {{port.targetPort}}
-          </td>
-
-          <td>
-            <a :href="ingressMap[key] | webURL" target="_blank">
-              {{ ingressMap[key] | webURL }}
-              <svg class="icon">
-                <use xlink:href="#icon_link"></use>
+            <td role="presentation" class="text-muted text-center">
+              <svg class="icon text-muted">
+                <use xlink:href="#icon_arrow-right"></use>
               </svg>
-            </a>
-          </td>
+            </td>
 
-          <td>
-            <resource-link
-              :kind="RESOURCE_TYPE.SECRET"
-              :name="ingressMap[key].tls"
-            >
-            </resource-link>
-          </td>
-        </tr>
-      </template>
+            <td>
+              {{ port.port }}/{{ port.protocol }}
+              <span v-if="port.name">({{ port.name }})</span>
+            </td>
 
-      <unused-port
-        v-for="(port, index) in unusedPorts"
-        :key="index"
-        :port="port"
-      >
-      </unused-port>
+            <td role="presentation" class="text-muted text-center">
+              <svg class="icon">
+                <use xlink:href="#icon_arrow-right"></use>
+              </svg>
+            </td>
 
+            <td>
+              {{ port.targetPort }}
+            </td>
+
+            <td>
+              <a :href="ingressMap[key] | webURL" target="_blank">
+                {{ ingressMap[key] | webURL }}
+                <svg class="icon">
+                  <use xlink:href="#icon_link"></use>
+                </svg>
+              </a>
+            </td>
+
+            <td>
+              <resource-link :kind="RESOURCE_TYPE.SECRET" :name="ingressMap[key].tls">
+              </resource-link>
+            </td>
+          </tr>
+        </template>
+
+        <unused-port v-for="(port, index) in unusedPorts" :key="index" :port="port"> </unused-port>
       </tbody>
     </table>
   </div>
@@ -111,10 +92,7 @@ export default {
 
   computed: {
     noPorts() {
-      return (
-        hashSizeFilter(this.portsByIngress) === 0 &&
-        this.unusedPorts.length === 0
-      );
+      return hashSizeFilter(this.portsByIngress) === 0 && this.unusedPorts.length === 0;
     },
   },
 
@@ -185,10 +163,7 @@ export default {
       }
 
       each(this.ingressMap, (ingress, key) => {
-        if (
-          ingress.servicePort === port.name ||
-          ingress.servicePort === port.targetPort
-        ) {
+        if (ingress.servicePort === port.name || ingress.servicePort === port.targetPort) {
           this.portsByIngress[key] = this.portsByIngress[key] || [];
           this.portsByIngress[key].push(port);
           reachedByRoute = true;

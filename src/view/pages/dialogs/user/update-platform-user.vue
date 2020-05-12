@@ -2,8 +2,10 @@
   <dao-dialog
     :config="config"
     :visible.sync="isShow"
+    @before-open="init"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户名</div>
@@ -14,10 +16,10 @@
     </dao-setting-section>
     <dao-setting-section>
       <dao-setting-item>
-        <div slot="label">权限</div>
+        <div slot="label">平台权限</div>
         <div slot="content">
-          <dao-select v-model="role">
-            <dao-option
+          <dao-select placeholder="无权限" v-model="role">
+            <!-- <dao-option
               :value="PLATFORM_ROLE.ADMIN"
               :label="PLATFORM_ROLE.ADMIN | platform_role">
             </dao-option>
@@ -25,22 +27,33 @@
               :disabled="user.username === 'admin'"
               :value="PLATFORM_ROLE.MEMBER"
               :label="PLATFORM_ROLE.MEMBER | platform_role">
-            </dao-option>
+            </dao-option> -->
+            <dao-option
+              v-for="(r, index) in platformroles"
+              :key="index"
+              :value="r"
+              :label="r.name"
+            ></dao-option>
           </dao-select>
         </div>
       </dao-setting-item>
+      <template>
+        <el-alert
+          v-if="user.username === userName && isPlatformAdmin"
+          style="margin-top: 15px;"
+          title="请注意！您具有平台管理权限，请谨慎操作防止降级。"
+          type="warning"
+          show-icon
+        >
+        </el-alert>
+      </template>
     </dao-setting-section>
 
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="formValidate"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="formValidate" @click="onConfirm">
         确定
       </button>
     </div>
@@ -48,14 +61,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { PLATFORM_ROLE } from '@/core/constants/role';
 import dialog from '@/view/mixins/dialog';
 
 export default {
   name: 'UpdateUserDialog',
-  extends: dialog('设置用户权限'),
+  extends: dialog('修改用户权限'),
   props: {
     user: { type: Object, default: () => ({}) },
+    platformroles: [Object, Array],
   },
   data() {
     return {
@@ -75,13 +90,27 @@ export default {
     formValidate() {
       return this.role === this.user.platform_role;
     },
+    ...mapGetters(['userName', 'isPlatformAdmin']),
   },
   methods: {
     onConfirm() {
-      this.$emit('update', {
-        id: this.user.id,
-        role: this.role,
-      });
+      this.$emit(
+        'update',
+        {
+          id: this.user.id,
+          role: 'platform_admin',
+        },
+        this.role,
+      );
+    },
+    init() {
+      if (this.user.roles) {
+        const [role] = this.user.roles;
+        this.role = role;
+      } else {
+        const [role] = this.platformroles.filter(r => r.name === '无权限');
+        this.role = role;
+      }
     },
   },
 };

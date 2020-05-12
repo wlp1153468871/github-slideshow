@@ -5,14 +5,16 @@
         <breadcrumb
           :links="[
             { text: '可用区列表', route: { name: 'manage.zone.list' } },
-            { text: brokerService.zoneName,
+            {
+              text: brokerService.zoneName,
               route: {
                 name: 'manage.zone.detail',
-                params: { zone: brokerService.zoneId }
-              }
+                params: { zone: brokerService.zoneId },
+              },
             },
             { text: brokerService.name },
-        ]">
+          ]"
+        >
         </breadcrumb>
       </div>
     </div>
@@ -32,7 +34,8 @@
               :allField="allField"
               :quota-fields="brokerService.quota_units"
               @add-quota="addServiceQuota"
-              @remove-quota="removeServiceQuota">
+              @remove-quota="removeServiceQuota"
+            >
             </quota-field-panel>
           </div>
         </div>
@@ -41,5 +44,4 @@
   </div>
 </template>
 
-<script src="./service-detail.js">
-</script>
+<script src="./service-detail.js"></script>

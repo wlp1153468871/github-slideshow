@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <dao-table-view
-      :rows="rows"
-      :config="tConfig">
+  <div v-if="$can('platform.organization.zone')">
+    <dao-table-view :rows="rows" :config="tConfig">
       <div slot="tool" class="dao-table-view-left-bar">
-        <button
-          class="dao-btn white has-icon"
-          @click="openAddZoneDialog()">
+        <button class="dao-btn white has-icon" @click="openAddZoneDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -19,7 +15,8 @@
       :zone-list="rows"
       @add="addZone"
       :visible="dialogConfigs.addZone.visible"
-      @close="dialogConfigs.addZone.visible = false">
+      @close="dialogConfigs.addZone.visible = false"
+    >
     </add-zone-dialog>
     <!-- dialog end -->
   </div>
@@ -79,7 +76,7 @@ export default {
         {
           id: 'name',
           name: '可用区',
-          type: 'goto',
+          type: this.$can('platform.zone.get') ? 'goto' : 'text',
           other: { onClick },
         },
         {
@@ -115,11 +112,10 @@ export default {
     },
 
     addZone(zoneIds) {
-      ZoneService.addOrgZone(this.orgId, { zone_ids: zoneIds })
-        .then(() => {
-          this.$noty.success('添加可用区成功');
-          this.loadOrgZones();
-        });
+      ZoneService.addOrgZone(this.orgId, { zone_ids: zoneIds }).then(() => {
+        this.$noty.success('添加可用区成功');
+        this.loadOrgZones();
+      });
     },
 
     openAddZoneDialog() {

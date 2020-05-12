@@ -3,11 +3,12 @@
     class="edit-yaml"
     :header="header"
     size="lg"
-    :footer="{confirmText}"
+    :footer="{ confirmText }"
     :visible.sync="isShow"
     @before-open="init"
     @cancel="$emit('close')"
-    @confirm="$emit('confirm')">
+    @confirm="$emit('confirm')"
+  >
     <dao-setting-section>
       <dao-code-mirror v-model="yamlData" read-only></dao-code-mirror>
     </dao-setting-section>
@@ -47,8 +48,7 @@ export default {
 
     stringifyValue(value) {
       try {
-        this.yamlData =
-          typeof value === 'string' ? value : this.$jsyaml.safeDump(value);
+        this.yamlData = typeof value === 'string' ? value : this.$jsyaml.safeDump(value);
       } catch (e) {
         // eslint-disable
         this.$noty.error('Yaml 格式不对');

@@ -2,10 +2,7 @@
   <div class="checkout-module">
     <div class="top-bar">
       <div class="header-title">
-        <a
-          class="go-back"
-          href="javascript:void(0)"
-          @click="$router.go(-1)">
+        <a class="go-back" href="javascript:void(0)" @click="$router.go(-1)">
           <svg class="icon">
             <use xlink:href="#icon_caret-left"></use>
           </svg>
@@ -17,15 +14,17 @@
 
     <div class="container">
       <div v-show="STEPS.CONFIG === stepIndex">
-        <space-zone
-          ref="spaceZone">
-        </space-zone>
+        <space-zone ref="spaceZone"> </space-zone>
 
         <dao-setting-layout>
-          <template slot="layout-title">名称</template>
+          <template slot="layout-title"
+            >名称</template
+          >
           <dao-setting-section>
             <dao-setting-item>
-              <template slot="label">名称</template>
+              <template slot="label"
+                >名称</template
+              >
               <template slot="content">
                 <dao-input
                   icon-inside
@@ -34,7 +33,8 @@
                   v-validate="'required|resource_name|exclude_spaces'"
                   :message="veeErrors.first('secretName')"
                   :status="veeErrors.has('secretName') ? 'error' : ''"
-                  data-vv-as="名称">
+                  data-vv-as="名称"
+                >
                 </dao-input>
               </template>
             </dao-setting-item>
@@ -42,18 +42,22 @@
         </dao-setting-layout>
 
         <dao-setting-layout>
-          <template slot="layout-title">类型</template>
+          <template slot="layout-title"
+            >类型</template
+          >
           <dao-setting-section>
             <dao-setting-item>
-              <template slot="label">类型</template>
+              <template slot="label"
+                >类型</template
+              >
               <template slot="content">
-                <dao-select
-                  v-model="secretType">
+                <dao-select v-model="secretType">
                   <dao-option
                     v-for="option in secretTypes"
                     :key="option.value"
                     :value="option.value"
-                    :label="option.value">
+                    :label="option.value"
+                  >
                   </dao-option>
                 </dao-select>
               </template>
@@ -62,22 +66,28 @@
         </dao-setting-layout>
 
         <labels-table
+          :canEdit="$can('secret.create')"
           :data="data"
           :dialog-title="CONFIG_TITLE_TYPE.DATA"
           :is-secret="true"
-          @edit="editData">
+          @edit="editData"
+        >
         </labels-table>
 
         <labels-table
+          :canEdit="$can('secret.create')"
           :data="labels"
           :dialog-title="CONFIG_TITLE_TYPE.LABEL"
-          @edit="editLabel">
+          @edit="editLabel"
+        >
         </labels-table>
 
         <labels-table
+          :canEdit="$can('secret.create')"
           :data="annotations"
           :dialog-title="CONFIG_TITLE_TYPE.ANNOTATIONS"
-          @edit="editAnnotations">
+          @edit="editAnnotations"
+        >
         </labels-table>
       </div>
 
@@ -90,7 +100,8 @@
         :config-name="secretName"
         :purchasing="loadings.purchasing"
         @prev="prev(STEPS.OVERVIEW)"
-        @next="purchase">
+        @next="purchase"
+      >
       </overview-panel>
 
       <!-- 成功 -->
@@ -100,7 +111,8 @@
         :instance="instance"
         :error="instanceError"
         :configType="type"
-        @prev="prev(STEPS.FINISH)">
+        @prev="prev(STEPS.FINISH)"
+      >
       </finish-panel>
     </div>
 
@@ -111,7 +123,8 @@
       :valid="valid"
       @prev="prev"
       @next="next"
-      @purchase="purchase">
+      @purchase="purchase"
+    >
     </checkout-footer-panel>
   </div>
 </template>

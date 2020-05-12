@@ -13,7 +13,8 @@
               tag="li"
               :key="tab.name"
               :to="tab.to"
-              @click="content = tab">
+              @click="content = tab"
+            >
               <div>
                 {{ tab.name }}
                 <span class="icon">
@@ -29,7 +30,8 @@
               tag="li"
               :key="tab.name"
               :to="tab.to"
-              @click="content = tab">
+              @click="content = tab"
+            >
               <div>
                 {{ tab.name }}
                 <span class="icon">

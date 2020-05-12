@@ -11,71 +11,68 @@
                 <span v-if="!service.spec.selector"><em>none</em></span>
                 <span
                   v-for="(selectorValue, selectorLabel, index) in service.spec.selector"
-                  :key="selectorLabel">
-                  {{selectorLabel}}={{selectorValue}}
-                  <template v-if="index !== size(service.spec.selector.length)">,&nbsp;</template>
+                  :key="selectorLabel"
+                >
+                  {{ selectorLabel }}={{ selectorValue }}
+                  <template v-if="index !== size(service.spec.selector.length)"
+                    >,&nbsp;</template
+                  >
                 </span>
               </dd>
             </div>
             <div class="dl-item">
               <dt>Type:</dt>
-              <dd>{{service.spec.type}}</dd>
+              <dd>{{ service.spec.type }}</dd>
             </div>
             <div class="dl-item">
               <dt>IP:</dt>
-              <dd>{{service.spec.clusterIP}}</dd>
+              <dd>{{ service.spec.clusterIP }}</dd>
             </div>
             <div class="dl-item">
               <dt>Hostname:</dt>
               <dd>
-                {{service.metadata.name}}.{{service.metadata.namespace}}.svc
+                {{ service.metadata.name }}.{{ service.metadata.namespace }}.svc
                 <el-popover
                   placement="top-start"
                   width="200"
                   trigger="hover"
-                  content="This address is only resolvable from within the cluster.">
+                  content="This address is only resolvable from within the cluster."
+                >
                   <i class="el-icon-info color-info" slot="reference"></i>
                 </el-popover>
               </dd>
             </div>
             <div v-if="service.spec.externalName" class="dl-item">
               <dt>External Hostname:</dt>
-              <dd>{{service.spec.externalName}}</dd>
+              <dd>{{ service.spec.externalName }}</dd>
             </div>
             <div class="dl-item">
               <dt>Session affinity:</dt>
-              <dd>{{service.spec.sessionAffinity}}</dd>
+              <dd>{{ service.spec.sessionAffinity }}</dd>
             </div>
-            <div
-              v-if="serviceHasIngress"
-              class="dl-item">
+            <div v-if="serviceHasIngress" class="dl-item">
               <dt>Ingress Points:</dt>
               <dd>
-                <span
-                  v-for="(ingress, index) in service.status.loadBalancer.ingress"
-                  :key="index">
-                  {{ingress.ip}},
+                <span v-for="(ingress, index) in service.status.loadBalancer.ingress" :key="index">
+                  {{ ingress.ip }},
                 </span>
               </dd>
             </div>
             <div class="dl-item" v-if="service.spec.externalIPs && service.spec.externalIPs.length">
               <dt>External IPs:</dt>
               <dd>
-                <span
-                  v-for="(externalIP, index) in service.spec.externalIPs"
-                  :key="index">
-                  {{externalIP}},
+                <span v-for="(externalIP, index) in service.spec.externalIPs" :key="index">
+                  {{ externalIP }},
                 </span>
               </dd>
             </div>
-            <div
-              v-if="routes.length"
-              class="dl-item">
+            <div v-if="routes.length" class="dl-item">
               <dt>Routes:</dt>
               <dd>
                 <router-link
-                  v-if="$can('create')"
-                  :to="{ name: 'deploy.routes', query: { service: service.metadata.name} }">
+                  v-if="$can('service.create')"
+                  :to="{ name: 'deploy.routes', query: { service: service.metadata.name } }"
+                >
                   创建 Route
                 </router-link>
                 <template v-else>
@@ -87,26 +84,13 @@
         </div>
       </div>
     </div>
-    <div
-      class="col-md-12"
-      style="margin-top: 20px;"
-    >
+    <div class="col-md-12" style="margin-top: 20px;">
       <div class="panel-resource">
         <h3>流量</h3>
         <div class="panel-resource-content">
-          <traffic-route
-            v-if="routes.length"
-            :service="service"
-            :routes="routes"
-          >
-          </traffic-route>
+          <traffic-route v-if="routes.length" :service="service" :routes="routes"> </traffic-route>
 
-          <traffic-ingress
-            v-else
-            :service="service"
-            :ingress-list="ingresses"
-          >
-          </traffic-ingress>
+          <traffic-ingress v-else :service="service" :ingress-list="ingresses"> </traffic-ingress>
         </div>
       </div>
     </div>
@@ -136,8 +120,7 @@ export default {
   computed: {
     serviceHasIngress() {
       return (
-        this.service.status.loadBalancer.ingress &&
-        this.service.status.loadBalancer.ingress.length
+        this.service.status.loadBalancer.ingress && this.service.status.loadBalancer.ingress.length
       );
     },
   },
@@ -149,5 +132,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

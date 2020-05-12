@@ -1,9 +1,5 @@
 <template>
-  <dao-dialog
-    header="添加租户"
-    :visible.sync="isShow"
-    @before-open="bopen"
-    @closed="closed">
+  <dao-dialog header="添加租户" :visible.sync="isShow" @before-open="bopen" @closed="closed">
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">租户名</div>
@@ -16,7 +12,8 @@
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
             v-validate="'required|min:4|max:20'"
-            v-model="name">
+            v-model="name"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -37,14 +34,15 @@
               required: true,
               dns_1123_label: true,
               max: 63,
-              min: 4
+              min: 4,
             }"
-            v-model="short_name">
+            v-model="short_name"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
-    <dao-setting-section>
+    <!-- <dao-setting-section>
       <dao-setting-item>
         <div slot="label">管理员</div>
         <div slot="content">
@@ -65,7 +63,7 @@
           </el-select>
         </div>
       </dao-setting-item>
-    </dao-setting-section>
+    </dao-setting-section> -->
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">可用区</div>
@@ -73,16 +71,12 @@
           <el-select
             multiple
             filterable
-            remote
+            size="small"
             ref="select2"
             v-model="zone_ids"
             placeholder="请输入关键词"
-            :remote-method="loadZones">
-            <el-option
-              v-for="zone in zones"
-              :key="zone.id"
-              :label="zone.name"
-              :value="zone.id">
+          >
+            <el-option v-for="zone in zones" :key="zone.id" :label="zone.name" :value="zone.id">
             </el-option>
           </el-select>
         </div>
@@ -94,11 +88,12 @@
         <div slot="content">
           <textarea
             class="dao-control"
-            :class="{ 'error': veeErrors.has('description') }"
+            :class="{ error: veeErrors.has('description') }"
             v-model="description"
             name="description"
             rows="3"
-            v-validate="'max:80'">
+            v-validate="'max:80'"
+          >
           </textarea>
           <p class="text-danger" v-show="veeErrors.has('description')">
             租户备注不能超过80字
@@ -107,15 +102,10 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="$emit('close')">
+      <button class="dao-btn ghost" @click="$emit('close')">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -160,7 +150,7 @@ export default {
       return (
         this.name !== '' &&
         this.short_name !== '' &&
-        this.user_ids.length !== 0 &&
+        // this.user_ids.length !== 0 &&
         this.zone_ids.length !== 0 &&
         !this.veeErrors.any()
       );
@@ -172,38 +162,29 @@ export default {
       if (query !== '') {
         UserService.getUsers().then(users => {
           this.users = users.filter(user => {
-            return (
-              user.username.toLowerCase().indexOf(query.toLowerCase()) > -1
-            );
+            return user.username.toLowerCase().indexOf(query.toLowerCase()) > -1;
           });
         });
       }
     },
 
-    loadZones(query) {
-      if (query !== '') {
-        this.loading = true;
-        ZoneService.getAvailableZones().then(zones => {
-          this.loading = false;
-          this.zones = zones.filter(zone => {
-            return (
-              zone.name.toLowerCase().indexOf(query.toLowerCase()) > -1
-            );
-          });
-        });
-      }
+    loadZones() {
+      this.loading = true;
+      ZoneService.getAvailableZones().then(zones => {
+        this.zones = zones;
+        this.loading = false;
+      });
     },
 
     onConfirm() {
-      const {
-        name, short_name, description, user_ids, zone_ids,
-      } = this;
+      // eslint-disable-next-line object-curly-newline
+      const { name, short_name, description, zone_ids } = this;
 
       this.$emit('create', {
         name,
         short_name,
         description,
-        user_ids,
+        // user_ids,
         zone_ids,
       });
       this.$emit('close');
@@ -215,12 +196,14 @@ export default {
       this.user_ids = [];
       this.zone_ids = [];
       this.description = '';
+      this.zones = [];
     },
 
     bopen() {
+      this.loadZones();
       setTimeout(() => {
-        this.$refs.select1.initialInputHeight = 32;
-        this.$refs.select1.resetInputHeight();
+        // this.$refs.select1.initialInputHeight = 32;
+        // this.$refs.select1.resetInputHeight();
         this.$refs.select2.initialInputHeight = 32;
         this.$refs.select2.resetInputHeight();
       }, 10);

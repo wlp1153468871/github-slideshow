@@ -1,12 +1,6 @@
 <template>
-  <span
-    class="overflow-tooltip"
-    ref="container"
-  >
-    <el-tooltip
-      v-if="overflow"
-      :content="text"
-      :placement="placement">
+  <span class="overflow-tooltip" ref="container">
+    <el-tooltip v-if="overflow" :content="text" :placement="placement">
       <span class="content">
         {{ text }}
       </span>
@@ -15,7 +9,6 @@
       {{ text }}
     </span>
   </span>
-
 </template>
 
 <script>

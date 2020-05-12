@@ -187,8 +187,7 @@ export const DNS1123_SUBDOMAIN_VALIDATION = {
   maxlength: 253,
   description:
     "Name must consist of lower-case letters, numbers, '.', and '-'. It must start and end with a letter or a number.",
-  chinese:
-    "名称必须由小写字母、数字、' . ' 或 ' - ' 组成，且只能以数字或字母开头结尾",
+  chinese: "名称必须由小写字母、数字、' . ' 或 ' - ' 组成，且只能以数字或字母开头结尾",
 };
 
 /**
@@ -207,8 +206,7 @@ export const DNS1035_LABEL_VALIDATION = {
   maxlength: 63,
   description:
     "a DNS-1035 label must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character.",
-  chinese:
-    "名称必须由小写字母、数字或 '-' 组成，不能以 '-' 和数字开头, 且不能以 '-' 结尾",
+  chinese: "名称必须由小写字母、数字或 '-' 组成，不能以 '-' 和数字开头, 且不能以 '-' 结尾",
 };
 
 export const RESOURCE_TYPE = {

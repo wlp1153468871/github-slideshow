@@ -3,15 +3,8 @@
     <div class="action-area">
       <div></div>
       <div>
-        <dao-input
-          v-model="filterKey"
-          search
-          placeholder="请输入搜索内容">
-        </dao-input>
-        <button
-          class="dao-btn"
-          style="margin-left: 10px;"
-          @click="loadHistory">
+        <dao-input v-model="filterKey" search placeholder="请输入搜索内容"> </dao-input>
+        <button class="dao-btn" style="margin-left: 10px;" @click="loadHistory">
           <svg class="icon">
             <use xlink:href="#icon_update"></use>
           </svg>
@@ -20,15 +13,15 @@
     </div>
     <el-table
       :data="historiesInCurrentPage"
-      style="width: 100%"
+      style="width: 100%;"
       v-loading="loading"
-      :default-sort="{prop: 'metadata.creationTimestamp', order: 'descending'}"
+      :default-sort="{ prop: 'metadata.creationTimestamp', order: 'descending' }"
     >
       <!-- SECTION version -->
       <el-table-column label="版本">
-        <template slot-scope="{ row: history}">
+        <template slot-scope="{ row: history }">
           <span v-if="history.deploymentVersion">
-            <a @click="onPreview(history)">#{{history.deploymentVersion}}</a>
+            <a @click="onPreview(history)">#{{ history.deploymentVersion }}</a>
             <span v-if="dc.status.latestVersion === history.deploymentVersion">(latest)</span>
           </span>
         </template>
@@ -39,14 +32,15 @@
         <template slot-scope="{ row: history }">
           <status-icon :status="history.deploymentStatus"></status-icon>
           <span class="status-detail">
-            {{history.deploymentStatus}}
+            {{ history.deploymentStatus }}
             <span
-              v-if="history.deploymentStatus == 'Active' || history.deploymentStatus == 'Running'">
+              v-if="history.deploymentStatus == 'Active' || history.deploymentStatus == 'Running'"
+            >
               ,
               <span v-if="history.spec.replicas !== history.status.replicas">
-                {{history.status.replicas}}/
+                {{ history.status.replicas }}/
               </span>
-              {{history.spec.replicas}}
+              {{ history.spec.replicas }}
               <span>replica</span>
               <span v-if="history.spec.replicas != 1">s</span>
             </span>
@@ -66,8 +60,8 @@
                   change
                 </span>
               </span>
-              <span v-else-if=" cause.type === 'ConfigChange'">Config change</span>
-              <span v-else>{{cause.type}}</span>
+              <span v-else-if="cause.type === 'ConfigChange'">Config change</span>
+              <span v-else>{{ cause.type }}</span>
             </span>
           </span>
         </template>
@@ -76,37 +70,31 @@
       <!-- SECTION creatTime -->
       <el-table-column prop="address" label="创建时间">
         <template slot-scope="{ row: history }">
-          {{history.metadata.creationTimestamp | date}}
+          {{ history.metadata.creationTimestamp | date }}
         </template>
       </el-table-column>
       <!-- !SECTION  -->
 
       <!-- SECTION opt -->
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="180">
+      <el-table-column fixed="right" label="操作" width="180">
         <template #default="{ row: rc }">
           <el-button
-            v-if="$can('update') && dc.status.latestVersion !== rc.deploymentVersion"
+            v-if="
+              $can('deploymentConfig.update') && dc.status.latestVersion !== rc.deploymentVersion
+            "
             type="text"
             size="small"
             @click="onRollback(rc)"
-          >回滚
+            >回滚
           </el-button>
-          <el-button
-            type="text"
-            size="small"
-            @click="onCheckEvents(rc)"
-          >查看事件
-          </el-button>
+          <el-button type="text" size="small" @click="onCheckEvents(rc)">查看事件 </el-button>
         </template>
       </el-table-column>
       <!-- !SECTION  -->
     </el-table>
 
     <dao-dialog
-      :size=" { width: '1000px' } "
+      :size="{ width: '1000px' }"
       :visible.sync="events.show"
       :footer="false"
       :header="{
@@ -115,11 +103,7 @@
       }"
       @close="events.show = false"
     >
-      <events-table
-        @refresh="getHistoryEvents"
-        :events="events.data"
-        :loading="events.loading"
-      >
+      <events-table @refresh="getHistoryEvents" :events="events.data" :loading="events.loading">
       </events-table>
     </dao-dialog>
     <!-- SECTION preview -->
@@ -134,11 +118,12 @@
     <el-pagination
       background
       :disabled="loading"
-      :page-sizes="[10,30,50]"
+      :page-sizes="[10, 30, 50]"
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
       layout="sizes, prev, pager, next"
-      :total="totalPages">
+      :total="totalPages"
+    >
     </el-pagination>
     <!-- !SECTION  -->
   </div>
@@ -195,19 +180,13 @@ export default {
           return {
             ...h,
             causes: this.causeFormat(h),
-            deploymentVersion: Number.parseInt(
-              this.annotationFormat(h, 'deploymentVersion'),
-              10,
-            ),
+            deploymentVersion: Number.parseInt(this.annotationFormat(h, 'deploymentVersion'), 10),
             deploymentStatus: this.deploymentStatusFormat(h),
             origin: h,
           };
         })
         .sort((a, b) => {
-          return (
-            new Date(b.metadata.creationTimestamp) -
-            new Date(a.metadata.creationTimestamp)
-          );
+          return new Date(b.metadata.creationTimestamp) - new Date(a.metadata.creationTimestamp);
         });
     },
     filteredHistories() {
@@ -256,10 +235,7 @@ export default {
         return [];
       }
 
-      const configJson = this.annotationFormat(
-        history,
-        'encodedDeploymentConfig',
-      );
+      const configJson = this.annotationFormat(history, 'encodedDeploymentConfig');
       if (!configJson) {
         return [];
       }
@@ -357,7 +333,6 @@ export default {
         this.getHistoryEvents();
       });
     },
-
   },
 };
 </script>

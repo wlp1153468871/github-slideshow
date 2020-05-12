@@ -102,33 +102,30 @@ export default {
     },
 
     getDeployment() {
-      return DeploymentResourceService.get(
-        this.space.id,
-        this.zone.id,
-        this.deploymentName,
-      ).then(deployment => {
-        this.deployment = deployment.originData;
-        this.status = deployment.status;
-        this.operatingData = {
-          name: this.deploymentName,
-          namespace: this.deployment.metadata.namespace,
-        };
-      });
+      return DeploymentResourceService.get(this.space.id, this.zone.id, this.deploymentName).then(
+        deployment => {
+          this.deployment = deployment.originData;
+          this.status = deployment.status;
+          this.operatingData = {
+            name: this.deploymentName,
+            namespace: this.deployment.metadata.namespace,
+          };
+        },
+      );
     },
 
     listHPA() {
       return HPAService.list().then(res => {
-        this.autoscalers = HPAService.filterHPA(
-          res.items,
-          'Deployment',
-          this.deploymentName,
-        );
+        this.autoscalers = HPAService.filterHPA(res.items, 'Deployment', this.deploymentName);
       });
     },
 
     async fetchPods() {
-      const res = await DeploymentResourceService
-        .getPods(this.space.id, this.zone.id, this.deploymentName);
+      const res = await DeploymentResourceService.getPods(
+        this.space.id,
+        this.zone.id,
+        this.deploymentName,
+      );
       this.pods = get(res, 'originData.items', []).map(({ metadata }) => metadata);
       if (this.pods.length > 1) {
         this.pods.unshift({ name: MONITOR_ALL_PODS });
@@ -172,11 +169,7 @@ export default {
 
     removeDeployment() {
       this.loadings.page = true;
-      DeploymentResourceService.delete(
-        this.space.id,
-        this.zone.id,
-        this.deploymentName,
-      )
+      DeploymentResourceService.delete(this.space.id, this.zone.id, this.deploymentName)
         .then(() => {
           this.$noty.success(`开始执行对 ${this.deploymentName} 的删除操作`);
           this.goBack();
@@ -221,11 +214,7 @@ export default {
 
     restartDeployment() {
       this.loadings.table = true;
-      DeploymentResourceService.restart(
-        this.space.id,
-        this.zone.id,
-        this.deploymentName,
-      )
+      DeploymentResourceService.restart(this.space.id, this.zone.id, this.deploymentName)
         .then(() => {
           this.$noty.success(`重启Deployment ${this.deploymentName} 成功`);
         })
@@ -235,12 +224,7 @@ export default {
     },
 
     scale(replicas) {
-      DeploymentResourceService.scale(
-        this.space.id,
-        this.zone.id,
-        this.deploymentName,
-        replicas,
-      )
+      DeploymentResourceService.scale(this.space.id, this.zone.id, this.deploymentName, replicas)
         .then(() => {
           return this.getDeployment();
         })

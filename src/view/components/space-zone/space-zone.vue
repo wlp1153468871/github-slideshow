@@ -11,12 +11,9 @@
                 :disabled="!isPlatformAdmin"
                 v-model="selectedOrg"
                 @change="switchSpace('org')"
-                placeholder="请选择一个租户">
-                <dao-option
-                  v-for="org in orgs"
-                  :key="org.id"
-                  :value="org"
-                  :label="org.name">
+                placeholder="请选择一个租户"
+              >
+                <dao-option v-for="org in orgs" :key="org.id" :value="org" :label="org.name">
                 </dao-option>
               </dao-select>
             </div>
@@ -26,12 +23,14 @@
                 :disabled="!isPlatformAdmin"
                 v-model="selectedSpace"
                 @change="switchSpace"
-                placeholder="请选择项目组">
+                placeholder="请选择项目组"
+              >
                 <dao-option
                   v-for="space in selectedOrg.children"
                   :key="space.id"
                   :value="space"
-                  :label="space.name">
+                  :label="space.name"
+                >
                 </dao-option>
               </dao-select>
             </div>
@@ -46,19 +45,15 @@
         <dao-setting-item>
           <template #label>地域</template>
           <template #content>
-
             <el-radio-group
               size="small"
               v-model="selectedArea"
               :disabled="!isPlatformAdmin"
-              @change="switchArea">
-              <el-radio-button
-                :label="area"
-                v-for="(area, index) in areas"
-                :key="index">
+              @change="switchArea"
+            >
+              <el-radio-button :label="area" v-for="(area, index) in areas" :key="index">
               </el-radio-button>
             </el-radio-group>
-
           </template>
         </dao-setting-item>
       </dao-setting-section>
@@ -66,19 +61,15 @@
         <dao-setting-item>
           <template #label>环境</template>
           <template #content>
-
             <el-radio-group
               size="small"
               v-model="selectedEnv"
               :disabled="!isPlatformAdmin"
-              @change="switchEnv">
-              <el-radio-button
-                :label="env"
-                v-for="(env, index) in envs"
-                :key="index">
+              @change="switchEnv"
+            >
+              <el-radio-button :label="env" v-for="(env, index) in envs" :key="index">
               </el-radio-button>
             </el-radio-group>
-
           </template>
         </dao-setting-item>
       </dao-setting-section>
@@ -158,7 +149,7 @@ export default {
 
     linkToDashboard() {
       this.$router.push({
-        name: 'console.dashboard',
+        name: 'console.gateway',
       });
     },
   },

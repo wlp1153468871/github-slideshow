@@ -1,6 +1,5 @@
 <template>
   <div class="pod-log-panel">
-
     <div class="container-detail">
       <!-- pod select -->
       <slot></slot>
@@ -12,6 +11,7 @@
         filterable
         v-model="logOptions.container"
         placeholder="Container Name"
+        @change="swichContainer"
       >
         <el-option
           v-for="container in pod.spec.containers"
@@ -24,33 +24,25 @@
 
       <span class="container-state" v-if="containerStateReason || containerStatusKey">
         <span class="dash">&mdash;</span>
-        <status-icon :status="containerState">
-        </status-icon>
-        <span>{{containerStateReason || containerStatusKey | sentence_case}}</span>
+        <status-icon :status="containerState"> </status-icon>
+        <span>{{ containerStateReason || containerStatusKey | sentence_case }}</span>
       </span>
 
       <span v-if="containerStartTime && logs.length">
         <span class="log-timestamps">
-          日志开始于 {{containerStartTime | date}}
-          &nbsp;<span v-if="containerEndTime">至 {{containerEndTime | date}}</span>
+          日志开始于 {{ containerStartTime | date }} &nbsp;<span v-if="containerEndTime"
+            >至 {{ containerEndTime | date }}</span
+          >
         </span>
       </span>
     </div>
 
     <div class="log-view">
       <div class="top-operation">
-        <span
-          v-if="keys.length"
-          class="log-icon"
-          @click="configFormatOptions"
-        >
-          {{ isFormatLog? '取消' : ''}}格式化日志
+        <span v-if="keys.length" class="log-icon" @click="configFormatOptions">
+          {{ isFormatLog ? '取消' : '' }}格式化日志
         </span>
-        <span
-          v-if="isFormatLog"
-          class="log-icon"
-          @click="visible = true;"
-        >
+        <span v-if="isFormatLog" class="log-icon" @click="visible = true">
           配置格式参数
         </span>
         <span
@@ -58,48 +50,32 @@
           class="log-icon icon-download"
           @click="saveLog"
         >
-        <svg class="icon">
-          <use xlink:href="#icon_download"></use>
-        </svg>
-      </span>
-        <el-tooltip
-          effect="dark"
-          content="实时跟踪日志输出"
-          placement="top"
-        >
-        <span @click="onScrollBottom" class="log-icon scroll-bottom">
-        <svg class="icon">
-          <use xlink:href="#icon_scroll-bottom"></use>
-        </svg>
-      </span>
+          <svg class="icon">
+            <use xlink:href="#icon_download"></use>
+          </svg>
+        </span>
+        <el-tooltip effect="dark" content="实时跟踪日志输出" placement="top">
+          <span @click="onScrollBottom" class="log-icon scroll-bottom">
+            <svg class="icon">
+              <use xlink:href="#icon_scroll-bottom"></use>
+            </svg>
+          </span>
         </el-tooltip>
       </div>
 
       <div class="bottom-operation">
         <span @click="onScrollTop" class="log-icon scroll-top">
-        <svg class="icon">
-          <use xlink:href="#icon_scroll-top"></use>
-        </svg>
-      </span>
+          <svg class="icon">
+            <use xlink:href="#icon_scroll-top"></use>
+          </svg>
+        </span>
       </div>
 
-      <div
-        @mousewheel.passive="onScroll"
-        class="log-view-output"
-        ref="logView"
-      >
+      <div @mousewheel.passive="onScroll" class="log-view-output" ref="logView">
         <table @mouseup="copySelectionToClipboard">
           <tbody>
-            <tr
-              class="log-line"
-              v-for="(log, index) in logs"
-              :key="index"
-            >
-              <td
-                class="log-line-number"
-                :data-line-number="index+1"
-              >
-              </td>
+            <tr class="log-line" v-for="(log, index) in logs" :key="index">
+              <td class="log-line-number" :data-line-number="index + 1"></td>
               <td class="log-line-text">
                 <template v-if="!checkFormat">
                   {{ log.info }}
@@ -110,10 +86,10 @@
                   </template>
                   <template v-else>
                     <template v-for="(key, idx) in orderKeys">
-                    <span :key="idx">
-                      <span v-if="keyVisible">{{ key }}</span>
-                      <span>{{ log.message[key] }}</span>
-                    </span>
+                      <span :key="idx">
+                        <span v-if="keyVisible">{{ key }}</span>
+                        <span>{{ log.message[key] }}</span>
+                      </span>
                     </template>
                   </template>
                 </template>
@@ -122,18 +98,14 @@
           </tbody>
         </table>
         <div
-          v-if="(!loading) && (!limitReached) && (!errorWhileRunning) && state === 'logs'"
+          v-if="!loading && !limitReached && !errorWhileRunning && state === 'logs'"
           class="log-end-msg"
         >
           End of log
         </div>
-        <loading-three-bounce
-          v-if="loading"
-          style="padding: 10px;"
-        >
-        </loading-three-bounce>
+        <loading-three-bounce v-if="loading" style="padding: 10px;"> </loading-three-bounce>
         <p style="color: #cfcfcf; margin-left: 20px;">
-          {{emptyStateMessage}}
+          {{ emptyStateMessage }}
         </p>
       </div>
     </div>
@@ -150,20 +122,11 @@
       @confirm="formatLog"
     >
       <div class="format-options">
-        <dsp-alert
-          style="margin: 0 10px 10px; width: auto;"
-          message="可拖拽进行排序"
-        >
-        </dsp-alert>
+        <dsp-alert style="margin: 0 10px 10px; width: auto;" message="可拖拽进行排序"> </dsp-alert>
 
         <div class="format-log">
-          <el-checkbox-group
-            v-model="checkKey"
-          >
-            <draggable
-              class="dragArea"
-              v-model="keys"
-            >
+          <el-checkbox-group v-model="checkKey">
+            <draggable class="dragArea" v-model="keys">
               <el-checkbox
                 class="list-group-item"
                 v-for="(key, index) in keys"
@@ -175,10 +138,7 @@
           </el-checkbox-group>
         </div>
 
-        <el-checkbox
-          style="margin: 10px 0 0 10px;"
-          v-model="showKey"
-        >
+        <el-checkbox style="margin: 10px 0 0 10px;" v-model="showKey">
           显示 Key
         </el-checkbox>
       </div>
@@ -447,6 +407,16 @@ export default {
         this.visible = true;
       }
     },
+
+    swichContainer() {
+      this.reConnect();
+    },
+
+    reConnect() {
+      this.disconnect();
+      this.logs = [];
+      this.connect();
+    },
   },
 
   watch: {
@@ -459,9 +429,7 @@ export default {
 
     podName: {
       handler() {
-        this.disconnect();
-        this.logs = [];
-        this.connect();
+        this.reConnect();
       },
     },
   },

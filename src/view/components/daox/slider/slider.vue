@@ -1,22 +1,19 @@
 <template>
   <div class="daox-slier">
-    <div
-      ref="baseline"
-      class="daox-slier-baseline"
-      @click="onClickBaseline">
-      <div class="daox-slider-connect" :style="{ 'width': connect + 'px' }"></div>
-      <div class="daox-slider-marker blue" style="left:0%;"></div>
-      <div class="daox-slider-marker blue" style="left:25%;"></div>
-      <div class="daox-slider-marker blue" style="left:50%;"></div>
-      <div class="daox-slider-marker" style="left:75%;"></div>
-      <div class="daox-slider-marker" style="left:100%;"></div>
+    <div ref="baseline" class="daox-slier-baseline" @click="onClickBaseline">
+      <div class="daox-slider-connect" :style="{ width: connect + 'px' }"></div>
+      <div class="daox-slider-marker blue" style="left: 0%;"></div>
+      <div class="daox-slider-marker blue" style="left: 25%;"></div>
+      <div class="daox-slider-marker blue" style="left: 50%;"></div>
+      <div class="daox-slider-marker" style="left: 75%;"></div>
+      <div class="daox-slider-marker" style="left: 100%;"></div>
     </div>
     <div
       ref="handle"
       class="daox-slider-handle"
-      :style="{ 'left': connect + 'px' }"
-      @mousedown.prevent="mouseSlidingOn">
-    </div>
+      :style="{ left: connect + 'px' }"
+      @mousedown.prevent="mouseSlidingOn"
+    ></div>
   </div>
 </template>
 
@@ -81,7 +78,7 @@ export default {
 };
 </script>
 
- <style lang="scss">
+<style lang="scss">
 .daox-slier {
   $slider-height: 4px;
   $dot-height: 16px;
@@ -105,7 +102,7 @@ export default {
       background: #fff;
       // border: 2px solid #3890FF;
       border: 2px solid #ccd1d9;
-      border-radius: 50%;;
+      border-radius: 50%;
 
       &.blue {
         border: 2px solid #3890ff;

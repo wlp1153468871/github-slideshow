@@ -2,6 +2,7 @@ import * as types from '@/core/store/mutation-types';
 import saveRefreshTime from '@/core/utils/refresh-time';
 import NProgress from 'nprogress'; // progress bar
 import 'nprogress/nprogress.css'; // progress bar style
+import hasPermission from '@/core/utils/hasPermission';
 import store from '@/core/store';
 import AuthService from '@/core/services/auth.service';
 import Vue from 'vue';
@@ -13,12 +14,13 @@ export default function ensureHooks(router) {
   router.beforeEach((to, from, next) => {
     saveRefreshTime();
     NProgress.start(); // start progress bar
+
     if (store.state.isFullscreened && to !== from) {
       store.commit(types.FUll_SCREENED, false);
     }
     if (AuthService.isAuthed()) {
       if (to.name === 'login') {
-        next({ name: 'console.dashboard' });
+        next({ name: 'console.gateway' });
         NProgress.done();
       } else if (!store.state.user.id) {
         store
@@ -50,10 +52,16 @@ export default function ensureHooks(router) {
   });
 
   router.afterEach(to => {
+    if (!hasPermission(to)) {
+      console.error('全局 afterEach 无权限访问此页面', to, store.getters.pages);
+      Vue.noty.error(`无权限访问此页面 ${to.path}`);
+      router.push({ name: 'console.profile' });
+      NProgress.done();
+      return;
+    }
     const routes = to.matched.concat();
     const routeName = to.name;
-    const isInstanceList =
-      routeName === 'console.instances' || routeName === 'console.instance';
+    const isInstanceList = routeName === 'console.instances' || routeName === 'console.instance';
 
     let activeMenu = 'console.dashboard';
 
@@ -61,8 +69,7 @@ export default function ensureHooks(router) {
       routes.pop();
       activeMenu = routes[2].name;
     } else {
-      const metaActiveName =
-        getValue(to, 'meta.activeMenu') || getValue(routes.pop(), 'name');
+      const metaActiveName = getValue(to, 'meta.activeMenu') || getValue(routes.pop(), 'name');
 
       if (isInstanceList) {
         activeMenu = `${metaActiveName}/${to.params.serviceId}`;
@@ -70,7 +77,9 @@ export default function ensureHooks(router) {
         activeMenu = metaActiveName;
       }
     }
+
     store.commit(types.SET_DEFAULT_ACTIVE_MENU, activeMenu);
+
     NProgress.done(); // finish progress bar
   });
 

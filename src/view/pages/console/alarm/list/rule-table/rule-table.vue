@@ -15,66 +15,37 @@
         </dao-input>
       </div>
     </div>
-    <el-table
-      :data="currentRulesBasedPage"
-      v-loading="loading"
-    >
-      <el-table-column
-        prop="name"
-        label="规则名"
-        v-slot="{ row }"
-      >
+    <el-table :data="currentRulesBasedPage" v-loading="loading">
+      <el-table-column prop="name" label="规则名" v-slot="{ row }">
         <router-link
           :to="{
             name: 'console.alarm.rule',
-            params: { id: row.id }
+            params: { id: row.id },
           }"
         >
           {{ row.name || '_' }}
         </router-link>
       </el-table-column>
-      <el-table-column
-        prop="metricName"
-        label="指标"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="threshold"
-        label="阈值"
-        v-slot="{ row }"
-      >
+      <el-table-column prop="metricName" label="指标"> </el-table-column>
+      <el-table-column prop="threshold" label="阈值" v-slot="{ row }">
         <span>{{ row.threshold.join('') || '_' }}</span>
       </el-table-column>
-      <el-table-column
-        prop="for"
-        label="持续时间"
-        v-slot="{ row }"
-      >
+      <el-table-column prop="for" label="持续时间" v-slot="{ row }">
         <span>{{ row.for.join('') || '_' }}</span>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        prop="description"
-        label="告警内容"
-        v-slot="{ row }"
-      >
+      <el-table-column show-overflow-tooltip prop="description" label="告警内容" v-slot="{ row }">
         <span>{{ row.description || '_' }}</span>
       </el-table-column>
-      <el-table-column
-        label="操作"
-        v-slot="{ row }"
-        v-if="adminAccessed"
-      >
+      <el-table-column label="操作" v-slot="{ row }" v-if="$can('space.alert.delete')">
         <span class="action">
-          <dao-dropdown
-            trigger="click"
-            placement="bottom-end">
+          <dao-dropdown trigger="click" placement="bottom-end">
             <slot>
-                <svg class="icon icon-more"><use xlink:href="#icon_more"></use></svg>
+              <svg class="icon icon-more">
+                <use xlink:href="#icon_more"></use>
+              </svg>
             </slot>
             <dao-dropdown-menu slot="list">
-              <dao-dropdown-item
-                @click="onClickRemove(row)">删除</dao-dropdown-item>
+              <dao-dropdown-item @click="onClickRemove(row)">删除</dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>
         </span>
@@ -95,5 +66,5 @@
 </template>
 <script src="./rule-table.js"></script>
 <style lang="scss">
-  @import './rule-table';
+@import './rule-table';
 </style>

@@ -21,7 +21,7 @@ export default class Resource {
 
   get route() {
     const { name } = this;
-    if (!name) return { name: 'console.dashboard' };
+    if (!name) return { name: 'console.gateway' };
     if (this.instanceName) {
       return {
         name: `resource.${name}.detail`,
@@ -35,7 +35,7 @@ export default class Resource {
 
   get deployRoute() {
     const { name } = this;
-    if (!name) return { name: 'console.dashboard' };
+    if (!name) return { name: 'console.gateway' };
     return {
       name: `deploy.${name}`,
       query: {

@@ -52,14 +52,12 @@ export default {
       ServiceService.updateService(this.service.id, this.service.zone.id, params)
         .then(service => {
           this.service = service;
-          this.$noty.success(`成功${params.available === 'available' ? '上架' : '下架'}${
-            this.service.name
-          }服务!`);
+          this.$noty.success(
+            `成功${params.available === 'available' ? '上架' : '下架'}${this.service.name}服务!`,
+          );
         })
         .catch(() => {
-          this.$noty.error(`${params.available ? '上架' : '下架'}${
-            this.service.name
-          }服务失败!`);
+          this.$noty.error(`${params.available ? '上架' : '下架'}${this.service.name}服务失败!`);
         });
     },
 

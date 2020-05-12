@@ -10,11 +10,14 @@
           <dao-tooltip
             content="租户中存在用户，无法删除租户"
             :disabled="!users.length"
-            placement="right">
+            placement="right"
+          >
             <button
+              v-if="$can('platform.organization.delete')"
               @click="deleteOrgConfirm()"
               :disabled="Boolean(users.length)"
-              class="dao-btn red">
+              class="dao-btn red"
+            >
               删除
             </button>
           </dao-tooltip>
@@ -36,15 +39,17 @@ export default {
   },
   methods: {
     deleteOrgConfirm() {
-      this.$tada.confirm({
-        title: '删除租户',
-        text: `您确定要删除租户 ${this.org.name} 吗？`,
-        primaryText: '删除',
-      }).then(willDel => {
-        if (willDel) {
-          this.$emit('delete');
-        }
-      });
+      this.$tada
+        .confirm({
+          title: '删除租户',
+          text: `您确定要删除租户 ${this.org.name} 吗？`,
+          primaryText: '删除',
+        })
+        .then(willDel => {
+          if (willDel) {
+            this.$emit('delete');
+          }
+        });
     },
   },
 };

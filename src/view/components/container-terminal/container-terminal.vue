@@ -3,7 +3,8 @@
     <button
       class="dao-btn mini blue icon-btn btn-fullscreen"
       :class="{ fullscreened: isFullscreened }"
-      @click="fullScreen">
+      @click="fullScreen"
+    >
       <svg class="icon">
         <use xlink:href="#icon_full-screen-exit"></use>
       </svg>
@@ -12,8 +13,8 @@
       class="xterm-wrapper-container"
       ref="xtermContainer"
       @mouseup="copySelectionToClipboard"
-      @onkeydown="keydown">
-    </div>
+      @onkeydown="keydown"
+    ></div>
   </div>
 </template>
 
@@ -28,7 +29,6 @@ import PodService from '@/core/services/pod.service';
 import TerminalHistoryService from '@/core/services/terminal-history.service';
 import SockJS from 'sockjs-client';
 import { FUll_SCREENED } from '@/core/store/mutation-types';
-
 
 Terminal.applyAddon(fit);
 Terminal.applyAddon(fullscreen);
@@ -88,12 +88,14 @@ export default {
 
     this.term.onData(data => {
       if (this.conn) {
-        this.conn.send(JSON.stringify({
-          Op: 'stdin',
-          Data: data,
-          Rows: this.term.rows,
-          Cols: this.term.cols,
-        }));
+        this.conn.send(
+          JSON.stringify({
+            Op: 'stdin',
+            Data: data,
+            Rows: this.term.rows,
+            Cols: this.term.cols,
+          }),
+        );
       }
       this.keyWords.push(data);
     });
@@ -179,11 +181,13 @@ export default {
     sizeTerminal() {
       if (this.term) this.term.fit();
       if (this.conn) {
-        this.conn.send(JSON.stringify({
-          Op: 'resize',
-          Rows: this.term.rows,
-          Cols: this.term.cols,
-        }));
+        this.conn.send(
+          JSON.stringify({
+            Op: 'resize',
+            Rows: this.term.rows,
+            Cols: this.term.cols,
+          }),
+        );
       }
     },
 
@@ -258,5 +262,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./_container-terminal.scss">
-</style>
+<style lang="scss" src="./_container-terminal.scss"></style>

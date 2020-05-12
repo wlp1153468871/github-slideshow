@@ -40,7 +40,8 @@ export default {
     servicesFilteredByKey() {
       const filterKey = this.filterKey.toLowerCase();
       return this.services.filter(service =>
-        service.metadata.name.toLowerCase().includes(filterKey));
+        service.metadata.name.toLowerCase().includes(filterKey),
+      );
     },
 
     paginaServices() {

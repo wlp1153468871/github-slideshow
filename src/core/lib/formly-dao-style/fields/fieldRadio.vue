@@ -13,7 +13,8 @@
             :class="to.classes"
             :key="item.value"
             :label="item.value"
-            v-model="model[field.key]">
+            v-model="model[field.key]"
+          >
             {{ item.text }}
           </dao-radio>
         </dao-radio-group>

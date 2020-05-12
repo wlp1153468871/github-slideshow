@@ -52,10 +52,7 @@
       </div>
     </div>
 
-    <div
-      class="terminal-history-view"
-      v-loading="loading"
-    >
+    <div class="terminal-history-view" v-loading="loading">
       <div class="terminal-history-view-output">
         <table>
           <tbody>
@@ -64,28 +61,19 @@
               v-for="(history, index) in currentHistories"
               :key="index"
             >
-              <td
-                class="terminal-history-line-number"
-                :data-line-number="index+1"
-              ></td>
+              <td class="terminal-history-line-number" :data-line-number="index + 1"></td>
               <td class="terminal-history-line-text">{{ history }}</td>
             </tr>
           </tbody>
         </table>
-        <p
-          v-if="!histories.length"
-          class="no-terminal-history"
-        >暂无记录</p>
+        <p v-if="!histories.length" class="no-terminal-history">暂无记录</p>
       </div>
     </div>
 
     <div class="app-log-footer">
       <div class="log-btn-group">
         <button @click="loadOldest">
-          <svg
-            class="icon"
-            style="transform: rotate(180deg);"
-          >
+          <svg class="icon" style="transform: rotate(180deg);">
             <use xlink:href="#icon_caret-more"></use>
           </svg>
         </button>
@@ -193,12 +181,8 @@ export default {
             this.currentHistories = [];
           } else {
             this.histories = logs.map(item => {
-              const {
-                dateTime,
-                podName,
-                user,
-                message,
-              } = item._source; // eslint-disable-line no-underscore-dangle
+              const { dateTime, podName, user, message }
+                = item._source; // eslint-disable-line no-underscore-dangle
 
               return `dateTime:${dateTime}  podName:${podName}  user:${user}  message: ${message}`;
             });

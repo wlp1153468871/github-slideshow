@@ -6,10 +6,9 @@
     :message="currentMessage"
     :status="currentStatus"
     @change="handleChange"
-    icon-inside>
-    <span
-      v-if="unit"
-      slot="append">
+    icon-inside
+  >
+    <span v-if="unit" slot="append">
       {{ unit }}
     </span>
   </dao-input>
@@ -108,9 +107,9 @@ export default {
     }
 
     return {
-      min, max,
+      min,
+      max,
     };
   },
-
 };
 </script>

@@ -7,17 +7,18 @@
 
       <div class="dao-view-main">
         <div class="dao-view-content">
-
           <x-table
             :data="rows"
             :filter-method="filterMethod"
             :loading="loadings.table"
-            @refresh="loadInstances">
+            @refresh="loadInstances"
+          >
             <template #operation>
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
-                @click="createSecret">
+                v-if="$can('secret.create')"
+                @click="createSecret"
+              >
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>
                 </svg>
@@ -25,22 +26,13 @@
               </button>
             </template>
 
-            <el-table-column
-              label="名称"
-              sortable
-              :sort-method="sortName"
-              min-width="150">
+            <el-table-column label="名称" sortable :sort-method="sortName" min-width="150">
               <template slot-scope="{ row: secret }">
-                <el-table-name-cell
-                  :resource="secret"
-                  routerName="resource.secrets.detail">
+                <el-table-name-cell :resource="secret" routerName="resource.secrets.detail">
                 </el-table-name-cell>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="name"
-              label="标签"
-              min-width="120">
+            <el-table-column prop="name" label="标签" min-width="120">
               <template slot-scope="{ row: secret }">
                 {{ humanizeLabel(secret) }}
               </template>
@@ -50,45 +42,9 @@
               label="创建时间"
               sortable
               :formatter="dateFormat"
-              width="200">
+              width="200"
+            >
             </el-table-column>
-
-            <el-table-column
-              fixed="right"
-              label="操作"
-              align="center"
-              header-align="center"
-              width="80">
-              <template slot-scope="{ row: secret}">
-
-                <el-dropdown @command="handleOperate($event, secret)">
-                  <span>
-                    <svg class="icon dropdown-trigger">
-                      <use xlink:href="#icon_more"></use>
-                    </svg>
-                  </span>
-
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      command="edit"
-                      :disabled="disableDelete(secret)"
-                      icon="el-icon-edit-outline">
-                      编辑
-                    </el-dropdown-item>
-                    <el-dropdown-item
-                      class="dropdown-item-error"
-                      v-if="$can('delete')"
-                      :disabled="disableDelete(secret)"
-                      command="delete"
-                      icon="el-icon-delete">
-                      删除
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-
-              </template>
-            </el-table-column>
-
           </x-table>
         </div>
       </div>
@@ -97,10 +53,10 @@
     <error-info-dialog
       :text="selectedInstanceInfo"
       :visible="dialogConfigs.errorInfo.visible"
-      @close="dialogConfigs.errorInfo.visible = false">
+      @close="dialogConfigs.errorInfo.visible = false"
+    >
     </error-info-dialog>
   </div>
 </template>
 
-<script src="./_secret-list.js">
-</script>
+<script src="./_secret-list.js"></script>

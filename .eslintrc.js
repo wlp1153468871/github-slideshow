@@ -54,15 +54,17 @@ module.exports = {
     ],
     // https://github.com/vuejs/eslint-plugin-vue/blob/master/docs/rules/max-attributes-per-line.md
     'vue/max-attributes-per-line': [
-      2,
+      0,
       {
         singleline: 2,
         multiline: {
           max: 1,
-          allowFirstLine: false,
+          allowFirstLine: true,
         },
       },
     ],
+    'object-curly-newline': ['off'],
+    'function-paren-newline': ['off'],
     camelcase: ['off'],
   },
   parserOptions: {

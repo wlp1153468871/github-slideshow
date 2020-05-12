@@ -4,10 +4,7 @@
       <dao-setting-item>
         <template slot="label">卷存储</template>
         <template slot="content">
-          <dao-editable-table
-            :config="config"
-            v-model="editVolumes"
-            @valid="validChange">
+          <dao-editable-table :config="config" v-model="editVolumes" @valid="validChange">
           </dao-editable-table>
         </template>
       </dao-setting-item>
@@ -30,26 +27,26 @@ export default {
     return {
       editEnvs: [],
       config: {
-        header: [
-          '存储卷名',
-          '存储路径',
-        ],
-        body: [{
-          type: 'select',
-          name: 'name',
-          default: '',
-          options: [],
-        }, {
-          type: 'input',
-          name: 'path',
-          default: '',
-          validate(row) {
-            if (!isAbsolutePath(row.path)) {
-              return '只能是绝对路径';
-            }
-            return true;
+        header: ['存储卷名', '存储路径'],
+        body: [
+          {
+            type: 'select',
+            name: 'name',
+            default: '',
+            options: [],
           },
-        }],
+          {
+            type: 'input',
+            name: 'path',
+            default: '',
+            validate(row) {
+              if (!isAbsolutePath(row.path)) {
+                return '只能是绝对路径';
+              }
+              return true;
+            },
+          },
+        ],
       },
       cmd: '',
       args: '',

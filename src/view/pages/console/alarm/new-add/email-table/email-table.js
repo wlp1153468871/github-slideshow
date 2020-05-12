@@ -36,8 +36,7 @@ export default {
       } else if (instances.some(i => typeof i.choose === 'boolean')) {
         return cloneDeep(instances);
       }
-      return cloneDeep(instances)
-        .map(ins => ({ ...ins, choose }));
+      return cloneDeep(instances).map(ins => ({ ...ins, choose }));
     },
     resetCandidates() {
       this.candidates = [];

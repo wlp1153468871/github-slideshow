@@ -4,58 +4,61 @@
     <template>
       <resource-header :resource="resource">
         <template #action-buttons>
-          <dao-dropdown
-            trigger="click"
-            v-if="adminAccessed"
-            :append-to-body="true"
-            placement="bottom-end">
-            <button class="dao-btn ghost has-icon">
-              操作
-              <svg class="icon">
-                <use xlink:href="#icon_caret-down"></use>
+          <template v-if="scope.changeView">
+            <button
+              v-if="$can('space.alert.update')"
+              class="dao-btn has-icon blue"
+              id="confirmed"
+              @click="onConfirm"
+              :disabled="loadings.submitUpdate"
+            >
+              <svg class="icon icon-edit">
+                <use xlink:href="#icon_pencil-edit"></use>
               </svg>
+              <span class="text">确认修改</span>
             </button>
-            <dao-dropdown-menu slot="list">
-              <dao-dropdown-item
-                id="remove"
-                @click="onRemove"
-                :disabled="loadings.submitRemove"
-                class="dao-dropdown-item-red dao-dropdown-item-hover-red">
-                <span>删除</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item
-                @click="onConfirm"
-                :disabled="loadings.submitUpdate">
-                <span>修改</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown>
+            <button class="dao-btn" @click="initAll">取消</button>
+          </template>
+          <template v-else>
+            <dao-dropdown
+              v-if="$can('space.alert.delete') || $can('space.alert.update')"
+              trigger="click"
+              :append-to-body="true"
+              placement="bottom-end"
+            >
+              <button class="dao-btn ghost has-icon">
+                操作
+                <svg class="icon">
+                  <use xlink:href="#icon_caret-down"></use>
+                </svg>
+              </button>
+              <dao-dropdown-menu slot="list">
+                <dao-dropdown-item
+                  v-if="$can('space.alert.delete')"
+                  id="remove"
+                  @click="onRemove"
+                  :disabled="loadings.submitRemove"
+                  class="dao-dropdown-item-red dao-dropdown-item-hover-red"
+                >
+                  <span>删除</span>
+                </dao-dropdown-item>
+                <dao-dropdown-item
+                  v-if="$can('space.alert.update')"
+                  @click="onClickEdit"
+                  :disabled="loadings.submitUpdate"
+                >
+                  <span>修改</span>
+                </dao-dropdown-item>
+              </dao-dropdown-menu>
+            </dao-dropdown>
+          </template>
         </template>
       </resource-header>
-      <div class="btn-group" v-if="adminAccessed">
-        <button
-          class="dao-btn has-icon blue"
-          id="confirmed"
-          @click="onConfirm"
-          :disabled="loadings.submitUpdate">
-          <svg class="icon icon-edit">
-            <use xlink:href="#icon_pencil-edit"></use>
-          </svg>
-          <span class="text">确认修改</span>
-        </button>
-      </div>
       <div class="card-wrapper">
         <el-card class="card">
           <template #header>
             <div class="card-header">
               <span>规则详情</span>
-              <button
-                class="dao-btn mini blue"
-                type="text"
-                @click="onClickDetail"
-                v-show="!detail.changeView"
-                v-if="adminAccessed"
-              >编辑</button>
             </div>
           </template>
           <div class="row">
@@ -65,11 +68,11 @@
           <div class="row">
             <label for="">告警内容</label>
             <div class="content">
-              <span v-if="!detail.changeView">
+              <span v-show="!detail.changeView">
                 {{ rule.description || '-' }}
               </span>
               <dao-input
-                v-else
+                v-show="detail.changeView"
                 block
                 icon-inside
                 v-model.trim="detail.description"
@@ -79,7 +82,8 @@
                 data-vv-as="告警内容"
                 v-validate="'required|max:255'"
                 :message="veeErrors.first('desc')"
-                :status="veeErrors.has('desc') ? 'error' : ''">
+                :status="veeErrors.has('desc') ? 'error' : ''"
+              >
                 >
               </dao-input>
             </div>
@@ -91,16 +95,13 @@
                 {{ rule.threshold ? rule.threshold.join('') : '' }}
               </span>
               <template v-else>
-                <el-select
-                  v-model="detail.threshold[0]"
-                  size="small"
-                  class="atomSelector"
-                >
+                <el-select v-model="detail.threshold[0]" size="small" class="atomSelector">
                   <el-option
                     v-for="ts in rulesStatic.threshold"
                     :key="ts"
                     :label="ts | threshold"
-                    :value="ts">
+                    :value="ts"
+                  >
                   </el-option>
                 </el-select>
                 <dao-input
@@ -113,7 +114,8 @@
                   data-vv-as="阈值"
                   v-validate="'required|numeric'"
                   :message="veeErrors.first('threshold')"
-                  :status="veeErrors.has('threshold') ? 'error' : ''">
+                  :status="veeErrors.has('threshold') ? 'error' : ''"
+                >
                   >
                 </dao-input>
               </template>
@@ -136,19 +138,12 @@
                   data-vv-as="持续时间"
                   v-validate="'required|numeric'"
                   :message="veeErrors.first('duration')"
-                  :status="veeErrors.has('duration') ? 'error' : ''">
+                  :status="veeErrors.has('duration') ? 'error' : ''"
+                >
                   >
                 </dao-input>
-                <el-select
-                  v-model="detail.for[1]"
-                  size="small"
-                  class="atomSelector"
-                >
-                  <el-option
-                    v-for="f in rulesStatic.for"
-                    :key="f"
-                    :label="f"
-                    :value="f">
+                <el-select v-model="detail.for[1]" size="small" class="atomSelector">
+                  <el-option v-for="f in rulesStatic.for" :key="f" :label="f" :value="f">
                   </el-option>
                 </el-select>
               </template>
@@ -163,19 +158,12 @@
           <template #header>
             <div class="card-header">
               <span>作用范围</span>
-              <button
-                class="dao-btn mini blue"
-                type="text"
-                @click="onClickScope"
-                v-if="adminAccessed"
-                v-show="!scope.changeView"
-              >编辑</button>
             </div>
           </template>
           <div class="row">
             <label for="">类型</label>
             <div class="content" v-if="rule.ruleType && subScope">
-              {{ rule.ruleType | alarmScope }}/{{ subScope }}
+              {{ rule.ruleType | alarm_scope }}/{{ subScope }}
             </div>
             <div class="content" v-else></div>
           </div>
@@ -183,22 +171,12 @@
             <label for="">实例</label>
             <div class="content">
               <template v-if="!scope.changeView">
-                <el-table
-                  :data="cViewScope"
-                >
-                  <el-table-column
-                    prop="name"
-                    label="实例名"
-                  >
-                  </el-table-column>
+                <el-table :data="cViewScope">
+                  <el-table-column prop="name" label="实例名"> </el-table-column>
                 </el-table>
               </template>
               <template v-else>
-                <dao-switch
-                  v-model="scope.monitorAll"
-                  size="sm"
-                >
-                </dao-switch>
+                <dao-switch v-model="scope.monitorAll" size="sm"> </dao-switch>
                 <instances-table
                   v-show="!scope.monitorAll"
                   :originInstances="scope.instances"
@@ -207,7 +185,6 @@
                 >
                 </instances-table>
               </template>
-
             </div>
           </div>
         </el-card>
@@ -236,28 +213,11 @@
           <template #header>
             <div class="card-header">
               <span>收件人</span>
-              <button
-                class="dao-btn mini blue"
-                @click="onClickEmail"
-                v-show="!email.changeView"
-                v-if="adminAccessed"
-              >添加</button>
             </div>
           </template>
-          <el-table
-            :data="cViewReceivers"
-            v-if="!email.changeView"
-          >
-            <el-table-column
-              prop="username"
-              label="用户名"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="email"
-              label="用户邮箱"
-            >
-            </el-table-column>
+          <el-table :data="cViewReceivers" v-if="!email.changeView">
+            <el-table-column prop="username" label="用户名"> </el-table-column>
+            <el-table-column prop="email" label="用户邮箱"> </el-table-column>
           </el-table>
           <email-table
             v-else
@@ -268,10 +228,9 @@
         </el-card>
       </div>
     </template>
-
   </div>
 </template>
 <script src="./detail.js"></script>
 <style scoped lang="scss">
-  @import './detail';
+@import './detail';
 </style>

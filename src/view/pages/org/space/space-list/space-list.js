@@ -30,7 +30,7 @@ export default {
         organization_id: this.org.id,
       };
       OrgService.createOrgSpace(this.org.id, space).then(() => {
-        this.$store.dispatch('loadSpaces');
+        this.$store.dispatch('loadOrgsAndSpaces');
         this.$noty.success('创建项目组成功');
       });
     },
@@ -41,9 +41,6 @@ export default {
 
     gotoSpace(space) {
       this.$store.dispatch('switchSpace', { space });
-      this.$router.push({
-        name: 'console.dashboard',
-      });
     },
   },
 };

@@ -1,8 +1,5 @@
 <template>
-  <dao-dialog
-    header="添加项目组"
-    :visible.sync="isShow"
-    @closed="closed">
+  <dao-dialog header="添加项目组" :visible.sync="isShow" @before-open="bopen" @closed="closed">
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">项目组名</div>
@@ -14,7 +11,8 @@
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
             v-validate="'required|org_name'"
-            v-model="name">
+            v-model="name"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
@@ -32,9 +30,10 @@
             v-validate="{
               required: true,
               dns_1123_label: true,
-              max: 63
+              max: 63,
             }"
-            v-model="short_name">
+            v-model="short_name"
+          >
           </dao-input>
         </div>
         <div slot="content-helper">
@@ -47,32 +46,24 @@
         <div slot="label">可用区</div>
         <div slot="content">
           <el-select
-            remote
+            size="small"
             filterable
+            ref="select"
             multiple
             v-model="zoneIds"
             placeholder="请输入关键词"
-            :remote-method="loadZones">
-            <el-option
-              v-for="zone in zones"
-              :key="zone.id"
-              :label="zone.name"
-              :value="zone.id">
+          >
+            <el-option v-for="zone in zones" :key="zone.id" :label="zone.name" :value="zone.id">
             </el-option>
           </el-select>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -112,16 +103,18 @@ export default {
     },
     isValidForm() {
       return (
-        this.name !== '' && this.zoneIds.length !== 0 && this.short_name !== '' && !this.veeErrors.any()
+        this.name !== '' &&
+        this.zoneIds.length !== 0 &&
+        this.short_name !== '' &&
+        !this.veeErrors.any()
       );
     },
   },
 
   methods: {
     onConfirm() {
-      const {
-        name, short_name, description, zoneIds,
-      } = this;
+      // eslint-disable-next-line object-curly-newline
+      const { name, short_name, description, zoneIds } = this;
 
       this.$emit('create', {
         name,
@@ -141,19 +134,25 @@ export default {
       this.short_name = '';
       this.description = '';
       this.zoneIds = [];
+      this.zones = [];
     },
 
-    loadZones(query) {
-      if (query !== '') {
-        this.loading = true;
-        ZoneService.getAvailableZones(this.orgId).then(zones => {
-          this.loading = false;
-          this.zones = zones.filter(zone => {
-            return zone.name.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1;
-          });
-        });
-      }
+    loadZones() {
+      this.loading = true;
+      ZoneService.getAvailableZones(this.orgId).then(zones => {
+        this.zones = zones;
+        this.loading = false;
+      });
+    },
+
+    bopen() {
+      this.loadZones();
+      setTimeout(() => {
+        // this.$refs.select1.initialInputHeight = 32;
+        // this.$refs.select1.resetInputHeight();
+        this.$refs.select.initialInputHeight = 32;
+        this.$refs.select.resetInputHeight();
+      }, 10);
     },
   },
 };

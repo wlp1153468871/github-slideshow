@@ -1,34 +1,24 @@
 <template>
-  <div
-    class="page-instance-config"
-    v-loading="loadings.init"
-  >
+  <div class="page-instance-config" v-loading="loadings.init">
     <space-zone></space-zone>
 
     <dao-setting-layout>
       <template slot="layout-title">规格</template>
 
       <template v-if="plan && plan.symbol">
-
         <dao-setting-section v-if="plan.ha">
           <dao-setting-item>
             <div slot="label">
               部署方式
               <label-tip text="实例创建的方式包括单点部署和高可用部署"></label-tip>
             </div>
-            <div
-              class="reset-margin"
-              slot="content"
-            >
-              {{plan.ha? '高可用' : '单点'}}
+            <div class="reset-margin" slot="content">
+              {{ plan.ha ? '高可用' : '单点' }}
             </div>
           </dao-setting-item>
         </dao-setting-section>
 
-        <dao-setting-section
-          v-for="(bullet, key, index) in standard"
-          :key="'section' + index"
-        >
+        <dao-setting-section v-for="(bullet, key, index) in standard" :key="'section' + index">
           <dao-setting-item>
             <div slot="label">
               {{ (quotaDict[key] && quotaDict[key].name) || DICTIONARY[key] || key }}
@@ -42,11 +32,7 @@
               ></label-tip>
             </div>
             <template slot="content">
-              <dao-select
-                class="reset-margin"
-                @change="changePlan(key)"
-                v-model="planModel[key]"
-              >
+              <dao-select class="reset-margin" @change="changePlan(key)" v-model="planModel[key]">
                 <dao-option
                   v-for="option in bullet"
                   :key="option.label"
@@ -58,20 +44,15 @@
             </template>
           </dao-setting-item>
         </dao-setting-section>
-
       </template>
 
       <dao-setting-section v-if="plan && !plan.symbol && plan.plans.length">
         <dao-setting-item>
           <div slot="label">
-            {{DICTIONARY.config}}
+            {{ DICTIONARY.config }}
           </div>
           <template slot="content">
-            <dao-select
-              class="reset-margin"
-              @change="changePlan()"
-              v-model="planModel"
-            >
+            <dao-select class="reset-margin" @change="changePlan()" v-model="planModel">
               <dao-option
                 v-for="option in plan.plans"
                 :key="option.id"
@@ -83,7 +64,6 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-
     </dao-setting-layout>
     <parameter-panel
       :isLoading="loadings.param"

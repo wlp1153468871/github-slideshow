@@ -39,8 +39,7 @@ export default {
 
     routesFilteredByKey() {
       const filterKey = this.filterKey.toLowerCase();
-      return this.routes.filter(route =>
-        route.metadata.name.toLowerCase().includes(filterKey));
+      return this.routes.filter(route => route.metadata.name.toLowerCase().includes(filterKey));
     },
 
     paginaRoutes() {

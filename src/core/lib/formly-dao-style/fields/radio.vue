@@ -6,7 +6,8 @@
         :class="to.classes"
         :key="item.value"
         :label="item.value"
-        v-model="model[field.key]">
+        v-model="model[field.key]"
+      >
         {{ item.label }}
       </dao-radio>
     </dao-radio-group>

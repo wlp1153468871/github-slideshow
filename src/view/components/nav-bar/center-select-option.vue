@@ -1,9 +1,8 @@
 <template>
   <div
-    :class="[
-      'dao-option-item',
-      { 'disabled': disabled, 'active': active } ]"
-    @click="handleClick($event)">
+    :class="['dao-option-item', { disabled: disabled, active: active }]"
+    @click="handleClick($event)"
+  >
     <svg class="icon checkmark">
       <use xlink:href="#icon_checkmark"></use>
     </svg>
@@ -23,8 +22,7 @@ export default {
     label: { type: String, default: '' },
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     handleClick(event) {

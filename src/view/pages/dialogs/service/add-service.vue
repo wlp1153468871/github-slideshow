@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">服务名</div>
@@ -18,21 +19,17 @@
             v-validate="'required|max:20'"
             :message="veeErrors.first('name')"
             :status="veeErrors.has('name') ? 'error' : ''"
-            data-vv-as="服务名">
+            data-vv-as="服务名"
+          >
           </dao-input>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>

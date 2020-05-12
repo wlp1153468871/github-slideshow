@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="label">用户信息</div>
@@ -13,7 +14,8 @@
             placeholder="请输入用户邮箱"
             v-model="keyword"
             @text-change="changeKeyword"
-            :options="options">
+            :options="options"
+          >
           </dao-autocomplete>
         </div>
       </dao-setting-item>
@@ -22,27 +24,18 @@
       <dao-setting-item>
         <div slot="label">权限</div>
         <div slot="content">
-          <dao-select v-model="role">
-            <dao-option
-              v-for="(r, index) in roles"
-              :key="index"
-              :value="r.value"
-              :label="r.text">
+          <dao-select v-model="role" placeholder="请选择">
+            <dao-option v-for="(r, index) in roles" :key="index" :value="r" :label="r.name">
             </dao-option>
           </dao-select>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <button
-        class="dao-btn blue"
-        :disabled="!isValidForm"
-        @click="onConfirm">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="onConfirm">
         确定
       </button>
     </div>
@@ -50,7 +43,7 @@
 </template>
 
 <script>
-import { first } from 'lodash';
+import { first, isEmpty } from 'lodash';
 import dialog from '@/view/mixins/dialog';
 
 export default {
@@ -82,7 +75,7 @@ export default {
       }));
     },
     isValidForm() {
-      return this.userId !== '' && this.role !== '';
+      return this.userId !== '' && !isEmpty(this.role);
     },
   },
 
@@ -129,10 +122,14 @@ export default {
         this.$noty.error('该用户无绑定邮箱');
         return;
       }
-      this.$emit('add', {
-        user,
-        role,
-      });
+      this.$emit(
+        'add',
+        {
+          user,
+          role,
+        },
+        true,
+      );
       this.onClose();
     },
 

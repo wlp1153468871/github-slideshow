@@ -5,7 +5,12 @@ import Vue from 'vue';
 export default {
   name: 'ServiceList',
   created() {
-    this.loadService();
+    // 有权限查看 无权限提示
+    if (this.$can('platform.serviceInstance.get')) {
+      this.loadService();
+    } else {
+      this.$noty.error('您暂无服务列表查看权限');
+    }
   },
   data() {
     return {
@@ -18,9 +23,7 @@ export default {
         data.short_description.toLowerCase().includes(filterKey),
       other: {
         status: (_, item) => {
-          return item.available === SERVICE_STATUS.AVAILABLE
-            ? 'SUCCESS'
-            : 'STOPED';
+          return item.available === SERVICE_STATUS.AVAILABLE ? 'SUCCESS' : 'STOPED';
         },
       },
     };

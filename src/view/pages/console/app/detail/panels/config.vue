@@ -1,13 +1,8 @@
 <template>
   <div>
-    <config-map-section
-      :config-maps="configMaps">
-    </config-map-section>
+    <config-map-section :config-maps="configMaps"> </config-map-section>
 
-    <secret-section
-      v-if="displaySecret"
-      style="margin-top: 20px;"
-      :secrets="secrets">
+    <secret-section v-if="displaySecret" style="margin-top: 20px;" :secrets="secrets">
     </secret-section>
   </div>
 </template>
@@ -31,7 +26,7 @@ export default {
 
   computed: {
     displaySecret() {
-      return this.$can('read', 'Secret');
+      return this.$can('secret.view');
     },
   },
 };

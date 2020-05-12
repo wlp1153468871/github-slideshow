@@ -4,19 +4,16 @@
       :rows="rows"
       :config="tConfig"
       :loading="loadings.all"
-      @refresh="loadUsers"
+      @refresh="onRefresh"
       @update-user-dialog="updateUserDialog"
-      @on-authorize-zone="onAuthorizeZone"
-      @confirm-remove-user="confirmRemoveUser">
+      @confirm-remove-user="confirmRemoveUser"
+    >
       <div slot="tool">
-        <button
-          :disabled="loadings.all"
-          class="dao-btn has-icon blue"
-          @click="openAddUserDialog()">
+        <button :disabled="loadings.all" class="dao-btn has-icon blue" @click="openAddUserDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
-          <span class="text" >添加用户</span>
+          <span class="text">添加用户</span>
         </button>
       </div>
     </dao-table-view>
@@ -26,41 +23,42 @@
       :visible="dialogConfigs.updateUser.visible"
       :users="availableUsers"
       :model="selectedUser"
+      :zonerole="zoneRoles"
+      :spacerole="spaceRoles"
+      :zones="zones"
       :space-id="spaceId"
-      @refresh="loadUsers"
-      @close="onAddUserClose">
+      @refresh="onRefresh"
+      @close="onAddUserClose"
+    >
     </add-user-dialog>
-
-    <zone-authorization-dialog
-      :model="selectedUser"
-      :visible="dialogConfigs.zoneAuthorization.visible"
-      :space-id="spaceId"
-      @refresh="loadUsers"
-      @close="dialogConfigs.zoneAuthorization.visible = false">
-    </zone-authorization-dialog>
-    <!-- dialog end -->
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
 import SpaceService from '@/core/services/space.service';
+import RoleService from '@/core/services/role.service';
+
 // dialogs
 import AddUserDialog from '@/view/pages/dialogs/user/add-user';
-import zoneAuthorizationDialog from '@/view/pages/dialogs/user/zone-authorization';
 
 export default {
-  name: 'OverviewPanel',
+  name: 'SpaceUserPanel',
 
   extends: tableView('id', 10, 'username'),
 
   mixins: [userManage],
 
+  computed: {
+    ...mapState(['isManageView']),
+    ...mapGetters(['userName']),
+  },
+
   components: {
     AddUserDialog,
-    zoneAuthorizationDialog,
   },
 
   props: {
@@ -71,21 +69,24 @@ export default {
   created() {
     this.initTableView();
     this.loadUsers();
+    this.loadZoneRoles();
   },
 
   data() {
     return {
       rows: [],
       users: [],
-      allUsers: [],
+      allUsers: [], // for select
       selectedUser: {},
       loadings: {
         all: false,
       },
       dialogConfigs: {
         updateUser: { visible: false },
-        zoneAuthorization: { visible: false },
       },
+      zones: [],
+      zoneRoles: {},
+      spaceRoles: [],
     };
   },
 
@@ -99,35 +100,101 @@ export default {
   },
 
   methods: {
+    onRefresh() {
+      this.loadUsers();
+      this.loadZoneRoles();
+    },
     initTableView() {
       this.setTableProps([
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        { id: 'space_role', name: '项目组权限', filter: 'space_role' },
-        { id: 'zone_space_roles', name: '可用区权限', filter: 'zone_auth' },
+        {
+          id: 'roles',
+          name: '项目组权限',
+          value(roles) {
+            let text = '';
+            roles.forEach(role => {
+              if (role.scope === 'space') {
+                text = role.name;
+              }
+            });
+            return text;
+          },
+          filter: 'role_format',
+        },
+        {
+          id: 'zone_space_roles',
+          name: '可用区权限',
+          value(zone_space_roles) {
+            return zone_space_roles
+              .map(r => `${r.zone_name}:\t ${r.zone_role || '无权限'}`)
+              .join(';\n');
+          },
+          filter: 'role_format',
+        },
       ]);
       this.setTableOperations([
-        { name: '修改用户权限', event: 'update-user-dialog' },
-        { name: '可用区授权', event: 'on-authorize-zone' },
-        { name: '移除', event: 'confirm-remove-user' },
+        {
+          name: '修改用户权限',
+          event: 'update-user-dialog',
+          // disabled: item => item.username === this.userName,
+          // tooltip: '无法修改本人权限，防止降级',
+        },
+        {
+          name: '移除',
+          event: 'confirm-remove-user',
+          visible: item => {
+            // 平台试图：有权限就可以移除；项目组试图：不是自己可以移除
+            return this.isManageView
+              ? this.$can('platform.organization.space')
+              : item.username !== this.userName;
+          },
+        },
       ]);
     },
 
     async loadUsers() {
       this.selectedUser = {};
       this.loadings.all = true;
-      await this.$store.dispatch('getUserInfo');
+      // await this.$store.dispatch('getUserInfo');
       Promise.all([
         OrgService.getMembers(this.orgId),
         SpaceService.getMembers(this.spaceId),
+        // SpaceService.getScopeUsers(this.spaceId),
+        // get space roles传给编辑角色
+        RoleService.getRoles({
+          scope: 'space',
+          space: this.spaceId,
+        }),
       ])
-        .then(([orgUsers, spaceUsers]) => {
-          this.users = spaceUsers;
+        .then(([orgUsers, spaceUsers, spaceRoles]) => {
           this.allUsers = orgUsers;
+          this.users = spaceUsers;
+          this.spaceRoles = spaceRoles;
         })
         .finally(() => {
           this.loadings.all = false;
+        });
+    },
+
+    loadZoneRoles() {
+      SpaceService.getSpaceZones(this.spaceId)
+        .then(zones => {
+          this.zones = zones.sort((a, b) => a.createdAt - b.createdAt);
+        })
+        .then(() => {
+          this.zones.forEach(zone => {
+            const { id, name } = zone;
+            RoleService.getRoles({
+              // scope: zone.name.includes('k8s') ? 'zone.k8s' : 'zone.ocp',
+              scope: `zone.${zone.type}`,
+              space: this.spaceId,
+              zone: id,
+            }).then(roleList => {
+              this.zoneRoles[name] = roleList;
+            });
+          });
         });
     },
 
@@ -159,11 +226,6 @@ export default {
     updateUserDialog(user) {
       this.selectedUser = user;
       this.dialogConfigs.updateUser.visible = true;
-    },
-
-    onAuthorizeZone(user) {
-      this.selectedUser = user;
-      this.dialogConfigs.zoneAuthorization.visible = true;
     },
 
     onAddUserClose() {

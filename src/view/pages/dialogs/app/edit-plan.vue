@@ -6,25 +6,22 @@
     @before-open="onBeforeOpen"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <div class="left">
-      <dao-setting-section
-        v-for="(bullet, key, index) in standard"
-        :key="'section' + index">
+      <dao-setting-section v-for="(bullet, key, index) in standard" :key="'section' + index">
         <dao-setting-item>
           <div slot="label">
             规格
           </div>
           <template slot="content">
-            <dao-select
-              class="reset-margin"
-              @change="changePlan(key)"
-              v-model="planModel[key]">
+            <dao-select class="reset-margin" @change="changePlan(key)" v-model="planModel[key]">
               <dao-option
                 v-for="option in bullet"
                 :key="option.label"
                 :value="option.value"
-                :label="option.label">
+                :label="option.label"
+              >
               </dao-option>
             </dao-select>
           </template>
@@ -46,14 +43,16 @@
           <span class="replica-price-content">
             <dao-select
               size="sm"
-              style="width: 80px"
+              style="width: 80px;"
               v-model="chargingRule"
-              @change="changeChargingType">
+              @change="changeChargingType"
+            >
               <dao-option
                 v-for="(rule, index) in rules"
                 :key="index"
                 :value="rule.code"
-                :label="rule.description">
+                :label="rule.description"
+              >
               </dao-option>
             </dao-select>
           </span>
@@ -62,21 +61,15 @@
       <div class="replica-price-bottom">
         <p>
           <span class="replica-price-label">应补差价: </span>
-          <span class="replica-price-content">{{ newPrice - prePrice | fen_2_yuan }}元</span>
+          <span class="replica-price-content">{{ (newPrice - prePrice) | fen_2_yuan }}元</span>
         </p>
       </div>
     </div>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
-      <save-button
-        class="blue"
-        text="确定"
-        :saving="loadings.updating"
-        @click="onConfirm">
+      <save-button class="blue" text="确定" :saving="loadings.updating" @click="onConfirm">
       </save-button>
     </div>
   </dao-dialog>
@@ -178,10 +171,7 @@ export default {
                 };
               }),
             );
-            if (
-              !data ||
-              (data && value.options.indexOf(this.planModel[key]) === -1)
-            ) {
+            if (!data || (data && value.options.indexOf(this.planModel[key]) === -1)) {
               this.$set(this.planModel, key, value.default);
             }
           }

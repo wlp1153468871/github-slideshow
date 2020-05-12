@@ -12,11 +12,7 @@ function orderPlans(plans) {
   });
   const length = first(planList).length; // eslint-disable-line
 
-  return orderBy(
-    planList,
-    range(length),
-    range(length).fill('asc'),
-  ).map(x => plans[x.index]);
+  return orderBy(planList, range(length), range(length).fill('asc')).map(x => plans[x.index]);
 }
 
 export default orderPlans;

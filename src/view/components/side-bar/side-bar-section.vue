@@ -7,19 +7,20 @@
       v-for="(ul, index) in uls"
       v-show="ul.isShow()"
       :key="index"
-      :style="{ 'pointer-events': ul.isDisabled ? 'none' : 'all' }">
-
+      :style="{ 'pointer-events': ul.isDisabled ? 'none' : 'all' }"
+    >
       <div
         class="dao-left-nav-ul-title"
         :class="{ active: ulActive(ul) && !ul.isOpen }"
-        @click="routeTo(ul)">
-
+        @click="routeTo(ul)"
+      >
         <!-- 如果有子目录就显示一个折叠标记 -->
         <svg
           class="down-arrow"
           :class="{ 'right-arrow': !ul.isOpen }"
           @click.stop="toggle(ul)"
-          v-if="ul.children && ul.children.length">
+          v-if="ul.children && ul.children.length"
+        >
           <use xlink:href="#icon_down-arrow"></use>
         </svg>
         <svg class="text-icon">
@@ -29,16 +30,15 @@
           {{ ul.name }}
         </span>
       </div>
-      <ul
-        class="dao-left-nav-ul"
-        v-if="ul.children && ul.children.length && ul.isOpen">
+      <ul class="dao-left-nav-ul" v-if="ul.children && ul.children.length && ul.isOpen">
         <li
           class="dao-left-nav-item"
           :class="{ active: li.isActive() }"
           v-for="li in ul.children"
           v-show="li.isShow()"
           @click="routeTo(li)"
-          :key="li.name">
+          :key="li.name"
+        >
           <span class="item-span">{{ li.name }}</span>
         </li>
       </ul>
@@ -70,9 +70,7 @@ export default {
   },
   methods: {
     ulActive(ul) {
-      return ul.children
-        ? ul.children.some(li => li.isActive())
-        : ul.isActive();
+      return ul.children ? ul.children.some(li => li.isActive()) : ul.isActive();
     },
 
     routeTo(ul) {

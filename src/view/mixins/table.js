@@ -14,12 +14,7 @@ import Criteria from '@/core/lib/criteria';
 export default function tableFactory(...config) {
   return {
     data() {
-      const [
-        tTrackBy = 'id',
-        tLimit = 25,
-        tField,
-        tOrder = 'desc',
-      ] = config;
+      const [tTrackBy = 'id', tLimit = 25, tField, tOrder = 'desc'] = config;
 
       const tCriteria = new Criteria();
       tCriteria.setOrder(tField, tOrder);

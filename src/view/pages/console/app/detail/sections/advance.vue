@@ -9,9 +9,7 @@
           <p class="delete-notice">
             删除应用需要谨慎操作，这是一个不可逆的操作。
           </p>
-          <button
-            @click="removeConfirm()"
-            class="dao-btn red">
+          <button @click="removeConfirm()" class="dao-btn red">
             删除应用
           </button>
         </template>
@@ -60,15 +58,16 @@ export default {
         const binds = item.binding_instances || [];
         const deployments = [];
         binds.forEach(bind => {
-          const isDeployment =
-            bind.service_type === RESOURCE_TYPE.ROUTE;
+          const isDeployment = bind.service_type === RESOURCE_TYPE.ROUTE;
           const { name } = bind.params || {};
           if (isDeployment && name) deployments.push(name);
         });
         if (deployments.length) {
           this.$tada.confirm({
             title: '删除应用',
-            text: `应用 ${instance.name} 存在与 Route ${deployments.join('，')} 的绑定关系，请您先完成删除 Route 或者解绑操作。`,
+            text: `应用 ${instance.name} 存在与 Route ${deployments.join(
+              '，',
+            )} 的绑定关系，请您先完成删除 Route 或者解绑操作。`,
             primaryText: '确认',
             dangerMode: false,
           });

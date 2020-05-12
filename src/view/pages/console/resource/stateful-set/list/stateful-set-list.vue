@@ -1,18 +1,17 @@
 <template>
   <div>
-    <circle-loading v-if="loadings.page">
-    </circle-loading>
+    <circle-loading v-if="loadings.page"> </circle-loading>
     <div class="page-statefulSet-list" v-else>
       <resource-header :resource="resource"></resource-header>
       <div class="dao-view-main">
         <div class="dao-view-content">
-
           <div class="table-toolbar">
             <div class="table-toolbar-left">
               <button
                 class="dao-btn blue has-icon"
-                v-if="$can('create')"
-                @click="dialog.isOpen = true">
+                v-if="$can('statefulSet.create')"
+                @click="dialog.isOpen = true"
+              >
                 <svg class="icon">
                   <use xlink:href="#icon_plus-circled"></use>
                 </svg>
@@ -20,20 +19,21 @@
               </button>
             </div>
             <div class="table-toolbar-right">
-              <div style="display: flex;justify-content: center;align-items: center;">
+              <div style="display: flex; justify-content: center; align-items: center;">
                 <el-input
                   style="width: 200px;"
                   size="small"
                   v-model="actions.filterKey"
                   placeholder="请输入搜索内容"
                   clearable
-                  prefix-icon="el-icon-search"></el-input>
+                  prefix-icon="el-icon-search"
+                ></el-input>
                 <el-button
                   @click="onRefresh"
                   size="mini"
                   style="margin-left: 10px;"
                   :disabled="loadings.table"
-                  >
+                >
                   <svg class="icon">
                     <use xlink:href="#icon_update"></use>
                   </svg>
@@ -45,47 +45,46 @@
           <el-table
             v-loading="loadings.table"
             :data="statefulSetsInCurrentPage"
-            style="width: 100%">
-            <el-table-column
-              prop="metadata.name"
-              sortable
-              label="名称">
+            style="width: 100%;"
+          >
+            <el-table-column prop="metadata.name" sortable label="名称">
               <template slot-scope="{ row: statefulSet }">
                 <el-table-name-cell
                   :resource="statefulSet"
-                  routerName="resource.statefulsets.detail">
+                  routerName="resource.statefulsets.detail"
+                >
                 </el-table-name-cell>
               </template>
             </el-table-column>
             <el-table-column prop="status.replicas" label="实例数 Replicas">
-              <template
-                slot-scope="{ row: statefulSet }"
-              >
-                {{statefulSet.status &&
-                statefulSet.status.replicas + '/' + statefulSet.spec.replicas + ' replicas'}}
+              <template slot-scope="{ row: statefulSet }">
+                {{
+                  statefulSet.status &&
+                    statefulSet.status.replicas + '/' + statefulSet.spec.replicas + ' replicas'
+                }}
               </template>
             </el-table-column>
             <el-table-column
               prop="metadata.creationTimestamp"
               sortable
               :sort-method="sortStartTime"
-              label="创建时间">
-              <template
-                slot-scope="{ row: statefulSet }"
-              >{{statefulSet.metadata.creationTimestamp | date}}
+              label="创建时间"
+            >
+              <template slot-scope="{ row: statefulSet }"
+                >{{ statefulSet.metadata.creationTimestamp | date }}
               </template>
             </el-table-column>
           </el-table>
           <el-pagination
             background
             :disabled="loadings.table"
-            :page-sizes="[10,30,50]"
+            :page-sizes="[10, 30, 50]"
             :page-size.sync="pageSize"
             :current-page.sync="currentPage"
             layout="sizes, prev, pager, next"
-            :total="totalPages">
+            :total="totalPages"
+          >
           </el-pagination>
-
         </div>
       </div>
     </div>
@@ -97,7 +96,6 @@
       @close="dialog.isOpen = false"
     >
     </edit-yaml-dialog>
-
   </div>
 </template>
 
@@ -184,8 +182,7 @@ export default {
         const inName = s.metadata.name.toLowerCase().includes(key);
         const inLabel =
           s.metadata.labels &&
-          Object.values(s.metadata.labels).some(v =>
-            v.toLowerCase().includes(key));
+          Object.values(s.metadata.labels).some(v => v.toLowerCase().includes(key));
         return inName || inLabel;
       });
     }, 200),

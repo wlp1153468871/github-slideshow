@@ -3,13 +3,15 @@
     <dao-table-view
       :rows="rows"
       :config="tConfig"
+      :showRefresh="canView"
+      :hideRefresh="canView"
+      @refresh="loadOrgUsers"
       :loading="this.loadings.all"
       @update-user-dialog="updateUserDialog"
-      @confirm-remove-user="confirmRemoveUser">
+      @confirm-remove-user="confirmRemoveUser"
+    >
       <div slot="tool">
-        <div
-          class="dao-btn has-icon white"
-          @click="openAddUserDialog()">
+        <div v-if="canCreat" class="dao-btn has-icon white" @click="openAddUserDialog()">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -20,33 +22,34 @@
 
     <!--dialog start -->
     <add-user-dialog
-      :roles="ROLES"
+      :roles="roles"
       :users="availableUsers"
       @add="addUser"
       @search="searchUser"
       :visible="dialogConfigs.addUser.visible"
-      @close="dialogConfigs.addUser.visible = false">
+      @close="dialogConfigs.addUser.visible = false"
+    >
     </add-user-dialog>
 
     <update-org-user-dialog
       :user="selectedUser"
-      :user-role="selectedUser.organization_role"
-      :roles="ROLES"
+      :roles="roles"
       @update="updateUser"
       :visible="dialogConfigs.updateUser.visible"
-      @close="dialogConfigs.updateUser.visible = false">
+      @close="dialogConfigs.updateUser.visible = false"
+    >
     </update-org-user-dialog>
     <!-- dialog end -->
   </div>
 </template>
 
 <script>
-import { ORG_ROLE } from '@/core/constants/role';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import tableView from '@/view/mixins/table-view';
 import userManage from '@/view/mixins/user-manage';
 import OrgService from '@/core/services/org.service';
 import UserService from '@/core/services/user.service';
+import RoleService from '@/core/services/role.service';
 // dialogs
 import AddUserDialog from '@/view/pages/dialogs/org/add-user';
 import UpdateOrgUserDialog from '@/view/pages/dialogs/user/update-org-user';
@@ -65,6 +68,10 @@ export default {
 
   props: {
     orgId: { type: String, default: () => '' },
+    canCreat: { type: Boolean, default: () => false },
+    canUpdate: { type: Boolean, default: () => false },
+    canDelete: { type: Boolean, default: () => false },
+    canView: { type: Boolean, default: () => false },
   },
 
   data() {
@@ -80,28 +87,33 @@ export default {
         addUser: { visible: false },
         updateUser: { visible: false },
       },
-      // TODO: replace with ORG_ROLE_LABEL
-      ROLES: [
-        { value: ORG_ROLE.MEMBER, text: '租户普通用户' },
-        { value: ORG_ROLE.ADMIN, text: '租户管理员' },
-      ],
+      roles: [],
     };
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'isManageView']),
+    ...mapGetters(['userName', 'isOrganizationAdmin']),
   },
 
   created() {
     this.initTableView();
+    if (this.canView) {
+      this.loadOrgRoles();
+    }
   },
 
   watch: {
     orgId: {
       immediate: true,
       handler(orgId, prevOrgId) {
+        // loadOrgUsers 之前需要判断查看权限 this.canView
         if (orgId !== '' && orgId !== prevOrgId) {
-          this.loadOrgUsers(orgId);
+          if (this.canView) {
+            this.loadOrgUsers(orgId);
+          } else {
+            this.$noty.error('您暂无查询项目组权限');
+          }
         }
       },
     },
@@ -113,21 +125,39 @@ export default {
         { id: 'username', name: '用户名' },
         { id: 'phone_number', name: '手机' },
         { id: 'email', name: '邮箱' },
-        { id: 'organization_role', name: '租户权限', filter: 'org_role' },
-      ]);
-      const isSelf = item => item.id === this.user.id;
-      this.setTableOperations([
         {
-          name: '修改权限',
-          event: 'update-user-dialog',
-          disabled: isSelf,
-          tooltip: '无法对自己操作',
-        },
-        {
-          name: '移除',
-          event: 'confirm-remove-user',
+          id: 'roles',
+          name: '租户权限',
+          value(roles) {
+            let text = '';
+            roles.forEach(role => {
+              if (role.scope === 'organization') {
+                text = role.name;
+              }
+            });
+            return text;
+          },
+          filter: 'role_format',
         },
       ]);
+      const isSelf = item => item.username === this.userName && this.isOrganizationAdmin;
+      if (this.canUpdate || this.canDelete) {
+        this.setTableOperations([
+          {
+            name: '修改权限',
+            event: 'update-user-dialog',
+            tooltip: '无法对自己操作',
+            visible: this.canUpdate,
+          },
+          {
+            name: '移除',
+            event: 'confirm-remove-user',
+            disabled: this.isManageView ? false : isSelf,
+            tooltip: '无法对自己操作',
+            visible: this.canDelete,
+          },
+        ]);
+      }
     },
 
     loadOrgUsers() {
@@ -142,6 +172,15 @@ export default {
         });
     },
 
+    loadOrgRoles() {
+      RoleService.getRoles({
+        scope: 'organization',
+        organizationId: this.orgId,
+      }).then(roles => {
+        this.roles = roles;
+      });
+    },
+
     loadAllUsers(q) {
       UserService.getUsers(q).then(users => {
         this.allUsers = users;
@@ -152,14 +191,12 @@ export default {
       this.dialogConfigs.addUser.visible = true;
     },
 
-    addUser({ user, role }) {
-      const params = {
-        organization_role: role,
-      };
-      UserService.addOrgUser(this.orgId, user.id, params)
+    addUser({ user, role }, isNewUser) {
+      UserService.addOrgUser(this.orgId, user.id)
         .then(newUsers => {
           this.rows.push(newUsers);
           this.$noty.success('添加用户成功');
+          this.setOrgRole(role, user.id, isNewUser);
         })
         .catch(() => {
           this.$noty.error('添加用户失败');
@@ -200,18 +237,26 @@ export default {
     },
 
     updateUser(role) {
-      const params = {
-        organization_role: role,
+      this.setOrgRole(role, this.selectedUser.id);
+    },
+
+    setOrgRole(role, userId, isNewUser) {
+      const orgParams = {
+        userId,
+        roleId: role.id,
+        data: {
+          organizationId: this.orgId,
+          scope: role.scope,
+        },
       };
-      return UserService.updateOrgUser(
-        this.orgId,
-        this.selectedUser.id,
-        params,
-      ).then(newUser => {
-        const index = this.rows.findIndex(x => x.id === this.selectedUser.id);
-        this.rows.splice(index, 1, newUser);
-        this.$noty.success('权限修改成功');
-      });
+      RoleService.setRole(orgParams)
+        .then(() => {
+          this.$noty.success(isNewUser ? '权限初始化成功' : '权限修改成功');
+          this.loadOrgUsers();
+        })
+        .catch(() => {
+          this.$noty.error(isNewUser ? '权限初始化失败' : '权限修改失败');
+        });
     },
 
     searchUser(keyword) {

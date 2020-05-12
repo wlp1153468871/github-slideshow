@@ -7,16 +7,19 @@
         @change="switchZone"
         :append-to-body="false"
         placeholder="可用区"
-        no-data-text="无选项">
+        no-data-text="无选项"
+      >
         <dao-option-group
           v-for="zones in zoneList"
           :key="zones.text"
-          :label="zones.text + ' 数据中心'">
+          :label="zones.text + ' 数据中心'"
+        >
           <dao-option
             v-for="item in zones.children"
             :key="item.id"
             :value="item.id"
-            :label="item.name">
+            :label="item.name"
+          >
           </dao-option>
         </dao-option-group>
       </dao-select>
@@ -71,7 +74,7 @@ export default {
     updateRouter() {
       // network
       this.$router.push({
-        name: 'console.dashboard',
+        name: 'console.gateway',
       });
     },
   },
@@ -79,7 +82,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~daoColor";
+@import '~daoColor';
 $logo-bg: #25282d;
 $status-bar-height: 32px;
 $status-bar-bg-color: #f5f7fa;
@@ -125,7 +128,7 @@ $radial-blue-border: #c1ddff;
       .dao-select-popper {
         overflow-y: auto;
         max-height: 300px;
-        box-shadow: 0 18px 19px 0 rgba(55, 59, 65, .54);
+        box-shadow: 0 18px 19px 0 rgba(55, 59, 65, 0.54);
         border-radius: 0;
         .checkmark {
           height: 16px;

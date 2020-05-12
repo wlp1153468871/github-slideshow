@@ -9,12 +9,7 @@ import StepTwo from './step-two/step-two.vue';
 
 export default {
   data() {
-    const {
-      deployType,
-      type,
-      serviceName,
-      serviceId,
-    } = this.$route.query;
+    const { deployType, type, serviceName, serviceId } = this.$route.query;
     return {
       rulesReady: {
         chooseRules: [],
@@ -51,23 +46,24 @@ export default {
   },
   methods: {
     async onComplete() {
-      const rules = this.rulesReady.chooseRules
-        .map(r => {
-          return {
-            name: r.ruleName,
-            metricId: r.id,
-            ruleType: this.params.type,
-            threshold: r.threshold,
-            for: r.for,
-            description: r.description,
-            emails: this.rulesReady.receiverInfo
-              .map(({ username: user, email }) => ({ user, email })),
-            scope: this.rulesReady.instances.map(({ kind, name }) => ({
-              name,
-              type: this.isService ? this.params.serviceName : MONITOR_KIND_MAP_FLIP[kind],
-            })),
-          };
-        });
+      const rules = this.rulesReady.chooseRules.map(r => {
+        return {
+          name: r.ruleName,
+          metricId: r.id,
+          ruleType: this.params.type,
+          threshold: r.threshold,
+          for: r.for,
+          description: r.description,
+          emails: this.rulesReady.receiverInfo.map(({ username: user, email }) => ({
+            user,
+            email,
+          })),
+          scope: this.rulesReady.instances.map(({ kind, name }) => ({
+            name,
+            type: this.isService ? this.params.serviceName : MONITOR_KIND_MAP_FLIP[kind],
+          })),
+        };
+      });
       await AlarmService.postRules({ rules });
       this.$noty.success('添加成功');
       this.$router.push({ name: 'console.alarm' });

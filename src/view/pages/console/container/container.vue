@@ -1,19 +1,15 @@
 <template>
   <div class="layout" :class="{ collapsed: isCollapse, hidden: !isSpaceView }">
     <global-nav-bar></global-nav-bar>
-    <console-side-bar
-      v-show="isSpaceView"
-      @switch-section="switchSpace">
-    </console-side-bar>
+    <console-side-bar v-show="isSpaceView" @switch-section="switchSpace"> </console-side-bar>
     <template v-if="!isInitTenantView">
-      <router-view class="layout-content" :key="$route.fullPath"></router-view>
+      <router-view class="layout-content"></router-view>
     </template>
     <circle-loading v-else position="space-view"></circle-loading>
   </div>
 </template>
-…
-<script src="./container.js">
-</script>
+
+<script src="./container.js"></script>
 
 <style lang="scss">
 @import '~daoColor';

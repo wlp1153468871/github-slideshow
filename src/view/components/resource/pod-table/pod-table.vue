@@ -6,33 +6,35 @@
           <button
             class="dao-btn dao-sm red delete"
             @click="$emit('remove', multipleSelection)"
-            :disabled="!multipleSelection.length">
+            :disabled="!multipleSelection.length"
+          >
             <svg class="icon">
               <use xlink:href="#icon_trash"></use>
             </svg>
             删除
           </button>
           <span class="selection-info">
-          共 {{ pods.length }} 个 容器组, 已选择 {{ multipleSelection.length }} 个
-        </span>
+            共 {{ pods.length }} 个 容器组, 已选择 {{ multipleSelection.length }} 个
+          </span>
         </template>
       </div>
       <div class="table-toolbar-right">
-        <div style="display: flex;justify-content: center;align-items: center;">
+        <div style="display: flex; justify-content: center; align-items: center;">
           <el-input
             style="width: 200px;"
             size="small"
             v-model="filterKey"
             placeholder="请输入搜索内容"
             clearable
-            prefix-icon="el-icon-search"></el-input>
+            prefix-icon="el-icon-search"
+          ></el-input>
           <el-button
             v-if="canRefresh"
             size="mini"
             style="margin-left: 10px;"
             :disabled="loading"
             @click="$emit('refresh')"
-            >
+          >
             <svg class="icon">
               <use xlink:href="#icon_update"></use>
             </svg>
@@ -47,46 +49,32 @@
       :data="podsInCurrentPage"
       row-key="metadata.name"
       @selection-change="handleSelectionChange"
-      style="width: 100%">
-      <el-table-column
-        v-if="deleteable"
-        reserve-selection
-        type="selection"
-        width="55">
+      style="width: 100%;"
+    >
+      <el-table-column v-if="deleteable" reserve-selection type="selection" width="55">
       </el-table-column>
-      <el-table-column
-        min-width="230px"
-        prop="metadata.name"
-        sortable
-        label="名称">
+      <el-table-column min-width="230px" prop="metadata.name" sortable label="名称">
         <template slot-scope="{ row: pod }">
           <router-link :to="{ name: 'resource.pods.detail', params: { name: pod.metadata.name } }">
-            {{pod.metadata.name}}
+            {{ pod.metadata.name }}
           </router-link>
           <span v-if="isDebugPod(pod)">
-          <svg class="icon">
-            <use xlink:href="#icon_bug"></use>
-          </svg>
-          <span class="sr-only">Debugging pod {{pod | debug_pod_source_name}}</span>
-        </span>
+            <svg class="icon">
+              <use xlink:href="#icon_bug"></use>
+            </svg>
+            <span class="sr-only">Debugging pod {{ pod | debug_pod_source_name }}</span>
+          </span>
         </template>
       </el-table-column>
-      <el-table-column
-        min-width="120px"
-        prop="status"
-        sortable
-        label="状态">
+      <el-table-column min-width="120px" prop="status" sortable label="状态">
         <template slot-scope="{ row: pod }">
           <status-icon :status="pod | pod_status"></status-icon>
-          <span class="status-detail">{{pod | pod_status | humanize_pod_status}}</span>
+          <span class="status-detail">{{ pod | pod_status | humanize_pod_status }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        min-width="100px"
-        prop="containersReady"
-        label="运行中">
+      <el-table-column min-width="100px" prop="containersReady" label="运行中">
         <template slot-scope="{ row: pod }">
-          {{pod | num_containers_ready}}/{{pod.spec.containers.length}}
+          {{ pod | num_containers_ready }}/{{ pod.spec.containers.length }}
         </template>
       </el-table-column>
       <el-table-column
@@ -94,9 +82,10 @@
         prop="restarts"
         sortable
         :sort-method="sortReStartTimes"
-        label="重启次数">
+        label="重启次数"
+      >
         <template slot-scope="{ row: pod }">
-          {{pod | num_container_restarts}}
+          {{ pod | num_container_restarts }}
         </template>
       </el-table-column>
       <el-table-column
@@ -104,7 +93,8 @@
         prop="status.startTime"
         sortable
         :sort-method="sortStartTime"
-        label="启动时刻">
+        label="启动时刻"
+      >
         <template #default="{ row: pod }">
           {{ pod.status.startTime | date | otherwise }}
         </template>
@@ -113,7 +103,8 @@
         v-if="activePods"
         min-width="200px"
         prop="status.traffic"
-        label="Receiving Traffic">
+        label="Receiving Traffic"
+      >
         <template #default="{ row: pod }">
           <span v-if="activePods[pod.metadata.name]">
             <svg class="icon text-success mr-xs">
@@ -133,7 +124,7 @@
                 <span class="sr-only">No</span>
               </span>
             </el-tooltip>
-        </span>
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -141,11 +132,12 @@
       hide-on-single-page
       background
       :disabled="loading"
-      :page-sizes="[10,30,50]"
+      :page-sizes="[10, 30, 50]"
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
       layout="sizes, prev, pager, next"
-      :total="totalPages">
+      :total="totalPages"
+    >
     </el-pagination>
   </div>
 </template>
@@ -174,21 +166,19 @@ export default {
       currentPage: 1,
       pageSize: 10,
       podFailureReasons: {
-        Pending:
-          'This pod will not receive traffic until all of its containers have been created.',
+        Pending: 'This pod will not receive traffic until all of its containers have been created.',
       },
     };
   },
 
   computed: {
     deleteable() {
-      return this.$can('delete') && this.canSelect;
+      return this.$can('pod.delete') && this.canSelect;
     },
 
     podsFilteredByKey() {
       const filterKey = this.filterKey.toLowerCase();
-      return this.pods.filter(pod =>
-        pod.metadata.name.toLowerCase().includes(filterKey));
+      return this.pods.filter(pod => pod.metadata.name.toLowerCase().includes(filterKey));
     },
 
     paginaPods() {
@@ -217,10 +207,7 @@ export default {
     },
 
     sortReStartTimes(a, b) {
-      return (
-        Vue.filter('num_container_restarts')(a) -
-        Vue.filter('num_container_restarts')(b)
-      );
+      return Vue.filter('num_container_restarts')(a) - Vue.filter('num_container_restarts')(b);
     },
 
     sortStartTime(a, b) {
@@ -238,8 +225,9 @@ export default {
   watch: {
     pods(pods) {
       const podNames = pods.map(pod => pod.metadata.name);
-      this.multipleSelection =
-        this.multipleSelection.filter(({ metadata: { name } }) => includes(podNames, name));
+      this.multipleSelection = this.multipleSelection.filter(({ metadata: { name } }) =>
+        includes(podNames, name),
+      );
     },
   },
 };

@@ -3,12 +3,10 @@
     <dao-setting-layout>
       <template slot="layout-title">可用区{{ operationLabel }}确认</template>
       <template v-for="(item, index) in info">
-        <dao-setting-section
-          v-if="item.value"
-          :key="index">
+        <dao-setting-section v-if="item.value" :key="index">
           <dao-setting-item>
-            <template #label>{{item.name}}</template>
-            <template #content>{{item.value}}</template>
+            <template #label>{{ item.name }}</template>
+            <template #content>{{ item.value }}</template>
           </dao-setting-item>
         </dao-setting-section>
       </template>
@@ -19,22 +17,20 @@
           <template #content>
             <table class="dao-table row">
               <thead>
-              <tr>
-                <th>名称</th>
-                <th>Key</th>
-                <th>标签</th>
-                <th>域名</th>
-              </tr>
+                <tr>
+                  <th>名称</th>
+                  <th>Key</th>
+                  <th>标签</th>
+                  <th>域名</th>
+                </tr>
               </thead>
               <tbody>
-              <tr
-                v-for="row in zone.router_config"
-                :key="row.key">
-                <td>{{row.title}}</td>
-                <td>{{row.key}}</td>
-                <td>{{row.label}}</td>
-                <td>{{row.domain}}</td>
-              </tr>
+                <tr v-for="row in zone.router_config" :key="row.key">
+                  <td>{{ row.title }}</td>
+                  <td>{{ row.key }}</td>
+                  <td>{{ row.label }}</td>
+                  <td>{{ row.domain }}</td>
+                </tr>
               </tbody>
             </table>
           </template>

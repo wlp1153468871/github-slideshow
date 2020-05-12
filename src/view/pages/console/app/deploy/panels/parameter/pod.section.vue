@@ -9,13 +9,12 @@
             v-model="livenessProbeSelect"
             v-for="(option, index) in livenessOptions"
             :key="index"
-            :label="option.label">
+            :label="option.label"
+          >
             {{ option.title }}
           </dao-radio>
         </dao-radio-group>
-        <div
-          class="dao-setting-patch pod"
-          v-if="livenessProbeSelect !== 'none'">
+        <div class="dao-setting-patch pod" v-if="livenessProbeSelect !== 'none'">
           <div v-if="livenessProbeSelect === 'httpGet'">
             <dao-setting-item>
               <div slot="label">请求路径</div>
@@ -28,7 +27,8 @@
                   :message="veeErrors.first('path')"
                   :status="veeErrors.has('path') ? 'error' : ''"
                   data-vv-as="请求路径"
-                  placeholder="例: /healthz">
+                  placeholder="例: /healthz"
+                >
                 </dao-input>
               </div>
             </dao-setting-item>
@@ -38,7 +38,8 @@
                 <dao-editable-table
                   class="headers"
                   :config="config"
-                  v-model="livenessProbe.httpGet.httpHeaders">
+                  v-model="livenessProbe.httpGet.httpHeaders"
+                >
                 </dao-editable-table>
               </div>
             </dao-setting-item>
@@ -49,12 +50,11 @@
                   <dao-radio
                     style="margin-right: 30px;"
                     v-model="livenessProbe.httpGet.scheme"
-                    label="HTTP">
+                    label="HTTP"
+                  >
                     HTTP
                   </dao-radio>
-                  <dao-radio
-                    v-model="livenessProbe.httpGet.scheme"
-                    label="HTTPS">
+                  <dao-radio v-model="livenessProbe.httpGet.scheme" label="HTTPS">
                     HTTPS
                   </dao-radio>
                 </dao-radio-group>
@@ -71,7 +71,8 @@
                   :message="veeErrors.first('address')"
                   :status="veeErrors.has('address') ? 'error' : ''"
                   data-vv-as="请求地址"
-                  placeholder="默认为容器组 IP">
+                  placeholder="默认为容器组 IP"
+                >
                 </dao-input>
               </div>
             </dao-setting-item>
@@ -84,7 +85,8 @@
                   type="int"
                   :min="1"
                   :max="65535"
-                  placeholder="必填，且端口号必须在 1 - 65535 之间">
+                  placeholder="必填，且端口号必须在 1 - 65535 之间"
+                >
                 </dao-numeric-input>
               </div>
             </dao-setting-item>
@@ -100,7 +102,8 @@
                 :message="veeErrors.first('command')"
                 :status="veeErrors.has('command') ? 'error' : ''"
                 data-vv-as="检查命令"
-                placeholder="例: cat /tmp/healthy">
+                placeholder="例: cat /tmp/healthy"
+              >
               </dao-input>
             </div>
           </dao-setting-item>
@@ -113,7 +116,8 @@
                 type="int"
                 :min="1"
                 :max="65535"
-                placeholder="必填">
+                placeholder="必填"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -125,7 +129,8 @@
                 v-model="livenessProbe.periodSeconds"
                 type="int"
                 :min="1"
-                unit="秒">
+                unit="秒"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -137,7 +142,8 @@
                 v-model="livenessProbe.initialDelaySeconds"
                 type="int"
                 :min="0"
-                unit="秒">
+                unit="秒"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -149,7 +155,8 @@
                 v-model="livenessProbe.timeoutSeconds"
                 type="int"
                 :min="1"
-                unit="秒">
+                unit="秒"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -161,7 +168,8 @@
                 v-model="livenessProbe.failureThreshold"
                 type="int"
                 :min="1"
-                unit="次">
+                unit="次"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -173,7 +181,8 @@
                 v-model="livenessProbe.successThreshold"
                 type="int"
                 :min="1"
-                unit="次">
+                unit="次"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -189,13 +198,12 @@
             v-model="readinessProbeSelect"
             v-for="(option, index) in livenessOptions"
             :key="index"
-            :label="option.label">
+            :label="option.label"
+          >
             {{ option.title }}
           </dao-radio>
         </dao-radio-group>
-        <div
-          class="dao-setting-patch pod"
-          v-if="readinessProbeSelect !== 'none'">
+        <div class="dao-setting-patch pod" v-if="readinessProbeSelect !== 'none'">
           <div v-if="readinessProbeSelect === 'httpGet'">
             <dao-setting-item>
               <div slot="label">请求路径</div>
@@ -208,7 +216,8 @@
                   :message="veeErrors.first('readyPath')"
                   :status="veeErrors.has('readyPath') ? 'error' : ''"
                   data-vv-as="请求路径"
-                  placeholder="例: /healthz">
+                  placeholder="例: /healthz"
+                >
                 </dao-input>
               </div>
             </dao-setting-item>
@@ -218,7 +227,8 @@
                 <dao-editable-table
                   class="headers"
                   :config="config"
-                  v-model="readinessProbe.httpGet.httpHeaders">
+                  v-model="readinessProbe.httpGet.httpHeaders"
+                >
                 </dao-editable-table>
               </div>
             </dao-setting-item>
@@ -229,12 +239,11 @@
                   <dao-radio
                     style="margin-right: 30px;"
                     v-model="readinessProbe.httpGet.scheme"
-                    label="HTTP">
+                    label="HTTP"
+                  >
                     HTTP
                   </dao-radio>
-                  <dao-radio
-                    v-model="readinessProbe.httpGet.scheme"
-                    label="HTTPS">
+                  <dao-radio v-model="readinessProbe.httpGet.scheme" label="HTTPS">
                     HTTPS
                   </dao-radio>
                 </dao-radio-group>
@@ -251,7 +260,8 @@
                   :message="veeErrors.first('readyAddress')"
                   :status="veeErrors.has('readyAddress') ? 'error' : ''"
                   data-vv-as="请求地址"
-                  placeholder="默认为容器组 IP">
+                  placeholder="默认为容器组 IP"
+                >
                 </dao-input>
               </div>
             </dao-setting-item>
@@ -264,7 +274,8 @@
                   type="int"
                   :min="1"
                   :max="65535"
-                  placeholder="必填，且端口号必须在 1 - 65535 之间">
+                  placeholder="必填，且端口号必须在 1 - 65535 之间"
+                >
                 </dao-numeric-input>
               </div>
             </dao-setting-item>
@@ -280,7 +291,8 @@
                 :message="veeErrors.first('readyCommand')"
                 :status="veeErrors.has('readyCommand') ? 'error' : ''"
                 data-vv-as="检查命令"
-                placeholder="例: cat /tmp/healthy">
+                placeholder="例: cat /tmp/healthy"
+              >
               </dao-input>
             </div>
           </dao-setting-item>
@@ -293,7 +305,8 @@
                 type="int"
                 :min="1"
                 :max="65535"
-                placeholder="必填">
+                placeholder="必填"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -305,7 +318,8 @@
                 v-model="readinessProbe.periodSeconds"
                 type="int"
                 :min="1"
-                unit="秒">
+                unit="秒"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -317,7 +331,8 @@
                 v-model="readinessProbe.initialDelaySeconds"
                 type="int"
                 :min="0"
-                unit="秒">
+                unit="秒"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -329,7 +344,8 @@
                 v-model="readinessProbe.timeoutSeconds"
                 type="int"
                 :min="1"
-                unit="秒">
+                unit="秒"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -341,7 +357,8 @@
                 v-model="readinessProbe.failureThreshold"
                 type="int"
                 :min="1"
-                unit="次">
+                unit="次"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -353,7 +370,8 @@
                 v-model="readinessProbe.successThreshold"
                 type="int"
                 :min="1"
-                unit="次">
+                unit="次"
+              >
               </dao-numeric-input>
             </div>
           </dao-setting-item>
@@ -435,7 +453,8 @@ export default {
           port: 8080,
         },
       },
-      config: { // TODO: add validation ?
+      config: {
+        // TODO: add validation ?
         header: ['键', '值'],
         body: [
           {
@@ -457,45 +476,53 @@ export default {
     probeValid() {
       return probe => {
         const {
-          periodSeconds, initialDelaySeconds,
-          timeoutSeconds, successThreshold, failureThreshold,
+          periodSeconds,
+          initialDelaySeconds,
+          timeoutSeconds,
+          successThreshold,
+          failureThreshold,
         } = probe;
 
-        return periodSeconds === ''
-          || initialDelaySeconds === ''
-          || timeoutSeconds === ''
-          || successThreshold === ''
-          || failureThreshold === '';
+        return (
+          periodSeconds === '' ||
+          initialDelaySeconds === '' ||
+          timeoutSeconds === '' ||
+          successThreshold === '' ||
+          failureThreshold === ''
+        );
       };
     },
 
     publicForm() {
-      const {
-        livenessProbeSelect, readinessProbeSelect,
-        livenessProbe, readinessProbe,
-      } = this;
+      const { livenessProbeSelect, readinessProbeSelect, livenessProbe, readinessProbe } = this;
 
       if (livenessProbeSelect !== 'none' && readinessProbeSelect === 'none') {
         if (livenessProbeSelect === 'httpGet' || livenessProbeSelect === 'tcpSocket') {
-          return this.probeValid(livenessProbe)
-            || livenessProbe.httpGet.port === ''
-            || livenessProbe.tcpSocket.port === '';
+          return (
+            this.probeValid(livenessProbe) ||
+            livenessProbe.httpGet.port === '' ||
+            livenessProbe.tcpSocket.port === ''
+          );
         }
         return this.probeValid(livenessProbe);
       } else if (livenessProbeSelect === 'none' && readinessProbeSelect !== 'none') {
         if (readinessProbeSelect === 'httpGet' || readinessProbeSelect === 'tcpSocket') {
-          return this.probeValid(readinessProbe)
-            || readinessProbe.httpGet.port === ''
-            || readinessProbe.tcpSocket.port === '';
+          return (
+            this.probeValid(readinessProbe) ||
+            readinessProbe.httpGet.port === '' ||
+            readinessProbe.tcpSocket.port === ''
+          );
         }
         return this.probeValid(readinessProbe);
       } else if (livenessProbeSelect !== 'none' && readinessProbeSelect !== 'none') {
-        return this.probeValid(livenessProbe)
-          || this.probeValid(readinessProbe)
-          || livenessProbe.httpGet.port === ''
-          || livenessProbe.tcpSocket.port === ''
-          || readinessProbe.httpGet.port === ''
-          || readinessProbe.tcpSocket.port === '';
+        return (
+          this.probeValid(livenessProbe) ||
+          this.probeValid(readinessProbe) ||
+          livenessProbe.httpGet.port === '' ||
+          livenessProbe.tcpSocket.port === '' ||
+          readinessProbe.httpGet.port === '' ||
+          readinessProbe.tcpSocket.port === ''
+        );
       }
       return false;
     },

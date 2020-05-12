@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-confirm="onConfirm"
     @dao-dialog-close="onClose"
-    @dao-dialog-cancel="onClose">
+    @dao-dialog-cancel="onClose"
+  >
     <dao-setting-layout>
       <dao-setting-section>
         <template #label>实例名 / 类型</template>
@@ -13,10 +14,7 @@
       <dao-setting-section>
         <template #content>
           <p>配置详情</p>
-          <dao-code-mirror
-            mode="json"
-            :value="requestParams">
-          </dao-code-mirror>
+          <dao-code-mirror mode="json" :value="requestParams"> </dao-code-mirror>
         </template>
       </dao-setting-section>
     </dao-setting-layout>

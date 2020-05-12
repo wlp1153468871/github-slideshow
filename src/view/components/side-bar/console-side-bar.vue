@@ -3,10 +3,7 @@
     <div class="menus">
       <div class="section-space">
         <template v-if="orgs.length">
-          <el-tooltip
-            :content="orgSpaceValue"
-            placement="right"
-          >
+          <el-tooltip :content="orgSpaceValue" placement="right">
             <el-cascader
               :options="orgWithSpaceSepereatedBySlash"
               :props="props"
@@ -21,40 +18,14 @@
           </el-tooltip>
         </template>
         <template v-else>
-          <el-tooltip
-            placement="right"
-            content="暂无项目组"
-          >
+          <el-tooltip placement="right" content="暂无项目组">
             <p class="empty-message">暂无项目组</p>
           </el-tooltip>
         </template>
       </div>
 
-      <el-menu
-        ref="topMenu"
-        class="side-bar-menu"
-        background-color="#373B41"
-        text-color="#e4e7ed"
-        :default-active="defaultActiveMenu"
-        :router="true"
-        :collapse="isCollapse"
-        @select="onTopMenuSelect"
-      >
-        <el-menu-item
-          style="border-bottom: 1px solid #3c434b;"
-          index="console.dashboard"
-          :route="{ name: 'console.dashboard' }"
-        >
-          <i class="el-icon-menu"></i>
-          <span slot="title">总览</span>
-        </el-menu-item>
-      </el-menu>
-
-      <div class="section-zone">
-        <el-tooltip
-          :content="zone.name ? zone.name : '暂无可用区'"
-          placement="right"
-        >
+      <div class="section-zone" v-if="isShowZoneSelect">
+        <el-tooltip :content="zone.name ? zone.name : '暂无可用区'" placement="right">
           <zone-select v-if="zones.length"></zone-select>
           <template v-else>
             <p class="empty-message">暂无可用区</p>
@@ -62,182 +33,140 @@
         </el-tooltip>
       </div>
 
+      <!-- 新菜单 -->
       <el-menu
         ref="bottomMenu"
         class="side-bar-menu"
         background-color="#373B41"
         text-color="#e4e7ed"
         :default-active="defaultActiveMenu"
-        :default-openeds="defaultOpeneds"
         :router="true"
         :collapse="isCollapse"
-        @select="onBottomMenuSelect"
       >
-
-        <template v-if="isPlatformAdmin || !zoneUnauthorized">
-
-          <el-menu-item
-            index="console.applications.list"
-            :route="{ name: 'console.applications.list' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_application"></use>
-            </svg>
-            <span slot="title">应用</span>
-          </el-menu-item>
-
-          <el-submenu index="resource">
-            <template slot="title">
-              <svg class="icon">
-                <use xlink:href="#icon_resource"></use>
-              </svg>
-              <span slot="title">资源对象</span>
-            </template>
-            <template v-for="resource in apiResource">
-              <el-menu-item
-                v-if="$can('read', resource.name)"
-                :key="resource.name"
-                :index="resource.route.name"
-                :route="resource.route"
-              >
+        <template v-for="(item, index) in allMenus">
+          <template v-if="item.children">
+            <el-submenu :index="item.name" v-if="!hiddenMenu(item)" :key="index">
+              <template slot="title">
                 <svg class="icon">
-                  <use :xlink:href="resource.icon"></use>
+                  <use :xlink:href="item.meta.icon"></use>
                 </svg>
-                <overflow-tooltip
-                  slot="title"
-                  :text="resource.kind"
-                >
-                </overflow-tooltip>
-              </el-menu-item>
-            </template>
-
-          </el-submenu>
-
-          <el-menu-item
-            index="console.registry"
-            :route="{ name: 'console.registry' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_docker-image"></use>
-            </svg>
-            <span slot="title">镜像中心</span>
-          </el-menu-item>
-
-          <el-submenu index="service">
-            <template slot="title">
-              <svg class="icon">
-                <use xlink:href="#icon_service-category"></use>
-              </svg>
-              <span slot="title">服务目录</span>
-            </template>
-            <el-menu-item
-              v-for="menu in services"
-              :key="menu.id"
-              :index="compileIndex(menu)"
-              :route="menu.route"
-            >
-              <service-logo
-                :src="menu.logo_url"
-                size="small"
-              ></service-logo>
-              <el-tooltip
-                popper-class="service-name-tooltip"
-                slot="title"
-                :content="menu.name"
-                placement="right"
+                <span>{{ item.meta.title }}</span>
+              </template>
+              <template
+                v-if="item.meta.code !== 'resource'"
+                v-for="(menuItem, index) in item.children"
               >
-                <span class="service-menu-name text-overflow-ellipsis">{{menu.name}}</span>
-              </el-tooltip>
-            </el-menu-item>
-          </el-submenu>
+                <el-menu-item
+                  :key="index"
+                  :route="{ name: menuItem.name }"
+                  :index="menuItem.name"
+                  v-if="!hiddenMenu(menuItem)"
+                >
+                  <svg class="icon">
+                    <use :xlink:href="menuItem.meta.icon"></use>
+                  </svg>
+                  <span>
+                    <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
+                  </span>
+                </el-menu-item>
+              </template>
+              <!-- 资源 子菜单 -->
+              <template
+                v-if="item.meta.code === 'resource'"
+                v-for="(menuItem, index) in item.children"
+              >
+                <el-menu-item
+                  :key="index"
+                  :route="{ name: menuItem.name }"
+                  :index="menuItem.name"
+                  v-if="
+                    !hiddenMenu(menuItem) &&
+                      Object.keys(apiResource || {}).some(a => a === menuItem.meta.resourceName)
+                  "
+                >
+                  <svg class="icon">
+                    <use :xlink:href="menuItem.meta.icon"></use>
+                  </svg>
+                  <span>
+                    <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
+                  </span>
+                </el-menu-item>
+                <!-- <el-menu-item
+                  v-if="
+                    item.meta.code === 'resource' &&
+                      pages.some(m => m === resource.kind.toLowerCase())
+                  "
+                  :key="resource.name"
+                  :index="resource.route.name"
+                  :route="resource.route"
+                >
+                  <svg class="icon">
+                    <use :xlink:href="resource.icon"></use>
+                  </svg>
+                  <overflow-tooltip slot="title" :text="resource.kind"> </overflow-tooltip>
+                </el-menu-item> -->
+              </template>
+              <!-- <template v-for="menu in apiResource">
+                <el-menu-item
+                  v-if="item.meta.code === 'resource'"
+                  :key="menu.id"
+                  :index="compileIndex(menu)"
+                  :route="menu.route"
+                >
+                  <service-logo :src="menu.logo_url" size="small"></service-logo>
+                  <el-tooltip
+                    popper-class="service-name-tooltip"
+                    slot="title"
+                    :content="menu.name"
+                    placement="right"
+                  >
+                    <span class="service-menu-name text-overflow-ellipsis">{{ menu.name }}</span>
+                  </el-tooltip>
+                </el-menu-item>
+              </template> -->
+              <!-- 这里是服务子菜单 -->
+              <template v-for="menu in services">
+                <el-menu-item
+                  v-if="item.meta.code === 'serviceBroker'"
+                  :key="menu.id"
+                  :index="compileIndex(menu)"
+                  :route="menu.route"
+                >
+                  <service-logo :src="menu.logo_url" size="small"></service-logo>
+                  <el-tooltip
+                    popper-class="service-name-tooltip"
+                    slot="title"
+                    :content="menu.name"
+                    placement="right"
+                  >
+                    <span class="service-menu-name text-overflow-ellipsis">{{ menu.name }}</span>
+                  </el-tooltip>
+                </el-menu-item>
+              </template>
 
-          <el-menu-item
-            index="console.monitor"
-            :route="{ name: 'console.monitor' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_monitor"></use>
-            </svg>
-            <span slot="title">监控中心</span>
-          </el-menu-item>
-          <el-menu-item
-            v-if="$can('read')"
-            index="console.alarm"
-            :route="{ name: 'console.alarm' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_bell"></use>
-            </svg>
-            <span slot="title">告警中心</span>
-          </el-menu-item>
-
-        </template>
-
-        <el-submenu index="management">
-          <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span slot="title">管理</span>
+              <el-menu-item v-if="item.meta.code === 'serviceBroker' && services.length === 0">
+                <span class="service-menu-name text-overflow-ellipsis">无服务</span>
+              </el-menu-item>
+            </el-submenu>
           </template>
-          <el-menu-item
-            v-if="isOrganizationAdmin || isSpaceAdmin"
-            index="console.user.list"
-            :route="{ name: 'console.user.list' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_user"></use>
-            </svg>
-            <span>用户管理</span>
-          </el-menu-item>
-          <el-menu-item
-            index="console.space-quota"
-            :route="{ name: 'console.space-quota' }"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_quota"></use>
-            </svg>
-            <span>配额管理</span>
-          </el-menu-item>
-          <el-submenu
-            index="approve-log"
-            popper-append-to-body
-          >
-            <span slot="title">
+          <template v-else>
+            <el-menu-item
+              :key="index"
+              v-if="!hiddenMenu(item)"
+              :route="{ name: item.name }"
+              :index="item.name"
+            >
               <svg class="icon">
-                <use xlink:href="#icon_audit"></use>
+                <use :xlink:href="item.meta.icon"></use>
               </svg>
-              <span>
-                审批日志
-              </span>
-            </span>
-            <el-menu-item
-              index="console.approval.list"
-              :route="{ name: 'console.approval.list' }"
-            >
-              <span slot="title">审批请求</span>
+              <span slot="title">{{ item.meta.title }}</span>
             </el-menu-item>
-            <el-menu-item
-              index="console.approval.history"
-              :route="{ name: 'console.approval.history' }"
-            >
-              <span slot="title">审批记录</span>
-            </el-menu-item>
-            <el-menu-item
-              v-if="isSpaceAdmin"
-              index="console.approval.setting"
-              :route="{ name: 'console.approval.setting' }"
-            >
-              <span slot="title">审批设置</span>
-            </el-menu-item>
-          </el-submenu>
-        </el-submenu>
-
+          </template>
+        </template>
       </el-menu>
     </div>
 
-    <div
-      class="collapse-btn"
-      @click="toggleSideBar"
-    >
+    <div class="collapse-btn" @click="toggleSideBar">
       <i class="el-icon-d-arrow-left"></i>
     </div>
   </div>
@@ -247,6 +176,8 @@
 import { mapState, mapGetters } from 'vuex';
 import { find } from 'lodash';
 import * as types from '@/core/store/mutation-types';
+import allMenus from '@/view/router/console.js';
+import hasPermission from '@/core/utils/hasPermission';
 import SideBarSection from './side-bar-section';
 import SideBarLogo from './side-bar-logo';
 import ZoneSelect from './zone-select';
@@ -262,16 +193,9 @@ export default {
     OverflowTooltip,
   },
 
-  updated() {
-    if (this.$route.name === 'console.dashboard') {
-      this.$refs.bottomMenu.activeIndex = '';
-    } else {
-      this.$refs.topMenu.activeIndex = '';
-    }
-  },
-
   data() {
     return {
+      allMenus,
       props: {
         value: 'id',
         label: 'name',
@@ -279,6 +203,10 @@ export default {
       defaultOpeneds: ['service'],
       selectedOptions: [],
       cascaderIdMap: {},
+      // menu: {
+      //   type: Array,
+      //   default: () => [],
+      // },
     };
   },
 
@@ -294,13 +222,16 @@ export default {
       'defaultActiveMenu',
       'apiResource',
     ]),
+    ...mapGetters(['pages']),
 
-    ...mapGetters(['zoneUnauthorized', 'isPlatformAdmin', 'isOrganizationAdmin', 'isSpaceAdmin']),
+    isShowZoneSelect() {
+      // 只要加入项目就可以切换可用区
+      return this.pages.some(m => m === 'space-root');
+    },
 
     orgSpaceValue() {
       return `${this.org.name} / ${this.space.name}`;
     },
-
     /**
      * 会把带有 / 的 space name 分割成多个space
      * 比如 dsp/dev, dsp/test,
@@ -368,7 +299,7 @@ export default {
                   };
                   ids.push(nameObj.id);
                 } else {
-                  nameObj = { id: name, name, children: [] };
+                  nameObj = { id: `${name}-${org.id}-${k}`, name, children: [] };
                   ids.push(nameObj.id);
                 }
                 curChildren.push(nameObj);
@@ -411,7 +342,6 @@ export default {
       const spaceId = ids[ids.length - 1];
       const org = find(this.orgs, { id: orgId });
       const space = find(org.children, { id: spaceId });
-      this.onTopMenuSelect();
       if (!org || !space) {
         return;
       }
@@ -423,24 +353,9 @@ export default {
       });
     },
 
-    onTopMenuSelect() {
-      this.$refs.bottomMenu.activeIndex = '';
+    hiddenMenu(menu) {
+      return (menu.meta && menu.meta.hidden) || !hasPermission(menu);
     },
-
-    onBottomMenuSelect() {
-      this.$refs.topMenu.activeIndex = '';
-    },
-  },
-
-  mounted() {
-    this.$watch(
-      () => {
-        return this.$refs.bottomMenu.openedMenus;
-      },
-      val => {
-        this.$store.commit(types.UPDATE_OPENED_MENUS, [...val]);
-      },
-    );
   },
 };
 </script>

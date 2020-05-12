@@ -4,7 +4,8 @@
     :visible.sync="isShow"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
-    @dao-dialog-confirm="onConfirm">
+    @dao-dialog-confirm="onConfirm"
+  >
     <dao-setting-section>
       <dao-setting-item>
         <div slot="content">
@@ -19,24 +20,23 @@
               </thead>
               <tbody>
                 <tr v-for="(item, index) in pods" :key="index">
-                  <td><span>{{ item.name }}</span></td>
-                  <td><span>{{ item.status }}</span></td>
+                  <td>
+                    <span>{{ item.name }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item.status }}</span>
+                  </td>
                   <td><a @click="openTerminal(item.name)">控制台</a></td>
                 </tr>
               </tbody>
             </table>
-            <empty-state
-              v-else
-              title="暂无副本数">
-            </empty-state>
+            <empty-state v-else title="暂无副本数"> </empty-state>
           </div>
         </div>
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button
-        class="dao-btn ghost"
-        @click="onClose">
+      <button class="dao-btn ghost" @click="onClose">
         取消
       </button>
     </div>
