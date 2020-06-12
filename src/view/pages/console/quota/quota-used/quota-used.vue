@@ -51,20 +51,20 @@
     <dao-dialog :visible.sync="dialogConfigs.detail.visible" header="查看配额详情">
       <dao-setting-layout>
         <template #layout-title>
-          <dsp-alert
+          <d-alert
             v-if="detailRequest.process_status === quotaStatus.FINISH"
             message="审批已通过"
             type="success"
             show-icon
           >
-          </dsp-alert>
-          <dsp-alert
+          </d-alert>
+          <d-alert
             v-if="detailRequest.process_status === quotaStatus.REJECT"
             message="审批已拒绝"
             type="error"
             show-icon
           >
-          </dsp-alert>
+          </d-alert>
         </template>
         <dao-setting-section v-for="(request, index) in requestDetails" :key="index">
           <template #label>{{ request.label }}</template>

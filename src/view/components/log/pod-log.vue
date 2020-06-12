@@ -122,7 +122,7 @@
       @confirm="formatLog"
     >
       <div class="format-options">
-        <dsp-alert style="margin: 0 10px 10px; width: auto;" message="可拖拽进行排序"> </dsp-alert>
+        <d-alert style="margin: 0 10px 10px; width: auto;" message="可拖拽进行排序"> </d-alert>
 
         <div class="format-log">
           <el-checkbox-group v-model="checkKey">
@@ -155,7 +155,7 @@ import SockJS from 'sockjs-client';
 import { head, union, find, keys, includes, get as getValue, throttle, intersection } from 'lodash';
 import PodService from '@/core/services/pod.service';
 import draggable from 'vuedraggable';
-import LogWorker from './log-parser.worker.js';
+import LogWorker from './log.worker.js';
 
 export default {
   name: 'PodLogPanel',
