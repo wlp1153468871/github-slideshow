@@ -1,5 +1,3 @@
-import { union } from 'lodash';
-
 // eslint-disable-next-line no-restricted-globals
 self.addEventListener('message', event => {
   let keys = [];
@@ -9,7 +7,7 @@ self.addEventListener('message', event => {
     try {
       jsonData = JSON.parse(log);
       isJSON = true;
-      keys = union(keys, Object.keys(jsonData));
+      keys = [...keys, ...Object.keys(jsonData)];
       // eslint-disable-next-line no-empty
     } catch (e) {}
     return {

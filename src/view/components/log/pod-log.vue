@@ -155,7 +155,7 @@ import SockJS from 'sockjs-client';
 import { head, union, find, keys, includes, get as getValue, throttle, intersection } from 'lodash';
 import PodService from '@/core/services/pod.service';
 import draggable from 'vuedraggable';
-import Worker from './log.worker.js';
+import LogWorker from './log-parser.worker.js';
 
 export default {
   name: 'PodLogPanel',
@@ -247,7 +247,7 @@ export default {
           this.ws = new SockJS('/app-server/ws/v1/container/log');
           this.ws.onopen = () => {
             this.ws.send(JSON.stringify({ Op: 'bind', SessionID: res.id }));
-            this.worker = new Worker();
+            this.worker = new LogWorker();
             this.worker.onmessage = ({ data }) => {
               this.logs = Object.freeze([...this.logs, ...data.mapLogs]);
               this.keys = union(this.keys, data.keys);
@@ -314,7 +314,7 @@ export default {
 
     renderLogs: throttle(
       function renderLogsThrottle() {
-        this.worker.postMessage(this.$data.cacheLogs);
+        if (this.worker) this.worker.postMessage(this.$data.cacheLogs);
         this.cacheLogs = [];
       },
       500,

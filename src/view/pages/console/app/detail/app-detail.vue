@@ -33,7 +33,7 @@
         </el-tab-pane>
 
         <!-- 实时日志 -->
-        <el-tab-pane lazy :label="TABS.LOG" :name="TABS.LOG">
+        <el-tab-pane lazy :label="TABS.LOG" :name="TABS.LOG" v-if="$can('pod.container.get')">
           <log-panel
             v-if="activeTab === TABS.LOG"
             :containers="resources.Pod"
@@ -43,7 +43,12 @@
         </el-tab-pane>
 
         <!-- 历史日志 -->
-        <el-tab-pane lazy :label="TABS.OFFLINE_LOG" :name="TABS.OFFLINE_LOG">
+        <el-tab-pane
+          lazy
+          :label="TABS.OFFLINE_LOG"
+          :name="TABS.OFFLINE_LOG"
+          v-if="$can('pod.container.get')"
+        >
           <log-offline-panel :containers="resource.Pod" :pods="resources.Pod"> </log-offline-panel>
         </el-tab-pane>
 
