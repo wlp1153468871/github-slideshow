@@ -150,6 +150,7 @@
 import Vue from 'vue';
 import { mapState } from 'vuex';
 import { saveAs } from 'file-saver';
+import SockJS from 'sockjs-client';
 
 import { head, union, find, keys, includes, get as getValue, throttle, intersection } from 'lodash';
 import PodService from '@/core/services/pod.service';
@@ -229,7 +230,7 @@ export default {
 
   destroyed() {
     this.disconnect();
-    this.worker.terminate();
+    if (this.worker) this.worker.terminate();
     this.worker = null;
   },
 
@@ -237,41 +238,44 @@ export default {
     connect() {
       this.loading = true;
       try {
-        this.ws = PodService.getRealTimeLogs({
-          pod: this.pod.metadata.name,
-          container: this.logOptions.container,
-          space: this.pod.metadata.namespace,
-        });
-
-        this.ws.onopen = () => {
-          this.worker = new Worker();
-          this.worker.onmessage = ({ data }) => {
-            this.logs = Object.freeze([...this.logs, ...data.mapLogs]);
-            this.keys = union(this.keys, data.keys);
+        PodService.getPodRealTimeLogssessionId(
+          this.space.id,
+          this.pod.metadata.name,
+          this.zone.id,
+          this.logOptions.container,
+        ).then(res => {
+          this.ws = new SockJS('/app-server/ws/v1/container/log');
+          this.ws.onopen = () => {
+            this.ws.send(JSON.stringify({ Op: 'bind', SessionID: res.id }));
+            this.worker = new Worker();
+            this.worker.onmessage = ({ data }) => {
+              this.logs = Object.freeze([...this.logs, ...data.mapLogs]);
+              this.keys = union(this.keys, data.keys);
+            };
           };
-        };
 
-        this.ws.onmessage = this.onmessage;
+          this.ws.onmessage = this.onmessage;
 
-        this.ws.onclose = () => {
-          this.loading = false;
-          this.autoScrollActive = false;
-          this.state = 'empty';
-          this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
-        };
-
-        this.ws.onerror = () => {
-          this.loading = false;
-          this.autoScrollActive = false;
-          if (this.pods.length === 0) {
+          this.ws.onclose = () => {
+            this.loading = false;
+            this.autoScrollActive = false;
             this.state = 'empty';
             this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
-          } else {
-            // if logs were running but something went wrong, will
-            // show what we have & give option to retry
-            this.errorWhileRunning = true;
-          }
-        };
+          };
+
+          this.ws.onerror = () => {
+            this.loading = false;
+            this.autoScrollActive = false;
+            if (this.pods.length === 0) {
+              this.state = 'empty';
+              this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
+            } else {
+              // if logs were running but something went wrong, will
+              // show what we have & give option to retry
+              this.errorWhileRunning = true;
+            }
+          };
+        });
       } catch (e) {
         // console.log(`WebSocket 建立失败：${e.message}`);
       }

@@ -43,7 +43,7 @@
         </el-tab-pane>
 
         <!-- 历史日志 -->
-        <el-tab-pane :label="TABS.OFFLINE_LOG" :name="TABS.OFFLINE_LOG">
+        <el-tab-pane lazy :label="TABS.OFFLINE_LOG" :name="TABS.OFFLINE_LOG">
           <log-offline-panel :containers="resource.Pod" :pods="resources.Pod"> </log-offline-panel>
         </el-tab-pane>
 

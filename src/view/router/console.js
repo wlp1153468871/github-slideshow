@@ -127,7 +127,7 @@ export default [
     },
     children: [
       {
-        path: 'resource/deployments',
+        path: 'deployments',
         name: 'resource.deployments.list',
         component: Deployments,
         meta: {
@@ -139,7 +139,7 @@ export default [
         },
       },
       {
-        path: 'resource/deployments/:name',
+        path: 'deployments/:name',
         name: 'resource.deployments.detail',
         component: Deployment,
         meta: {
@@ -149,7 +149,7 @@ export default [
         },
       },
       {
-        path: 'resource/deploymentconfigs',
+        path: 'deploymentconfigs',
         name: 'resource.deploymentconfigs.list',
         component: DeploymentConfigList,
         meta: {
@@ -161,7 +161,7 @@ export default [
         },
       },
       {
-        path: 'resource/deploymentconfigs/:name',
+        path: 'deploymentconfigs/:name',
         name: 'resource.deploymentconfigs.detail',
         component: DeploymentConfig,
         meta: {
@@ -171,7 +171,7 @@ export default [
         },
       },
       {
-        path: 'resource/statefulsets',
+        path: 'statefulsets',
         name: 'resource.statefulsets.list',
         component: StatefulSetList,
         meta: {
@@ -183,7 +183,7 @@ export default [
         },
       },
       {
-        path: 'resource/statefulsets/:name',
+        path: 'statefulsets/:name',
         name: 'resource.statefulsets.detail',
         component: StatefulSetDetail,
         meta: {
@@ -193,7 +193,7 @@ export default [
         },
       },
       {
-        path: 'resource/pods',
+        path: 'pods',
         name: 'resource.pods.list',
         component: Pods,
         meta: {
@@ -205,7 +205,7 @@ export default [
         },
       },
       {
-        path: 'resource/pods/:name',
+        path: 'pods/:name',
         name: 'resource.pods.detail',
         component: Pod,
         meta: {
@@ -215,7 +215,7 @@ export default [
         },
       },
       {
-        path: 'resource/services',
+        path: 'services',
         name: 'resource.services.list',
         component: ServiceList,
         meta: {
@@ -227,7 +227,7 @@ export default [
         },
       },
       {
-        path: 'resource/services/:name',
+        path: 'services/:name',
         name: 'resource.services.detail',
         component: ServiceDetail,
         meta: {
@@ -237,7 +237,7 @@ export default [
         },
       },
       {
-        path: 'resource/routes',
+        path: 'routes',
         name: 'resource.routes.list',
         component: RouteList,
         meta: {
@@ -249,7 +249,7 @@ export default [
         },
       },
       {
-        path: 'resource/routes/:name',
+        path: 'routes/:name',
         name: 'resource.routes.detail',
         component: RouteDetail,
         meta: {
@@ -259,7 +259,7 @@ export default [
         },
       },
       {
-        path: 'resource/ingresses',
+        path: 'ingresses',
         name: 'resource.ingresses.list',
         component: IngressList,
         meta: {
@@ -271,7 +271,7 @@ export default [
         },
       },
       {
-        path: 'resource/ingresses/:name',
+        path: 'ingresses/:name',
         name: 'resource.ingresses.detail',
         component: IngressDetail,
         meta: {
@@ -282,7 +282,7 @@ export default [
       },
 
       {
-        path: 'resource/configmaps',
+        path: 'configmaps',
         name: 'resource.configmaps.list',
         component: ConfigMapList,
         meta: {
@@ -294,7 +294,7 @@ export default [
         },
       },
       {
-        path: 'resource/configmaps/:name',
+        path: 'configmaps/:name',
         name: 'resource.configmaps.detail',
         component: ConfigMapDetail,
         meta: {
@@ -304,7 +304,7 @@ export default [
         },
       },
       {
-        path: 'resource/secrets',
+        path: 'secrets',
         name: 'resource.secrets.list',
         component: SecretList,
         meta: {
@@ -316,7 +316,7 @@ export default [
         },
       },
       {
-        path: 'resource/secrets/:name',
+        path: 'secrets/:name',
         name: 'resource.secrets.detail',
         component: SecretDetail,
         meta: {
@@ -326,7 +326,7 @@ export default [
         },
       },
       {
-        path: 'resource/persistent-volume-claims',
+        path: 'persistent-volume-claims',
         name: 'resource.persistentvolumeclaims.list',
         component: VolumeList,
         meta: {
@@ -338,7 +338,7 @@ export default [
         },
       },
       {
-        path: 'resource/persistentvolumeclaims/:name',
+        path: 'persistentvolumeclaims/:name',
         name: 'resource.persistentvolumeclaims.detail',
         component: VolumeDetail,
         meta: {
