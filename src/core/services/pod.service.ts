@@ -1,5 +1,4 @@
 import api, { APIService } from './api';
-import WebSocketService from './web-socket.service';
 import store from '@/core/store';
 
 class PodService {
@@ -88,23 +87,14 @@ class PodService {
     });
   }
 
-  getRealTimeLogs({
-    pod,
-    container,
-    space,
-    zone = this.zone,
-  }: {
-    pod: string;
-    container: string;
-    space: string;
-    zone?: string;
-  }) {
-    const params = new URLSearchParams();
-    params.append('zone', zone);
-    params.append('container', container);
-    params.append('follow', 'true');
-    return WebSocketService.createWebSocket(
-      `/app-server/v1/namespaces/${space}/pods/${pod}/log?${params.toString()}`,
+  getPodRealTimeLogssessionId(
+    spaceId: string,
+    podName: string,
+    zone: string,
+    container: string,
+  ) {
+    return this.api.get(
+      `/spaces/${spaceId}/pods/${podName}/log?zone=${zone}&container_name=${container}&follow=true`,
     );
   }
 

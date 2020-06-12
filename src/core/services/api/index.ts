@@ -1,5 +1,6 @@
-import ApiService from './api.service';
+import APIService from './api.service';
 import AuthInterceptor from './auth.interceptor';
-
-export default new ApiService('/v1', AuthInterceptor);
-export { ApiService as APIService };
+// eslint-disable-next-line
+const instance: APIService  = new APIService('/v1', AuthInterceptor);
+export default instance;
+export { APIService as APIService };

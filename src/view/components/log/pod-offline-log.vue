@@ -89,12 +89,12 @@
           </svg>
         </button>
       </div>
-      <a download target="_blank" class="dao-btn ghost has-icon" :href="downloadUrl">
+      <button @click="downloadLog" class="dao-btn ghost has-icon">
         <svg class="icon">
           <use xlink:href="#icon_download"></use>
         </svg>
         <span class="text">下载日志</span>
-      </a>
+      </button>
     </div>
   </div>
 </template>
@@ -102,6 +102,8 @@
 <script>
 import { mapState } from 'vuex';
 import { chunk, debounce, get as getValue } from 'lodash';
+import { saveAs } from 'file-saver';
+
 import AppService from '@/core/services/app.service';
 import Pagination from '@/core/lib/criteria/pagination';
 
@@ -142,7 +144,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['zone']),
+    ...mapState(['zone', 'space']),
 
     pageNumber() {
       return Math.ceil(this.logs.length / this.limitLogs) - 1;
@@ -152,11 +154,7 @@ export default {
       const query = Object.entries(this.getSearchQuery())
         .map(pair => pair.join('='))
         .join('&');
-      return `/app-server/api/v1/zones/${
-        this.zone.id
-      }/namespaces/${
-        this.pod.metadata.namespace
-      }/pods/${this.pod.metadata.name}/containers/${this.logOptions.container}/log/download?${query}`;
+      return `/v1/spaces/${this.space.id}/pods/${this.pod.metadata.name}/log/download?${query}`;
     },
   },
 
@@ -166,6 +164,16 @@ export default {
   },
 
   methods: {
+    downloadLog() {
+      this.loading = true;
+      AppService.downloadLog(this.space.id, this.pod.metadata.name, this.getSearchQuery())
+        .then(res => {
+          saveAs(res, `${this.pod.metadata.name}.log`);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     onContainerSelectChange() {
       this.loadPodLogs();
     },
@@ -173,11 +181,15 @@ export default {
     loadPodLogs: debounce(function loadPodLogs(currentpage, goto) {
       this.loading = true;
 
-      const query = { currentpage, goto, ...this.getSearchQuery() };
+      const query = {
+        currentpage,
+        goto,
+        ...this.getSearchQuery(),
+      };
 
       AppService.listPodLogs(
         this.zone.id,
-        this.pod.metadata.namespace,
+        this.space.id,
         this.pod.metadata.name,
         this.logOptions.container,
         query,
@@ -202,7 +214,10 @@ export default {
     }, 0.5 * 1e3),
 
     getSearchQuery() {
-      const query = {};
+      const query = {
+        zone: this.zone.id,
+        container_name: this.logOptions.container,
+      };
       const { daterange, keyword } = this.filters;
       if (daterange) {
         const [from, to] = daterange.map(time => {
