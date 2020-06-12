@@ -237,13 +237,13 @@ export default {
   methods: {
     connect() {
       this.loading = true;
-      try {
-        PodService.getPodRealTimeLogssessionId(
-          this.space.id,
-          this.pod.metadata.name,
-          this.zone.id,
-          this.logOptions.container,
-        ).then(res => {
+      PodService.getPodRealTimeLogssessionId(
+        this.space.id,
+        this.pod.metadata.name,
+        this.zone.id,
+        this.logOptions.container,
+      )
+        .then(res => {
           this.ws = new SockJS('/app-server/ws/v1/container/log');
           this.ws.onopen = () => {
             this.ws.send(JSON.stringify({ Op: 'bind', SessionID: res.id }));
@@ -275,21 +275,23 @@ export default {
               this.errorWhileRunning = true;
             }
           };
+        })
+        .catch(e => {
+          console.error(e);
         });
-      } catch (e) {
-        // console.log(`WebSocket 建立失败：${e.message}`);
-      }
     },
 
     disconnect() {
-      this.ws.onopen = null;
-      this.ws.onmessage = null;
-      this.ws.onerror = null;
-      this.ws.onclose = null;
-      if (this.ws.readyState < 2) {
-        this.ws.close();
+      if (this.ws) {
+        this.ws.onopen = null;
+        this.ws.onmessage = null;
+        this.ws.onerror = null;
+        this.ws.onclose = null;
+        if (this.ws.readyState < 2) {
+          this.ws.close();
+        }
+        this.ws = null;
       }
-      this.ws = null;
     },
 
     copySelectionToClipboard() {
