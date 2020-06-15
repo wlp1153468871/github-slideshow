@@ -63,12 +63,22 @@
           <pods-panel :spaceId="space.id" :zone="zone.id" :name="this.name"></pods-panel>
         </el-tab-pane>
         <!-- 实时日志 -->
-        <el-tab-pane lazy :label="TABS.LOG.label" :name="TABS.LOG.name">
+        <el-tab-pane
+          lazy
+          :label="TABS.LOG.label"
+          :name="TABS.LOG.name"
+          v-if="$can('pod.container.get')"
+        >
           <log-panel v-if="tab === TABS.LOG.name" type="statefulSet"> </log-panel>
         </el-tab-pane>
 
         <!-- 历史日志 -->
-        <el-tab-pane :label="TABS.OFFLINE_LOG.label" :name="TABS.OFFLINE_LOG.name">
+        <el-tab-pane
+          lazy
+          :label="TABS.OFFLINE_LOG.label"
+          :name="TABS.OFFLINE_LOG.name"
+          v-if="$can('pod.container.get')"
+        >
           <log-offline-panel v-if="tab === TABS.OFFLINE_LOG.name" type="statefulSet">
           </log-offline-panel>
         </el-tab-pane>

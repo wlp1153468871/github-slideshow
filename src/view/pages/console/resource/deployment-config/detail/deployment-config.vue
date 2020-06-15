@@ -67,12 +67,22 @@
           <pods-panel :spaceId="space.id" :zone="zone.id" :name="this.name"></pods-panel>
         </el-tab-pane>
         <!-- 实时日志 -->
-        <el-tab-pane lazy :label="TABS.LOG.label" :name="TABS.LOG.name">
+        <el-tab-pane
+          lazy
+          :label="TABS.LOG.label"
+          :name="TABS.LOG.name"
+          v-if="$can('pod.container.get')"
+        >
           <log-panel v-if="tab === TABS.LOG.name" type="deploymentConfig"> </log-panel>
         </el-tab-pane>
 
         <!-- 历史日志 -->
-        <el-tab-pane :label="TABS.OFFLINE_LOG.label" :name="TABS.OFFLINE_LOG.name">
+        <el-tab-pane
+          lazy
+          :label="TABS.OFFLINE_LOG.label"
+          :name="TABS.OFFLINE_LOG.name"
+          v-if="$can('pod.container.get')"
+        >
           <log-offline-panel type="deploymentConfig"> </log-offline-panel>
         </el-tab-pane>
         <el-tab-pane :label="TABS.ENV.label" :name="TABS.ENV.name" :lazy="true">

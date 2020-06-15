@@ -1,13 +1,12 @@
-import { toPairs, pick } from 'lodash';
+import { toPairs } from 'lodash';
 import URL from 'url-parse';
 
 import InstanceService from './instance.service';
-import { APIService } from './api';
-import AuthInterceptor from './api/auth.interceptor';
+import api from './api';
 
 class AppService {
   constructor() {
-    this.api = new APIService('', pick(AuthInterceptor, ['response', 'request']));
+    this.api = api;
   }
 
   updateAppParameters(instanceId, params, action = {}) {
@@ -29,14 +28,26 @@ class AppService {
   }
 
   listPodLogs(zoneId, namespace, podName, applicationName, query = {}) {
-    return this.api.get(
-      `/app-server/api/v1/zones/${zoneId}/namespaces/${namespace}/pods/${podName}/containers/${applicationName}/log/page`,
-      query,
-    );
+    return this.api.get(`/spaces/${namespace}/pods/${podName}/log/page`, {
+      zone: zoneId,
+      ...query,
+    });
+  }
+
+  downloadLog(space, pod, query) {
+    return this.api
+      .get(`/spaces/${space}/pods/${pod}/log/download`, query, {
+        responseType: 'blob',
+      })
+      .then(res => {
+        return new Blob([res], { type: 'text/plain' });
+      });
   }
 
   listOnlinePodLogs(zoneId, namespace, podName, applicationName) {
-    return `ws://${window.location.host}/api/v1/zones/${zoneId}/namespaces/${namespace}/pods/${podName}/containers/${applicationName}/log`;
+    return `ws://${
+      window.location.host
+    }/api/v1/zones/${zoneId}/namespaces/${namespace}/pods/${podName}/containers/${applicationName}/log`;
   }
 
   openTerminal(namespace = '', pod = '') {

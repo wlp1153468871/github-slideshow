@@ -169,7 +169,7 @@ export default {
     establishConnection() {
       return this.getPodShell().then(terminalResponse => {
         this.terminalResponse = terminalResponse;
-        return new SockJS(`/app-server/api/sockjs?${terminalResponse.id}`);
+        return new SockJS('/app-server/ws/v1/container/terminal');
       });
     },
 
