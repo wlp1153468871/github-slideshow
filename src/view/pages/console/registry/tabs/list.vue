@@ -18,7 +18,7 @@
       <el-table-column type="expand">
         <template #default="{ row: repository }">
           <el-table v-loading="repository.tagLoading" :data="repository.tags" size="mini">
-            <el-table-column prop="name" label="标签" width="180">
+            <el-table-column prop="name" label="标签" width="180" sortable>
               <template #default="{ row: tag }">
                 <router-link :to="scanDetailRouter(repository.name, tag)">
                   {{ tag.name }}
@@ -26,9 +26,9 @@
               </template>
             </el-table-column>
             <el-table-column prop="author" label="作者" width="180"> </el-table-column>
-            <el-table-column prop="created" label="创建时间" :formatter="formatCreationTime">
+            <el-table-column prop="created" label="创建时间" :formatter="formatCreationTime" sortable>
             </el-table-column>
-            <el-table-column prop="docker_version" label="Docker版本"> </el-table-column>
+            <el-table-column prop="docker_version" label="Docker版本" sortable> </el-table-column>
             <el-table-column prop="scan_overview" label="漏洞扫描">
               <template #default="{ row: tag }">
                 <scan-status :status="tag.scan_overview | scan_overview_status"></scan-status>
