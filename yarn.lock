@@ -830,6 +830,11 @@
   resolved "https://registry.npm.taobao.org/@types/q/download/@types/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha1-FZJUFOCtLNdlv+9YhC9+JqesyyQ=
 
+"@types/sockjs-client@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/@types/sockjs-client/download/@types/sockjs-client-1.1.1.tgz?cache=0&sync_timestamp=1588206788467&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fsockjs-client%2Fdownload%2F%40types%2Fsockjs-client-1.1.1.tgz#1ef133b5a79d51447a93ce16164706c0164b5548"
+  integrity sha1-HvEztaedUUR6k84WFkcGwBZLVUg=
+
 "@types/webpack-env@^1.13.9":
   version "1.15.2"
   resolved "https://registry.npm.taobao.org/@types/webpack-env/download/@types/webpack-env-1.15.2.tgz#927997342bb9f4a5185a86e6579a0a18afc33b0a"
