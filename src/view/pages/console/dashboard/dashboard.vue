@@ -155,8 +155,8 @@
                   <tbody>
                     <tr v-for="(resource, index) in resources" :key="index">
                       <td>{{ resource.zone }}</td>
-                      <td class="count">{{ resource.deploymentCount }}</td>
                       <td class="count">{{ resource.deploymentConfigCount }}</td>
+                      <td class="count">{{ resource.deploymentCount }}</td>
                       <td class="count">{{ resource.statefulSetCount }}</td>
                       <td class="count">{{ resource.podCount }}</td>
                       <td class="count">{{ resource.serviceCount }}</td>
