@@ -70,7 +70,9 @@ export default {
     filtersRows(rows) {
       const arr = [...rows];
       arr.forEach(item => {
-        item.platform_role = item.roles[0].name;
+        if (item.roles.length > 0) {
+          item.platform_role = item.roles[0].name;
+        }
       });
       return arr;
     },
