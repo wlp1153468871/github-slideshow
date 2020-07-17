@@ -58,13 +58,21 @@ export default {
       this.loadings.users = true;
       return UserService.getUsers()
         .then(users => {
-          users = orderBy(users, 'username');
+          users = this.filtersRows(orderBy(users, 'username'));
           this.users = users;
           this.rows = users;
         })
         .finally(() => {
           this.loadings.users = false;
         });
+    },
+
+    filtersRows(rows) {
+      const arr = [...rows];
+      arr.forEach(item => {
+        item.platform_role = item.roles[0].name;
+      });
+      return arr;
     },
 
     loadPlatformRoles() {
