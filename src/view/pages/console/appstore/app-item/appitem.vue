@@ -1,5 +1,5 @@
 <template>
-  <div class="itme-container max-screen" @click="linkToDetail">
+  <div class="itme-container max-screen">
     <div class="icon">
       <span class="icon-left">
         <svg class="icon icon-item">
@@ -26,17 +26,19 @@
         </dao-dropdown>
       </span>
     </div>
-    <div class="item-name">
-      Nginx
-    </div>
-    <div class="item-edition">
-      版本数：1
-    </div>
-    <div class="item-desc">
-      Nginx是一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP服务器
-    </div>
-    <div class="item-footer">
-      DaoCloud | Service Broker
+    <div  @click="linkToDetail">
+      <div class="item-name">
+        Nginx
+      </div>
+      <div class="item-edition">
+        版本数：1
+      </div>
+      <div class="item-desc">
+        Nginx是一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP服务器
+      </div>
+      <div class="item-footer">
+        DaoCloud | Service Broker
+      </div>
     </div>
   </div>
 </template>
@@ -150,6 +152,7 @@ $appItemWidth: 31.2%;
       height: 30px;
       .icon-item {
         position: absolute;
+        z-index: 3;
         top: 0;
         right: 0;
         color: rgba(155,163,175,1);

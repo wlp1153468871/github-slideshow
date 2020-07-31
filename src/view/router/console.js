@@ -7,6 +7,7 @@ import RouteView from '@/view/layout/route-view';
 // appstore
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
 import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
+import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
 
 // monitor
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
@@ -521,7 +522,17 @@ export default [
     meta: {
       hidden: true,
     },
+    // 暂时的路由
     children: [
+      {
+        path: 'appstore/form',
+        name: 'appstore.form',
+        component: AppStoreForm,
+        meta: {
+          hidden: true,
+          code: 'serviceBroker',
+        },
+      },
       {
         path: 'form/applications',
         name: 'deploy.applications',

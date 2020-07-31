@@ -89,7 +89,7 @@
 import AppItem from './app-item/appitem.vue';
 
 export default {
-  name: 'appstore',
+  name: 'AppStore',
   components: {
     AppItem,
   },
@@ -111,15 +111,15 @@ export default {
         },
         {
           text: '网络',
-          value: 3,
-        },
-        {
-          text: '监控',
           value: 4,
         },
         {
-          text: '其他',
+          text: '监控',
           value: 5,
+        },
+        {
+          text: '其他',
+          value: 6,
         },
       ],
     };
