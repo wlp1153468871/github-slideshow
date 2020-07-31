@@ -4,6 +4,10 @@ import NProgress from 'nprogress';
 
 import RouteView from '@/view/layout/route-view';
 
+// appstore
+import AppStore from '@/view/pages/console/appstore/appstore.vue';
+import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
+
 // monitor
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
 
@@ -716,5 +720,25 @@ export default [
         },
       },
     ],
+  },
+  // appstore
+  {
+    path: 'appstore',
+    name: 'console.appstore',
+    component: AppStore,
+    meta: {
+      title: '应用商店',
+      icon: '#icon_store',
+      // code: 'space.store',
+      hidden: false,
+    },
+  },
+  {
+    path: 'appstore/detail',
+    name: 'appstore.detail',
+    component: AppStoreDetail,
+    meta: {
+      hidden: true,
+    },
   },
 ];
