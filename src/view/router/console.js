@@ -4,10 +4,14 @@ import NProgress from 'nprogress';
 
 import RouteView from '@/view/layout/route-view';
 
+// zone
+import Zone from '@/view/pages/console/zone/zone.vue';
+
 // appstore
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
 import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
 import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
+import AppStoreYaml from '@/view/pages/console/appstore/app-form/app-yaml/app-yaml.vue';
 
 // monitor
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
@@ -534,6 +538,15 @@ export default [
         },
       },
       {
+        path: 'appstore/yamlform',
+        name: 'appstore.yamlform',
+        component: AppStoreYaml,
+        meta: {
+          hidden: true,
+          code: 'serviceBroker',
+        },
+      },
+      {
         path: 'form/applications',
         name: 'deploy.applications',
         component: DeployApp,
@@ -750,6 +763,18 @@ export default [
     component: AppStoreDetail,
     meta: {
       hidden: true,
+    },
+  },
+  // 可用区管理
+  {
+    path: 'zone',
+    name: 'console.zone',
+    component: Zone,
+    meta: {
+      title: '可用区管理',
+      icon: '#icon_drive',
+      // code: 'space.store',
+      hidden: false,
     },
   },
 ];

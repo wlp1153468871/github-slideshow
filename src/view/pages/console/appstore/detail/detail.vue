@@ -33,7 +33,7 @@
               <span @click="linktoForm">表单创建</span>
             </dao-dropdown-item>
             <dao-dropdown-item style="margin-left: 10px">
-              <span>YAML创建</span>
+              <span @click="linktoYamlForm">YAML创建</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
         </dao-dropdown>
@@ -137,6 +137,9 @@ export default {
     },
     linktoForm() {
       this.$router.push({ name: 'appstore.form' });
+    },
+    linktoYamlForm() {
+      this.$router.push({ name: 'appstore.yamlform' });
     },
   },
 };
