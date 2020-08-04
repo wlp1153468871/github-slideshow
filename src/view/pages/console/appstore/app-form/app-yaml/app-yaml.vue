@@ -143,13 +143,11 @@
 </template>
 
 <script>
-import EditYaml from '@/view/components/yaml-edit/edit-yaml.vue';
 import CodeMirror from '@/view/components/config/code-mirror.vue';
 
 export default {
   name: 'AppStoreYaml',
   components: {
-    EditYaml,
     CodeMirror,
   },
   data() {

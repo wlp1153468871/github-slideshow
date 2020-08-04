@@ -6,6 +6,7 @@ import RouteView from '@/view/layout/route-view';
 
 // zone
 import Zone from '@/view/pages/console/zone/zone.vue';
+import Chart from '@/view/pages/console/zone/chart/chart.vue';
 
 // appstore
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
@@ -775,6 +776,16 @@ export default [
       icon: '#icon_drive',
       // code: 'space.store',
       hidden: false,
+    },
+  },
+  {
+    path: 'zone/chart',
+    name: 'zone.chart',
+    component: Chart,
+    meta: {
+      title: 'chart管理',
+      // code: 'space.store',
+      hidden: true,
     },
   },
 ];

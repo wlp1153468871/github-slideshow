@@ -33,6 +33,7 @@ import {
   Tree,
   Divider,
   Alert,
+  Upload,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
@@ -70,3 +71,4 @@ Vue.use(Card);
 Vue.use(Tree);
 Vue.use(Divider);
 Vue.use(Alert);
+Vue.use(Upload);
