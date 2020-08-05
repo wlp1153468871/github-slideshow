@@ -34,6 +34,8 @@ import {
   Divider,
   Alert,
   Upload,
+  Steps,
+  Step,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
@@ -72,3 +74,6 @@ Vue.use(Tree);
 Vue.use(Divider);
 Vue.use(Alert);
 Vue.use(Upload);
+Vue.use(Steps);
+Vue.use(Step);
+

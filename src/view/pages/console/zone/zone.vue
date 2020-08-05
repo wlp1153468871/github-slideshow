@@ -83,7 +83,7 @@
       </el-tab-pane>
       <el-tab-pane label="broker 管理" name="third">
         <!-- 逻辑判断，是否报错 -->
-        <div class="error-info">
+        <div class="error-info"  style="display: none;">
           <svg class="icon icon-size">
             <use :xlink:href="`#icon_drive`"></use>
           </svg>
@@ -92,7 +92,7 @@
           <div class="error-link" @click="linkToChart">进一步了解</div>
         </div>
         <!-- 进行逻辑判断，是否显示 -->
-        <div  style="display: none;">
+        <div>
           <div class="base-info">
             <div class="info-header">基本信息</div>
             <div class="info-title1-layout">

@@ -4,6 +4,11 @@ import NProgress from 'nprogress';
 
 import RouteView from '@/view/layout/route-view';
 
+// serviceMangement
+import ServiceMan from '@/view/pages/console/service/service.vue';
+import ServiceManDetail from '@/view/pages/console/service/detail/detail.vue';
+import ServiceExample from '@/view/pages/console/service/example/example.vue';
+
 // zone
 import Zone from '@/view/pages/console/zone/zone.vue';
 import Chart from '@/view/pages/console/zone/chart/chart.vue';
@@ -785,6 +790,34 @@ export default [
     meta: {
       title: 'chart管理',
       // code: 'space.store',
+      hidden: true,
+    },
+  },
+  // 服务区管理
+  {
+    path: 'service',
+    name: 'console.service',
+    component: ServiceMan,
+    meta: {
+      title: '服务管理',
+      icon: '#icon_service',
+      // code: 'space.store',
+      hidden: false,
+    },
+  },
+  {
+    path: 'service/detail',
+    name: 'service.detail',
+    component: ServiceManDetail,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: 'service/example',
+    name: 'service.example',
+    component: ServiceExample,
+    meta: {
       hidden: true,
     },
   },
