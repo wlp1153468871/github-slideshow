@@ -47,7 +47,7 @@ export default {
   name: 'appitem',
   methods: {
     linkToDetail() {
-      this.$router.push('appstore/detail');
+      this.$router.push('appstore/new');
     },
   },
 };
