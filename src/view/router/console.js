@@ -19,6 +19,7 @@ import AppNewDetail from '@/view/pages/console/appstore/new_detail/new.vue';
 import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
 import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
 import AppStoreYaml from '@/view/pages/console/appstore/app-form/app-yaml/app-yaml.vue';
+import newApp from '@/view/pages/console/appstore/app-form/app/app.vue';
 
 // monitor
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
@@ -548,6 +549,15 @@ export default [
         path: 'appstore/yamlform',
         name: 'appstore.yamlform',
         component: AppStoreYaml,
+        meta: {
+          hidden: true,
+          code: 'serviceBroker',
+        },
+      },
+      {
+        path: 'appstore/app',
+        name: 'appstore.app',
+        component: newApp,
         meta: {
           hidden: true,
           code: 'serviceBroker',

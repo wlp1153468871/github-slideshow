@@ -1,21 +1,26 @@
 <template>
   <div id="appstore">
-    <div class="layout-content-header appstore-header">
-      应用商店
+    <div class="appstore-header">
+      <div class="header-title">应用商店</div>
+      <div class="header-desc">应用商店简短介绍应用商店简短介绍</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;">
       <div class="dao-view-content">
-          <dao-select
-            v-model="select"
-            style="height: 32px;"
-            size="sm">
-            <dao-option
-              v-for="item in items"
-              :key="item.value"
-              :value="item.value"
-              :label="item.text">
-            </dao-option>
-          </dao-select>
+        <dao-select
+          v-model="select"
+          style="height: 32px;"
+          size="sm">
+          <dao-option
+            v-for="item in items"
+            :key="item.value"
+            :value="item.value"
+            :label="item.text">
+          </dao-option>
+        </dao-select>
+        <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
+          <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
+          <span class="text">新建应用</span>
+        </button>
       </div>
       <el-input
         style="width: 218px;"
@@ -73,6 +78,8 @@
           </div>
       </div>
     </div>
+
+    <div class="title">数据库</div>
     <div class="store-item-container">
       <div class="store-item" >
         <AppItem></AppItem>
@@ -82,6 +89,7 @@
         <AppItem></AppItem>
       </div>
     </div>
+    <!-- <div class="title">数据库</div> -->
   </div>
 </template>
 
@@ -124,17 +132,39 @@ export default {
       ],
     };
   },
+  methods: {
+    linkToApp() {
+      this.$router.push({ name: 'appstore.app' });
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 #appstore {
   .appstore-header {
-    background:rgba(230,233,239,1);
-    box-shadow:0px -1px 0px 0px rgba(213,219,227,1);
+    height: 160px;
+    background: #3D4655;
+    .header-title {
+      padding: 40px 0 0 60px;
+      height: 33px;
+      font-size: 24px;
+      font-family: PingFangSC-Regular,PingFang SC;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 33px;
+    }
+    .header-desc {
+      padding: 40px 0 0 60px;
+      height:20px;
+      font-size:14px;
+      font-family:PingFangSC-Regular,PingFang SC;
+      font-weight:400;
+      color: #fff;
+      line-height:20px;
+    }
   }
   .store-server-type {
-    /* display: inline-block; */
     float: left;
     overflow: hidden;
     width: 240px;
@@ -151,6 +181,15 @@ export default {
       margin: 0 0 20px 30px;
     }
   }
+  .title {
+    margin-bottom: 15px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular,PingFang SC;
+    font-weight: 400;
+    color: #3D444F;
+  }
   .store-item-container {
     position: absolute;
     display: inline-block;
@@ -158,7 +197,6 @@ export default {
       display: flex;
       flex-flow: row wrap;
       width: 100%;
-      /* height: 646px; */
     }
   }
 
