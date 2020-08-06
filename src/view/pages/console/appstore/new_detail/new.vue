@@ -46,7 +46,7 @@
           </div>
           <!-- <div class="blank"></div> -->
           <div class="base-info">
-            <div class="title" style="height: 52px;padding: 18px 0 0 20px;">Readme</div>
+            <div class="title" style="height: 52px;padding: 18px 0 0 0;">Readme</div>
             <div class="title1">
               nginx-ingress
             </div>
@@ -184,38 +184,49 @@
         <div class="dao-setting-layout">
           <div class="dao-setting-section" style="padding: 20px;">
             <div class="dao-setting-item">
-              <div class="dao-setting-label">Chart 文件</div>
-              <div class="dao-setting-content">
-                <!-- action上传的地址需要更改 -->
-                <el-upload
-                  class="upload-demo"
-                  action="http://baidu.com"
-                  :on-preview="handlePreview"
-                  :on-remove="handleRemove"
-                  multiple
-                >
-                  <button class="dao-btn">选择文件</button>
-                </el-upload>
-              </div>
+              <div class="dao-setting-label">请选择创建方式</div>
             </div>
-          </div>
-          <div class="dao-setting-section" style="padding: 20px;">
             <div class="dao-setting-item">
-              <div class="dao-setting-label">Prov 文件</div>
-              <div class="dao-setting-content">
-                <!-- action上传的地址需要更改 -->
-                <el-upload
-                  class="upload-demo"
-                  action="http://baidu.com"
-                  :on-preview="handlePreview"
-                  :on-remove="handleRemove"
-                  multiple
-                >
-                  <button class="dao-btn">选择文件</button>
-                </el-upload>
+              <div
+                class="box"
+                :class="this.selectState === 1 ? 'selected' : ''"
+                @click="selectFirst"
+              >
+                <svg class="icon icon-size">
+                  <use :xlink:href="`#icon_file-text`"></use>
+                </svg>
+                <div :class="this.selectState === 1 ? 'circle' : ''">
+                  <div class="hook"></div>
+                </div>
+                <div class="icon-title">使用表单创建</div>
+                <div class="icon-desc">您可以使用表单进行创建实例</div>
+              </div>
+            </div>
+            <div class="dao-setting-item">
+              <div
+                class="box"
+                :class="this.selectState === 2 ? 'selected' : ''"
+                @click="selectSecond"
+              >
+                <svg class="icon icon-size">
+                  <use :xlink:href="`#icon_file-code`"></use>
+                </svg>
+                <div :class="this.selectState === 2 ? 'circle' : ''">
+                  <div class="hook"></div>
+                </div>
+                <div class="icon-title">使用 YAML 创建</div>
+                <div class="icon-desc">您可以编辑 YAML 进行创建实例</div>
               </div>
             </div>
           </div>
+        </div>
+        <div slot="footer">
+          <button class="dao-btn ghost" @click="close">
+            取消
+          </button>
+          <button class="dao-btn blue" @click="creatExample">
+            继续
+          </button>
         </div>
       </dao-dialog>
     </div>

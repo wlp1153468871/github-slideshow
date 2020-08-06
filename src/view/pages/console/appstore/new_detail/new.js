@@ -2,6 +2,8 @@ export default {
   name: 'AppNewDetail',
   data() {
     return {
+      // 选中状态
+      selectState: 0,
       activeName: 'first',
       select: 1,
       items: [
@@ -65,6 +67,17 @@ export default {
     linktoYamlForm() {
       this.$router.push({ name: 'appstore.yamlform' });
     },
+    close() {
+      this.config.visible = false;
+    },
+    // 创建实例，跳转
+    creatExample() {
+      if (this.selectState === 1) {
+        this.$router.push({ name: 'appstore.form' });
+      } else if (this.selectState === 2) {
+        this.$router.push({ name: 'appstore.yamlform' });
+      }
+    },
     showDialog() {
       this.config.visible = true;
     },
@@ -73,6 +86,12 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
+    },
+    selectFirst() {
+      this.selectState = 1;
+    },
+    selectSecond() {
+      this.selectState = 2;
     },
   },
 };

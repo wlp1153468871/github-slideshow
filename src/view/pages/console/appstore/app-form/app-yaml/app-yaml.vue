@@ -13,6 +13,14 @@
         :footer="config.footer"
       >
         <div class="body">确认是否放弃当前编辑，放弃后不可撤销。</div>
+        <div slot="footer">
+          <button class="dao-btn red" @click="giveUp">
+            放弃
+          </button>
+          <button class="dao-btn" @click="close">
+            取消
+          </button>
+        </div>
       </dao-dialog>
       <span class="form-title">
         创建服务实例 Nginx1.17
@@ -20,37 +28,22 @@
     </div>
     <dao-setting-layout class="basic-info">
       <div class="dao-setting-section">
-        <div class="dao-setting-title">基本信息</div>
+        <div class="dao-setting-title title-text">基本信息</div>
       </div>
-      <div class="dao-setting-item" style="height: 75px;">
-        <div class="dao-setting-label dao-name">租户和项目组</div>
+      <div class="dao-setting-item" style="height: 42px;">
+        <div class="dao-setting-label dao-name">实例名称</div>
         <div class="dao-setting-content">
-          <div>
-            <div class="dao-title">租户</div>
-            <div class="dao-title">项目组</div>
-          </div>
-          <dao-select
-            v-model="select"
-            class="dao-option"
-            size="sm">
-            <dao-option
-              v-for="item in items"
-              :key="item.value"
-              :value="item.value"
-              :label="item.text">
-            </dao-option>
-          </dao-select>
-          <dao-select
-            v-model="select"
-            class="dao-option"
-            size="sm">
-            <dao-option
-              v-for="item in items"
-              :key="item.value"
-              :value="item.value"
-              :label="item.text">
-            </dao-option>
-          </dao-select>
+          <dao-input
+            block
+            style="width: 98%"
+            placeholder="请输入内容">
+          </dao-input>
+        </div>
+      </div>
+      <div class="dao-setting-section" style="height: 62px;">
+        <div class="dao-setting-item">
+          <div class="dao-setting-label dao-name">版本</div>
+          <div class="dao-setting-content">1.9.1</div>
         </div>
       </div>
       <div class="dao-setting-section" style="height: 95px;">
@@ -86,50 +79,10 @@
           </div>
         </div>
       </div>
-      <div class="dao-setting-section" style="height: 62px;">
-        <div class="dao-setting-item">
-          <div class="dao-setting-label dao-name">版本</div>
-          <div class="dao-setting-content">
-            <dao-select
-              v-model="select"
-              class="dao-option"
-              size="sm"
-              style="width: 780px;"
-            >
-              <dao-option
-                v-for="item in items"
-                :key="item.value"
-                :value="item.value"
-                :label="item.text">
-              </dao-option>
-            </dao-select>
-          </div>
-        </div>
-      </div>
-      <div class="dao-setting-section" style="height: 62px;">
-        <div class="dao-setting-item">
-          <div class="dao-setting-label dao-name">规格</div>
-          <div class="dao-setting-content">
-            <dao-select
-              v-model="select"
-              class="dao-option"
-              size="sm"
-              style="width: 780px;"
-            >
-              <dao-option
-                v-for="item in items"
-                :key="item.value"
-                :value="item.value"
-                :label="item.text">
-              </dao-option>
-            </dao-select>
-          </div>
-        </div>
-      </div>
     </dao-setting-layout>
     <dao-setting-layout class="yaml">
       <div class="dao-setting-section">
-        <div class="dao-setting-title">变量文件</div>
+        <div class="dao-setting-title yaml-text">变量文件</div>
       </div>
       <code-mirror class="code-mirror"></code-mirror>
     </dao-setting-layout>
@@ -177,7 +130,10 @@ export default {
     cancerForm() {
       this.config.visible = true;
     },
-    onConfirm() {
+    close() {
+      this.config.visible = false;
+    },
+    giveUp() {
       this.$router.go(-1);
     },
   },
@@ -207,6 +163,12 @@ export default {
   }
   .basic-info {
     margin: 20px 160px 0 160px;
+    .title-text {
+      font-size: 14px;
+      font-family: SFProText-Semibold,SFProText;
+      font-weight: 600;
+      color: #3D444F;
+    }
     .dao-name {
       height: 14px;
       line-height: 14px;
@@ -235,6 +197,12 @@ export default {
   }
   .yaml {
     margin: 20px 160px 0 160px;
+    .yaml-text{
+      font-size: 14px;
+      font-family: SFProText-Semibold,SFProText;
+      font-weight: 600;
+      color: #3D444F;
+    }
     .code-mirror {
       margin: 0 20px 20px 0;
     }
