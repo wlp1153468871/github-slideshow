@@ -15,7 +15,6 @@ import Chart from '@/view/pages/console/zone/chart/chart.vue';
 
 // appstore
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
-import AppNewDetail from '@/view/pages/console/appstore/new_detail/new.vue';
 import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
 import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
 import AppStoreYaml from '@/view/pages/console/appstore/app-form/app-yaml/app-yaml.vue';
@@ -778,14 +777,6 @@ export default [
     path: 'appstore/detail',
     name: 'appstore.detail',
     component: AppStoreDetail,
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: 'appstore/new',
-    name: 'appstore.new',
-    component: AppNewDetail,
     meta: {
       hidden: true,
     },

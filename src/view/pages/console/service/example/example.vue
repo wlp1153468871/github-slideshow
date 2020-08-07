@@ -1,7 +1,15 @@
 <template>
   <div id="servicedetail">
     <div class="layout-content-header detail-header">
-      <div class="header-text">服务 > 服务详情(Nginx)</div>
+      <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
+        <el-breadcrumb-item 
+          :to="{ path: '/console/service' }" 
+          class="header-text"
+        >
+          服务
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>服务详情(Nginx)</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="detail-title">
       <span>

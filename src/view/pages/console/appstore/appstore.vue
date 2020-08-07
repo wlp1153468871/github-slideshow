@@ -1,6 +1,9 @@
 <template>
   <div id="appstore">
     <div class="appstore-header">
+      <div class="img-box">
+        <img src="../../../../assets/images/app-store.png" alt="应用商店" class="img-size" />
+      </div>
       <div class="header-title">应用商店</div>
       <div class="header-desc">应用商店简短介绍应用商店简短介绍</div>
     </div>
@@ -79,9 +82,14 @@
       </div>
     </div>
 
-    <div class="title">数据库</div>
+
     <div class="store-item-container">
-      <div class="store-item" >
+      <div class="title">我的创建</div>
+      <div class="store-item">
+        <AppItem @click="linkToMy"></AppItem>
+      </div>
+      <div class="title">数据库</div>
+      <div class="store-item">
         <AppItem></AppItem>
         <AppItem></AppItem>
         <AppItem></AppItem>
@@ -89,59 +97,15 @@
         <AppItem></AppItem>
       </div>
     </div>
-    <!-- <div class="title">数据库</div> -->
   </div>
 </template>
 
-<script>
-import AppItem from './app-item/appitem.vue';
-
-export default {
-  name: 'AppStore',
-  components: {
-    AppItem,
-  },
-  data() {
-    return {
-      select: 1,
-      items: [
-        {
-          text: '全部',
-          value: 1,
-        },
-        {
-          text: '数据库',
-          value: 2,
-        },
-        {
-          text: '大数据',
-          value: 3,
-        },
-        {
-          text: '网络',
-          value: 4,
-        },
-        {
-          text: '监控',
-          value: 5,
-        },
-        {
-          text: '其他',
-          value: 6,
-        },
-      ],
-    };
-  },
-  methods: {
-    linkToApp() {
-      this.$router.push({ name: 'appstore.app' });
-    },
-  },
-};
-</script>
+<script src="./appstore.js"></script>
 
 <style lang="scss" scoped>
 #appstore {
+  background: #F1F3F6;
+  height: 1000px;
   .appstore-header {
     height: 160px;
     background: #3D4655;
@@ -162,6 +126,15 @@ export default {
       font-weight:400;
       color: #fff;
       line-height:20px;
+    }
+    .img-box {
+      float: right;
+      height: 160px;
+      width: 200px;
+      .img-size {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
   .store-server-type {

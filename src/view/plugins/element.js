@@ -36,6 +36,8 @@ import {
   Upload,
   Steps,
   Step,
+  Breadcrumb,
+  BreadcrumbItem,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
@@ -76,4 +78,6 @@ Vue.use(Alert);
 Vue.use(Upload);
 Vue.use(Steps);
 Vue.use(Step);
+Vue.use(Breadcrumb);
+Vue.use(BreadcrumbItem);
 

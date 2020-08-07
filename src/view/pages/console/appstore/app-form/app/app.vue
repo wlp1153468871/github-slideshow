@@ -26,12 +26,13 @@
         <div class="dao-setting-title title-text">基本信息</div>
       </div>
       <div class="dao-setting-item" style="height: 42px;">
-        <div class="dao-setting-label dao-name">实例名称</div>
+        <div class="dao-setting-label dao-name">自定义名称</div>
         <div class="dao-setting-content">
           <dao-input
             block
+            v-model="form.name"
             style="width: 98%"
-            placeholder="请应用名称">
+            placeholder="请输入自定义名称">
           </dao-input>
         </div>
       </div>
@@ -42,11 +43,14 @@
             <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
             <el-upload
               class="upload-demo"
-              action="http://baidu.com"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              multiple
-            >
+              ref="upload"
+              action="#"
+              :http-request="handleUpload"
+              :file-list="fileList"
+              accept="image/png"
+              :limit="1"
+              :before-upload="beforeUpload"
+              :on-remove="removeFile">
               <button class="dao-btn blue">上传图标</button>
             </el-upload>
           </div>
@@ -57,7 +61,7 @@
           <div class="dao-setting-label dao-name">服务类型</div>
           <div class="dao-setting-content">
             <dao-select
-              v-model="select"
+              v-model="form.appType"
               class="dao-option"
               size="sm"
               style="width: 780px;height: 32px;"
@@ -78,7 +82,7 @@
           <div class="dao-setting-label dao-name">分类</div>
           <div class="dao-setting-content">
             <dao-select
-              v-model="select"
+              v-model="form.category"
               class="dao-option"
               size="sm"
               style="width: 780px;height: 32px;"
@@ -103,7 +107,7 @@
               type="text"
               placeholder="添加描述"
               rows="2"
-              v-model="value"
+              v-model="form.description"
               style="width: 780px;"
             >
             </textarea>
@@ -120,12 +124,15 @@
         <div class="dao-setting-content">
             <el-upload
               class="upload-demo"
-              action="http://baidu.com"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              multiple
-            >
-              <button class="dao-btn">上传文件</button>
+              ref="upload"
+              action="#"
+              :http-request="handleUploadChart"
+              :file-list="chartList"
+              accept="application/zip, application/x-compressed, application/x-gzip"
+              :limit="1"
+              :before-upload="beforeUploadChart"
+              :on-remove="removeFile">
+              <button class="dao-btn blue">上传chart</button>
             </el-upload>
         </div>
       </div>
@@ -133,19 +140,29 @@
     <div class="dao-setting-layout-footer footer-lay">
       <div class="btn-layout">
         <button class="dao-btn">取消</button>
-        <button class="dao-btn blue">确认创建</button>
+        <button class="dao-btn blue" @click="handleUpload">确认创建</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import AppStoreService from '@/core/services/appstore.service';
+
 export default {
   name: 'newApp',
   data() {
     return {
-      value: '',
-      select: 1,
+      appInfo: '',
+      form: {
+        appType: '',
+        category: ['0', '1'],
+        description: '',
+        name: '',
+        pictureId: '',
+      },
+      appTypes: [],
       items: [
         {
           text: '默认租户',
@@ -164,23 +181,117 @@ export default {
           confirmDisabled: true,
         },
       },
+      fileType: ['image/png'],
+      fileList: [],
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
+      chartList: [],
+      isDisabled: true,
     };
   },
+  computed: {
+    ...mapState(['space', 'zone', 'user']),
+  },
+  created() {
+    // this.init();
+  },
   methods: {
+    // init() {
+
+    // },
     cancerForm() {
       this.config.visible = true;
     },
+
     close() {
       this.config.visible = false;
     },
+    // 回到上一层
     giveUp() {
       this.$router.go(-1);
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+
+    createApp() {
+      AppStoreService.create(this.zone.id, this.space.id, this.form).then(res => {
+        if (res) {
+          this.appInfo = res;
+          this.handleUploadChart();
+        }
+      });
     },
-    handlePreview(file) {
-      console.log(file);
+
+    // 上传文件之前
+    beforeUpload(file) {
+      if (this.fileType.indexOf(file.type) < 0) {
+        console.log(`文件MIME: ${file.type}`);
+        this.$message.warning('请选择.png格式文件');
+        this.removeFile();
+      } else {
+        this.fileList = [...this.fileList, file];
+        this.isDisabled = false;
+      }
+      return false;
+    },
+
+    // 删除文件列表
+    removeFile() {
+      this.$refs.upload.clearFiles();
+    },
+
+    // 文件上传检查
+    checkFile() {
+      if (this.fileList.length > 0) {
+        this.$message.warning('请上传文件后在提交');
+      }
+    },
+
+    // 上传文件
+    handleUpload() {
+      this.isDisabled = true;
+      const formData = new FormData();
+      this.fileList.forEach(file => {
+        formData.append('blob', file);
+      });
+      AppStoreService.uploadImg(formData)
+        .then(res => {
+          this.form.pictureId = res.id;
+          this.createApp();
+        })
+        .catch(err => {
+          this.removeFile();
+          this.$message.error(err);
+        });
+    },
+
+    // 上传chart文件之前
+    beforeUploadChart(file) {
+      if (this.chartType.indexOf(file.type) < 0) {
+        console.log(`文件MIME: ${file.type}`);
+        this.$message.warning('请选择正确的压缩格式文件');
+        this.removeFile();
+      } else {
+        this.chartList = [...this.chartList, file];
+      }
+      return false;
+    },
+
+    // 上传chart文件
+    handleUploadChart() {
+      const formData = new FormData();
+      this.chartList.forEach(file => {
+        console.log(file);
+        formData.append('chart', file);
+      });
+      AppStoreService.uploadFile(this.zone.id, this.space.id, this.appInfo.id, formData)
+        .then(() => {
+          this.$message.success('应用创建成功');
+          this.$router.push({
+            name: 'console.appstore',
+          });
+        })
+        .catch(err => {
+          this.removeFile();
+          this.$message.error(err);
+        });
     },
   },
 };

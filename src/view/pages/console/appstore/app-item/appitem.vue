@@ -6,38 +6,21 @@
           <use :xlink:href="`#color-icon_nginx`"></use>
         </svg>
       </span>
-      <span class="icon-right">
-        <dao-dropdown
-          trigger="click"
-          :append-to-body="true"
-          placement="left-start"
-        >
-          <svg class="icon icon-item">
-            <use :xlink:href="`#icon_more`"></use>
-          </svg>
-          <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item style="margin-left: 10px">
-              <span>表单创建</span>
-            </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px">
-              <span>YAML创建</span>
-            </dao-dropdown-item>
-          </dao-dropdown-menu>
-        </dao-dropdown>
-      </span>
+      <div class="icon-right">
+        <div class="icon-item">
+          Service Broker
+        </div>
+      </div>
     </div>
     <div  @click="linkToDetail">
       <div class="item-name">
         Nginx
       </div>
-      <div class="item-edition">
-        版本数：1
-      </div>
       <div class="item-desc">
-        Nginx是一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP服务器
+        nginx-ingress is an Ingress controller that uses ConfigMap to store the…
       </div>
       <div class="item-footer">
-        DaoCloud | Service Broker
+        DaoCloud
       </div>
     </div>
   </div>
@@ -47,7 +30,7 @@ export default {
   name: 'appitem',
   methods: {
     linkToDetail() {
-      this.$router.push('appstore/new');
+      this.$router.push('appstore/detail');
     },
   },
 };
@@ -79,14 +62,6 @@ $appItemWidth: 31.2%;
           float: right;
           margin-top: 15px;
           height: 30px;
-          .icon-item {
-            position: absolute;
-            top: 0;
-            right: 0;
-            color: rgba(155,163,175,1);
-            float: right;
-            margin: 12px 12px 0 0;
-          }
         }
       }
       .item-name {
@@ -132,7 +107,7 @@ $appItemWidth: 31.2%;
   /* width:  $appItemWidth; */
   /* height: 192 * $appItemWidth / 260;  */
   width: 260px;
-  height: 192px;
+  height: 200px;
   margin: 0 20px 20px 0;
   background:rgba(255,255,255,1);
   box-shadow: 0px 1px 2px 0px rgba(228,231,237,0.5);
@@ -141,46 +116,42 @@ $appItemWidth: 31.2%;
   .icon {
     .icon-left {
       .icon-item {
-        width: 32px;
-        height: 32px;
-        margin: 11px 0 0 12px;
+        width: 40px;
+        height: 40px;
+        margin: 20px 0 0 15px;
       }
     }
     .icon-right {
       float: right;
-      margin-top: 15px;
-      height: 30px;
+      margin: 20px 15px 0 0;
+      width: 94px;
+      height: 18px;
+      background:#F1F7FE;
+      border-radius:1px;
+      border:1px solid #4C9BFF;
       .icon-item {
-        position: absolute;
-        z-index: 3;
-        top: 0;
-        right: 0;
-        color: rgba(155,163,175,1);
-        float: right;
-        margin: 12px 12px 0 0;
+        font-size: 12px;
+        font-family: PingFangSC-Regular,PingFang SC;
+        font-weight: 400;
+        color: #3890FF;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
       }
     }
   }
   .item-name {
-    margin: 13px 12px 10px 12px;
-    height: 14px;
-    line-height: 14px;
-    font-size: 14px;
-  }
-  .item-edition {
-    /* margin: 0 12px 12 12px; */
-    margin-left: 12px;
-    margin-right: 12px;
-    margin-bottom: 12px;
-    height:12px;
-    line-height: 12px;
-    font-size: 12px;
-    font-weight:400;
-    color:#3D444F;
+    margin: 0 0 10px 15px;
+    height: 22px;
+    line-height: 22px;
+    font-size: 18px;
+    font-family: PingFangSC-Semibold,PingFang SC;
+    font-weight: 600;
+    color: #3D444F;
   }
   .item-desc {
     margin: 0 12px 0 12px;
-    color:#3D444F;
+    color:#595F69;
     font-weight: 400;
     font-size: 12px;
     word-break: break-all;
@@ -190,11 +161,13 @@ $appItemWidth: 31.2%;
     position: absolute;
     left: 0;
     bottom: 0;
-    height: 14px;
-    line-height: 14px;
-    margin: 0 0 12px 12px;
+    height: 17px;
+    line-height: 17px;
+    margin: 0 0 15px 15px;
     font-size: 12px;
-    color: #3D444F;
+    font-family: PingFangSC-Regular,PingFang SC;
+    font-weight: 400;
+    color: #595F69;
   }
 }
 </style>

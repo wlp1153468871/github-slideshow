@@ -1,7 +1,8 @@
 export default {
-  name: 'AppNewDetail',
+  name: 'AppStoreDetail',
   data() {
     return {
+      value: '',
       // 选中状态
       selectState: 0,
       activeName: 'first',
@@ -52,11 +53,12 @@ export default {
       ],
       config: {
         visible: false,
-        footer: {
-          cancelText: '取消',
-          confirmText: '继续',
-          confirmDisabled: true,
-        },
+      },
+      config1: {
+        visible: false,
+      },
+      config2: {
+        visible: false,
       },
     };
   },
@@ -92,6 +94,18 @@ export default {
     },
     selectSecond() {
       this.selectState = 2;
+    },
+    editInfo() {
+      this.config1.visible = true;
+    },
+    editClose() {
+      this.config1.visible = false;
+    },
+    addEdition() {
+      this.config2.visible = true;
+    },
+    addClose() {
+      this.config2.visible = false;
     },
   },
 };
