@@ -10,14 +10,15 @@
     <div class="dao-view-main" style="margin-bottom: 20px;">
       <div class="dao-view-content">
         <dao-select
-          v-model="select"
+          v-model="homeApp.category"
           style="height: 32px;"
-          size="sm">
+          size="sm"
+          placeholder="全部">
           <dao-option
-            v-for="item in items"
-            :key="item.value"
-            :value="item.value"
-            :label="item.text">
+            v-for="item in categories"
+            :key="item.name"
+            :value="item.name"
+            :label="item.name">
           </dao-option>
         </dao-select>
         <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
@@ -44,19 +45,9 @@
         服务类型
       </span>
       <div class="dao-checkbox-group type-layout">
-          <div class="dao-checkbox">
+          <div class="dao-checkbox" v-for="item in homeApp.appType" :key="item">
             <label>
-              <input type="checkbox" checked/>Service Broker
-            </label>
-          </div>
-          <div class="dao-checkbox">
-            <label>
-              <input type="checkbox"/>Helm Chart
-            </label>
-          </div>
-          <div class="dao-checkbox">
-            <label>
-              <input type="checkbox"/>Operator
+              <input type="checkbox"/>{{ item }}
             </label>
           </div>
       </div>
@@ -64,19 +55,9 @@
         供应商
       </span>
       <div class="dao-checkbox-group" style="margin-left: 30px">
-          <div class="dao-checkbox">
+          <div class="dao-checkbox" v-for="item in homeApp.provider" :key="item">
             <label>
-              <input type="checkbox" checked/>DaoCloud
-            </label>
-          </div>
-          <div class="dao-checkbox">
-            <label>
-              <input type="checkbox"/>社区
-            </label>
-          </div>
-          <div class="dao-checkbox">
-            <label>
-              <input type="checkbox"/>RedHat
+              <input type="checkbox"/>{{ item }}
             </label>
           </div>
       </div>
@@ -84,17 +65,13 @@
 
 
     <div class="store-item-container">
-      <div class="title">我的创建</div>
-      <div class="store-item">
-        <AppItem @click="linkToMy"></AppItem>
-      </div>
-      <div class="title">数据库</div>
-      <div class="store-item">
-        <AppItem></AppItem>
-        <AppItem></AppItem>
-        <AppItem></AppItem>
-        <AppItem></AppItem>
-        <AppItem></AppItem>
+      <div v-for="(item, index) in categories" :key="index">
+        <div class="title" v-if="item.isShow">{{ item.name }}</div>
+          <div class="store-item">
+            <div v-for="(appItem, index) in applications" :key="index">
+              <AppItem :itemData="appItem" v-if="appItem.category.includes(item.name)"></AppItem>
+            </div>
+          </div>
       </div>
     </div>
   </div>
@@ -105,7 +82,7 @@
 <style lang="scss" scoped>
 #appstore {
   background: #F1F3F6;
-  height: 1000px;
+  /* height: 1000px; */
   .appstore-header {
     height: 160px;
     background: #3D4655;
