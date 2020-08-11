@@ -13,7 +13,7 @@
           :total="total"
           @refresh="loadUsers"
           @switch="switchPage"
-          v-on:filter-method.stop="filterMethod"
+          :filter-method="filterMethod"
           style="width: 100%;"
         >
           <template #operation>

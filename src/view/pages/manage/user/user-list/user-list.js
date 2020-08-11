@@ -58,7 +58,6 @@ export default {
       this.loadings.users = true;
       return UserService.getUsers(page, pageSize, q)
         .then(users => {
-          console.log(users);
           users.data = this.filtersRows(orderBy(users.data, 'username'));
           this.total = users.total;
           this.users = users.data;
