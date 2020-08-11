@@ -1,26 +1,16 @@
+import { mapState } from 'vuex';
+
+import AppStoreService from '@/core/services/appstore.service';
+
 export default {
   name: 'AppStoreDetail',
+
   data() {
     return {
       value: '',
       // 选中状态
       selectState: 0,
       activeName: 'first',
-      select: 1,
-      items: [
-        {
-          text: '1.9.1',
-          value: 1,
-        },
-        {
-          text: '1.10.2',
-          value: 2,
-        },
-        {
-          text: '2.1.1',
-          value: 3,
-        },
-      ],
       tableData: [
         {
           exampleName: 'nginx-example-1',
@@ -51,26 +41,54 @@ export default {
           date: '2020-5-6 12:23',
         },
       ],
-      config: {
-        visible: false,
-      },
-      config1: {
-        visible: false,
-      },
-      config2: {
-        visible: false,
-      },
+      configCreate: false,
+      configEdit: false,
+      configAdd: false,
+      appInfo: '',
+      category: '',
+      // 应用信息
+      applicationInfos: [],
+      chartType: [],
     };
   },
+
+  computed: {
+    ...mapState(['space', 'zone', 'user']),
+  },
+  created() {
+    this.getApp();
+    this.getChart();
+  },
   methods: {
+    getApp() {
+      AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
+        if (res) {
+          this.appInfo = res;
+        }
+        res.category.forEach(item => {
+          if (this.category === '') {
+            this.category = item;
+          } else {
+            this.category = this.category + '、' + item;
+          }
+        });
+      });
+    },
+    getChart() {
+      AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
+        if (res) {
+          this.applicationInfos = res.applicationInfos;
+        }
+        res.applicationInfos.forEach(item => {
+          this.chartType.push(item.version);
+        });
+      });
+    },
     linktoForm() {
       this.$router.push({ name: 'appstore.form' });
     },
     linktoYamlForm() {
       this.$router.push({ name: 'appstore.yamlform' });
-    },
-    close() {
-      this.config.visible = false;
     },
     // 创建实例，跳转
     creatExample() {
@@ -80,32 +98,40 @@ export default {
         this.$router.push({ name: 'appstore.yamlform' });
       }
     },
-    showDialog() {
-      this.config.visible = true;
+    // 立即创建
+    showCreate() {
+      this.configCreate = true;
     },
+    close() {
+      this.configCreate = false;
+    },
+
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
     handlePreview(file) {
       console.log(file);
     },
+
     selectFirst() {
       this.selectState = 1;
     },
     selectSecond() {
       this.selectState = 2;
     },
+
     editInfo() {
-      this.config1.visible = true;
+      this.configEdit = true;
     },
     editClose() {
-      this.config1.visible = false;
+      this.configEdit = false;
     },
+
     addEdition() {
-      this.config2.visible = true;
+      this.configAdd = true;
     },
     addClose() {
-      this.config2.visible = false;
+      this.configAdd = false;
     },
   },
 };

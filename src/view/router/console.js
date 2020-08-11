@@ -774,7 +774,7 @@ export default [
     },
   },
   {
-    path: 'appstore/detail',
+    path: 'appstore/detail/:Id',
     name: 'appstore.detail',
     component: AppStoreDetail,
     meta: {

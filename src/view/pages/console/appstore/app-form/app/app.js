@@ -38,9 +38,9 @@ export default {
     init() {
       AppStoreService.getCategory(this.zone.id, this.space.id).then(res => {
         this.options1 = res;
-        console.log(res);
       });
     },
+
     cancerForm() {
       this.config.visible = true;
     },
@@ -66,7 +66,7 @@ export default {
     beforeUpload(file) {
       if (this.fileType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
-        this.$message.warning('请选择.png格式文件');
+        this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {
         this.fileList = [...this.fileList, file];
@@ -80,14 +80,7 @@ export default {
       this.$refs.upload.clearFiles();
     },
 
-    // 文件上传检查
-    checkFile() {
-      if (this.fileList.length > 0) {
-        this.$message.warning('请上传文件后在提交');
-      }
-    },
-
-    // 上传文件
+    // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
       const formData = new FormData();
@@ -109,7 +102,7 @@ export default {
     beforeUploadChart(file) {
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
-        this.$message.warning('请选择正确的压缩格式文件');
+        this.$noty.warning('请选择正确的压缩格式文件');
         this.removeFile();
       } else {
         this.chartList = [...this.chartList, file];
@@ -121,19 +114,21 @@ export default {
     handleUploadChart() {
       const formData = new FormData();
       this.chartList.forEach(file => {
-        console.log(file);
         formData.append('chart', file);
       });
       AppStoreService.uploadFile(this.zone.id, this.space.id, this.appInfo.id, formData)
-        .then(() => {
-          this.$message.success('应用创建成功');
-          this.$router.push({
-            name: 'console.appstore',
-          });
+        .then(res => {
+          console.log(res);
+          if (res) {
+            this.$noty.success('应用创建成功');
+            this.$router.push({
+              name: 'console.appstore',
+            });
+          }
         })
         .catch(err => {
           this.removeFile();
-          this.$message.error(err);
+          this.$noty.error(err);
         });
     },
   },

@@ -8,7 +8,7 @@ class AppStoreService {
   /**
    * 所有的apps
    */
-  list() {
+  async list() {
     return this.api.get('/appstore/applications');
   }
 
@@ -17,7 +17,7 @@ class AppStoreService {
    * @param {String} zone_id
    * @param {String} spaceId 租户ID
    */
-  zoneList(zone_id, space_id) {
+  async zoneList(zone_id, space_id) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications`);
   }
 
@@ -27,7 +27,7 @@ class AppStoreService {
    * @param {String} spaceId 租户ID
    * @param {Array} data
    */
-  create(zone_id, space_id, data) {
+  async create(zone_id, space_id, data) {
     return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications`, data);
   }
 
@@ -35,7 +35,7 @@ class AppStoreService {
    * 上传图片
    * @param {String} data 图片数据
    */
-  uploadImg(data) {
+  async uploadImg(data) {
     return this.api.post('/blobs', data);
   }
 
@@ -45,7 +45,7 @@ class AppStoreService {
    * @param {String} spaceId 租户ID
    * @param {Array} data
    */
-  uploadFile(zone_id, space_id, app_id, data) {
+  async uploadFile(zone_id, space_id, app_id, data) {
     return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/application_infos`, data);
   }
 
@@ -54,17 +54,27 @@ class AppStoreService {
    * @param {String} zone_id
    * @param {String} spaceId 租户ID
    */
-  getCategory(zone_id, space_id) {
+  async getCategory(zone_id, space_id) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/categories`);
   }
+
   /**
-   * 获取应用分类列表
+   * 删除应用
    * @param {String} zone_id
    * @param {String} spaceId 租户ID
    * @param {String} app_id 应用ID
    */
-  deleteApp(zone_id, space_id, app_id) {
+  async deleteApp(zone_id, space_id, app_id) {
     return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}`);
+  }
+  /**
+   * 根据app_id获取一个应用
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   */
+  async getApp(zone_id, space_id, app_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}`);
   }
 }
 

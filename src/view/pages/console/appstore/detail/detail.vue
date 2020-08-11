@@ -8,7 +8,7 @@
         >
           应用
         </el-breadcrumb-item>
-        <el-breadcrumb-item>应用详情(Nginx)</el-breadcrumb-item>
+        <el-breadcrumb-item>应用详情({{appInfo.name}})</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="left">
@@ -17,7 +17,7 @@
           <svg class="icon icon-size">
             <use :xlink:href="`#color-icon_nginx`"></use>
           </svg>
-          <div class="header-text">Nginx</div>
+          <div class="header-text">{{appInfo.name}}</div>
 
           <!-- 新建的应用才有这部分 -->
           <dao-dropdown
@@ -44,7 +44,7 @@
           </dao-dropdown>
         </div>
         <dao-dialog
-          :visible.sync="config1.visible"
+          :visible.sync="configEdit"
           header="编辑基本信息"
         >
           <div class="dao-setting-layout">
@@ -82,17 +82,17 @@
                 <div class="dao-setting-label dao-name">分类</div>
                 <div class="dao-setting-content">
                   <dao-select
-                    v-model="select"
+                    v-model="applicationInfos"
                     class="dao-option"
                     size="sm"
                     style="width:98%;height: 32px;"
                     placeholder="选择分类"
                   >
                     <dao-option
-                      v-for="item in items"
-                      :key="item.value"
-                      :value="item.value"
-                      :label="item.text">
+                      v-for="item in applicationInfos"
+                      :key="item.version"
+                      :value="item.version"
+                      :label="item.version">
                     </dao-option>
                   </dao-select>
                 </div>
@@ -125,7 +125,7 @@
           </div>
         </dao-dialog>
         <dao-dialog
-          :visible.sync="config2.visible"
+          :visible.sync="configAdd"
           header="添加版本"
         >
           <div class="dao-setting-layout">
@@ -162,51 +162,44 @@
             <div class="title">基本信息</div>
             <div class="desc">
               <div class="desc-title">应用描述</div>
-              <div class="desc-text">
-                Nginx 是一个高性能的HTTP和反向代理服务器，也是一个 IMP/POP3/SMTP 服务器，因为它的稳定性、丰富的功能集、实例配置文件和低系统资源的消耗而闻名。
-              </div>
+              <div class="desc-text">{{appInfo.description}}</div>
             </div>
             <div class="app">
                 <div class="app-title">应用信息</div>
               <div>
+                <div class="app-text-name">分类</div>
                 <div class="app-text-name">服务类型</div>
-                <div class="app-text-name">服务类型</div>
-                <div class="app-text-desc">网络</div>
-                <div class="app-text-desc">Service Broker</div>
+                <div class="app-text-desc">{{category}}</div>
+                <div class="app-text-desc">{{appInfo.appType}}</div>
               </div>
               <div>
-                <div class="app-text-name">服务类型</div>
-                <div class="app-text-name">服务类型</div>
-                <div class="app-text-desc">网络</div>
-                <div class="app-text-desc">Service Broker</div>
+                <div class="app-text-name">供应商</div>
+                <div class="app-text-name">版本数</div>
+                <div class="app-text-desc">{{appInfo.provider}}</div>
+                <div class="app-text-desc">{{appInfo.numVersion}}</div>
               </div>
               <div>
-                <div class="app-text-name">服务类型</div>
-                <div class="app-text-name">服务类型</div>
-                <div class="app-text-desc">网络</div>
-                <div class="app-text-desc">Service Broker</div>
+                <div class="app-text-name">可用区</div>
+                <div class="app-text-name">Chart 仓库</div>
+                <div class="app-text-desc">{{appInfo.zoneName}}</div>
+                <div class="app-text-desc">{{appInfo.chartRepo}}</div>
               </div>
             </div>
           </div>
-          <!-- <div class="blank"></div> -->
           <div class="base-info">
             <div class="title" style="height: 52px;padding: 18px 0 0 0;">Readme</div>
-            <div class="title1">
+            <!-- <div class="title1">
               nginx-ingress
-            </div>
-            <div class="title1-desc">
-              nginx-ingress is an Ingress controller that uses Configuration.
-              To use, add the kubernetes.io/ingress.class
-              :nginx annotation to your ingress resources.
-            </div>
-            <div class="title1" style="font-size: 20px;">
+            </div> -->
+            <div class="title1-desc">{{appInfo.content}}</div>
+            <!-- <div class="title1" style="font-size: 20px;">
               TL; DR;
             </div>
             <div class="title2-desc">
               <div class="title2-text">
                 $ helm install helm-repo>/nginx-ingress
               </div>
-            </div>
+            </div> -->
           </div>
         </el-tab-pane>
         <el-tab-pane label="实例" name="second">
@@ -297,82 +290,85 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div class="right">
-      <div class="right-type">Chart 版本:</div>
-      <dao-select
-        v-model="select"
-        size="sm"
-        class="right-select"
-      >
-        <dao-option
-          v-for="item in items"
-          :key="item.value"
-          :value="item.value"
-          :label="item.text">
-        </dao-option>
-      </dao-select>
-      <div class="right-name">名称</div>
-      <div class="right-desc">nginx-ingress</div>
-      <div class="right-name">App版本</div>
-      <div class="right-desc">0.25.0</div>
-      <div class="right-name">帮助链接</div>
-      <div class="right-link">http://nginx.org/en/docs/</div>
-      <div class="right-name">帮官网链接</div>
-      <div class="right-link">http://nginx.org/</div>
-      <button class="dao-btn blue right-btn" @click="showDialog">立即创建</button>
-      <dao-dialog
-        :visible.sync="config.visible"
-        header="创建实例 | Nginx1.9.1"
-        :footer="config.footer"
-      >
-        <div class="dao-setting-layout">
-          <div class="dao-setting-section" style="padding: 20px;">
-            <div class="dao-setting-item">
-              <div class="dao-setting-label">请选择创建方式</div>
-            </div>
-            <div class="dao-setting-item">
-              <div
-                class="box"
-                :class="this.selectState === 1 ? 'selected' : ''"
-                @click="selectFirst"
-              >
-                <svg class="icon icon-size">
-                  <use :xlink:href="`#icon_file-text`"></use>
-                </svg>
-                <div :class="this.selectState === 1 ? 'circle' : ''">
-                  <div class="hook"></div>
+    <div class="right" >
+      <div >
+        <div>
+          <div class="right-type">Chart 版本:</div>
+          <dao-select
+            v-model="applicationInfos"
+            size="sm"
+            class="right-select"
+          >
+            <dao-option
+              v-for="item in applicationInfos"
+              :key="item.version"
+              :value="item.version"
+              :label="item.version">
+            </dao-option>
+          </dao-select>
+          <div class="right-name">名称</div>
+          <div class="right-desc">nginx-ingress</div>
+          <div class="right-name">App版本</div>
+          <div class="right-desc">0.25.0</div>
+          <div class="right-name">帮助链接</div>
+          <div class="right-link">http://nginx.org/en/docs/</div>
+          <div class="right-name">帮官网链接</div>
+          <div class="right-link">http://nginx.org/</div>
+          <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
+          <dao-dialog
+            :visible.sync="configCreate"
+            header="创建实例 | Nginx1.9.1"
+          >
+            <div class="dao-setting-layout">
+              <div class="dao-setting-section" style="padding: 20px;">
+                <div class="dao-setting-item">
+                  <div class="dao-setting-label">请选择创建方式</div>
                 </div>
-                <div class="icon-title">使用表单创建</div>
-                <div class="icon-desc">您可以使用表单进行创建实例</div>
+                <div class="dao-setting-item">
+                  <div
+                    class="box"
+                    :class="this.selectState === 1 ? 'selected' : ''"
+                    @click="selectFirst"
+                  >
+                    <svg class="icon icon-size">
+                      <use :xlink:href="`#icon_file-text`"></use>
+                    </svg>
+                    <div :class="this.selectState === 1 ? 'circle' : ''">
+                      <div class="hook"></div>
+                    </div>
+                    <div class="icon-title">使用表单创建</div>
+                    <div class="icon-desc">您可以使用表单进行创建实例</div>
+                  </div>
+                </div>
+                <div class="dao-setting-item">
+                  <div
+                    class="box"
+                    :class="this.selectState === 2 ? 'selected' : ''"
+                    @click="selectSecond"
+                  >
+                    <svg class="icon icon-size">
+                      <use :xlink:href="`#icon_file-code`"></use>
+                    </svg>
+                    <div :class="this.selectState === 2 ? 'circle' : ''">
+                      <div class="hook"></div>
+                    </div>
+                    <div class="icon-title">使用 YAML 创建</div>
+                    <div class="icon-desc">您可以编辑 YAML 进行创建实例</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="dao-setting-item">
-              <div
-                class="box"
-                :class="this.selectState === 2 ? 'selected' : ''"
-                @click="selectSecond"
-              >
-                <svg class="icon icon-size">
-                  <use :xlink:href="`#icon_file-code`"></use>
-                </svg>
-                <div :class="this.selectState === 2 ? 'circle' : ''">
-                  <div class="hook"></div>
-                </div>
-                <div class="icon-title">使用 YAML 创建</div>
-                <div class="icon-desc">您可以编辑 YAML 进行创建实例</div>
-              </div>
+            <div slot="footer">
+              <button class="dao-btn ghost" @click="close">
+                取消
+              </button>
+              <button class="dao-btn blue" @click="creatExample">
+                继续
+              </button>
             </div>
-          </div>
+          </dao-dialog>
         </div>
-        <div slot="footer">
-          <button class="dao-btn ghost" @click="close">
-            取消
-          </button>
-          <button class="dao-btn blue" @click="creatExample">
-            继续
-          </button>
-        </div>
-      </dao-dialog>
+      </div>
     </div>
   </div>
 </template>

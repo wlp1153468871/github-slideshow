@@ -10,7 +10,7 @@
     <div class="dao-view-main" style="margin-bottom: 20px;">
       <div class="dao-view-content">
         <dao-select
-          v-model="homeApp.category"
+          v-model="category"
           style="height: 32px;"
           size="sm"
           placeholder="全部">
@@ -45,7 +45,7 @@
         服务类型
       </span>
       <div class="dao-checkbox-group type-layout">
-          <div class="dao-checkbox" v-for="item in homeApp.appType" :key="item">
+          <div class="dao-checkbox" v-for="item in appType" :key="item">
             <label>
               <input type="checkbox"/>{{ item }}
             </label>
@@ -55,7 +55,7 @@
         供应商
       </span>
       <div class="dao-checkbox-group" style="margin-left: 30px">
-          <div class="dao-checkbox" v-for="item in homeApp.provider" :key="item">
+          <div class="dao-checkbox" v-for="item in provider" :key="item">
             <label>
               <input type="checkbox"/>{{ item }}
             </label>

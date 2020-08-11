@@ -11,35 +11,34 @@ export default {
   },
   data() {
     return {
-      //
+      baseUrl: '',
+      //  应用数据
       applications: '',
-      //
-      categories: '',
-      select: 1,
+      //  分类
+      categories: [
+        {
+          name: '全部',
+        },
+      ],
       // 分类
-      options1: [],
-      // 首页数据
-      homeApp: {
-        // 分类
-        category: [],
-        // 服务类型
-        appType: [],
-        // 供应商
-        provider: [],
-        // tab页
-        tabs: [],
-        appItem: [],
-      },
+      category: [],
+      // 服务类型
+      appType: [],
+      // 供应商
+      provider: [],
+      // tab页
     };
   },
 
   computed: {
     ...mapState(['space', 'zone', 'user']),
   },
+
   created() {
     // 初始化
     this.init();
   },
+
   methods: {
     linkToApp() {
       this.$router.push({ name: 'appstore.app' });
@@ -47,15 +46,9 @@ export default {
     linkToMy() {
       this.$router.push({ name: 'appstore.mycreate' });
     },
-    filter(tab) {
-      return this.homeApp.appItem.filter(item => {
-        return item.tab === tab;
-      });
-    },
     init() {
       this.getApplications();
     },
-
     // list
     getApplications() {
       AppStoreService.zoneList(this.zone.id, this.space.id).then(res => {
@@ -63,48 +56,33 @@ export default {
           this.applications = res;
           this.getCategory();
         }
-        // console.log(res);
-        // const arr = [];
-        // res.forEach(item => {
-        //   if (this.homeApp.appType.indexOf(item.appType) === -1 && item.appType) {
-        //     this.homeApp.appType.push(item.appType);
-        //   }
-        //   if (this.homeApp.provider.indexOf(item.provider) === -1) {
-        //     this.homeApp.provider.push(item.provider);
-        //   }
-        //   item.category.forEach(value => {
-        //     if (this.homeApp.tabs.indexOf(value) === -1 && value) {
-        //       this.homeApp.tabs.push(value);
-        //     }
-        //     const obj = {};
-        //     obj.tab = value;
-        //     obj.name = item.name;
-        //     obj.appType = item.appType;
-        //     obj.description = item.description;
-        //     obj.provider = item.provider;
-        //     arr.push(obj);
-        //     this.homeApp.appItem = arr;
-        //   });
-        // });
-        // console.log(this.homeApp.appItem.filter(item => {
-        //   return item.tab === '数据库';
-        // }));
+      }).then(() => {
+        this.applications.forEach(res => {
+          if (this.appType.indexOf(res.appType) === -1 && res.appType) {
+            this.appType.push(res.appType);
+          }
+          if (this.provider.indexOf(res.provider) === -1 && res.provider) {
+            this.provider.push(res.provider);
+          }
+        });
       });
     },
-    // type
+    // 数据清洗
     getCategory() {
-      AppStoreService.getCategory(this.zone.id, this.space.id).then((res) => {
+      AppStoreService.getCategory(this.zone.id, this.space.id).then(res => {
         if (res) {
           res.forEach(cate => {
-            const length = (this.applications.filter(item => item.category.includes(cate.name))).length;
-            if (length > 0) {
+            const arr = this.applications.filter(item =>
+              item.category.includes(cate.name));
+            if (arr.length > 0) {
               cate.isShow = true;
             } else {
               cate.isShow = false;
             }
           });
-          this.categories = res;
-          console.log(res);
+          res.forEach(item => this.categories.push(item));
+          // this.categories = res;
+          // this.categories.push(res);
         }
       });
     },

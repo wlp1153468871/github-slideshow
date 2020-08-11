@@ -2,30 +2,33 @@
   <div class="itme-container max-screen">
     <div class="icon">
       <span class="icon-left">
-        <svg class="icon icon-item">
+        <!-- <svg class="icon  ">
           <use :xlink:href="`#color-icon_nginx`"></use>
-        </svg>
+        </svg> -->
+        <!-- backUrl(itemData.pictureUrl) -->
+        <img :src="backUrl(itemData.pictureUrl)" alt="" class="icon-item"/>
       </span>
       <div class="icon-right">
         <div class="icon-item">
-          Service Broker
+          {{ itemData.appType }}
         </div>
       </div>
     </div>
     <div  @click="linkToDetail">
       <div class="item-name">
-        Nginx
+        {{ itemData.name }}
       </div>
       <div class="item-desc">
-        nginx-ingress is an Ingress controller that uses ConfigMap to store the…
+        {{ itemData.description }}
       </div>
       <div class="item-footer">
-        DaoCloud
+        {{ itemData.provider }}
       </div>
     </div>
   </div>
 </template>
 <script>
+
 export default {
   name: 'appitem',
   props: {
@@ -33,8 +36,17 @@ export default {
   },
   methods: {
     linkToDetail() {
-      this.$router.push('appstore/detail');
+      this.$router.push(`appstore/detail/${this.itemData.id}`);
     },
+    backUrl(url) {
+      if (process.env.NODE_ENV === 'development') {
+        return `${process.env.VUE_APP_API_URL}${url}`;
+      }
+      return url;
+    },
+  },
+  created() {
+    // this.downloadImg();
   },
 };
 </script>
