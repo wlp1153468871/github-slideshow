@@ -8,8 +8,8 @@ class ServiceService {
     this.api = api;
   }
 
-  getServices() {
-    return this.api.get('/superservices');
+  getServices(page: number, pageSize: number, q?: string) {
+    return this.api.get('/superservices', {page: page || 1, pageSize: pageSize || 10, q });
   }
 
   getService(id: string) {

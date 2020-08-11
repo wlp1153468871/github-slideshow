@@ -4,10 +4,12 @@
       服务管理
     </div>
     <div class="dao-view-main">
-      <x-table
+      <z-table
         :showRefresh="$can('platform.serviceInstance.get')"
         :loading="loadings.maps"
         :data="rows"
+        :total="total"
+        @switch="switchPage"
         :filter-method="filterMethod"
         @refresh="loadService"
         style="width: 100%;"
@@ -46,7 +48,7 @@
             {{ service.short_description | otherwise }}
           </template>
         </el-table-column>
-      </x-table>
+      </z-table>
     </div>
   </div>
 </template>

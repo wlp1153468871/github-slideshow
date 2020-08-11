@@ -49,7 +49,15 @@ class ZoneService {
     }
     return this.api.get('/zones', params);
   }
-
+  /**
+   * 根据关键词获取zone列表
+   * @param {Number} page 分页指定页数
+   * @param {Number} pageSize 待获取数据量
+   * @param {String} q 搜索关键词
+   */
+  getZonesByList(page: number, pageSize: number, q?: string) {
+     return this.api.get('/zones', {page: page || 1, pageSize: pageSize || 10, q });
+  }
   // get available zones
   getAvailableZones(organizationId?: string) {
     return this.getZones(organizationId).then(zones => {

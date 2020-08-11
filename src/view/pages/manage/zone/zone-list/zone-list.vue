@@ -4,10 +4,12 @@
       可用区设置
     </div>
     <div class="dao-view-main">
-      <x-table
+      <z-table
         :showRefresh="$can('platform.zone.get')"
         :loading="loadings.zone"
         :data="rows"
+        :total="total"
+        @switch="switchPage"
         @refresh="loadZones"
         :filter-method="filterMethod"
         style="width: 100%;"
@@ -96,7 +98,7 @@
             </el-dropdown>
           </template>
         </el-table-column>
-      </x-table>
+      </z-table>
     </div>
   </div>
 </template>
