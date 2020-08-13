@@ -99,8 +99,7 @@
                   <el-select
                     v-model="form.category"
                     multiple
-                    filterable
-                    allow-create
+                    @change="removeTag"
                     default-first-option
                     placeholder="选择分类"
                     style="width: 98%;">
@@ -135,7 +134,7 @@
             <button class="dao-btn ghost" @click="editClose">
               取消
             </button>
-            <button class="dao-btn blue" @click="updateApp">
+            <button class="dao-btn blue" @click="handleUpload">
               确认
             </button>
           </div>
@@ -166,12 +165,8 @@
             </div>
           </div>
           <div slot="footer">
-            <button class="dao-btn ghost" @click="addClose">
-              取消
-            </button>
-            <button class="dao-btn blue">
-              确认
-            </button>
+            <button class="dao-btn ghost" @click="addClose">取消</button>
+            <button class="dao-btn blue" @click="handleUploadChart">确认</button>
           </div>
         </dao-dialog>
       </div>
@@ -247,22 +242,30 @@
           <div style="margin-top: 20px;">
             <el-table
               style="width: 100%;"
-              :data="tableData"
+              :data="instanceTable"
             >
-              <el-table-column label="实例名称" prop="exampleName"></el-table-column>
+              <el-table-column label="实例名称" prop="name"></el-table-column>
               <el-table-column label="状态" width="100">
                 <template slot-scope="scope">
-                  <svg class="icon" style="color: #25D473">
-                    <use :xlink:href="`#icon_status-dot-small`"></use>
-                  </svg>
-                  <span>{{ scope.row.state }}</span>
+                  <div v-if="scope.row.status === 'deployed'">
+                    <svg class="icon" style="color: #25D473">
+                      <use :xlink:href="`#icon_status-dot-small`"></use>
+                    </svg>
+                    <span>成功</span>
+                  </div>
+                  <div v-else>
+                    <svg class="icon" style="color: red">
+                      <use :xlink:href="`#icon_status-dot-small`"></use>
+                    </svg>
+                    <span>失败</span>
+                  </div>
                 </template>
               </el-table-column>
-              <el-table-column label="Chart 版本" prop="type"></el-table-column>
-              <el-table-column label="创建者" prop="creator"></el-table-column>
-              <el-table-column label="创建时间" prop="date"></el-table-column>
+              <el-table-column label="Chart 版本" prop="chartVersion"></el-table-column>
+              <el-table-column label="创建者" prop="ownerName"></el-table-column>
+              <el-table-column label="创建时间" prop="created_at"></el-table-column>
               <el-table-column  label="操作" width="100">
-                <template>
+                <template slot-scope="scope">
                   <span class="dao-btn-group select-btn">
                     <dao-dropdown
                       trigger="click"
@@ -277,10 +280,10 @@
                           <span @click="linktoForm">使用表单更新</span>
                         </dao-dropdown-item>
                         <dao-dropdown-item style="margin-left: 10px">
-                          <span @click="linktoYamlForm">使用YAML更新</span>
+                          <span @click="linktoYamlForm(scope.row.id)">使用YAML更新</span>
                         </dao-dropdown-item>
                         <dao-dropdown-item style="margin-left: 10px">
-                          <span style="color: red;">删除</span>
+                          <span style="color: red;" @click="deleteInstance(scope.row.id)">删除</span>
                         </dao-dropdown-item>
                       </dao-dropdown-menu>
                     </dao-dropdown>
@@ -338,6 +341,11 @@
           <div class="right-desc">{{item.chartName}}</div>
           <div class="right-name">App版本</div>
           <div class="right-desc">{{item.version}}</div>
+          <!-- <div class="right-name">维护者</div>
+          <div v-for="(data, key) in item.supplier" :key="key">
+            <div class="right-desc">{{data}}</div>
+            <div class="right-desc">{{data.email}}</div>
+          </div> -->
           <div class="right-name">官网链接</div>
           <div class="right-link">{{item.homeUrl}}</div>
           <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>

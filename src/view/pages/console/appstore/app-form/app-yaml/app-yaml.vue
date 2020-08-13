@@ -23,7 +23,7 @@
         </div>
       </dao-dialog>
       <span class="form-title">
-        创建服务实例 Nginx1.17
+        创建服务实例 {{this.chartName}}  {{this.$route.params.version}}
       </span>
     </div>
     <dao-setting-layout class="basic-info">
@@ -34,6 +34,7 @@
         <div class="dao-setting-label dao-name">实例名称</div>
         <div class="dao-setting-content">
           <dao-input
+            v-model="instanceName"
             block
             style="width: 98%"
             placeholder="请输入内容">
@@ -43,7 +44,7 @@
       <div class="dao-setting-section" style="height: 62px;">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">版本</div>
-          <div class="dao-setting-content">1.9.1</div>
+          <div class="dao-setting-content">{{this.$route.params.version}}</div>
         </div>
       </div>
       <div class="dao-setting-section" style="height: 95px;">
@@ -55,25 +56,25 @@
               <div class="dao-title">项目组</div>
             </div>
             <dao-select
-              v-model="select"
+              v-model="select1"
               class="dao-option"
               size="sm">
               <dao-option
-                v-for="item in items"
+                v-for="item in tenant"
                 :key="item.value"
-                :value="item.value"
-                :label="item.text">
+                :value="item.index"
+                :label="item.value">
               </dao-option>
             </dao-select>
             <dao-select
-              v-model="select"
+              v-model="select2"
               class="dao-option"
               size="sm">
               <dao-option
-                v-for="item in items"
+                v-for="item in project"
                 :key="item.value"
-                :value="item.value"
-                :label="item.text">
+                :value="item.index"
+                :label="item.value">
               </dao-option>
             </dao-select>
           </div>
@@ -84,19 +85,23 @@
       <div class="dao-setting-section">
         <div class="dao-setting-title yaml-text">变量文件</div>
       </div>
-      <code-mirror class="code-mirror"></code-mirror>
+      <code-mirror class="code-mirror" v-model="yaml.data"></code-mirror>
     </dao-setting-layout>
     <div class="dao-setting-layout-footer footer-lay">
       <div class="btn-layout">
-        <button class="dao-btn">预览</button>
-        <button class="dao-btn blue">确认创建</button>
+        <button class="dao-btn" @click="cancerForm">取消</button>
+        <button class="dao-btn blue" @click="createYmal">确认创建</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import CodeMirror from '@/view/components/config/code-mirror.vue';
+
+import AppStoreService from '@/core/services/appstore.service';
 
 export default {
   name: 'AppStoreYaml',
@@ -105,28 +110,80 @@ export default {
   },
   data() {
     return {
-      select: 1,
-      items: [
+      select1: 1,
+      select2: 2,
+      tenant: [
         {
-          text: '默认租户',
-          value: 1,
+          value: '默认租户',
+          index: 1,
         },
+      ],
+      project: [
         {
-          text: '租户1',
-          value: 2,
+          value: '默认项目组',
+          index: 2,
         },
       ],
       config: {
         visible: false,
-        footer: {
-          cancelText: '取消',
-          confirmText: '放弃',
-          confirmDisabled: true,
-        },
+      },
+      instanceName: '',
+      chartName: '',
+      yaml: {
+        data: '',
       },
     };
   },
+
+  computed: {
+    ...mapState(['space', 'zone']),
+  },
+
+  created() {
+    this.getApp();
+  },
+
+  beforeRouteEnter(to, from, next) {
+    console.log(from);
+  },
+
   methods: {
+    // 获取App
+    getApp() {
+      AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.appid).then(res => {
+        if (res) {
+          res.applicationInfos.forEach(data => {
+            if (data.version === this.$route.params.version) {
+              this.chartName = data.chartName;
+            }
+          });
+          this.getYaml();
+        }
+      });
+    },
+    // 获取yaml
+    getYaml() {
+      AppStoreService
+        .getYaml(this.zone.id, this.space.id, this.$route.params.appid,
+          this.chartName, this.$route.params.version)
+        .then(res => {
+          if (res) {
+            this.yaml.data = res;
+          }
+        });
+    },
+    // 创建yaml实例
+    createYmal() {
+      AppStoreService
+        .createYmal(this.zone.id, this.space.id, this.$route.params.appid,
+          this.chartName, this.$route.params.version, this.instanceName, this.yaml)
+        .then(res => {
+          if (res) {
+            this.$noty.success('实例创建成功');
+            this.$router.go(-1);
+          }
+        });
+    },
     cancerForm() {
       this.config.visible = true;
     },

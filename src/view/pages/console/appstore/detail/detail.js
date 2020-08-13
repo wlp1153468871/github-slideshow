@@ -7,40 +7,10 @@ export default {
 
   data() {
     return {
-      value: '',
       // 选中状态
       selectState: 0,
       activeName: 'first',
-      tableData: [
-        {
-          exampleName: 'nginx-example-1',
-          state: '成功',
-          type: '1.9.1',
-          creator: 'admin',
-          date: '2020-5-6 12:23',
-        },
-        {
-          exampleName: 'nginx-example-1',
-          state: '成功',
-          type: '1.9.1',
-          creator: 'admin',
-          date: '2020-5-6 12:23',
-        },
-        {
-          exampleName: 'nginx-example-1',
-          state: '成功',
-          type: '1.9.1',
-          creator: 'admin',
-          date: '2020-5-6 12:23',
-        },
-        {
-          exampleName: 'nginx-example-1',
-          state: '成功',
-          type: '1.9.1',
-          creator: 'admin',
-          date: '2020-5-6 12:23',
-        },
-      ],
+      instanceTable: [],
 
       fileType: ['image/png'],
       fileList: [],
@@ -78,8 +48,8 @@ export default {
   created() {
     this.getApp();
     this.getChart();
-    // this.getInstances();
     this.getCategory();
+    this.getInstances();
   },
   methods: {
     // 获取应用信息
@@ -91,9 +61,7 @@ export default {
           this.form.category = res.category;
           this.form.name = res.name.split('-')[1];
           this.form.description = res.description;
-          this.form.pictureId = res.pictureId;
         }
-        console.log(this.form);
       });
     },
     // 获取chart
@@ -128,39 +96,81 @@ export default {
     updateApp() {
       AppStoreService.updateApp(this.zone.id, this.space.id, this.$route.params.Id, this.form)
         .then(res => {
-          console.log(res);
-          this.$noty.success('修改成功');
-          this.$router.go(0);
+          if (res) {
+            this.$noty.success('修改成功');
+            this.editClose();
+            this.getApp();
+          }
         });
     },
     // 获取实例列表
     getInstances() {
       AppStoreService.getInstances(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
-        console.log(res);
-      });
-    },
-    // 获取yaml
-    getYaml() {
-      AppStoreService.getYaml(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
-        console.log(res);
-      });
-    },
+        if (res) {
+          this.instanceTable = res;
 
+          // res.forEach(item => {
+          //   const date = item.created_at;
+          //   console.log(date);
+          //   const Y = date.getFullYear() + '-';
+          //   const M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+          //   const D = date.getDate() + ' ';
+          //   const h = date.getHours() + ':';
+          //   const m = date.getMinutes() + ':';
+          //   const s = date.getSeconds();
+          //   console.log(Y+M+D+h+m+s);
+          // });
+        }
+      });
+    },
+    // 删除某个实例
+    deleteInstance(instanceId) {
+      AppStoreService.deleteInstance(this.zone.id, this.space.id, this.$route.params.Id, instanceId)
+        .then(() => {
+          this.$noty.success('实例删除成功');
+          this.getInstances();
+        });
+    },
     changeShow() {
       this.isShow = !this.isShow;
     },
     linktoForm() {
-      this.$router.push({ name: 'appstore.form' });
+      this.$router.push({
+        name: 'appstore.form',
+        params: {
+          appid: this.appInfo.id,
+          version: this.chart,
+        },
+      });
     },
-    linktoYamlForm() {
-      this.$router.push({ name: 'appstore.yamlform' });
+    linktoYamlForm(id) {
+      this.$router.push({
+        name: 'appstore.yamlform',
+        params: {
+          appid: this.appInfo.id,
+          version: this.chart,
+        },
+      });
+      console.log(id);
     },
     // 创建实例，跳转
     creatExample() {
       if (this.selectState === 1) {
-        this.$router.push({ name: 'appstore.form' });
+        this.$router.push({
+          name: 'appstore.form',
+          params: {
+            appid: this.appInfo.id,
+            version: this.chart,
+          },
+        });
       } else if (this.selectState === 2) {
-        this.$router.push({ name: 'appstore.yamlform' });
+        this.$router.push({
+          name: 'appstore.yamlform',
+          params: {
+            appid: this.appInfo.id,
+            version: this.chart,
+          },
+        });
       }
     },
     // 立即创建
@@ -192,7 +202,10 @@ export default {
       this.configAdd = false;
     },
 
-
+    removeTag(res) {
+      this.form.category = res;
+      // console.log(this.form.category);
+    },
     // 上传文件之前
     beforeUpload(file) {
       if (this.fileType.indexOf(file.type) < 0) {
@@ -221,6 +234,7 @@ export default {
       AppStoreService.uploadImg(formData)
         .then(res => {
           this.form.pictureId = res.id;
+          this.updateApp();
         })
         .catch(err => {
           this.removeFile();
@@ -248,10 +262,7 @@ export default {
       AppStoreService.uploadFile(this.zone.id, this.space.id, this.appInfo.id, formData)
         .then(res => {
           if (res) {
-            this.$noty.success('应用创建成功');
-            this.$router.push({
-              name: 'console.appstore',
-            });
+            this.$noty.success('上传chart成功');
           }
         })
         .catch(err => {

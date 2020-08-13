@@ -536,7 +536,7 @@ export default [
     // 暂时的路由
     children: [
       {
-        path: 'appstore/form',
+        path: 'appstore/:appid/form/:version',
         name: 'appstore.form',
         component: AppStoreForm,
         meta: {
@@ -545,7 +545,7 @@ export default [
         },
       },
       {
-        path: 'appstore/yamlform',
+        path: 'appstore/:appid/yamlform/:version',
         name: 'appstore.yamlform',
         component: AppStoreYaml,
         meta: {

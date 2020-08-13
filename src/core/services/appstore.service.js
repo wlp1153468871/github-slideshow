@@ -97,16 +97,41 @@ class AppStoreService {
   async getInstances(zone_id, space_id, app_id) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances`);
   }
+
+  /**
+   * 删除某个实例
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例ID
+   */
+  async deleteInstance(zone_id, space_id, app_id, instance_id) {
+    return this.api.delete(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}`);
+  }
+
   /**
    * 获取应用实例原始yaml
    * @param {String} zone_id
    * @param {String} spaceId 租户ID
    * @param {String} app_id 应用ID
-   * @param {String} chart_name chart名字
+   * @param {String} chart_name chart名
    * @param {String} version chart版本
    */
   async getYaml(zone_id, space_id, app_id, chart_name, version) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/yaml`);
+  }
+
+  /**
+   * 以yaml创建应用实例
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} chart_name chart名
+   * @param {String} version chart版本
+   * @param {String} instance_name 实例名
+   */
+  async createYmal(zone_id, space_id, app_id, chart_name, version, instance_name, data) {
+    return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/${instance_name}/yaml`, data);
   }
 }
 
