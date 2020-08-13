@@ -38,7 +38,7 @@
                 <span @click="addEdition">添加版本</span>
               </dao-dropdown-item>
               <dao-dropdown-item style="margin-left: 10px">
-                <span style="color: red;">删除</span>
+                <span style="color: red;" @click="deleteApp">删除</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>
@@ -50,12 +50,13 @@
           <div class="dao-setting-layout">
             <div class="dao-setting-section" style="padding: 20px;">
               <div class="dao-setting-item">
-                <div class="dao-setting-label dao-name">实例名称</div>
+                <div class="dao-setting-label dao-name">自定义应用名称</div>
                 <div class="dao-setting-content">
                   <dao-input
+                    v-model="form.name"
                     block
                     style="width: 98%"
-                    placeholder="请应用名称">
+                    placeholder="请输入应用名称">
                   </dao-input>
                 </div>
               </div>
@@ -65,13 +66,27 @@
                 <div class="dao-setting-label dao-name">应用图标</div>
                 <div class="dao-setting-content">
                   <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
+                  <div v-show="isShow">
+                    <img src="../../../../../assets/images/card-Default.png" alt="应用图标" />
+                    <div>
+                      <button
+                        class="dao-btn red"
+                        @click="changeShow">
+                        删除
+                      </button>
+                    </div>
+                  </div>
                   <el-upload
+                    v-show="!isShow"
                     class="upload-demo"
-                    action="http://baidu.com"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    multiple
-                  >
+                    ref="upload"
+                    action="#"
+                    :http-request="handleUpload"
+                    :file-list="fileList"
+                    accept="image/png"
+                    :limit="1"
+                    :before-upload="beforeUpload"
+                    :on-remove="removeFile">
                     <button class="dao-btn blue">上传图标</button>
                   </el-upload>
                 </div>
@@ -81,20 +96,21 @@
               <div class="dao-setting-item">
                 <div class="dao-setting-label dao-name">分类</div>
                 <div class="dao-setting-content">
-                  <dao-select
-                    v-model="applicationInfos"
-                    class="dao-option"
-                    size="sm"
-                    style="width:98%;height: 32px;"
+                  <el-select
+                    v-model="form.category"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
                     placeholder="选择分类"
-                  >
-                    <dao-option
-                      v-for="item in applicationInfos"
-                      :key="item.version"
-                      :value="item.version"
-                      :label="item.version">
-                    </dao-option>
-                  </dao-select>
+                    style="width: 98%;">
+                    <el-option
+                      v-for="item in categories"
+                      :key="item.name"
+                      :label="item.name"
+                      :value="item.name">
+                    </el-option>
+                  </el-select>
                 </div>
               </div>
             </div>
@@ -107,7 +123,7 @@
                     type="text"
                     placeholder="添加描述"
                     rows="2"
-                    v-model="value"
+                    v-model="form.description"
                     style="width: 98%; height:20px"
                   >
                   </textarea>
@@ -119,7 +135,7 @@
             <button class="dao-btn ghost" @click="editClose">
               取消
             </button>
-            <button class="dao-btn blue">
+            <button class="dao-btn blue" @click="updateApp">
               确认
             </button>
           </div>
@@ -135,12 +151,15 @@
                 <div class="dao-setting-content">
                   <el-upload
                     class="upload-demo"
-                    action="http://baidu.com"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    multiple
-                  >
-                    <button class="dao-btn">上传文件</button>
+                    ref="upload"
+                    action="#"
+                    :http-request="handleUploadChart"
+                    :file-list="chartList"
+                    accept="application/zip, application/x-compressed, application/x-gzip"
+                    :limit="1"
+                    :before-upload="beforeUploadChart"
+                    :on-remove="removeFile">
+                    <button class="dao-btn blue">上传chart</button>
                   </el-upload>
                 </div>
               </div>
@@ -169,7 +188,16 @@
               <div>
                 <div class="app-text-name">分类</div>
                 <div class="app-text-name">服务类型</div>
-                <div class="app-text-desc">{{category}}</div>
+                <div class="app-text-desc">
+                  <template>
+                    <span
+                    class="str"
+                    v-for="(item, index) in appInfo.category"
+                    :key="index">
+                    {{item}}
+                  </span>
+                  </template>
+                </div>
                 <div class="app-text-desc">{{appInfo.appType}}</div>
               </div>
               <div>
@@ -291,11 +319,11 @@
       </el-tabs>
     </div>
     <div class="right" >
-      <div >
-        <div>
+      <div v-for="(item, index) in applicationInfos" :key="index">
+        <div v-if="chart === item.version">
           <div class="right-type">Chart 版本:</div>
           <dao-select
-            v-model="applicationInfos"
+            v-model="chart"
             size="sm"
             class="right-select"
           >
@@ -307,17 +335,15 @@
             </dao-option>
           </dao-select>
           <div class="right-name">名称</div>
-          <div class="right-desc">nginx-ingress</div>
+          <div class="right-desc">{{item.chartName}}</div>
           <div class="right-name">App版本</div>
-          <div class="right-desc">0.25.0</div>
-          <div class="right-name">帮助链接</div>
-          <div class="right-link">http://nginx.org/en/docs/</div>
-          <div class="right-name">帮官网链接</div>
-          <div class="right-link">http://nginx.org/</div>
+          <div class="right-desc">{{item.version}}</div>
+          <div class="right-name">官网链接</div>
+          <div class="right-link">{{item.homeUrl}}</div>
           <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
           <dao-dialog
             :visible.sync="configCreate"
-            header="创建实例 | Nginx1.9.1"
+            :header="`创建实例 | ${item.chartName}`"
           >
             <div class="dao-setting-layout">
               <div class="dao-setting-section" style="padding: 20px;">
@@ -327,13 +353,13 @@
                 <div class="dao-setting-item">
                   <div
                     class="box"
-                    :class="this.selectState === 1 ? 'selected' : ''"
+                    :class="selectState === 1 ? 'selected' : ''"
                     @click="selectFirst"
                   >
                     <svg class="icon icon-size">
                       <use :xlink:href="`#icon_file-text`"></use>
                     </svg>
-                    <div :class="this.selectState === 1 ? 'circle' : ''">
+                    <div :class="selectState === 1 ? 'circle' : ''">
                       <div class="hook"></div>
                     </div>
                     <div class="icon-title">使用表单创建</div>
@@ -343,13 +369,13 @@
                 <div class="dao-setting-item">
                   <div
                     class="box"
-                    :class="this.selectState === 2 ? 'selected' : ''"
+                    :class="selectState === 2 ? 'selected' : ''"
                     @click="selectSecond"
                   >
                     <svg class="icon icon-size">
                       <use :xlink:href="`#icon_file-code`"></use>
                     </svg>
-                    <div :class="this.selectState === 2 ? 'circle' : ''">
+                    <div :class="selectState === 2 ? 'circle' : ''">
                       <div class="hook"></div>
                     </div>
                     <div class="icon-title">使用 YAML 创建</div>

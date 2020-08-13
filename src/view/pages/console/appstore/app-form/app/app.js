@@ -118,7 +118,6 @@ export default {
       });
       AppStoreService.uploadFile(this.zone.id, this.space.id, this.appInfo.id, formData)
         .then(res => {
-          console.log(res);
           if (res) {
             this.$noty.success('应用创建成功');
             this.$router.push({

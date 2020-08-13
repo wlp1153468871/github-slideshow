@@ -12,11 +12,10 @@
         <dao-select
           v-model="category"
           style="height: 32px;"
-          size="sm"
-          placeholder="全部">
+          size="sm">
           <dao-option
             v-for="item in categories"
-            :key="item.name"
+            :key="item.id"
             :value="item.name"
             :label="item.name">
           </dao-option>
@@ -66,12 +65,14 @@
 
     <div class="store-item-container">
       <div v-for="(item, index) in categories" :key="index">
-        <div class="title" v-if="item.isShow">{{ item.name }}</div>
+        <div v-if="item.name === category || category === '全部'">
+          <div class="title" v-if="item.isShow">{{ item.name }}</div>
           <div class="store-item">
             <div v-for="(appItem, index) in applications" :key="index">
               <AppItem :itemData="appItem" v-if="appItem.category.includes(item.name)"></AppItem>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </div>

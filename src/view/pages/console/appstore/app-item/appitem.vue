@@ -6,7 +6,7 @@
           <use :xlink:href="`#color-icon_nginx`"></use>
         </svg> -->
         <!-- backUrl(itemData.pictureUrl) -->
-        <img :src="backUrl(itemData.pictureUrl)" alt="" class="icon-item"/>
+        <img src="../../../../../assets/images/card-Default.png" alt="" class="icon-item"/>
       </span>
       <div class="icon-right">
         <div class="icon-item">

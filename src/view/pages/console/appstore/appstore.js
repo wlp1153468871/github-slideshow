@@ -18,10 +18,11 @@ export default {
       categories: [
         {
           name: '全部',
+          id: '',
         },
       ],
       // 分类
-      category: [],
+      category: '全部',
       // 服务类型
       appType: [],
       // 供应商
@@ -81,8 +82,6 @@ export default {
             }
           });
           res.forEach(item => this.categories.push(item));
-          // this.categories = res;
-          // this.categories.push(res);
         }
       });
     },
