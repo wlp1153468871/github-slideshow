@@ -30,8 +30,10 @@ export default {
     search() {
       if (this.timer) return;
       this.timer = setTimeout(() => {
-        this.currentPage = 1;
-        this.type = false;
+        if (this.currentPage !== 1) {
+          this.type = false;
+          this.currentPage = 1;
+        }
         this.filterMethod(this.filterKey.trim(), this.pageSize);
         this.timer = null;
       }, delay);
@@ -44,13 +46,15 @@ export default {
           this.type = true;
           return;
         }
-        this.$emit('switch', this.currentPage, this.pageSize);
+        this.$emit('switch', this.currentPage, this.pageSize, this.filterKey);
       },
     },
     pageSize: {
       handler() {
-        this.currentPage = 1;
-        this.type = false;
+        if (this.currentPage !== 1) {
+          this.type = false;
+          this.currentPage = 1;
+        }
         this.$emit('switch', this.currentPage, this.pageSize, this.filterKey.trim());
       },
     },
