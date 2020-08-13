@@ -68,13 +68,25 @@ export default {
           platform_id: 'dsp',
         });
       } else {
-        const { spaceId, orgId, zoneId } = store.getters;
-        if (spaceId || orgId || zoneId) {
-          config.headers.AuthorizationScope = JSON.stringify({
-            space_id: spaceId,
-            organization_id: orgId,
-            zone_id: zoneId,
-          });
+        const { url } = config;
+        if (/spaces\//.test(url)) {
+          if (store.getters.spaceId) {
+            config.headers.AuthorizationScope = JSON.stringify({
+              space_id: store.getters.spaceId,
+            });
+          }
+        } else if (/organizations\//.test(url)) {
+          if (store.getters.spaceId) {
+            config.headers.AuthorizationScope = JSON.stringify({
+              organization_id: store.getters.orgId,
+            });
+          }
+        } else if (/zones\//.test(url)) {
+          if (store.getters.zoneId) {
+            config.headers.AuthorizationScope = JSON.stringify({
+              zone_id: store.getters.zoneId,
+            });
+          }
         }
       }
     }
