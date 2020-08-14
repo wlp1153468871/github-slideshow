@@ -37,9 +37,9 @@
               <dao-dropdown-item style="margin-left: 10px">
                 <span @click="addEdition">添加版本</span>
               </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
+              <!-- <dao-dropdown-item style="margin-left: 10px">
                 <span style="color: red;" @click="deleteApp">删除</span>
-              </dao-dropdown-item>
+              </dao-dropdown-item> -->
             </dao-dropdown-menu>
           </dao-dropdown>
         </div>
@@ -348,7 +348,7 @@
           <div class="right-name">官网链接</div>
           <div class="right-link">{{item.homeUrl}}</div>
           <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
-          <button class="dao-btn delete-btn" @click="showDelete">立即删除</button>
+          <!-- <button class="dao-btn delete-btn" @click="showDelete">立即删除</button> -->
           <dao-dialog
             :visible.sync="configCreate"
             :header="`创建实例 | ${item.chartName}`"
