@@ -10,6 +10,7 @@ export default {
       // 选中状态
       selectState: 0,
       activeName: 'first',
+      // 实例列表
       instanceTable: [],
 
       fileType: ['image/png'],
@@ -23,6 +24,7 @@ export default {
       configCreate: false,
       configEdit: false,
       configAdd: false,
+      configDelete: false,
       // 应用信息
       appInfo: '',
       category: '',
@@ -44,6 +46,7 @@ export default {
 
   computed: {
     ...mapState(['space', 'zone']),
+    // this.instanceNum
   },
   created() {
     this.getApp();
@@ -59,7 +62,7 @@ export default {
           this.appInfo = res;
 
           this.form.category = res.category;
-          this.form.name = res.name.split('-')[1];
+          this.form.name = `${res.name.split('-')[1]}`;
           this.form.description = res.description;
         }
       });
@@ -108,18 +111,7 @@ export default {
       AppStoreService.getInstances(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
           this.instanceTable = res;
-
-          // res.forEach(item => {
-          //   const date = item.created_at;
-          //   console.log(date);
-          //   const Y = date.getFullYear() + '-';
-          //   const M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-          //   const D = date.getDate() + ' ';
-          //   const h = date.getHours() + ':';
-          //   const m = date.getMinutes() + ':';
-          //   const s = date.getSeconds();
-          //   console.log(Y+M+D+h+m+s);
-          // });
+          this.instanceNum();
         }
       });
     },
@@ -129,11 +121,13 @@ export default {
         .then(() => {
           this.$noty.success('实例删除成功');
           this.getInstances();
+          this.instanceNum();
         });
     },
     changeShow() {
       this.isShow = !this.isShow;
     },
+    // 更新表单
     linktoForm() {
       this.$router.push({
         name: 'appstore.form',
@@ -143,6 +137,7 @@ export default {
         },
       });
     },
+    // 更新yaml
     linktoYamlForm(id) {
       this.$router.push({
         name: 'appstore.yamlform',
@@ -150,8 +145,10 @@ export default {
           appid: this.appInfo.id,
           version: this.chart,
         },
+        query: {
+          instanceId: id,
+        },
       });
-      console.log(id);
     },
     // 创建实例，跳转
     creatExample() {
@@ -171,19 +168,52 @@ export default {
             version: this.chart,
           },
         });
+      } else {
+        this.$noty.warning('请选择创建方式');
       }
     },
+    // 删除chart版本
+    deleteChart(version) {
+      console.log(this.applicationInfos);
+      this.applicationInfos.forEach((item, index) => {
+        if (item.version === version) {
+          this.applicationInfos.splice(index, 1);
+        }
+      });
+    },
+    // 实例跳转
+    rowClick(id) {
+      this.$router.push({
+        name: 'appstore.instance',
+        params: {
+          appid: this.appInfo.id,
+          instanceid: id,
+        },
+      });
+    },
+    // 搜索实例
+    // searchInstance() {
+
+    // },
     // 立即创建
     showCreate() {
       this.configCreate = true;
     },
-    close() {
+    // 立即删除
+    showDelete() {
+      this.configDelete = true;
+    },
+    closeCreate() {
       this.configCreate = false;
     },
-
+    closeDelete() {
+      this.configDelete = false;
+    },
+    // 选中form
     selectFirst() {
       this.selectState = 1;
     },
+    // 选中yaml
     selectSecond() {
       this.selectState = 2;
     },
@@ -205,6 +235,10 @@ export default {
     removeTag(res) {
       this.form.category = res;
       // console.log(this.form.category);
+    },
+    // 获取实例数
+    instanceNum() {
+      return this.instanceTable.length;
     },
     // 上传文件之前
     beforeUpload(file) {

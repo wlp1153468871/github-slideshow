@@ -211,18 +211,7 @@
           </div>
           <div class="base-info">
             <div class="title" style="height: 52px;padding: 18px 0 0 0;">Readme</div>
-            <!-- <div class="title1">
-              nginx-ingress
-            </div> -->
             <div class="title1-desc">{{appInfo.content}}</div>
-            <!-- <div class="title1" style="font-size: 20px;">
-              TL; DR;
-            </div>
-            <div class="title2-desc">
-              <div class="title2-text">
-                $ helm install helm-repo>/nginx-ingress
-              </div>
-            </div> -->
           </div>
         </el-tab-pane>
         <el-tab-pane label="实例" name="second">
@@ -244,8 +233,14 @@
               style="width: 100%;"
               :data="instanceTable"
             >
-              <el-table-column label="实例名称" prop="name"></el-table-column>
-              <el-table-column label="状态" width="100">
+              <el-table-column label="实例名称">
+                <template slot-scope="scope">
+                  <div style="color: #217EF2;" @click="rowClick(scope.row.id)">
+                    {{ scope.row.name }}
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="状态" width="80">
                 <template slot-scope="scope">
                   <div v-if="scope.row.status === 'deployed'">
                     <svg class="icon" style="color: #25D473">
@@ -261,10 +256,14 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column label="Chart 版本" prop="chartVersion"></el-table-column>
-              <el-table-column label="创建者" prop="ownerName"></el-table-column>
-              <el-table-column label="创建时间" prop="created_at"></el-table-column>
-              <el-table-column  label="操作" width="100">
+              <el-table-column label="Chart 版本" prop="chartVersion" width="100"></el-table-column>
+              <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
+              <el-table-column label="创建时间" >
+                <template slot-scope="scope">
+                      {{ scope.row.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                </template>
+              </el-table-column>
+              <el-table-column  label="操作" width="60">
                 <template slot-scope="scope">
                   <span class="dao-btn-group select-btn">
                     <dao-dropdown
@@ -292,7 +291,7 @@
               </el-table-column>
             </el-table>
             <div class="footer">
-              <div class="page">共 4 项</div>
+              <div class="page">共 {{instanceNum()}} 项</div>
               <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
                 <dao-dropdown
                   trigger="click"
@@ -341,14 +340,15 @@
           <div class="right-desc">{{item.chartName}}</div>
           <div class="right-name">App版本</div>
           <div class="right-desc">{{item.version}}</div>
-          <!-- <div class="right-name">维护者</div>
+          <div class="right-name">维护者</div>
           <div v-for="(data, key) in item.supplier" :key="key">
-            <div class="right-desc">{{data}}</div>
+            <div class="right-desc">{{data.name}}</div>
             <div class="right-desc">{{data.email}}</div>
-          </div> -->
+          </div>
           <div class="right-name">官网链接</div>
           <div class="right-link">{{item.homeUrl}}</div>
           <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
+          <button class="dao-btn delete-btn" @click="showDelete">立即删除</button>
           <dao-dialog
             :visible.sync="configCreate"
             :header="`创建实例 | ${item.chartName}`"
@@ -393,12 +393,24 @@
               </div>
             </div>
             <div slot="footer">
-              <button class="dao-btn ghost" @click="close">
-                取消
-              </button>
-              <button class="dao-btn blue" @click="creatExample">
-                继续
-              </button>
+              <button class="dao-btn ghost" @click="closeCreate">取消</button>
+              <button class="dao-btn blue" @click="creatExample">继续</button>
+            </div>
+          </dao-dialog>
+          <dao-dialog
+            :visible.sync="configDelete"
+            :header="`确定要删除版本吗？`"
+          >
+            <div class="dao-setting-layout">
+              <div class="dao-setting-section" style="padding: 20px;">
+                <div class="dao-setting-item">
+                  <div class="dao-setting-label dao-name">此操作会删除版本 {{item.version}}，该操作不可撤销。</div>
+                </div>
+              </div>
+            </div>
+            <div slot="footer">
+              <button class="dao-btn red" @click="deleteChart(item.version)">删除</button>
+              <button class="dao-btn ghost" @click="closeDelete">取消</button>
             </div>
           </dao-dialog>
         </div>

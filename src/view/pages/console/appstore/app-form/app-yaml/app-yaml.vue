@@ -143,10 +143,6 @@ export default {
     this.getApp();
   },
 
-  beforeRouteEnter(to, from, next) {
-    console.log(from);
-  },
-
   methods: {
     // 获取App
     getApp() {
@@ -157,7 +153,13 @@ export default {
               this.chartName = data.chartName;
             }
           });
-          this.getYaml();
+          // 创建还是更新
+          if (this.$route.query.instanceId) {
+            this.getNewYaml();
+            this.getInstanceOne();
+          } else {
+            this.getYaml();
+          }
         }
       });
     },
@@ -172,6 +174,17 @@ export default {
           }
         });
     },
+    // 获取最新yaml
+    getNewYaml() {
+      AppStoreService
+        .getNewYaml(this.zone.id, this.space.id, this.$route.params.appid,
+          this.$route.query.instanceId)
+        .then(res => {
+          if (res) {
+            this.yaml.data = res;
+          }
+        });
+    },
     // 创建yaml实例
     createYmal() {
       AppStoreService
@@ -180,6 +193,28 @@ export default {
         .then(res => {
           if (res) {
             this.$noty.success('实例创建成功');
+            this.$router.go(-1);
+          }
+        });
+    },
+    // 获取一个实例
+    getInstanceOne() {
+      AppStoreService
+        .getInstanceOne(this.zone.id, this.space.id, this.$route.params.appid,
+          this.$route.query.instanceId)
+        .then(res => {
+          if (res) {
+            this.instanceName = `${res.name.split('-')[1]}`;
+          }
+        });
+    },
+    updateYaml() {
+      AppStoreService
+        .updateYaml(this.zone.id, this.space.id, this.$route.params.appid,
+          this.$route.query.instanceId)
+        .then(res => {
+          if (res) {
+            this.$noty.success('实例更新成功');
             this.$router.go(-1);
           }
         });

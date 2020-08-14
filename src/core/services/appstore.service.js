@@ -110,6 +110,17 @@ class AppStoreService {
   }
 
   /**
+   * 获取应用的一个实例
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例ID
+   */
+  async getInstanceOne(zone_id, space_id, app_id, instance_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}`);
+  }
+
+  /**
    * 获取应用实例原始yaml
    * @param {String} zone_id
    * @param {String} spaceId 租户ID
@@ -119,6 +130,17 @@ class AppStoreService {
    */
   async getYaml(zone_id, space_id, app_id, chart_name, version) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/yaml`);
+  }
+
+  /**
+   * 获取最新实例的配置yaml
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例名
+   */
+  async getNewYaml(zone_id, space_id, app_id, instance_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/yaml`);
   }
 
   /**
@@ -132,6 +154,28 @@ class AppStoreService {
    */
   async createYmal(zone_id, space_id, app_id, chart_name, version, instance_name, data) {
     return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/${instance_name}/yaml`, data);
+  }
+
+  /**
+   * 更新实例的yaml
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例ID
+   */
+  async updateYaml(zone_id, space_id, app_id, instance_id) {
+    return this.api.put(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/yaml`);
+  }
+
+  /**
+   * 获取实例的操作记录
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例ID
+   */
+  async getOperator(zone_id, space_id, app_id, instance_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/ops_log`);
   }
 }
 

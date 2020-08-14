@@ -164,9 +164,9 @@
   .right {
     float: right;
     width: 280px;
-    height: 360px;
+    // height: 360px;
     margin: 20px 20px 0 0;
-    // padding-bottom: 20px;
+    padding-bottom: 20px;
     background: #fff;
     box-shadow:0px 0px 0px 1px rgba(228,231,237,1);
     border-radius:4px;
@@ -212,6 +212,10 @@
     }
     .right-btn {
       margin: 20px 0 0 20px;
+      width: 240px;
+    }
+    .delete-btn {
+      margin: 10px 0 0 20px;
       width: 240px;
     }
     .box {

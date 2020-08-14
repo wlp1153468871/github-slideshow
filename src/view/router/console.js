@@ -19,6 +19,7 @@ import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
 import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
 import AppStoreYaml from '@/view/pages/console/appstore/app-form/app-yaml/app-yaml.vue';
 import newApp from '@/view/pages/console/appstore/app-form/app/app.vue';
+import AppStoreInstance from '@/view/pages/console/appstore/instance/instance.vue';
 
 // monitor
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
@@ -777,6 +778,14 @@ export default [
     path: 'appstore/detail/:Id',
     name: 'appstore.detail',
     component: AppStoreDetail,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: 'appstore/:appid/instance/:instanceid',
+    name: 'appstore.instance',
+    component: AppStoreInstance,
     meta: {
       hidden: true,
     },
