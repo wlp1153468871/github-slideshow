@@ -33,11 +33,14 @@
       <div class="dao-setting-item" style="height: 42px;">
         <div class="dao-setting-label dao-name">实例名称</div>
         <div class="dao-setting-content">
+          <div v-if="this.$route.query.instanceId">{{this.instanceName}}</div>
           <dao-input
             v-model="instanceName"
             block
             style="width: 98%"
-            placeholder="请输入内容">
+            placeholder="请输入内容"
+            v-else
+          >
           </dao-input>
         </div>
       </div>
@@ -90,7 +93,11 @@
     <div class="dao-setting-layout-footer footer-lay">
       <div class="btn-layout">
         <button class="dao-btn" @click="cancerForm">取消</button>
-        <button class="dao-btn blue" @click="createYmal">确认创建</button>
+        <button class="dao-btn blue"
+          @click="updateYaml"
+          v-if="this.$route.query.instanceId"
+        >确认创建</button>
+        <button class="dao-btn blue" @click="createYmal" v-else>确认创建</button>
       </div>
     </div>
   </div>
@@ -208,11 +215,13 @@ export default {
           }
         });
     },
+    // 更新yaml实例
     updateYaml() {
       AppStoreService
         .updateYaml(this.zone.id, this.space.id, this.$route.params.appid,
-          this.$route.query.instanceId)
+          this.$route.query.instanceId, this.yaml)
         .then(res => {
+          console.log(res);
           if (res) {
             this.$noty.success('实例更新成功');
             this.$router.go(-1);

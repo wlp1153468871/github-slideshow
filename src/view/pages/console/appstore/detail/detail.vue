@@ -37,9 +37,9 @@
               <dao-dropdown-item style="margin-left: 10px">
                 <span @click="addEdition">添加版本</span>
               </dao-dropdown-item>
-              <!-- <dao-dropdown-item style="margin-left: 10px">
+              <dao-dropdown-item style="margin-left: 10px">
                 <span style="color: red;" @click="deleteApp">删除</span>
-              </dao-dropdown-item> -->
+              </dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>
         </div>
@@ -99,7 +99,6 @@
                   <el-select
                     v-model="form.category"
                     multiple
-                    @change="removeTag"
                     default-first-option
                     placeholder="选择分类"
                     style="width: 98%;">
@@ -107,7 +106,7 @@
                       v-for="item in categories"
                       :key="item.name"
                       :label="item.name"
-                      :value="item.name">
+                      :value="item.id">
                     </el-option>
                   </el-select>
                 </div>
@@ -186,11 +185,11 @@
                 <div class="app-text-desc">
                   <template>
                     <span
-                    class="str"
-                    v-for="(item, index) in appInfo.category"
-                    :key="index">
-                    {{item}}
-                  </span>
+                      class="str"
+                      v-for="(item, index) in appInfo.category"
+                      :key="index">
+                      {{item}}
+                    </span>
                   </template>
                 </div>
                 <div class="app-text-desc">{{appInfo.appType}}</div>
@@ -210,16 +209,20 @@
             </div>
           </div>
           <div class="base-info">
-            <div class="title" style="height: 52px;padding: 18px 0 0 0;">Readme</div>
-            <div class="title1-desc">{{appInfo.content}}</div>
+            <div class="title" style="height: 52px;padding: 20px 0 0 0;">Readme</div>
+            <!-- <div class="title1-desc">{{appInfo.content}}</div>
+             -->
+             <mark-down v-html="appInfo.content" style="padding: 20px;"></mark-down>
           </div>
         </el-tab-pane>
         <el-tab-pane label="实例" name="second">
           <dao-input
             search
+            @change="updateKey"
+            v-model="key"
             placeholder="搜索">
           </dao-input>
-          <span style="float: right;">
+          <span style="float: right;" @click="fresh">
             <el-button size="mini" style="margin-left: 10px;">
               <span>
                 <svg class="icon">
@@ -338,8 +341,10 @@
           </dao-select>
           <div class="right-name">名称</div>
           <div class="right-desc">{{item.chartName}}</div>
-          <div class="right-name">App版本</div>
-          <div class="right-desc">{{item.version}}</div>
+          <div v-if="`${item.appVersion }`">
+            <div class="right-name">App版本</div>
+            <div class="right-desc">{{item.appVersion}}</div>
+          </div>
           <div class="right-name">维护者</div>
           <div v-for="(data, key) in item.supplier" :key="key">
             <div class="right-desc">{{data.name}}</div>
@@ -348,7 +353,7 @@
           <div class="right-name">官网链接</div>
           <div class="right-link">{{item.homeUrl}}</div>
           <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
-          <!-- <button class="dao-btn delete-btn" @click="showDelete">立即删除</button> -->
+          <!-- <button class="dao-btn delete-btn" @click="showDelete">删除版本</button> -->
           <dao-dialog
             :visible.sync="configCreate"
             :header="`创建实例 | ${item.chartName}`"

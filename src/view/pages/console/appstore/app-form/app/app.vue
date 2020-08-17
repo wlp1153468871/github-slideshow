@@ -84,8 +84,6 @@
             <el-select
               v-model="form.category"
               multiple
-              filterable
-              allow-create
               default-first-option
               placeholder="选择分类"
               style="width: 98%;">

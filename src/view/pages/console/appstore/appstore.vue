@@ -24,6 +24,15 @@
           <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
           <span class="text">新建应用</span>
         </button>
+        <div class="screen">筛选器：
+          <!-- <el-tag
+            v-for="tag in tags"
+            :key="tag.name"
+            closable
+          >
+            {{tag.name}}
+          </el-tag> -->
+        </div>
       </div>
       <el-input
         style="width: 218px;"
@@ -61,7 +70,6 @@
           </div>
       </div>
     </div>
-
 
     <div class="store-item-container">
       <div v-for="(item, index) in categories" :key="index">
@@ -114,6 +122,11 @@
         height: 100%;
       }
     }
+  }
+  .screen {
+    position: absolute;
+    left: 370px;
+    top: 180px;
   }
   .store-server-type {
     float: left;

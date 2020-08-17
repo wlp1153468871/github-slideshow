@@ -27,7 +27,6 @@ export default {
       appType: [],
       // 供应商
       provider: [],
-      // tab页
     };
   },
 

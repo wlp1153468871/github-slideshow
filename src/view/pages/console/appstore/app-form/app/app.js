@@ -37,6 +37,7 @@ export default {
     // 初始化数据
     init() {
       AppStoreService.getCategory(this.zone.id, this.space.id).then(res => {
+        console.log(res);
         this.options1 = res;
       });
     },

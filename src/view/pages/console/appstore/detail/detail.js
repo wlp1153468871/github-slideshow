@@ -1,5 +1,7 @@
 import { mapState } from 'vuex';
+import { debounce } from 'lodash';
 
+import MarkDown from '@/view/components/markdown/markdown.vue';
 import AppStoreService from '@/core/services/appstore.service';
 
 export default {
@@ -12,14 +14,16 @@ export default {
       activeName: 'first',
       // 实例列表
       instanceTable: [],
+      tableLoading: true,
 
+      key: '',
+      loading: true,
       fileType: ['image/png'],
       fileList: [],
       chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
       chartList: [],
       isDisabled: true,
       isShow: true,
-
       // dialog弹窗
       configCreate: false,
       configEdit: false,
@@ -27,7 +31,6 @@ export default {
       configDelete: false,
       // 应用信息
       appInfo: '',
-      category: '',
       // chart信息
       applicationInfos: [],
       chart: '',
@@ -37,6 +40,7 @@ export default {
       form: {
         available: 1,
         category: [],
+        // categoryId: [],
         description: '',
         name: '',
         pictureId: '',
@@ -44,16 +48,32 @@ export default {
     };
   },
 
+  components: {
+    MarkDown,
+  },
   computed: {
     ...mapState(['space', 'zone']),
-    // this.instanceNum
   },
+
   created() {
     this.getApp();
     this.getChart();
     this.getCategory();
     this.getInstances();
   },
+
+  watch: {
+    key: {
+      handler() {
+        if (this.key === '') {
+          this.getInstances();
+        } else {
+          this.updateKey();
+        }
+      },
+    },
+  },
+
   methods: {
     // 获取应用信息
     async getApp() {
@@ -61,7 +81,7 @@ export default {
         if (res) {
           this.appInfo = res;
 
-          this.form.category = res.category;
+          this.form.category = res.categoryId;
           this.form.name = `${res.name.split('-')[1]}`;
           this.form.description = res.description;
         }
@@ -113,6 +133,7 @@ export default {
           this.instanceTable = res;
           this.instanceNum();
         }
+        this.loading = false;
       });
     },
     // 删除某个实例
@@ -191,10 +212,20 @@ export default {
         },
       });
     },
-    // 搜索实例
-    // searchInstance() {
 
-    // },
+    // 搜索实例
+    updateKey: debounce(function updateKey() {
+      this.searchInstance();
+    }, 300),
+    searchInstance() {
+      this.instanceTable = this.instanceTable.filter(item => item.name.includes(this.key));
+    },
+
+    // 刷新
+    fresh() {
+      this.key = '';
+      this.getInstances();
+    },
     // 立即创建
     showCreate() {
       this.configCreate = true;
@@ -232,10 +263,9 @@ export default {
       this.configAdd = false;
     },
 
-    removeTag(res) {
-      this.form.category = res;
-      // console.log(this.form.category);
-    },
+    // removeTag(res) {
+    //   this.form.category = res;
+    // },
     // 获取实例数
     instanceNum() {
       return this.instanceTable.length;

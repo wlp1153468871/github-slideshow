@@ -163,8 +163,8 @@ class AppStoreService {
    * @param {String} app_id 应用ID
    * @param {String} instance_id 实例ID
    */
-  async updateYaml(zone_id, space_id, app_id, instance_id) {
-    return this.api.put(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/yaml`);
+  async updateYaml(zone_id, space_id, app_id, instance_id, data) {
+    return this.api.put(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/yaml`, data);
   }
 
   /**
