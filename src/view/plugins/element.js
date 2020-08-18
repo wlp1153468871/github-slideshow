@@ -38,6 +38,7 @@ import {
   Step,
   Breadcrumb,
   BreadcrumbItem,
+  Tag,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
@@ -80,4 +81,5 @@ Vue.use(Steps);
 Vue.use(Step);
 Vue.use(Breadcrumb);
 Vue.use(BreadcrumbItem);
+Vue.use(Tag);
 

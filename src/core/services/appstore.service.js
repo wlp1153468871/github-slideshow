@@ -1,3 +1,4 @@
+import AuthService from '@/core/services/auth.service';
 import api from './api';
 
 class AppStoreService {
@@ -35,10 +36,26 @@ class AppStoreService {
    * 上传图片
    * @param {String} data 图片数据
    */
-  async uploadImg(data) {
-    return this.api.post('/blobs', data);
+  get token() {
+    return AuthService.getToken();
   }
 
+  uploadPic(file) {
+    console.log(file);
+    return this.api
+      .request({
+        url: '/blobs',
+        method: 'post',
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+          'Content-Type': file.type,
+        },
+        data: file,
+      })
+      .then(res => {
+        return res;
+      });
+  }
   /**
    * 上传chart文件
    * @param {String} zone_id
@@ -176,6 +193,15 @@ class AppStoreService {
    */
   async getOperator(zone_id, space_id, app_id, instance_id) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/ops_log`);
+  }
+
+  /**
+   * 项目组已上架应用的所有实例列表
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+  */
+  async getAllInstances(zone_id, space_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/appinstances`);
   }
 }
 

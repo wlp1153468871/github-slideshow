@@ -24,22 +24,30 @@
           <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
           <span class="text">新建应用</span>
         </button>
-        <div class="screen">筛选器：
-          <!-- <el-tag
-            v-for="tag in tags"
+        <div class="screen" v-if="checkedApp !== [] || checkedPro !== []">筛选器：
+          <el-tag
+            v-for="tag in checkedApp"
             :key="tag.name"
             closable
+            @close="handleClose1()"
           >
-            {{tag.name}}
-          </el-tag> -->
+            {{tag}}
+          </el-tag>
+          <el-tag
+            v-for="tag in checkedPro"
+            :key="tag.name"
+            closable
+            @close="handleClose2()"
+          >
+            {{tag}}
+          </el-tag>
         </div>
       </div>
-      <el-input
-        style="width: 218px;"
-        size="small"
-        placeholder="搜索"
-        clearable
-      ></el-input>
+      <dao-input
+        search
+        v-model="key"
+        placeholder="搜索">
+      </dao-input>
       <el-button size="mini" style="margin-left: 10px">
         <span>
           <svg class="icon">
@@ -49,31 +57,39 @@
       </el-button>
     </div>
     <div class="store-server-type">
-      <span class="type-text">
-        服务类型
-      </span>
-      <div class="dao-checkbox-group type-layout">
-          <div class="dao-checkbox" v-for="item in appType" :key="item">
-            <label>
-              <input type="checkbox"/>{{ item }}
-            </label>
-          </div>
-      </div>
+      <span class="type-text">服务类型</span>
+      <el-checkbox-group v-model="checkedApp">
+        <el-checkbox
+          style="color:#3d444f"
+          v-for="(item, index) in appType"
+          :label="item"
+          :key="index"
+          class="type-layout"
+        >{{item}}
+        </el-checkbox>
+      </el-checkbox-group>
       <span class="type-text">
         供应商
       </span>
-      <div class="dao-checkbox-group" style="margin-left: 30px">
-          <div class="dao-checkbox" v-for="item in provider" :key="item">
-            <label>
-              <input type="checkbox"/>{{ item }}
-            </label>
-          </div>
-      </div>
+      <el-checkbox-group v-model="checkedPro">
+        <el-checkbox
+          style="color:#3d444f"
+          v-for="(item, index) in provider"
+          :label="item"
+          :key="index"
+          class="type-layout"
+        >{{item}}
+        </el-checkbox>
+      </el-checkbox-group>
     </div>
 
     <div class="store-item-container">
-      <!-- <div class="title">我的创建</div> -->
-
+      <div class="title">我的创建</div>
+      <div class="store-item">
+        <div v-for="(appItem, index) in applications" :key="index">
+          <AppItem :itemData="appItem"></AppItem>
+        </div>
+      </div>
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
@@ -91,8 +107,12 @@
 <script src="./appstore.js"></script>
 
 <style lang="scss" scoped>
+v-deep .el-tag {
+  background: #E4E7ED;
+}
 #appstore {
   background: #F1F3F6;
+  /* overflow: hidden; */
   /* height: 1000px; */
   .appstore-header {
     height: 160px;

@@ -209,11 +209,8 @@
             </div>
           </div>
           <div class="base-info">
-            <div class="title" style="height: 52px;padding: 20px 0 0 0;">Readme</div>
-            <!-- <div class="title1-desc">{{appInfo.content}}</div>
-             -->
-             <!-- <mark-down style="padding: 20px;">{{text}}</mark-down> -->
-             <mark-down style="padding: 20px;" v-html="text"></mark-down>
+            <div class="title" style="padding: 20px 0 20px 0px;">README</div>
+            <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down>
           </div>
         </el-tab-pane>
         <el-tab-pane label="实例" name="second">
@@ -352,7 +349,7 @@
             <div class="right-desc">{{data.email}}</div>
           </div>
           <div class="right-name">官网链接</div>
-          <div class="right-link">{{item.homeUrl}}</div>
+          <a :href="`${item.homeUrl}`" class="right-link">{{item.homeUrl}}</a>
           <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
           <!-- <button class="dao-btn delete-btn" @click="showDelete">删除版本</button> -->
           <dao-dialog

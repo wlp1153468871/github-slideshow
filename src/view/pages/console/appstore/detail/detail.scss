@@ -3,10 +3,8 @@
 }
 #appdetail {
   background: #F1F3F6;
-  // height: 100vh;
-  height: 1000px;
+  overflow: hidden;
   .detail-header {
-    height: 32px;
     background: #E6E9EF;
     .header-text {
       font-size: 14px;
@@ -60,12 +58,13 @@
     }
   }
   .base-info {
-    height: 360px;
+    overflow: hidden;
     width: 100%;
     border-bottom: 1px solid #E4E7ED;
+    padding-bottom: 15px;
     .title {
-      height: 32px;
       border-bottom: 1px solid #E4E7ED;
+      padding-bottom: 20px;
       font-size:14px;
       font-family:SFProText-Semibold,SFProText;
       font-weight:600;
@@ -103,8 +102,8 @@
       }
     }
     .desc {
-      height: 87px;
       border-bottom: 1px solid #E4E7ED;
+      padding-bottom: 15px;
       .desc-title {
         float: left;
         width: 160px;
@@ -126,7 +125,6 @@
       .app-title {
         float: left;
         width: 160px;
-        height: 230px;
         padding: 20px 0 0 0px;
         font-size: 14px;
         font-family: SFProText-Regular,SFProText;
@@ -164,7 +162,6 @@
   .right {
     float: right;
     width: 280px;
-    // height: 360px;
     margin: 20px 20px 0 0;
     padding-bottom: 20px;
     background: #fff;

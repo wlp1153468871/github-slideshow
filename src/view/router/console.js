@@ -20,6 +20,7 @@ import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
 import AppStoreYaml from '@/view/pages/console/appstore/app-form/app-yaml/app-yaml.vue';
 import newApp from '@/view/pages/console/appstore/app-form/app/app.vue';
 import AppStoreInstance from '@/view/pages/console/appstore/instance/instance.vue';
+import AllInstance from '@/view/pages/console/appstore/all-instances/all-instance.vue';
 
 // monitor
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
@@ -770,6 +771,41 @@ export default [
     meta: {
       title: '应用商店',
       icon: '#icon_store',
+      // code: 'space.store',
+      hidden: false,
+    },
+    // children: [
+    //   {
+    //     path: 'appstore/allInstance',
+    //     name: 'appstore.allInstance',
+    //     component: AllInstance,
+    //     meta: {
+    //       title: '全部实例',
+    //       icon: '#icon_container',
+    //       // code: 'space.store',
+    //       hidden: false,
+    //     },
+    //   },
+    //   {
+    //     path: 'appstore',
+    //     name: 'console.appstore',
+    //     component: AppStore,
+    //     meta: {
+    //       title: '应用商店',
+    //       icon: '#icon_store',
+    //       // code: 'space.store',
+    //       hidden: false,
+    //     },
+    //   },
+    // ],
+  },
+  {
+    path: 'appstore/allInstance',
+    name: 'appstore.allInstance',
+    component: AllInstance,
+    meta: {
+      title: '全部实例',
+      icon: '#icon_container',
       // code: 'space.store',
       hidden: false,
     },

@@ -1,4 +1,5 @@
 import { mapState } from 'vuex';
+// import { debounce } from 'lodash';
 
 import AppStoreService from '@/core/services/appstore.service';
 
@@ -11,6 +12,7 @@ export default {
   },
   data() {
     return {
+      key: '',
       baseUrl: '',
       //  应用数据
       applications: '',
@@ -25,8 +27,12 @@ export default {
       category: '全部',
       // 服务类型
       appType: [],
+      checkedApp: [],
       // 供应商
       provider: [],
+      checkedPro: [],
+
+      tags: [],
     };
   },
 
@@ -39,6 +45,18 @@ export default {
     this.init();
   },
 
+  // watch: {
+  //   key: {
+  //     handler() {
+  //       if (this.key === '') {
+  //         // this.getApplications();
+  //       } else {
+  //         this.updateKey();
+  //       }
+  //     },
+  //   },
+  // },
+
   methods: {
     linkToApp() {
       this.$router.push({ name: 'appstore.app' });
@@ -49,12 +67,30 @@ export default {
     init() {
       this.getApplications();
     },
+    // 清除tag
+    handleClose1() {
+      this.checkedApp = [];
+    },
+    handleClose2() {
+      this.checkedPro = [];
+    },
+    // 搜索
+    // updateKey: debounce(function updateKey() {
+    //   this.searchApp();
+    // }, 300),
+    // searchApp() {
+    //   this.applications = this.applications.filter(item => item.name.includes(this.key));
+    // },
+    // // 刷新
+    // fresh() {
+    //   this.key = '';
+    //   this.getApplications();
+    // },
     // list
     getApplications() {
       AppStoreService.zoneList(this.zone.id, this.space.id).then(res => {
         if (res) {
           this.applications = res;
-          console.log(res);
           this.getCategory();
         }
       }).then(() => {

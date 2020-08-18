@@ -1,4 +1,5 @@
 import { mapState } from 'vuex';
+
 import AppStoreService from '@/core/services/appstore.service';
 
 export default {
@@ -40,6 +41,7 @@ export default {
         console.log(res);
         this.options1 = res;
       });
+      console.log(this.token);
     },
 
     cancerForm() {
@@ -70,6 +72,7 @@ export default {
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {
+        this.fileList = [];
         this.fileList = [...this.fileList, file];
         this.isDisabled = false;
       }
@@ -84,11 +87,12 @@ export default {
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
-      const formData = new FormData();
-      this.fileList.forEach(file => {
-        formData.append('blob', file);
-      });
-      AppStoreService.uploadImg(formData)
+      // const formData = new FormData();
+      // this.fileList.forEach(file => {
+      //   formData.append('blob', file);
+      // });
+      const file = this.fileList[0];
+      AppStoreService.uploadPic(file)
         .then(res => {
           this.form.pictureId = res.id;
           this.createApp();
@@ -98,6 +102,7 @@ export default {
           this.$message.error(err);
         });
     },
+
 
     // 上传chart文件之前
     beforeUploadChart(file) {
