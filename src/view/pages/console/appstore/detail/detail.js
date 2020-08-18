@@ -17,6 +17,7 @@ export default {
       tableLoading: true,
 
       key: '',
+      text: '',
       loading: true,
       fileType: ['image/png'],
       fileList: [],
@@ -80,6 +81,7 @@ export default {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
           this.appInfo = res;
+          this.text = res.content;
 
           this.form.category = res.categoryId;
           this.form.name = `${res.name.split('-')[1]}`;

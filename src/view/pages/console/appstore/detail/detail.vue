@@ -212,7 +212,8 @@
             <div class="title" style="height: 52px;padding: 20px 0 0 0;">Readme</div>
             <!-- <div class="title1-desc">{{appInfo.content}}</div>
              -->
-             <mark-down v-html="appInfo.content" style="padding: 20px;"></mark-down>
+             <!-- <mark-down style="padding: 20px;">{{text}}</mark-down> -->
+             <mark-down style="padding: 20px;" v-html="text"></mark-down>
           </div>
         </el-tab-pane>
         <el-tab-pane label="实例" name="second">

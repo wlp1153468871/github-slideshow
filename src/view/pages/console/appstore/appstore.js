@@ -54,6 +54,7 @@ export default {
       AppStoreService.zoneList(this.zone.id, this.space.id).then(res => {
         if (res) {
           this.applications = res;
+          console.log(res);
           this.getCategory();
         }
       }).then(() => {
