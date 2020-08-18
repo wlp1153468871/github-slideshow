@@ -6,8 +6,8 @@
           <use :xlink:href="`#color-icon_nginx`"></use>
         </svg> -->
         <!-- backUrl(itemData.pictureUrl) -->
-        <!-- <img src="../../../../../assets/images/card-Default.png" alt="" class="icon-item"/> -->
-        <img :src="`http://jizhidev.k8s01.ats${itemData.pictureUrl}`" alt="" class="icon-item"/>
+        <img :src="`http://jizhidev.k8s01.ats${itemData.pictureUrl}`" class="icon-item" v-if="`${itemData.pictureUrl}`"/>
+        <img src="../../../../../assets/images/card-Default.png" class="icon-item"  v-else/>
       </span>
       <div class="icon-right">
         <div class="icon-item">

@@ -41,7 +41,6 @@ class AppStoreService {
   }
 
   uploadPic(file) {
-    console.log(file);
     return this.api
       .request({
         url: '/blobs',

@@ -290,11 +290,21 @@ export default {
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
-      const formData = new FormData();
-      this.fileList.forEach(file => {
-        formData.append('blob', file);
-      });
-      AppStoreService.uploadImg(formData)
+      // const formData = new FormData();
+      // this.fileList.forEach(file => {
+      //   formData.append('blob', file);
+      // });
+      // AppStoreService.uploadImg(formData)
+      //   .then(res => {
+      //     this.form.pictureId = res.id;
+      //     this.updateApp();
+      //   })
+      //   .catch(err => {
+      //     this.removeFile();
+      //     this.$message.error(err);
+      //   });
+      const file = this.fileList[0];
+      AppStoreService.uploadPic(file)
         .then(res => {
           this.form.pictureId = res.id;
           this.updateApp();

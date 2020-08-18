@@ -14,9 +14,7 @@
     <div class="left">
       <div class="left-header">
         <div style="padding: 20px;">
-          <svg class="icon icon-size">
-            <use :xlink:href="`#color-icon_nginx`"></use>
-          </svg>
+          <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" />
           <div class="header-text">{{appInfo.name}}</div>
 
           <!-- 新建的应用才有这部分 -->
