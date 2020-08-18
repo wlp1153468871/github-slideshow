@@ -63,31 +63,51 @@ export default {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
     if (!config.headers.AuthorizationScope) {
-      if (store.state.isManageView) {
-        config.headers.AuthorizationScope = JSON.stringify({
-          platform_id: 'dsp',
-        });
-      } else {
-        const { url } = config;
-        if (/spaces\//.test(url)) {
+      const { url } = config;
+      if (/spaces\//.test(url)) {
+        /* 包含`spaces/`且不包含`?zoneId` */
+        if (!config.params || (config.params && !Object.keys(config.params).map(key => key === 'zoneId'))) {
           if (store.getters.spaceId) {
             config.headers.AuthorizationScope = JSON.stringify({
               space_id: store.getters.spaceId,
             });
-          }
-        } else if (/organizations\//.test(url)) {
-          if (store.getters.spaceId) {
+          } /* 包含`spaces/` || 包含 `zoneId` */
+        } else if (config.params && Object.keys(config.params).map(key => key === 'zoneId')) {
+          if (store.getters.spaceId || store.getters.zoneId) {
             config.headers.AuthorizationScope = JSON.stringify({
-              organization_id: store.getters.orgId,
-            });
-          }
-        } else if (/zones\//.test(url)) {
-          if (store.getters.zoneId) {
-            config.headers.AuthorizationScope = JSON.stringify({
+              space_id: store.getters.spaceId,
               zone_id: store.getters.zoneId,
             });
           }
+        }/* 包含`instances/` */
+      } else if (/instances\//.test(url)) {
+        if (store.getters.spaceId || store.getters.zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+            zone_id: store.getters.zoneId,
+          });
         }
+      } else if (/zones\//.test(url)) {
+        if (store.getters.spaceId || store.getters.zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+            zone_id: store.getters.zoneId,
+          });
+        }
+      } else if (/authorizations\//.test(url)) {
+        config.headers.AuthorizationScope = JSON.stringify({
+          platform_id: 'dsp',
+        });
+      } else if (/organizations\//.test(url)) {
+        if (store.getters.orgId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            organization_id: store.getters.orgId,
+          });
+        }
+      } else if (store.state.isManageView) { // 管理视图下的操作
+        config.headers.AuthorizationScope = JSON.stringify({
+          platform_id: 'dsp',
+        });
       }
     }
     saveRefreshTime();
