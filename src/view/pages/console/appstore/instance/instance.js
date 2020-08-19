@@ -23,6 +23,7 @@ export default {
       ],
       // 实例
       instanceInfo: '',
+      appInfo: '',
       appType: '',
       operator: [],
     };
@@ -57,7 +58,7 @@ export default {
         .getApp(this.zone.id, this.space.id, this.$route.params.appid)
         .then(res => {
           if (res) {
-            this.appType = res.appType;
+            this.appInfo = res;
           }
         });
     },
@@ -67,10 +68,13 @@ export default {
         .getOperator(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
+          res.sort((a, b) => {
+            return a.revision - b.revision;
+          })
           if (res) {
-            const obj = {};
-            const owner = {};
             res.forEach((item, index) => {
+              const obj = {};
+              const owner = {};
               obj.started_at = item.created_at;
               if (index === 0) {
                 owner.name = '创建实例';

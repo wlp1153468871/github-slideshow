@@ -29,7 +29,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="所属应用" width="">tocat</el-table-column>
+        <el-table-column label="所属应用" prop="appName"></el-table-column>
         <el-table-column label="Chart 版本" prop="chartVersion" width="150"></el-table-column>
         <el-table-column label="状态" width="150">
           <template slot-scope="scope">

@@ -2,8 +2,8 @@
   <div id="servicedetail">
     <div class="layout-content-header detail-header">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
-        <el-breadcrumb-item 
-          :to="{ path: '/console/service' }" 
+        <el-breadcrumb-item
+          :to="{ path: '/console/service' }"
           class="header-text"
         >
           服务

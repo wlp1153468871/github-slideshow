@@ -13,9 +13,10 @@
     </div>
     <div class="detail-title">
       <span>
-        <svg class="icon icon-size">
+        <!-- <svg class="icon icon-size">
           <use :xlink:href="`#color-icon_microsoft`"></use>
-        </svg>
+        </svg> -->
+        <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size"/>
       </span>
       <div class="title-name">{{instanceInfo.name}}</div>
       <div class="title-desc">
@@ -27,7 +28,7 @@
           {{instanceInfo.status}}
         </div>
         <div class="title1">类型:</div>
-        <div class="title-desc-name">{{appType}}</div>
+        <div class="title-desc-name">{{appInfo.appType}}</div>
         <div class="title1">创建于:</div>
         <div class="title-desc-name">
           {{ instanceInfo.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
@@ -107,12 +108,13 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="操作记录" name="second">
-        <div class="Operation" v-for="(item, index) in operator" :key="index">
-          <div style="padding: 20px 20px 0 23px;">
+        <div class="Operation">
+          <div style="padding: 20px 20px 0 23px;" v-for="(item, index) in operator" :key="index">
             <div style="position: relative; height: 78px;">
               <div class="panel">
                 <div class="circle"></div>
                 <div class="line"></div>
+                <div class="top-line" v-show="index !== 0"></div>
               </div>
               <div class="explain">
                 <div class="title" v-if="index === 0">创建实例</div>
