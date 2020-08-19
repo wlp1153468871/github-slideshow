@@ -41,7 +41,6 @@ export default {
           this.instances = res;
           this.instanceNum();
         }
-        console.log(res);
       });
     },
     // 实例数

@@ -1,5 +1,5 @@
-#zone {
-  background: #F1F3F6;
+#service {
+  font-family: SFProText-Regular,SFProText;
   .header {
     background: #D5DBE3;
     padding-left: 10px;
@@ -10,15 +10,14 @@
     font-weight: 400;
     color: #595F69;
   }
-  .search {
-    padding: 20px 0 20px 20px;
-  }
-  .fresh {
-    float: right;
-    padding: 20px 20px 20px 0;
-  }
-  .table {
-    margin: 0 20px 20px;
+  .box {
+    padding: 20px 20px 0 20px;
+    .title {
+      font-size: 14px;
+      font-family: PingFangSC-Regular,PingFang SC;
+      font-weight: 400;
+      color: #3D444F;
+    }
   }
   .footer {
     height: 40px;

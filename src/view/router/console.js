@@ -11,6 +11,7 @@ import ServiceExample from '@/view/pages/console/service/example/example.vue';
 
 // zone
 import Zone from '@/view/pages/console/zone/zone.vue';
+import ZoneDetail from '@/view/pages/console/zone/detail/detail.vue';
 import Chart from '@/view/pages/console/zone/chart/chart.vue';
 
 // appstore
@@ -839,12 +840,18 @@ export default [
     },
   },
   {
+    path: 'zone/detail',
+    name: 'zone.detail',
+    component: ZoneDetail,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
     path: 'zone/chart',
     name: 'zone.chart',
     component: Chart,
     meta: {
-      title: 'chart管理',
-      // code: 'space.store',
       hidden: true,
     },
   },

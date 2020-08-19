@@ -11,8 +11,13 @@
       </span>
       <div class="title-name">nginx-example-1</div>
       <div class="title-desc">
-        应用版本:
-        <div class="title-desc-name">0.10</div>
+        状态:
+        <div class="title-desc-name">
+          <svg class="icon" style="color: #25D473">
+            <use :xlink:href="`#icon_status-dot-small`"></use>
+          </svg>
+          已上架
+        </div>
         <div class="title1">Chart 版本:</div>
         <div class="title-desc-name">2.6.0</div>
         <div class="title1">创建时间:</div>
@@ -150,50 +155,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AppStoreDetail',
-  data() {
-    return {
-      activeName: 'first',
-      select: 1,
-      items: [
-        {
-          text: '1.9.1',
-          value: 1,
-        },
-        {
-          text: '1.10.2',
-          value: 2,
-        },
-        {
-          text: '2.1.1',
-          value: 3,
-        },
-      ],
-      tableData: [
-        {
-          groupName: '数据应用',
-          groupUnique: 'data-app',
-          tenantName: '大数据团队',
-          tenantUnique: 'bigdata',
-          date: '2020-5-23',
-        },
-      ],
-      tableData1: [
-        {
-          exampleName: 'example',
-          chartType: '1.9.1',
-          applyName: '0.25.0',
-          tenant: 'demo/demo',
-          state: '运行中',
-          creator: 'User01',
-          date: '2020-5-23 12:34',
-        },
-      ],
-    };
-  },
-};
-</script>
+<script src="./detail.js"></script>
 
 <style lang="scss" src="./detail.scss"></style>
