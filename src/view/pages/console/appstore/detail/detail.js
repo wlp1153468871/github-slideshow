@@ -79,9 +79,13 @@ export default {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
           this.appInfo = res;
-
           this.form.category = res.categoryId;
-          this.form.name = `${res.name.split('-')[1]}`;
+          // const str = `${res.name.split('-')[1]}`;
+          if (res.isGlobal) {
+            this.form.name = res.name;
+          } else {
+            this.form.name = `${res.name.split('-')[1]}`;
+          }
           this.form.description = res.description;
         }
       });
@@ -122,6 +126,7 @@ export default {
             this.$noty.success('修改成功');
             this.editClose();
             this.getApp();
+            this.isShow = true;
           }
         });
     },

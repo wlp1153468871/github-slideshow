@@ -4,41 +4,41 @@
     <div class="box">
       <span class="title">可用区：</span>
       <dao-select
-        v-model="select"
+        v-model="zoneCat"
         size="sm"
         style="width: 160px; height: 32px; margin-right: 10px;"
       >
         <dao-option
-          v-for="item in items"
-          :key="item.value"
-          :value="item.value"
-          :label="item.text">
+          v-for="item in zones"
+          :key="item.id"
+          :value="item.name"
+          :label="item.name">
         </dao-option>
       </dao-select>
       <span class="title">状态：</span>
       <dao-select
-        v-model="select"
+        v-model="statuCat"
         size="sm"
         style="width: 90px; height: 32px; margin-right: 10px;"
       >
         <dao-option
-          v-for="item in items"
-          :key="item.value"
-          :value="item.value"
-          :label="item.text">
+          v-for="item in status"
+          :key="item.id"
+          :value="item.name"
+          :label="item.name">
         </dao-option>
       </dao-select>
       <span class="title">资源类型：</span>
       <dao-select
-        v-model="select"
+        v-model="appTypeCat"
         size="sm"
         style="width: 140px; height: 32px;"
       >
         <dao-option
-          v-for="item in items"
-          :key="item.value"
-          :value="item.value"
-          :label="item.text">
+          v-for="item in appType"
+          :key="item.name"
+          :value="item.name"
+          :label="item.name">
         </dao-option>
       </dao-select>
       <button class="dao-btn blue has-icon" style="margin-left: 10px;">
@@ -84,16 +84,23 @@
         <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
         <el-table-column label="状态" width="100">
           <template slot-scope="scope">
-            <svg class="icon" style="color: #25D473">
-              <use :xlink:href="`#icon_status-dot-small`"></use>
-            </svg>
-            <span v-if="scope.row.available === 1">已上架</span>
-            <span v-else>已下架</span>
+            <div v-if="scope.row.available === 1">
+              <svg class="icon" style="color: #25D473">
+                <use :xlink:href="`#icon_status-dot-small`"></use>
+              </svg>
+              <span>已上架</span>
+            </div>
+            <div v-else>
+              <svg class="icon" style="color: #CCD1D9">
+                <use :xlink:href="`#icon_status-dot-small`"></use>
+              </svg>
+              <span>已下架</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="类型" prop="appType" width="100"></el-table-column>
         <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
-        <el-table-column label="分类" width="200">
+        <el-table-column label="分类">
           <template slot-scope="scope">
             <span
               class="str"
@@ -111,7 +118,7 @@
         </el-table-column>
       </el-table>
       <div class="footer">
-        <div class="page">共 1 项</div>
+        <div class="page">共 {{appNumber()}} 项</div>
         <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
           <dao-dropdown
             trigger="click"

@@ -31,7 +31,7 @@
         <div class="title-desc-name">{{appInfo.appType}}</div>
         <div class="title1">创建于:</div>
         <div class="title-desc-name">
-          {{ instanceInfo.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
         </div>
       </div>
       <span class="dao-btn-group select-btn">

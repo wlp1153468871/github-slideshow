@@ -113,11 +113,17 @@
         color: #3D444F;
       }
       .desc-text {
-        padding: 20px 20px 20px 0;
+        overflow: hidden;
+        margin: 20px 20px 20px 0;
         font-size: 14px;
         font-family: PingFangSC-Regular,PingFang SC;
         font-weight: 400;
         color: #3D444F;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
       }
     }
     .app {

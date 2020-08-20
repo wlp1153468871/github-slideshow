@@ -53,6 +53,7 @@
                   <dao-input
                     v-model="form.name"
                     block
+                    :disabled="appInfo.isGlobal"
                     style="width: 98%"
                     placeholder="请输入应用名称">
                   </dao-input>
@@ -65,7 +66,7 @@
                 <div class="dao-setting-content">
                   <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
                   <div v-show="isShow">
-                    <img src="../../../../../assets/images/card-Default.png" alt="应用图标" />
+                    <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" alt="应用图标" style="width: 60px;height: 60px;"/>
                     <div>
                       <button
                         class="dao-btn red"

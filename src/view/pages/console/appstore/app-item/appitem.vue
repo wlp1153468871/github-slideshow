@@ -102,8 +102,11 @@ $appItemWidth: 31.2%;
         color:#3D444F;
         font-weight: 400;
         font-size: 12px;
-        word-break: break-all;
         overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
       .item-footer {
         position: absolute;
@@ -170,8 +173,11 @@ $appItemWidth: 31.2%;
     color:#595F69;
     font-weight: 400;
     font-size: 12px;
-    word-break: break-all;
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .item-footer {
     position: absolute;

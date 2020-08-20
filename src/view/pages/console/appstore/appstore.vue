@@ -24,7 +24,7 @@
           <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
           <span class="text">新建应用</span>
         </button>
-        <div class="screen" v-if="checkedApp !== [] || checkedPro !== []">筛选器：
+        <div class="screen" v-if="checkedApp.length || checkedPro.length">筛选器：
           <el-tag
             v-for="tag in checkedApp"
             :key="tag.name"
@@ -112,8 +112,7 @@ v-deep .el-tag {
 }
 #appstore {
   background: #F1F3F6;
-  /* overflow: hidden; */
-  /* height: 1000px; */
+  overflow: hidden;
   .appstore-header {
     height: 160px;
     background: #3D4655;
@@ -177,7 +176,6 @@ v-deep .el-tag {
     color: #3D444F;
   }
   .store-item-container {
-    position: absolute;
     display: inline-block;
     .store-item {
       display: flex;

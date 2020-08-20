@@ -56,7 +56,7 @@ export default {
         .then(res => {
           res.sort((a, b) => {
             return a.revision - b.revision;
-          })
+          });
           if (res) {
             res.forEach((item, index) => {
               const obj = {};
