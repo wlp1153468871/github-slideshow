@@ -61,22 +61,27 @@
         </el-button>
       </span>
     </div>
+    <div class="select" v-if="false">
+      <span class="number">已选择 2 项</span>
+      <button class="dao-btn" style="margin-left:10px">批量下架</button>
+      <button class="dao-btn red">批量删除</button>
+    </div>
     <div style="margin: 20px;">
       <el-table
         style="width: 100%;"
         :data="tableData"
       >
-        <el-table-column type="selection" ></el-table-column>
-        <el-table-column label="应用名称">
+        <el-table-column type="selection" width="50"></el-table-column>
+        <el-table-column label="应用名称" width="200">
           <template slot-scope="scope">
             <div style="color: #217EF2;">
               {{ scope.row.serviceName }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="可用区" prop="zone"></el-table-column>
-        <el-table-column label="供应商" prop="supplier"></el-table-column>
-        <el-table-column label="创建者" prop="supplier"></el-table-column>
+        <el-table-column label="可用区" prop="zone" width="100"></el-table-column>
+        <el-table-column label="供应商" prop="supplier" width="100"></el-table-column>
+        <el-table-column label="创建者" prop="supplier" width="100"></el-table-column>
         <el-table-column label="状态" width="100">
           <template slot-scope="scope">
             <svg class="icon" style="color: #25D473">
@@ -85,10 +90,10 @@
             <span>{{ scope.row.state }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="类型" prop="type"></el-table-column>
+        <el-table-column label="类型" prop="type" width="100"></el-table-column>
         <el-table-column label="版本数" prop="serviceNum" width="100"></el-table-column>
-        <el-table-column label="分类" prop="classify"></el-table-column>
-        <el-table-column label="创建时间" prop="date"></el-table-column>
+        <el-table-column label="分类" prop="classify" width="200"></el-table-column>
+        <el-table-column label="创建时间" prop="date" width="200"></el-table-column>
       </el-table>
       <div class="footer">
         <div class="page">共 1 项</div>
