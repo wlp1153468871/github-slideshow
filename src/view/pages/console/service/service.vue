@@ -69,31 +69,46 @@
     <div style="margin: 20px;">
       <el-table
         style="width: 100%;"
-        :data="tableData"
+        :data="appInfo"
       >
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="应用名称" width="200">
           <template slot-scope="scope">
             <div style="color: #217EF2;">
-              {{ scope.row.serviceName }}
+              {{ scope.row.name }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="可用区" prop="zone" width="100"></el-table-column>
-        <el-table-column label="供应商" prop="supplier" width="100"></el-table-column>
-        <el-table-column label="创建者" prop="supplier" width="100"></el-table-column>
+        <el-table-column label="可用区" prop="zoneName" width="100"></el-table-column>
+        <el-table-column label="供应商" prop="provider" width="100"></el-table-column>
+        <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
         <el-table-column label="状态" width="100">
           <template slot-scope="scope">
             <svg class="icon" style="color: #25D473">
               <use :xlink:href="`#icon_status-dot-small`"></use>
             </svg>
-            <span>{{ scope.row.state }}</span>
+            <span v-if="scope.row.available === 1">已上架</span>
+            <span v-else>已下架</span>
           </template>
         </el-table-column>
-        <el-table-column label="类型" prop="type" width="100"></el-table-column>
-        <el-table-column label="版本数" prop="serviceNum" width="100"></el-table-column>
-        <el-table-column label="分类" prop="classify" width="200"></el-table-column>
-        <el-table-column label="创建时间" prop="date" width="200"></el-table-column>
+        <el-table-column label="类型" prop="appType" width="100"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
+        <el-table-column label="分类" width="200">
+          <template slot-scope="scope">
+            <span
+              class="str"
+              v-for="(item, index) in scope.row.category"
+              :key="index"
+            >
+              {{item}}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" prop="date" width="200">
+          <template slot-scope="scope">
+            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          </template>
+        </el-table-column>
       </el-table>
       <div class="footer">
         <div class="page">共 1 项</div>

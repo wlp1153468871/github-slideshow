@@ -28,6 +28,14 @@
       color: #3D444F;
     }
   }
+  .str {
+    &::after{
+      content: '、';
+    }
+    &:last-child::after{
+      content: '';
+    }
+  }
   .footer {
     height: 40px;
     border-right: 1px solid #E4E7ED;

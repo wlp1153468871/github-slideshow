@@ -7,20 +7,6 @@ export default {
   data() {
     return {
       activeName: 'first',
-      tableData: [
-        {
-          resourceName: 'ngnix-example-1',
-          type: 'Deployment',
-          state: 'Created',
-          date: '2020-5-23 15:12:45',
-        },
-        {
-          resourceName: 'ngnix-example-1',
-          type: 'Deployment',
-          state: 'Created',
-          date: '2020-5-23 15:12:45',
-        },
-      ],
       // 实例
       instanceInfo: '',
       appInfo: '',
@@ -75,7 +61,7 @@ export default {
             res.forEach((item, index) => {
               const obj = {};
               const owner = {};
-              obj.started_at = item.created_at;
+              obj.started_at = item.createdAt;
               if (index === 0) {
                 owner.name = '创建实例';
               } else {

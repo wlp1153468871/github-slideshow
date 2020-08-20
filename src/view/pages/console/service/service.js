@@ -39,6 +39,8 @@ export default {
           date: '2020-05-23 12:24',
         },
       ],
+      // 应用
+      appInfo: [],
     };
   },
 
@@ -47,7 +49,7 @@ export default {
   },
 
   created() {
-    // this.getAllApp();
+    this.getAllApp();
   },
 
   methods: {
@@ -59,6 +61,7 @@ export default {
       ServiceAdmin.getAllApp().then(res => {
         if (res) {
           console.log(res);
+          this.appInfo = res;
         }
       });
     },
