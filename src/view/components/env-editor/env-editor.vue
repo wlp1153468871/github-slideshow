@@ -9,6 +9,7 @@
         :ref="'ced-' + index"
         :editable="canEdit"
         :configMaps="configMaps"
+        :isManageView='isManageView'
         @envChange="onEnvChange"
       ></container-env-editor>
       <template v-if="canEdit">
@@ -60,6 +61,10 @@ export default {
       default: () => ({}),
     },
     editable: {
+      type: Boolean,
+      default: true,
+    },
+    isManageView: {
       type: Boolean,
       default: true,
     },

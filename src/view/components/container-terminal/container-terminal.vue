@@ -26,6 +26,7 @@ import { Terminal } from 'xterm';
 import * as fit from 'xterm/dist/addons/fit/fit';
 import * as fullscreen from 'xterm/dist/addons/fullscreen/fullscreen';
 import PodService from '@/core/services/pod.service';
+import NodeService from '@/core/services/node.service';
 import TerminalHistoryService from '@/core/services/terminal-history.service';
 import SockJS from 'sockjs-client';
 import { FUll_SCREENED } from '@/core/store/mutation-types';
@@ -44,9 +45,11 @@ export default {
     autofocus: { type: Boolean },
     command: { type: String },
     screenKeys: { type: Boolean },
+    isManageView: { type: Boolean },
   },
 
   data() {
+    const { podName, namespace, zone: zoneId } = this.$route.params;
     return {
       term: null,
       alive: null,
@@ -54,6 +57,9 @@ export default {
       terminalResponse: {},
       first: true,
       keyWords: [],
+      podName,
+      namespace,
+      zoneId,
     };
   },
 
@@ -158,6 +164,14 @@ export default {
     },
 
     getPodShell() {
+      if (this.isManageView) {
+        return NodeService.getPodShell(
+          this.namespace,
+          this.podName,
+          this.container,
+          this.zoneId,
+        );
+      }
       return PodService.getPodShell({
         pod: this.pod.metadata.name,
         container: this.container,

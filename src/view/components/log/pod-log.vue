@@ -154,6 +154,7 @@ import SockJS from 'sockjs-client';
 
 import { head, union, find, keys, includes, get as getValue, throttle, intersection } from 'lodash';
 import PodService from '@/core/services/pod.service';
+import NodeService from '@/core/services/node.service';
 import draggable from 'vuedraggable';
 import LogWorker from './log.worker.js';
 
@@ -163,6 +164,7 @@ export default {
   props: {
     pod: { type: Object, default: () => ({}) },
     podName: { type: String, default: '' },
+    isManageView: { type: Boolean },
   },
 
   components: {
@@ -170,6 +172,7 @@ export default {
   },
 
   data() {
+    const { namespace, zone: zoneId } = this.$route.params;
     return {
       autoScrollActive: true,
       cacheLogs: [],
@@ -198,6 +201,8 @@ export default {
       visible: false,
       worker: null,
       ws: null,
+      namespace,
+      zoneId,
     };
   },
 
@@ -237,48 +242,67 @@ export default {
   methods: {
     connect() {
       this.loading = true;
-      PodService.getPodRealTimeLogssessionId(
-        this.space.id,
-        this.pod.metadata.name,
-        this.zone.id,
-        this.logOptions.container,
-      )
-        .then(res => {
-          this.ws = new SockJS('/app-server/ws/v1/container/log');
-          this.ws.onopen = () => {
-            this.ws.send(JSON.stringify({ Op: 'bind', SessionID: res.id }));
-            this.worker = new LogWorker();
-            this.worker.onmessage = ({ data }) => {
-              this.logs = Object.freeze([...this.logs, ...data.mapLogs]);
-              this.keys = union(this.keys, data.keys);
-            };
-          };
+      if (this.isManageView) {
+        NodeService.getPodRealTimeLogssessionId(
+          this.namespace,
+          this.pod.metadata.name,
+          this.logOptions.container,
+          this.zoneId,
+        )
+          .then(res => {
+            this.handlePodRealTimeLogs(res);
+          })
+          .catch(e => {
+            console.error(e);
+          });
+      } else {
+        PodService.getPodRealTimeLogssessionId(
+          this.space.id,
+          this.pod.metadata.name,
+          this.zone.id,
+          this.logOptions.container,
+        )
+          .then(res => {
+            this.handlePodRealTimeLogs(res);
+          })
+          .catch(e => {
+            console.error(e);
+          });
+      }
+    },
 
-          this.ws.onmessage = this.onmessage;
+    handlePodRealTimeLogs(res) {
+      this.ws = new SockJS('/app-server/ws/v1/container/log');
+      this.ws.onopen = () => {
+        this.ws.send(JSON.stringify({ Op: 'bind', SessionID: res.id }));
+        this.worker = new LogWorker();
+        this.worker.onmessage = ({ data }) => {
+          this.logs = Object.freeze([...this.logs, ...data.mapLogs]);
+          this.keys = union(this.keys, data.keys);
+        };
+      };
 
-          this.ws.onclose = () => {
-            this.loading = false;
-            this.autoScrollActive = false;
-            this.state = 'empty';
-            this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
-          };
+      this.ws.onmessage = this.onmessage;
 
-          this.ws.onerror = () => {
-            this.loading = false;
-            this.autoScrollActive = false;
-            if (this.pods.length === 0) {
-              this.state = 'empty';
-              this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
-            } else {
-              // if logs were running but something went wrong, will
-              // show what we have & give option to retry
-              this.errorWhileRunning = true;
-            }
-          };
-        })
-        .catch(e => {
-          console.error(e);
-        });
+      this.ws.onclose = () => {
+        this.loading = false;
+        this.autoScrollActive = false;
+        this.state = 'empty';
+        this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
+      };
+
+      this.ws.onerror = () => {
+        this.loading = false;
+        this.autoScrollActive = false;
+        if (this.pods.length === 0) {
+          this.state = 'empty';
+          this.emptyStateMessage = 'The logs are no longer available or could not be loaded.';
+        } else {
+          // if logs were running but something went wrong, will
+          // show what we have & give option to retry
+          this.errorWhileRunning = true;
+        }
+      };
     },
 
     disconnect() {

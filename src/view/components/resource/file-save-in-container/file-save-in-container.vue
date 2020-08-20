@@ -32,6 +32,7 @@
 import { nth } from 'lodash';
 import { saveAs } from 'file-saver';
 import PodService from '@/core/services/pod.service';
+import NodeService from '@/core/services/node.service';
 
 export default {
   name: 'file-save-in-container',
@@ -40,6 +41,7 @@ export default {
     visible: { type: Boolean, default: false },
     container: { type: Object, default: () => ({}) },
     podTemplate: { type: Object, default: () => ({}) },
+    isManageView: { type: Boolean, default: false },
   },
 
   data() {
@@ -68,22 +70,39 @@ export default {
         }
       });
     },
-
     saveFile() {
       this.isWaiting = true;
-      PodService.saveFile({
-        pod: this.podTemplate.metadata.name,
-        containerName: this.container.name,
-        path: this.path,
-      })
-        .then(res => {
-          const fileName = nth(this.path.split('/'), 1);
-          saveAs(res, `${fileName}-${Date.now()}.tar`);
+      if (this.isManageView) {
+        NodeService.saveFile(
+          this.$route.params.namespace,
+          this.podTemplate.metadata.name,
+          this.container.name,
+          this.$route.params.zone,
+          this.path,
+        )
+          .then(res => {
+            const fileName = nth(this.path.split('/'), 1);
+            saveAs(res, `${fileName}-${Date.now()}.tar`);
+          })
+          .finally(() => {
+            this.isShow = false;
+            this.isWaiting = false;
+          });
+      } else {
+        PodService.saveFile({
+          pod: this.podTemplate.metadata.name,
+          containerName: this.container.name,
+          path: this.path,
         })
-        .finally(() => {
-          this.isShow = false;
-          this.isWaiting = false;
-        });
+          .then(res => {
+            const fileName = nth(this.path.split('/'), 1);
+            saveAs(res, `${fileName}-${Date.now()}.tar`);
+          })
+          .finally(() => {
+            this.isShow = false;
+            this.isWaiting = false;
+          });
+      }
     },
 
     onClosed() {

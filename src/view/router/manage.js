@@ -27,6 +27,12 @@ const ZoneList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-list/zone-list.vue');
 const ZoneDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-detail/zone-detail.vue');
+const NodeList = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-list/node-list.vue');
+const NodeDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-detail/node-detail.vue');
+const PodsDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-detail/pod/detail/pod.vue');
 const AlarmMetricsList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/alarm/alarm-metrics/alarm-metrics.vue');
 const AuthContainer = () =>
@@ -183,6 +189,35 @@ export default [
         component: ZoneDetail,
         meta: {
           activeMenu: 'manage.zone.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'node',
+        name: 'manage.node.list',
+        component: NodeList,
+        meta: {
+          icon: '#icon_node',
+          title: '节点管理',
+          code: 'platform.node',
+          hidden: false,
+        },
+      },
+      {
+        path: 'zone/:zone/node/:node',
+        name: 'manage.node.detail',
+        component: NodeDetail,
+        meta: {
+          activeMenu: 'manage.node.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'zone/:zone/node/:node/pods/:podName',
+        name: 'manage.node.detail.pods.detail',
+        component: PodsDetail,
+        meta: {
+          activeMenu: 'manage.node.list',
           hidden: true,
         },
       },

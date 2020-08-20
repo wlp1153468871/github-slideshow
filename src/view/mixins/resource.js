@@ -6,9 +6,10 @@ import { mapState, mapGetters } from 'vuex';
 export default key => {
   return {
     data() {
-      const { name } = this.$route.params;
+      const { name, podName } = this.$route.params;
       return {
         name,
+        podName,
         template: {},
       };
     },
@@ -30,8 +31,10 @@ export default key => {
 
     methods: {
       goBack() {
-        const resource = new Resource(key);
-        this.$router.push(resource.route);
+        if (!this.podName) {
+          const resource = new Resource(key);
+          this.$router.push(resource.route);
+        }
       },
 
       getTemplate() {
