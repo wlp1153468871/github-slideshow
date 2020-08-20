@@ -521,7 +521,7 @@ export const actions = {
   },
 
   initPortal({ dispatch, commit, getters }) {
-    if (getters.pages.some(a => a === 'k8s-root' || a === 'ocp-root')) {
+    if (getters.pages.some(a => a === 'k8s-root' || a === 'ocp-root' || a === 'dce-root')) {
       return Promise.all([dispatch('loadBrokerService'), dispatch('loadAPIResource')]).then(() => {
         commit(types.INIT_TENANT_VIEW_SUCCESS);
       });
