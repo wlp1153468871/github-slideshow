@@ -62,7 +62,7 @@ class ZoneService {
   getAvailableZones(organizationId?: string) {
     return this.getZones(organizationId).then(zones => {
       // @ts-ignore
-      return zones.filter(x => x.available);
+      return zones.data.filter(x => x.available);
     });
   }
 
