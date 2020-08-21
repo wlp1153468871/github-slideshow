@@ -19,7 +19,7 @@ class ServiceService {
   // TODO: change query api
   getAvailableServices() {
     // @ts-ignore
-    return this.getServices().then(list => list.filter(x => x.available));
+    return this.getServices().then(list => list.data.filter(x => x.available));
   }
 
   updateService(id: string, zoneId: string, service: any) {
