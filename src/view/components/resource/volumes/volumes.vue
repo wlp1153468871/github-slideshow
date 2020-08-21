@@ -17,14 +17,7 @@
           <dt>Secret:</dt>
           <dd>
             <span>
-              <router-link
-                :to="{
-                  name: 'resource.secrets.detail',
-                  params: { name: volume.secret.secretName },
-                }"
-              >
                 {{ volume.secret.secretName }}
-              </router-link>
             </span>
           </dd>
           <div v-for="item in volume.secret.items" :key="item.key">

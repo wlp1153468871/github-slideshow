@@ -107,7 +107,7 @@
       </div>
     </template>
     <!-- dialog -->
-     <node-operation-dialog ref="NodeOperationDialog"></node-operation-dialog>
+     <node-operation-dialog ref="NodeOperationDialog" @updatetNodeList='getNodeDetail'></node-operation-dialog>
   </div>
 </template>
 <script src='./node-detail.js'></script>

@@ -44,7 +44,7 @@
         </el-table-column>
         <el-table-column prop="conditions" label="状态" width="150px">
           <template slot-scope="{ row: node }">
-            <x-table-status :row="node" :other="other" :text="checkCondition(node.k8sNodeStatus.conditions)">
+            <x-table-status :row="node" :other="other" :text="`${checkCondition(node.k8sNodeStatus.conditions)}${node.spec.unschedulable ? '，暂停调度': ''}`">
             </x-table-status>
           </template>
         </el-table-column>

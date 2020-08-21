@@ -74,14 +74,14 @@ export default {
       });
       this.changedData.spec.taints = taints;
       NodeService
-        .updateNode(this.node.metadata.name, this.node, this.zoneId)
+        .updateNode(this.node.metadata.name, this.changedData, this.zoneId)
         .then(() => {
           this.$noty.success('更新成功');
           this.onClose();
-          // this.$emit('updatetNodeList');
+          this.$emit('updatetNodeList');
         })
-        .catch(rej => {
-          this.$noty.error(`操作失败, 原因: ${rej.data.message}`);
+        .catch(() => {
+          this.$noty.error('操作失败');
         });
     },
     onValid(val) {

@@ -44,8 +44,8 @@ export default {
       this.catalog = [
         { label: '概览', id: 'overview' },
         { label: '系统', id: 'system' },
-        { label: '容器组', id: 'pods' },
-        { label: '事件', id: 'event' }];
+        { label: '事件', id: 'event' },
+        { label: '容器组', id: 'pods' }];
       [,,, this.activeCatalog] = [...this.catalog].reverse();
     },
 
@@ -58,7 +58,10 @@ export default {
           name: this.node.metadata.name,
           icon: '#icon_node',
           logo: '#icon_node-logo',
-          links: [{ text: this.node.metadata.name }],
+          links: [
+            { text: '节点管理', route: { name: 'manage.node.list' } },
+            { text: this.node.metadata.name },
+          ],
         };
         this.processedData = new Node(res);
       })

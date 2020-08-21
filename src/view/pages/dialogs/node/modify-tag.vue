@@ -84,7 +84,6 @@ export default {
         label: key,
         value: val,
       }));
-      console.log('labels', this.labels);
       this.tmpLabels = this.labels;
       this.valid = false;
     },
@@ -95,7 +94,7 @@ export default {
       });
       this.tmpLabels.forEach(pair => {
         if (!labels[pair.label] && labels[pair.label] !== '') {
-          labels[pair.label] = null;
+          delete labels[pair.label];
         }
       });
       this.changedData.metadata.labels = labels;

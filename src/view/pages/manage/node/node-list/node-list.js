@@ -30,7 +30,6 @@ export default {
       other: {
         status: (_, item) => (this.checkCondition(item.k8sNodeStatus.conditions) === '未就绪' ? 'DANGER' : 'SUCCESS'),
       },
-      stopSchedulingFun: true,
     };
   },
 

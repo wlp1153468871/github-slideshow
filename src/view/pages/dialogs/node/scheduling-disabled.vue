@@ -36,7 +36,7 @@ export default {
           this.onClose();
           this.$emit('updatetNodeList');
         })
-        .catch(err => {
+        .catch(() => {
           this.$noty.error(`主机 ${this.node.metadata.name} 暂停调度失败`);
         });
     },

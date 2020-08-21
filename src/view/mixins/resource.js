@@ -22,6 +22,7 @@ export default key => {
         let resourceList;
         try {
           resourceList = this.gerResourceForHeader(key, this.name);
+          if (this.podName) return true;
         } catch (e) {
           this.$router.push({ name: 'console.dashboard' });
         }

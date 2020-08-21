@@ -45,7 +45,7 @@ export default {
     autofocus: { type: Boolean },
     command: { type: String },
     screenKeys: { type: Boolean },
-    isManageView: { type: Boolean },
+    isManageView: { type: Boolean, default: false },
   },
 
   data() {

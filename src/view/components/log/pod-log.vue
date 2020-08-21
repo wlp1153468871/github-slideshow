@@ -164,7 +164,7 @@ export default {
   props: {
     pod: { type: Object, default: () => ({}) },
     podName: { type: String, default: '' },
-    isManageView: { type: Boolean },
+    isManageView: { type: Boolean, default: false },
   },
 
   components: {

@@ -66,7 +66,7 @@ export default {
     },
     isManageView: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
 
