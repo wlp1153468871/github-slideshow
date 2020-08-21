@@ -80,7 +80,6 @@ export default {
         if (res) {
           this.appInfo = res;
           this.form.category = res.categoryId;
-          // const str = `${res.name.split('-')[1]}`;
           if (res.isGlobal) {
             this.form.name = res.name;
           } else {
@@ -153,12 +152,15 @@ export default {
       this.isShow = !this.isShow;
     },
     // 更新表单
-    linktoForm() {
+    linktoForm(id) {
       this.$router.push({
         name: 'appstore.form',
         params: {
           appid: this.appInfo.id,
           version: this.chart,
+        },
+        query: {
+          instanceId: id,
         },
       });
     },
@@ -267,9 +269,6 @@ export default {
       this.configAdd = false;
     },
 
-    // removeTag(res) {
-    //   this.form.category = res;
-    // },
     // 获取实例数
     instanceNum() {
       return this.instanceTable.length;
@@ -295,19 +294,6 @@ export default {
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
-      // const formData = new FormData();
-      // this.fileList.forEach(file => {
-      //   formData.append('blob', file);
-      // });
-      // AppStoreService.uploadImg(formData)
-      //   .then(res => {
-      //     this.form.pictureId = res.id;
-      //     this.updateApp();
-      //   })
-      //   .catch(err => {
-      //     this.removeFile();
-      //     this.$message.error(err);
-      //   });
       const file = this.fileList[0];
       AppStoreService.uploadPic(file)
         .then(res => {
@@ -341,6 +327,9 @@ export default {
         .then(res => {
           if (res) {
             this.$noty.success('上传chart成功');
+            this.getApp();
+            this.getChart();
+            this.addClose();
           }
         })
         .catch(err => {

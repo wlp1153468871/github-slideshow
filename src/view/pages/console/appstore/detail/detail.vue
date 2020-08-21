@@ -207,7 +207,7 @@
               </div>
             </div>
           </div>
-          <div class="base-info">
+          <div class="base-info" v-if="appInfo.content">
             <div class="title" style="padding: 20px 0 20px 0px;">README</div>
             <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down>
           </div>
@@ -260,7 +260,7 @@
               <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
               <el-table-column label="创建时间">
                 <template slot-scope="scope">
-                      {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                  {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
                 </template>
               </el-table-column>
               <el-table-column  label="操作" width="60">
@@ -276,7 +276,7 @@
                       </svg>
                       <dao-dropdown-menu slot="list" style="min-width: 120px;">
                         <dao-dropdown-item style="margin-left: 10px">
-                          <span @click="linktoForm">使用表单更新</span>
+                          <span @click="linktoForm(scope.row.id)">使用表单更新</span>
                         </dao-dropdown-item>
                         <dao-dropdown-item style="margin-left: 10px">
                           <span @click="linktoYamlForm(scope.row.id)">使用YAML更新</span>
@@ -321,7 +321,13 @@
       </el-tabs>
     </div>
     <div class="right" >
-      <div v-for="(item, index) in applicationInfos" :key="index">
+      <div v-if="applicationInfos.length < 1" class="no-version">
+        <div class="center">
+          <div class="no">暂无版本</div>
+          <div class="add" @click="addEdition">立即添加</div>
+        </div>
+      </div>
+      <div v-for="(item, index) in applicationInfos" :key="index" v-else>
         <div v-if="chart === item.version">
           <div class="right-type">Chart 版本:</div>
           <dao-select

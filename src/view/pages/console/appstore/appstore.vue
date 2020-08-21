@@ -152,7 +152,7 @@ v-deep .el-tag {
   .store-server-type {
     float: left;
     overflow: hidden;
-    width: 240px;
+    min-width: 240px;
     .type-text {
       width:180px;
       height:12px;

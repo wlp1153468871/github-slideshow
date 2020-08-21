@@ -1,11 +1,7 @@
 <template>
-  <div class="itme-container max-screen">
+  <div class="itme-container">
     <div class="icon">
       <span class="icon-left">
-        <!-- <svg class="icon  ">
-          <use :xlink:href="`#color-icon_nginx`"></use>
-        </svg> -->
-        <!-- backUrl(itemData.pictureUrl) -->
         <img :src="`http://jizhidev.k8s01.ats${itemData.pictureUrl}`" class="icon-item" v-if="`${itemData.pictureUrl}`"/>
         <img src="../../../../../assets/images/card-Default.png" class="icon-item"  v-else/>
       </span>
@@ -53,73 +49,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 $appItemWidth: 31.2%;
-@media screen and ( min-width: 1281px){
-   .max-screen {
-     position: relative;
-      //解决不了宽高自适应的问题
-      /* width:  $appItemWidth; */
-      /* height: 192 * $appItemWidth / 260;  */
-      width: $appItemWidth;
-      height: 192px;
-      margin: 0 20px 20px 0;
-      background:rgba(255,255,255,1);
-      box-shadow: 0px 1px 2px 0px rgba(228,231,237,0.5);
-      border-radius:  6px;
-      border: 1px solid rgba(228,231,237,1);
-      .icon {
-        .icon-left {
-          .icon-item {
-            width: 32px;
-            height: 32px;
-            margin: 11px 0 0 12px;
-          }
-        }
-        .icon-right {
-          float: right;
-          margin-top: 15px;
-          height: 30px;
-        }
-      }
-      .item-name {
-        margin: 13px 12px 10px 12px;
-        height: 14px;
-        line-height: 14px;
-        font-size: 14px;
-      }
-      .item-edition {
-        /* margin: 0 12px 12 12px; */
-        margin-left: 12px;
-        margin-right: 12px;
-        margin-bottom: 12px;
-        height:12px;
-        line-height: 12px;
-        font-size: 12px;
-        font-weight:400;
-        color:#3D444F;
-      }
-      .item-desc {
-        margin: 0 12px 0 12px;
-        color:#3D444F;
-        font-weight: 400;
-        font-size: 12px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-      }
-      .item-footer {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 14px;
-        line-height: 14px;
-        margin: 0 0 12px 12px;
-        font-size: 12px;
-        color: #3D444F;
-      }
-   }
-}
 .itme-container {
   position: relative;
   //解决不了宽高自适应的问题

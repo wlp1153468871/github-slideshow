@@ -15,7 +15,7 @@
   }
   .left {
     float: left;
-    width: 740px;
+    width: 68.8%;
     margin: 20px 0 0 20px;
     background: #fff;
     .left-header {
@@ -106,7 +106,7 @@
       .desc-title {
         float: left;
         width: 160px;
-        padding: 24px 0 0 0;
+        // padding: 24px 0 0 0;
         font-size: 14px;
         font-family: SFProText-Regular,SFProText;
         font-weight: 400;
@@ -166,7 +166,8 @@
   }
   .right {
     float: right;
-    width: 280px;
+    // width: 280px;
+    width: 26%;
     margin: 20px 20px 0 0;
     padding-bottom: 20px;
     background: #fff;
@@ -219,6 +220,27 @@
     .delete-btn {
       margin: 10px 0 0 20px;
       width: 240px;
+    }
+    .no-version {
+      height: 524px;
+      .center {
+        padding-top: 250px;
+        text-align: center;
+        .no {
+          font-size: 16px;
+          font-family: PingFangSC-Regular,PingFang SC;
+          font-weight: 400;
+          color: #9BA3AF;
+        }
+        .add {
+          padding: 5px;
+          font-size: 14px;
+          font-family: PingFangSC-Regular,PingFang SC;
+          font-weight: 400;
+          color: #217EF2;
+          cursor: pointer;
+        }
+      }
     }
     .box {
       height: 80px;

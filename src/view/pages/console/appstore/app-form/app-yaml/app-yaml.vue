@@ -23,7 +23,12 @@
         </div>
       </dao-dialog>
       <span class="form-title">
-        创建服务实例 {{this.chartName}}  {{this.$route.params.version}}
+        <span v-if="this.$route.query.instanceId">
+          更新实例 {{this.chartName}}  {{this.$route.params.version}}
+        </span>
+        <span v-else>
+          创建实例 {{this.chartName}}  {{this.$route.params.version}}
+        </span>
       </span>
     </div>
     <dao-setting-layout class="basic-info">
@@ -96,7 +101,7 @@
         <button class="dao-btn blue"
           @click="updateYaml"
           v-if="this.$route.query.instanceId"
-        >确认创建</button>
+        >确认更新</button>
         <button class="dao-btn blue" @click="createYmal" v-else>确认创建</button>
       </div>
     </div>
@@ -221,7 +226,6 @@ export default {
         .updateYaml(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.yaml)
         .then(res => {
-          console.log(res);
           if (res) {
             this.$noty.success('实例更新成功');
             this.$router.go(-1);
