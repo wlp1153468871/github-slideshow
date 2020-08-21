@@ -6,7 +6,7 @@
 ::v-deep .el_tabs .el-tab-pane{
   margin: 0 0 20px 20px;
 }
-#servicedetail {
+#servicedetail1 {
   background: #fff;
   .detail-header {
     height: 32px;
@@ -46,7 +46,6 @@
       font-weight: 400;
       color: #9BA3AF;
       .title-desc-name {
-        margin-left: 10px;
         display: inline-block;
         font-weight: 400;
         color: #3D444F;
@@ -61,10 +60,41 @@
   }
   .lay-left {
     position: relative;
-    margin-top: 30px;
-    width: 800px;
-    /* height: 100vh; */
-    /* border-right: 1px solid rgb(228,231,237); */
+    overflow: hidden;
+    .border-box {
+      border: 1px solid #E4E7ED;
+      box-shadow:0px 0px 0px 1px rgba(228,231,237,1);
+      width: 760px;
+      margin-right: 20px;
+      .title {
+        border-bottom: 1px solid #E4E7ED;
+        padding: 20px;
+        font-size:14px;
+        font-family:SFProText-Semibold,SFProText;
+        font-weight:600;
+        color:#3D444F;
+      }
+      .desc {
+        border-bottom: 1px solid #E4E7ED;
+        padding-bottom: 15px;
+        .desc-title {
+          float: left;
+          width: 160px;
+          padding: 24px 0 0 0;
+          font-size: 14px;
+          font-family: SFProText-Regular,SFProText;
+          font-weight: 400;
+          color: #3D444F;
+        }
+        .desc-text {
+          padding: 20px 20px 20px 0;
+          font-size: 14px;
+          font-family: PingFangSC-Regular,PingFang SC;
+          font-weight: 400;
+          color: #3D444F;
+        }
+      }
+    }
     .desc {
       width:760px;
       height:87px;
@@ -87,6 +117,44 @@
         color: #3D444F;
         word-break: break-all;
         overflow: hidden;
+      }
+    }
+    .app {
+      overflow: hidden;
+      .app-title {
+        float: left;
+        width: 160px;
+        padding: 20px 0 0 0px;
+        font-size: 14px;
+        font-family: SFProText-Regular,SFProText;
+        font-weight: 400;
+        color: #3D444F;
+      }
+      .app-text-name {
+        float: right;
+        width: 270px;
+        padding: 20px 20px 10px 0;
+        font-size: 14px;
+        font-family: PingFangSC-Regular,PingFang SC;
+        font-weight: 400;
+        color: #3D444F;
+      }
+      .app-text-desc {
+        float: right;
+        width: 270px;
+        padding: 0 20px 0 0;
+        font-size: 14px;
+        font-family: PingFangSC-Regular,PingFang SC;
+        font-weight: 400;
+        color: #595F69;
+        .str{
+          &::after{
+            content: '、';
+          }
+          &:last-child::after{
+            content: '';
+          }
+        }
       }
     }
     .title1 {

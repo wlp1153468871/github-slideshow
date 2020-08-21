@@ -1,5 +1,5 @@
 <template>
-  <div id="servicedetail">
+  <div id="servicedetail1">
     <div class="layout-content-header detail-header">
       <div class="header-text">服务 > 服务详情(Nginx)</div>
     </div>
@@ -11,8 +11,13 @@
       </span>
       <div class="title-name">nginx-example-1</div>
       <div class="title-desc">
-        应用版本:
-        <div class="title-desc-name">0.10</div>
+        状态:
+        <div class="title-desc-name">
+          <svg class="icon" style="color: #25D473">
+            <use :xlink:href="`#icon_status-dot-small`"></use>
+          </svg>
+          已上架
+        </div>
         <div class="title1">Chart 版本:</div>
         <div class="title-desc-name">2.6.0</div>
         <div class="title1">创建时间:</div>
@@ -22,35 +27,41 @@
     <el-tabs v-model="activeName" style="position:relative;">
       <el-tab-pane label="概览" name="first">
         <div class="lay-left">
-          <div class="desc">
-            <div class="desc-title">
-              描述
+          <div class="border-box">
+            <div class="title">基本信息</div>
+            <div class="desc">
+              <div class="desc-title">应用描述</div>
+              <div class="desc-text">klansdkjahksjd</div>
             </div>
-            <div class="desc-text">
-              Nginx 是一个高性能的HTTP和反向代理服务器，也是一个 IMP/POP3/SMTP 服务器，因为它的稳定性、丰富的功能集、实例配置文件和低系统资源的消耗而闻名。
+            <div class="app">
+                <div class="app-title">应用信息</div>
+                <div class="app-text-name">分类</div>
+                <div class="app-text-name">服务类型</div>
+                <div class="app-text-desc">
+                  <!-- <template>
+                    <span
+                      class="str"
+                      v-for="(item, index) in appInfo.category"
+                      :key="index">
+                      {{item}}
+                    </span>
+                  </template> -->
+                  网络
+                </div>
+                <div class="app-text-desc">Service Broker</div>
+                <div class="app-text-name">供应商</div>
+                <div class="app-text-name">版本数</div>
+                <div class="app-text-desc">DaoCloud</div>
+                <div class="app-text-desc">3</div>
+                <div class="app-text-name">可用区</div>
+                <div class="app-text-name">Chart 仓库</div>
+                <div class="app-text-desc">上海-prod</div>
+                <div class="app-text-desc" style="padding-bottom: 20px;">office-dev</div>
             </div>
           </div>
-          <div class="title1">
-            nginx-ingress
-          </div>
-          <div class="title1-desc">
-            nginx-ingress is an Ingress controller that uses Configuration.
-            To use, add the kubernetes.io/ingress.class:nginx annotation to your ingress resources.
-          </div>
-          <div class="title1">
-            nginx-ingress
-          </div>
-          <div class="title2-desc">
-            <div class="title2-text">
-              $ helm install helm-repo>/nginx-ingress
-            </div>
-          </div>
-          <div class="title1">
-            nginx-ingress
-          </div>
-          <div class="title1-desc">
-            nginx-ingress is an Ingress controller that uses Configuration.
-            To use, add the kubernetes.io/ingress.class:nginx annotation to your ingress resources.
+          <div class="border-box" style="margin-top:20px">
+            <div class="title" style="padding: 20px 0 20px 0px;">README</div>
+            <!-- <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down> -->
           </div>
         </div>
         <div class="lay-right">
@@ -150,50 +161,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AppStoreDetail',
-  data() {
-    return {
-      activeName: 'first',
-      select: 1,
-      items: [
-        {
-          text: '1.9.1',
-          value: 1,
-        },
-        {
-          text: '1.10.2',
-          value: 2,
-        },
-        {
-          text: '2.1.1',
-          value: 3,
-        },
-      ],
-      tableData: [
-        {
-          groupName: '数据应用',
-          groupUnique: 'data-app',
-          tenantName: '大数据团队',
-          tenantUnique: 'bigdata',
-          date: '2020-5-23',
-        },
-      ],
-      tableData1: [
-        {
-          exampleName: 'example',
-          chartType: '1.9.1',
-          applyName: '0.25.0',
-          tenant: 'demo/demo',
-          state: '运行中',
-          creator: 'User01',
-          date: '2020-5-23 12:34',
-        },
-      ],
-    };
-  },
-};
-</script>
+<script src="./detail.js"></script>
 
 <style lang="scss" src="./detail.scss"></style>
