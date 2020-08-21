@@ -16,13 +16,12 @@ export default key => {
 
     computed: {
       ...mapState(['space', 'zone']),
-      ...mapGetters(['gerResourceForHeader']),
+      ...mapGetters(['getResourceForHeader']),
 
       resource() {
         let resourceList;
         try {
-          resourceList = this.gerResourceForHeader(key, this.name);
-          if (this.podName) return true;
+          resourceList = this.getResourceForHeader(key, this.name || this.podName);
         } catch (e) {
           this.$router.push({ name: 'console.dashboard' });
         }
