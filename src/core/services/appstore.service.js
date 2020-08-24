@@ -53,6 +53,9 @@ class AppStoreService {
       })
       .then(res => {
         return res;
+      })
+      .catch(() => {
+        console.log('上传出错了');
       });
   }
   /**
@@ -92,6 +95,16 @@ class AppStoreService {
    */
   async getApp(zone_id, space_id, app_id) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}`);
+  }
+
+  /**
+   * 用户获取charts（版本）列表
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   */
+  async getCharts(zone_id, space_id, app_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/application_infos`);
   }
 
   /**

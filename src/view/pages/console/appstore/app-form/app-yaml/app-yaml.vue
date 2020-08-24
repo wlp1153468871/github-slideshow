@@ -49,42 +49,44 @@
           </dao-input>
         </div>
       </div>
-      <div class="dao-setting-section" style="height: 62px;">
+      <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">版本</div>
           <div class="dao-setting-content">{{this.$route.params.version}}</div>
         </div>
       </div>
-      <div class="dao-setting-section" style="height: 95px;">
+      <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">租户和项目组</div>
           <div class="dao-setting-content">
-            <div>
+            <div class="box">
               <div class="dao-title">租户</div>
-              <div class="dao-title">项目组</div>
+              <dao-select
+                v-model="select1"
+                class="dao-option"
+                size="sm">
+                <dao-option
+                  v-for="item in tenant"
+                  :key="item.value"
+                  :value="item.index"
+                  :label="item.value">
+                </dao-option>
+              </dao-select>
             </div>
-            <dao-select
-              v-model="select1"
-              class="dao-option"
-              size="sm">
-              <dao-option
-                v-for="item in tenant"
-                :key="item.value"
-                :value="item.index"
-                :label="item.value">
-              </dao-option>
-            </dao-select>
-            <dao-select
-              v-model="select2"
-              class="dao-option"
-              size="sm">
-              <dao-option
-                v-for="item in project"
-                :key="item.value"
-                :value="item.index"
-                :label="item.value">
-              </dao-option>
-            </dao-select>
+            <div class="box">
+              <div class="dao-title">项目组</div>
+              <dao-select
+                v-model="select2"
+                class="dao-option"
+                size="sm">
+                <dao-option
+                  v-for="item in project"
+                  :key="item.value"
+                  :value="item.index"
+                  :label="item.value">
+                </dao-option>
+              </dao-select>
+            </div>
           </div>
         </div>
       </div>
@@ -251,6 +253,9 @@ export default {
 ::v-deep .dao-setting-item:last-child .dao-setting-content>:last-child.dao-select {
   margin-bottom: 0;
 }
+::v-deep .dao-setting-content>:not(:first-child):not(.dao-btn) {
+  margin-top: 0px;
+}
 .app-yamlform {
   .form-header {
     height: 52px;
@@ -282,22 +287,20 @@ export default {
       color:#3D444F;
     }
     .dao-title {
-      display: inline-block;
-      overflow: hidden;
-      width: 370px;
-      height: 14px;
-      line-height: 14px;
-      margin-right: 20px;
+      height: 20px;
+      line-height: 20px;
       font-family: SFProText-Regular,SFProText;
       font-weight: 400;
     }
     .dao-option {
+      margin: 5px 20px 0 0;
+      height: 32px;
+      width: 90%;
+    }
+    .box {
+      width: 50%;
       display: inline-block;
       overflow: hidden;
-      margin-right: 20px;
-      margin-bottom: 0;
-      height: 32px;
-      width: 370px;
     }
   }
   .yaml {

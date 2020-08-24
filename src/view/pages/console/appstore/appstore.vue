@@ -5,7 +5,8 @@
         <img src="../../../../assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
       <div class="header-title">应用商店</div>
-      <div class="header-desc">应用商店简短介绍应用商店简短介绍</div>
+      <div class="header-desc">欢迎来到DaoCloud应用商店，我们的平台提供了来自不同企业的更多的应用和chart模版，
+        并支持多终端访问，自建应用，让客户享受安全，便捷，快速的服务。</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;">
       <div class="dao-view-content">
@@ -24,12 +25,13 @@
           <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
           <span class="text">新建应用</span>
         </button>
-        <div class="screen" v-if="checkedApp.length || checkedPro.length">筛选器：
+        <div class="screen" v-if="checkedApp.length || checkedPro.length">筛选器:
           <el-tag
             v-for="tag in checkedApp"
             :key="tag.name"
             closable
             @close="handleClose1()"
+            style="margin-left: 10px"
           >
             {{tag}}
           </el-tag>
@@ -38,9 +40,11 @@
             :key="tag.name"
             closable
             @close="handleClose2()"
+            style="margin-left: 10px"
           >
             {{tag}}
           </el-tag>
+          <span class="clear" @click="clearAll()">全部清除</span>
         </div>
       </div>
       <dao-input
@@ -48,7 +52,7 @@
         v-model="key"
         placeholder="搜索">
       </dao-input>
-      <el-button size="mini" style="margin-left: 10px">
+      <el-button size="mini" style="margin-left: 10px" @click="fresh()">
         <span>
           <svg class="icon">
             <use :xlink:href="`#icon_cw`"></use>
@@ -83,10 +87,10 @@
       </el-checkbox-group>
     </div>
 
-    <div class="store-item-container">
+    <div class="store-item-container" v-if="applications.length">
       <div class="title">我的创建</div>
       <div class="store-item">
-        <div v-for="(appItem, index) in applications" :key="index">
+        <div v-for="appItem in applications" :key="appItem.id">
           <AppItem :itemData="appItem"></AppItem>
         </div>
       </div>
@@ -94,11 +98,20 @@
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
           <div class="store-item">
-            <div v-for="(appItem, index) in applications" :key="index">
+            <div v-for="appItem in applications" :key="appItem.id">
               <AppItem :itemData="appItem" v-if="appItem.category.includes(item.name)"></AppItem>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="no-item-container" v-else>
+      <div class="box">
+        <svg class="icon">
+          <use :xlink:href="`#icon_search`"></use>
+        </svg>
+        <div class="font1">找不到结果</div>
+        <div class="font2">找不到与筛选条件匹配的应用</div>
       </div>
     </div>
   </div>
@@ -128,6 +141,7 @@ v-deep .el-tag {
     .header-desc {
       padding: 40px 0 0 60px;
       height:20px;
+      width: 700px;
       font-size:14px;
       font-family:PingFangSC-Regular,PingFang SC;
       font-weight:400;
@@ -147,12 +161,20 @@ v-deep .el-tag {
   .screen {
     position: absolute;
     left: 370px;
-    top: 180px;
+    top: 175px;
+    .clear {
+      padding-left: 10px;
+      font-size: 14px;
+      font-family: PingFangSC-Regular,PingFang SC;
+      font-weight: 400;
+      color: #217EF2;
+      cursor: pointer;
+    }
   }
   .store-server-type {
     float: left;
     overflow: hidden;
-    min-width: 240px;
+    width: 240px;
     .type-text {
       width:180px;
       height:12px;
@@ -163,7 +185,8 @@ v-deep .el-tag {
       line-height:12px;
     }
     .type-layout {
-      margin: 0 0 20px 30px;
+      margin: 0 0 0 30px;
+      width: 100%;
     }
   }
   .title {
@@ -176,11 +199,47 @@ v-deep .el-tag {
     color: #3D444F;
   }
   .store-item-container {
-    display: inline-block;
+    display: block;
+    width: calc(100% - 240px);
+    float: right;
     .store-item {
       display: flex;
       flex-flow: row wrap;
       width: 100%;
+    }
+  }
+  .no-item-container {
+    display: block;
+    width: calc(100% - 240px);
+    float: right;
+    height: 500px;
+    .box {
+      padding-top: 150px;
+      text-align: center;
+      .icon{
+        width: 60px;
+        height: 60px;
+        color: #CCD1D9;
+      }
+      .font1 {
+        margin: 15px 0 0 15px;
+        height: 18px;
+        font-size: 16px;
+        font-family: PingFangSC-Regular,PingFang SC;
+        font-weight: 400;
+        color: #3D444F;
+        line-height: 18px;
+      }
+      .font2 {
+        /* margin-top: 15px; */
+        padding: 15px 0 0 15px;
+        height: 22px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular,PingFang SC;
+        font-weight: 400;
+        color: #9BA3AF;
+        line-height: 22px;
+      }
     }
   }
 

@@ -14,9 +14,9 @@
     <div class="left">
       <div class="left-header">
         <div style="padding: 20px;">
-          <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" />
+          <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+          <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
           <div class="header-text">{{appInfo.name}}</div>
-
           <!-- 新建的应用才有这部分 -->
           <dao-dropdown
             trigger="click"
@@ -66,7 +66,15 @@
                 <div class="dao-setting-content">
                   <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
                   <div v-show="isShow">
-                    <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" alt="应用图标" style="width: 60px;height: 60px;"/>
+                    <img
+                      :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`"
+                      alt="应用图标"
+                      style="width: 60px;height: 60px;"
+                      v-if="appInfo.pictureId"/>
+                    <img
+                      src="@/assets/images/card-Default.png"
+                      style="width: 60px;height: 60px;"
+                      v-else/>
                     <div>
                       <button
                         class="dao-btn red"
@@ -177,33 +185,45 @@
               <div class="desc-text">{{appInfo.description}}</div>
             </div>
             <div class="app">
-                <div class="app-title">应用信息</div>
-              <div>
-                <div class="app-text-name">分类</div>
-                <div class="app-text-name">服务类型</div>
-                <div class="app-text-desc">
-                  <template>
-                    <span
-                      class="str"
-                      v-for="(item, index) in appInfo.category"
-                      :key="index">
-                      {{item}}
-                    </span>
-                  </template>
+              <div class="app-title">应用信息</div>
+              <div class="app-box">
+                <div class="text-name">
+                  服务类型
+                  <div class="text-desc">{{appInfo.appType}}</div>
                 </div>
-                <div class="app-text-desc">{{appInfo.appType}}</div>
+                <div class="text-name">
+                  分类
+                  <div class="text-desc">
+                    <template>
+                      <span
+                        class="str"
+                        v-for="(item, index) in appInfo.category"
+                        :key="index">
+                        {{item}}
+                      </span>
+                    </template>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div class="app-text-name">供应商</div>
-                <div class="app-text-name">版本数</div>
-                <div class="app-text-desc">{{appInfo.provider}}</div>
-                <div class="app-text-desc">{{appInfo.numVersion}}</div>
+              <div class="app-box">
+                <div class="text-name">
+                  供应商
+                  <div class="text-desc">{{appInfo.provider}}</div>
+                </div>
+                <div class="text-name">
+                  版本数
+                  <div class="text-desc">{{appInfo.numVersion}}</div>
+                </div>
               </div>
-              <div>
-                <div class="app-text-name">可用区</div>
-                <div class="app-text-name">Chart 仓库</div>
-                <div class="app-text-desc">{{appInfo.zoneName}}</div>
-                <div class="app-text-desc">{{appInfo.chartRepo}}</div>
+              <div class="app-box">
+                <div class="text-name">
+                  可用区
+                  <div class="text-desc">{{appInfo.zoneName}}</div>
+                </div>
+                <div class="text-name">
+                  Chart 仓库
+                  <div class="text-desc">{{appInfo.chartRepo}}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -235,7 +255,7 @@
             >
               <el-table-column label="实例名称">
                 <template slot-scope="scope">
-                  <div style="color: #217EF2;" @click="rowClick(scope.row.id)">
+                  <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
                     {{ scope.row.name }}
                   </div>
                 </template>

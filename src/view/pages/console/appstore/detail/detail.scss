@@ -15,7 +15,7 @@
   }
   .left {
     float: left;
-    width: 68.8%;
+    width: 69%;
     margin: 20px 0 0 20px;
     background: #fff;
     .left-header {
@@ -106,7 +106,6 @@
       .desc-title {
         float: left;
         width: 160px;
-        // padding: 24px 0 0 0;
         font-size: 14px;
         font-family: SFProText-Regular,SFProText;
         font-weight: 400;
@@ -127,6 +126,7 @@
       }
     }
     .app {
+      width: 100%;
       .app-title {
         float: left;
         width: 160px;
@@ -136,29 +136,32 @@
         font-weight: 400;
         color: #3D444F;
       }
-      .app-text-name {
+      .app-box{
         float: right;
-        width: 270px;
-        padding: 20px 20px 10px 0;
-        font-size: 14px;
-        font-family: PingFangSC-Regular,PingFang SC;
-        font-weight: 400;
-        color: #3D444F;
-      }
-      .app-text-desc {
-        float: right;
-        width: 270px;
-        padding: 0 20px 0 0;
-        font-size: 14px;
-        font-family: PingFangSC-Regular,PingFang SC;
-        font-weight: 400;
-        color: #595F69;
-        .str{
-          &::after{
-            content: '、';
-          }
-          &:last-child::after{
-            content: '';
+        width: calc(100% - 160px);
+        .text-name {
+          float: left;
+          width: 50%;
+          padding-top: 20px;
+          font-size: 14px;
+          font-family: PingFangSC-Medium,PingFang SC;
+          font-weight: 500;
+          color: #3D444F;
+          .text-desc {
+            height: 20px;
+            line-height: 20px;
+            font-size: 14px;
+            font-family: PingFangSC-Regular,PingFang SC;
+            font-weight: 400;
+            color:#595F69;
+            .str{
+              &::after{
+                content: '、';
+              }
+              &:last-child::after{
+                content: '';
+              }
+            }
           }
         }
       }
@@ -166,7 +169,6 @@
   }
   .right {
     float: right;
-    // width: 280px;
     width: 26%;
     margin: 20px 20px 0 0;
     padding-bottom: 20px;
@@ -184,7 +186,7 @@
     }
     .right-select {
       height: 32px;
-      width: 240px;
+      width: 85%;
       margin: 10px 0 0 20px;
     }
     .right-name {
@@ -215,7 +217,7 @@
     }
     .right-btn {
       margin: 20px 0 0 20px;
-      width: 240px;
+      width: 85%;
     }
     .delete-btn {
       margin: 10px 0 0 20px;

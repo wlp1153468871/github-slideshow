@@ -24,7 +24,7 @@
       >
         <el-table-column label="实例名称" width="250">
           <template slot-scope="scope">
-            <div style="color: #217EF2;" @click="rowClick(scope.row.id)">
+            <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
             </div>
           </template>

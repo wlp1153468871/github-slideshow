@@ -42,42 +42,44 @@
           </dao-input>
         </div>
       </div>
-      <div class="dao-setting-section" style="height: 62px;">
+      <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">版本</div>
           <div class="dao-setting-content">{{this.$route.params.version}}</div>
         </div>
       </div>
-      <div class="dao-setting-section" style="height: 95px;">
+      <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">租户和项目组</div>
           <div class="dao-setting-content">
-            <div>
+            <div class="box">
               <div class="dao-title">租户</div>
-              <div class="dao-title">项目组</div>
+              <dao-select
+                v-model="select1"
+                class="dao-option"
+                size="sm">
+                <dao-option
+                  v-for="item in zones"
+                  :key="item.value"
+                  :value="item.index"
+                  :label="item.value">
+                </dao-option>
+              </dao-select>
             </div>
-            <dao-select
-              v-model="select1"
-              class="dao-option"
-              size="sm">
-              <dao-option
-                v-for="item in zones"
-                :key="item.value"
-                :value="item.index"
-                :label="item.value">
-              </dao-option>
-            </dao-select>
-            <dao-select
-              v-model="select2"
-              class="dao-option"
-              size="sm">
-              <dao-option
-                v-for="item in project"
-                :key="item.value"
-                :value="item.index"
-                :label="item.value">
-              </dao-option>
-            </dao-select>
+            <div class="box">
+              <div class="dao-title">项目组</div>
+              <dao-select
+                v-model="select2"
+                class="dao-option"
+                size="sm">
+                <dao-option
+                  v-for="item in project"
+                  :key="item.value"
+                  :value="item.index"
+                  :label="item.value">
+                </dao-option>
+              </dao-select>
+            </div>
           </div>
         </div>
       </div>
@@ -121,99 +123,5 @@
 
 <script src="./appform.js"></script>
 
-<style lang="scss" scoped>
-
-::v-deep .dao-setting-item:last-child .dao-setting-content>:last-child.dao-select {
-  margin-bottom: 0;
-}
-::v-deep .dao-setting-content>:not(:first-child) {
-  margin-top: 0;
-}
-::v-deep .dao-setting-content>:not(:first-child):not(.dao-btn) {
-  margin-top: 15px;
-}
-.app-form {
-  .form-header {
-    height: 52px;
-    .body {
-      padding: 20px;
-    }
-    .form-title {
-      margin-left: 20px;
-      height: 16px;
-      line-height: 32px;
-      font-size: 16px;
-      font-weight: 500;
-      color: #3D444F;
-    }
-  }
-  .basic-info {
-    margin: 20px 160px 0 160px;
-    .title-text {
-      font-size: 14px;
-      font-family: SFProText-Semibold,SFProText;
-      font-weight: 600;
-      color: #3D444F;
-    }
-    .dao-name {
-      height: 14px;
-      line-height: 14px;
-      font-family: SFProText-Regular,SFProText;
-      font-weight: 400;
-      color:#3D444F;
-    }
-    .dao-title {
-      display: inline-block;
-      overflow: hidden;
-      width: 360px;
-      height: 14px;
-      line-height: 14px;
-      margin-right: 20px;
-      font-family: SFProText-Regular,SFProText;
-      font-weight: 400;
-    }
-    .dao-option {
-      display: inline-block;
-      overflow: hidden;
-      margin-right: 20px;
-      margin-bottom: 0;
-      height: 32px;
-      width: 360px;
-    }
-  }
-  .parameter {
-    margin: 20px 160px 0 160px;
-    background: #fff;
-    min-height: 510px;
-    .header {
-      height: 50px;
-      border-bottom: 1px solid #E4E7ED;
-      .title {
-        padding: 18px 0 0 20px;
-        height: 14px;
-        line-height: 14px;
-        font-size: 14px;
-        font-family: SFProText-Semibold,SFProText;
-        font-weight: 600;
-        color: #3D444F;
-      }
-    }
-    .table {
-      margin: 20px;
-      padding-bottom: 20px;
-    }
-  }
-  .footer-lay {
-    position: relative;
-    overflow: hidden;
-    height: 50px;
-    margin: 20px 0 0 0;
-    .btn-layout {
-      position: absolute;
-      bottom: 10px;
-      right: 20px;
-    }
-  }
-}
-</style>
+<style lang="scss" src="./appform.scss" scoped></style>
 

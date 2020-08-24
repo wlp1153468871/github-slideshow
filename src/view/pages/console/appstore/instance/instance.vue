@@ -13,10 +13,8 @@
     </div>
     <div class="detail-title">
       <span>
-        <!-- <svg class="icon icon-size">
-          <use :xlink:href="`#color-icon_microsoft`"></use>
-        </svg> -->
-        <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size"/>
+        <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+        <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
       </span>
       <div class="title-name">{{instanceInfo.name}}</div>
       <div class="title-desc">
@@ -46,13 +44,13 @@
           </button>
           <dao-dropdown-menu slot="list" style="min-width: 120px;">
             <dao-dropdown-item style="margin-left: 10px">
-              <span>使用表单更新</span>
+              <span @click="linktoForm()">使用表单更新</span>
             </dao-dropdown-item>
             <dao-dropdown-item style="margin-left: 10px">
-              <span>使用YAML更新</span>
+              <span @click="linktoYamlForm()">使用YAML更新</span>
             </dao-dropdown-item>
             <dao-dropdown-item style="margin-left: 10px">
-              <span style="color: red;">删除</span>
+              <span style="color: red;" @click="deleteInstance()">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
         </dao-dropdown>
@@ -83,7 +81,7 @@
             <div class="info-desc">{{instanceInfo.chartVersion}}</div>
           </div>
         </div>
-        <div style="height: 300px; float:right; overflow: hidden; width: 300px;">
+        <div class="container2">
           <daox-info-table title="操作记录">
             <template slot="operation">
               <a href="javascript:void(0)" @click="toDetail">

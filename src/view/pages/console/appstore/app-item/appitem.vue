@@ -2,8 +2,8 @@
   <div class="itme-container">
     <div class="icon">
       <span class="icon-left">
-        <img :src="`http://jizhidev.k8s01.ats${itemData.pictureUrl}`" class="icon-item" v-if="`${itemData.pictureUrl}`"/>
-        <img src="../../../../../assets/images/card-Default.png" class="icon-item"  v-else/>
+        <img :src="`http://jizhidev.k8s01.ats${itemData.pictureUrl}`" class="icon-item" v-if="itemData.pictureId"/>
+        <img src="@/assets/images/card-Default.png" class="icon-item"  v-else/>
       </span>
       <div class="icon-right">
         <div class="icon-item">

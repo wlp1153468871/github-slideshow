@@ -67,7 +67,8 @@
   }
   .container1 {
     float: left;
-    width: 720px;
+    // width: 720px;
+    width: 70.5%;
     height: 100%;
     background: #fff;
     .c-title {
@@ -124,6 +125,12 @@
       }
     }
   }
+  .container2 {
+    height: 300px;
+    width: 28.5%;
+    float:right;
+    overflow: hidden;
+  }
   .Operation {
     height: 560px;
     background: #fff;
@@ -156,7 +163,7 @@
       position: absolute;
       float: right;
       left: 36px;
-      width: 964px;
+      width: 97%;
       height: 78px;
       background: rgba(245,247,250,1);
       border-radius: 1px;

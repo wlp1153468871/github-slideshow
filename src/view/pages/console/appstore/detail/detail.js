@@ -56,7 +56,8 @@ export default {
 
   created() {
     this.getApp();
-    this.getChart();
+    // this.getChart();
+    this.getCharts();
     this.getCategory();
     this.getInstances();
   },
@@ -80,22 +81,24 @@ export default {
         if (res) {
           this.appInfo = res;
           this.form.category = res.categoryId;
-          if (res.isGlobal) {
+
+          const length = `${res.name.split('-').length}`;
+          if (res.isGlobal || length < 2) {
             this.form.name = res.name;
           } else {
             this.form.name = `${res.name.split('-')[1]}`;
+            // if (res.name.split('-'))
           }
           this.form.description = res.description;
         }
       });
     },
-    // 获取chart
-    getChart() {
-      AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
+    getCharts() {
+      AppStoreService.getCharts(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
-          this.applicationInfos = res.applicationInfos;
+          this.applicationInfos = res;
         }
-        res.applicationInfos.forEach(item => {
+        res.forEach(item => {
           this.chart = item.version;
         });
       });
@@ -294,17 +297,23 @@ export default {
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
-      const file = this.fileList[0];
-      AppStoreService.uploadPic(file)
-        .then(res => {
-          this.form.pictureId = res.id;
-          this.updateApp();
-        })
-        .catch(err => {
-          this.removeFile();
-          this.$message.error(err);
-        });
+      if (this.fileList.length) {
+        const file = this.fileList[0];
+        AppStoreService.uploadPic(file)
+          .then(res => {
+            this.form.pictureId = res.id;
+            this.updateApp();
+          })
+          .catch(err => {
+            this.removeFile();
+            this.$noty.error(err);
+          });
+      } else {
+        this.form.pictureId = this.appInfo.pictureId;
+        this.updateApp();
+      }
     },
+
     // 上传chart文件之前
     beforeUploadChart(file) {
       if (this.chartType.indexOf(file.type) < 0) {
@@ -328,7 +337,7 @@ export default {
           if (res) {
             this.$noty.success('上传chart成功');
             this.getApp();
-            this.getChart();
+            this.getCharts();
             this.addClose();
           }
         })
