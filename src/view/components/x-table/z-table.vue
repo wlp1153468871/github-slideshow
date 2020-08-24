@@ -35,7 +35,7 @@
           ></el-input>
           <el-button
             v-if="showRefresh"
-            @click="$emit('refresh')"
+            @click="$emit('refresh', currentPage, pageSize, filterKey)"
             size="mini"
             style="margin-left: 10px;"
           >

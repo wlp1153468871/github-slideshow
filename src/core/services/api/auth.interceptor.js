@@ -67,11 +67,11 @@ export default {
       if (/spaces\//.test(url)) {
         /* 包含`spaces/`且不包含`?zoneId` */
         if (!config.params || (config.params && !Object.keys(config.params).map(key => key === 'zoneId'))) {
-          if (store.getters.spaceId) {
-            config.headers.AuthorizationScope = JSON.stringify({
-              space_id: store.getters.spaceId,
-            });
-          } /* 包含`spaces/` || 包含 `zoneId` */
+          const regex = /(?<=(spaces\/))/;
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: url.split(regex)[2].split('/')[0],
+          });
+          /* 包含`spaces/` || 包含 `zoneId` */
         } else if (config.params && Object.keys(config.params).map(key => key === 'zoneId')) {
           if (store.getters.spaceId || store.getters.zoneId) {
             config.headers.AuthorizationScope = JSON.stringify({
@@ -99,9 +99,14 @@ export default {
           platform_id: 'dsp',
         });
       } else if (/organizations\//.test(url)) {
+        const regex = /(?<=(organizations\/))/;
+        config.headers.AuthorizationScope = JSON.stringify({
+          organization_id: url.split(regex)[2].split('/')[0],
+        }); // 特殊处理url,请求路径未符合权限约定
+      } else if (/quota\/approval\//.test(url)) {
         if (store.getters.orgId) {
           config.headers.AuthorizationScope = JSON.stringify({
-            organization_id: store.getters.orgId,
+            platform_id: store.getters.orgId,
           });
         }
       } else if (store.state.isManageView) { // 管理视图下的操作
