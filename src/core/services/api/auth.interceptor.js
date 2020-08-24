@@ -64,6 +64,8 @@ export default {
     }
     if (!config.headers.AuthorizationScope) {
       const { url } = config;
+      console.log(1);
+      console.log(store.getters.orgId);
       if (/spaces\//.test(url)) {
         /* 包含`spaces/`且不包含`?zoneId` */
         if (!config.params || (config.params && !Object.keys(config.params).map(key => key === 'zoneId'))) {
@@ -99,11 +101,10 @@ export default {
           platform_id: 'dsp',
         });
       } else if (/organizations\//.test(url)) {
-        if (store.getters.orgId) {
-          config.headers.AuthorizationScope = JSON.stringify({
-            organization_id: store.getters.orgId,
-          });
-        }
+        const regex = /(?<=(organizations\/))/;
+        config.headers.AuthorizationScope = JSON.stringify({
+          organization_id: url.split(regex)[2].split('/')[0],
+        });
       } else if (store.state.isManageView) { // 管理视图下的操作
         config.headers.AuthorizationScope = JSON.stringify({
           platform_id: 'dsp',
