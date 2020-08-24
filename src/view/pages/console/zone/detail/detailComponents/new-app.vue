@@ -6,21 +6,9 @@
     </div>
     <div class="newApp-box">
       <dao-setting-layout>
-          <template slot="layout-title">
-            <div class="base-info">基本信息</div>
-          </template>
-<!--        <dao-setting-section>-->
-<!--          <template slot="label">应用名称</template>-->
-<!--          <template slot="content">-->
-<!--&lt;!&ndash;            <input class="input-width" placeholder="输入应用名称"></input>&ndash;&gt;-->
-<!--            <dao-input-->
-<!--              v-model="appName"-->
-<!--              block-->
-<!--              :class="{'demo-width': isWidthLimit}"-->
-<!--              placeholder="请输入内容">-->
-<!--            </dao-input>-->
-<!--          </template>-->
-<!--        </dao-setting-section>-->
+        <template slot="layout-title">
+          <div class="base-info">基本信息</div>
+        </template>
         <dao-setting-section>
           <template slot="label">应用图标</template>
           <template slot="content">
@@ -59,16 +47,19 @@
         <dao-setting-section>
           <template slot="label">分类</template>
           <template slot="content">
-            <dao-select
+            <el-select
+              class="category-style"
               v-model="category"
-              placeholder="选择分类">
-              <dao-option
+              placeholder="选择分类"
+              @change="handleCategory"
+              :multiple="true">
+              <el-option
                 v-for="item in classification"
-                :key="item.value"
-                :value="item.value"
-                :label="item.text">
-              </dao-option>
-            </dao-select>
+                :key="item.id"
+                :value="item.id"
+                :label="item.name">
+              </el-option>
+            </el-select>
           </template>
         </dao-setting-section>
         <dao-setting-section>
@@ -97,13 +88,13 @@
             class="upload-demo"
             ref="upload"
             action="#"
-            :http-request="handleUpload"
-            :file-list="fileList"
-            accept="image/png"
+            :http-request="handleUploadChart"
+            :file-list="chartList"
+            accept="application/zip, application/x-compressed, application/x-gzip"
             :limit="1"
-            :before-upload="beforeUpload"
+            :before-upload="beforeUploadChart"
             :on-remove="removeFile">
-            <button class="dao-btn blue">上传文件</button>
+            <button class="dao-btn blue">上传chart</button>
           </el-upload>
         </template>
       </dao-setting-section>
@@ -113,15 +104,18 @@
     <div class="footer">
       <div class="btn-style">
         <button class="dao-btn" @click="handleCancel">取消</button>
-        <button class="dao-btn blue" @click="handleCancel">确认创建</button>
+        <button class="dao-btn blue" @click="createApp">确认创建</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import Space from '../../../../manage/org/org-detail/panels/space';
   import DaoSettingSection from '../../../../../components/daox/setting-layout/setting-section';
+  import AppStoreService from '@/core/services/appstore.service';
+  import ZoneAdminService from '@/core/services/zone-admin.service';
   export default {
     name: 'new-app',
     components: { DaoSettingSection, Space },
@@ -133,12 +127,12 @@
         fileList: [], // 上传图标
         options: [{
           text: 'Helm Chart',
-          value: 1,
+          value: 'Helm Chart',
         }, {
           text: 'Helm Chart',
-          value: 2,
+          value: 'Helm Chart',
         }],
-        category: '', // 分类
+        category: [], // 分类
         classification: [{
           text: 'Helm Chart',
           value: 1,
@@ -148,9 +142,34 @@
         }],
         description: '', // 描述,
         pictureId: '', // 上传图标的id
+        fileType: ['image/png'],
+        chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
+        chartList: [],
+        appId: '',
       };
     },
+    created() {
+      this.getCategoryList();
+    },
+    computed: {
+      ...mapState(['space', 'zone', 'user']),
+    },
     methods: {
+      /**
+       * 分类改变回调函数
+       * */
+      handleCategory(val) {
+        console.log(val);
+      },
+      /**
+       * 获取分类列表
+       * */
+      getCategoryList() {
+        ZoneAdminService.getCategoryList().then(res => {
+          console.log(res);
+          this.classification = res;
+        })
+      },
       handleCancel() {
         this.$router.push({ name: 'zone.detail' });
       },
@@ -163,6 +182,7 @@
        * @returns {boolean}
        */
       beforeUpload(file) {
+        console.log('文件上传之前')
         if (this.fileType.indexOf(file.type) < 0) {
           console.log(`文件MIME: ${file.type}`);
           this.$noty.warning('请选择.png格式文件');
@@ -171,6 +191,7 @@
           this.fileList = [];
           this.fileList = [...this.fileList, file];
           this.isDisabled = false;
+          this.handleUpload();
         }
         return false;
       },
@@ -181,21 +202,98 @@
         this.$refs.upload.clearFiles();
       },
 
+      createApp() {
+        const formData = {
+          pictureId: this.pictureId,
+          appType: this.appType,
+          category: this.category,
+          description: this.description
+        }
+        ZoneAdminService.createApplication(formData).then(res => {
+          if (res) {
+            console.log(res);
+            this.appId = res.id;
+            // this.appInfo = res;
+            this.handleUploadChart();
+          }
+        });
+      },
+
       /**
-       * 文件上传
+       * 图片文件上传
        */
       handleUpload() {
         this.isDisabled = true;
         const file = this.fileList[0];
+        console.log('上传图片');
         AppStoreService.uploadPic(file)
           .then(res => {
-            this.form.pictureId = res.id;
-            this.createApp();
+            console.log(res, 'heyanfen')
+            this.pictureId = res.id;
+            // this.createApp();
           })
           .catch(err => {
             this.removeFile();
             this.$message.error(err);
           });
+      },
+
+      /**
+       * chart文件上传之前的回调函数
+       * */
+
+      beforeUploadChart(file) {
+        console.log('chart文件上传前的回调函数');
+        if (this.chartType.indexOf(file.type) < 0) {
+          console.log(`文件MIME: ${file.type}`);
+          this.$noty.warning('请选择正确的压缩格式文件');
+          this.removeFile();
+        } else {
+          this.chartList = [...this.chartList, file];
+          // this.handleUploadChart();
+        }
+        return false;
+      },
+
+      /**
+       * chart文件上传回调函数
+       */
+      handleUploadChart() {
+        const formData = new FormData();
+        this.chartList.forEach(file => {
+          formData.append('chart', file);
+        });
+        ZoneAdminService.createChart(this.appId, formData)
+          .then(res => {
+            if (res) {
+              // this.$noty.success('应用创建成功');
+              // this.$router.push({
+              //   name: 'console.appstore',
+              // });
+              console.log('应用创建成功');
+              this.$router.push({ name: 'zone.detail' });
+            }
+          })
+          .catch(err => {
+            this.removeFile();
+            this.$noty.error('创建失败');
+            ZoneAdminService.deleteApplication(this.appId).then(res => {
+              this.$message({
+                message: '由于chart文件上传失败，应用不能被创建'
+              })
+            }).catch(err => {
+              this.$message({
+                message: '删除失败',
+              });
+            });
+            this.$router.push({ name: 'zone.detail' });
+          });
+      },
+      /**
+       * 删除文件列表
+       */
+      removeFile() {
+        this.$refs.upload.clearFiles();
       },
     },
   };
@@ -261,16 +359,15 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-
-    /*display: flex;*/
-    /*flex-direction: row-reverse;*/
-    /*justify-content: flex-end;*/
-    /*align-items: center;*/
   }
   .footer .btn-style {
     position: absolute;
     top: 10px;
     left: 80%;
     display: flex;
+  }
+  .category-style {
+    width: 100%;
+    /*border: 1px solid #E4E7ED;*/
   }
 </style>

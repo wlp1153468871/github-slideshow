@@ -25,13 +25,17 @@
         <el-table-column label="chart仓库地址" prop="chartRepo" width="180"></el-table-column>
         <el-table-column label="状态" width="180">
           <template slot-scope="props">
-            <svg class="icon" :key="icon" style="color: #25D473">
+            <svg class="icon" style="color: #25D473">
               <use :xlink:href="`#icon_status-dot-small`"></use>
             </svg>
             <span>{{props.row.status}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="createdAt"></el-table-column>
+        <el-table-column label="创建时间">
+          <template slot-scope="scope">
+            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          </template>
+        </el-table-column>
       </el-table>
       <div class="footer">
         <div class="page">共 1 项</div>

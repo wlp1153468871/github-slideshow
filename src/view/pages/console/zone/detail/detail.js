@@ -1,5 +1,6 @@
 import newApp from './detailComponents/new-app'
 import ZoneAdminService from '@/core/services/zone-admin.service';
+import fa from 'element-ui/src/locale/lang/fa';
 export default {
   name: 'ZoneDetail',
   components: {
@@ -49,6 +50,10 @@ export default {
           confirmDisabled: true,
         },
       },
+      chartBaseList: {},
+      showPass: false, // 是否显示密码
+      chartTableData: [], // chart管理渲染列表
+      itemChart: [], // 展开行渲染列表
     };
   },
   created() {
@@ -60,8 +65,11 @@ export default {
      */
     getSelectZone() {
       ZoneAdminService.getSelectedZone(this.status).then(res => {
-        console.log(res, 'heyanfen');
         this.tableData = res;
+        this.tableData.forEach(item => {
+          let category = item.category.join(',');
+          item.category = category;
+        })
       })
     },
     /**
@@ -85,6 +93,16 @@ export default {
       })
     },
     /**
+     * 删除应用
+     */
+    handleClick(id) {
+      console.log('删除应用')
+      ZoneAdminService.deleteApplication(id).then(res => {
+        this.getSelectZone();
+      })
+    }
+    ,
+    /**
      * 状态搜索
      */
     changeStatus(val) {
@@ -104,15 +122,91 @@ export default {
       this.$router.push({ name: 'zone.chart' });
     },
     /**
-     * 展开行改变*/
-    expandChange(row, is) {
-      console.log(row, is)
-    },
-    /**
      * 新建一个应用按钮点击事件
      */
     handleNewApplication() {
       this.$router.push({ name: 'zone.newapp' });
+    },
+
+    /**
+     * tabsClick：选中chart管理
+     */
+    tabsClick(event) {
+      console.log(event);
+      if (event.name === 'second') {
+        this.getChartData();
+      }
+    },
+    /**
+     * 获取chart列表数据
+     */
+    getChartData() {
+      ZoneAdminService.getChartInformation().then(res => {
+        console.log(res);
+        this.chartBaseList = res;
+      })
+      this.getChartTableData();
+    },
+    /**
+     * 显示密码
+     */
+    showPassword() {
+      this.showPass = !this.showPass;
+    },
+    /**
+     * 获取chart管理的table数据
+     */
+    getChartTableData() {
+      ZoneAdminService.getChartList().then(res => {
+        console.log(res);
+        this.chartTableData = res;
+        this.changeExpand();
+      })
+    },
+    /**
+     * 展开行改变
+     */
+    changeExpand() {
+      if (this.chartTableData.length !== 0) {
+        this.chartTableData.forEach(item => {
+          ZoneAdminService.getChartVersionList(item.name).then(res => {
+            console.log(res);
+            item[item.name] = res;
+            console.log(this.chartTableData, '改变后的数组');
+          })
+        })
+      }
+    },
+    /**
+     * 删除chart版本
+     */
+    deleteChartVersion(name, version) {
+      console.log('删除chart版本');
+      ZoneAdminService.deleteChartVersion(name, version).then(res => {
+        this.getChartTableData();
+        this.changeExpand();
+      }).catch(err => {
+        this.$message({
+          message: '删除失败',
+          type: 'warning'
+        });
+      });
+    },
+    /**
+     * 下载chart版本
+     */
+    uploadChart(name, version) {
+      ZoneAdminService.uploadChart(name, version).then(res => {
+        console.log(res);
+      })
+    },
+    /**
+     * 删除所有chart版本
+     */
+    deleteChartAll(name) {
+      ZoneAdminService.deleteChartAll(name).then(res => {
+        console.log(res);
+      })
     }
   },
 };
