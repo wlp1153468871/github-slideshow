@@ -37,6 +37,7 @@
           trigger="click"
           :append-to-body="true"
           placement="bottom-start"
+          v-if="appInfo.ownerId === user.id"
         >
           <button class="dao-btn has-icons" style="width: 98px">
             <span class="text">更多操作</span>
@@ -95,14 +96,7 @@
         </div>
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">Notes</div>
-          <div class="title1-desc">{{instanceInfo.notes}}</div>
-          <!-- <el-table
-            style="width: 100%;padding: 20px;"
-            :data="tableDate"
-          >
-            <el-table-column label="key" prop="key" width="400"></el-table-column>
-            <el-table-column label="value" prop="value" width="400"></el-table-column>
-          </el-table> -->
+          <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down>
         </div>
       </el-tab-pane>
       <el-tab-pane label="操作记录" name="second">

@@ -53,6 +53,26 @@ export default {
         }
       },
     },
+    checkedApp: {
+      handler() {
+        if (this.checkedApp.length) {
+          this.applications = this.applications.filter(item =>
+            item.appType.includes(this.checkedApp[0]));
+        } else {
+          this.applications = this.appCopy;
+        }
+      },
+    },
+    checkedPro: {
+      handler() {
+        if (this.checkedPro.length) {
+          this.applications = this.applications.filter(item =>
+            item.provider.includes(this.checkedPro[0]));
+        } else {
+          this.applications = this.appCopy;
+        }
+      },
+    },
   },
 
   methods: {

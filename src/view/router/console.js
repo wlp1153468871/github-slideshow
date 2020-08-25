@@ -538,33 +538,33 @@ export default [
     },
     // 暂时的路由
     children: [
-      {
-        path: 'appstore/:appid/form/:version',
-        name: 'appstore.form',
-        component: AppStoreForm,
-        meta: {
-          hidden: true,
-          code: 'serviceBroker',
-        },
-      },
-      {
-        path: 'appstore/:appid/yamlform/:version',
-        name: 'appstore.yamlform',
-        component: AppStoreYaml,
-        meta: {
-          hidden: true,
-          code: 'serviceBroker',
-        },
-      },
-      {
-        path: 'appstore/app',
-        name: 'appstore.app',
-        component: newApp,
-        meta: {
-          hidden: true,
-          code: 'serviceBroker',
-        },
-      },
+      // {
+      //   path: 'appstore/:appid/form/:version',
+      //   name: 'appstore.form',
+      //   component: AppStoreForm,
+      //   meta: {
+      //     hidden: true,
+      //     code: 'serviceBroker',
+      //   },
+      // },
+      // {
+      //   path: 'appstore/:appid/yamlform/:version',
+      //   name: 'appstore.yamlform',
+      //   component: AppStoreYaml,
+      //   meta: {
+      //     hidden: true,
+      //     code: 'serviceBroker',
+      //   },
+      // },
+      // {
+      //   path: 'appstore/app',
+      //   name: 'appstore.app',
+      //   component: newApp,
+      //   meta: {
+      //     hidden: true,
+      //     code: 'serviceBroker',
+      //   },
+      // },
       {
         path: 'form/applications',
         name: 'deploy.applications',
@@ -764,52 +764,41 @@ export default [
       },
     ],
   },
-  // appstore
+  // 应用商店
   {
     path: 'appstore',
     name: 'console.appstore',
-    component: AppStore,
+    component: RouteView,
     meta: {
       title: '应用商店',
       icon: '#icon_store',
-      // code: 'space.store',
       hidden: false,
     },
-    // children: [
-    //   {
-    //     path: 'appstore/allInstance',
-    //     name: 'appstore.allInstance',
-    //     component: AllInstance,
-    //     meta: {
-    //       title: '全部实例',
-    //       icon: '#icon_container',
-    //       // code: 'space.store',
-    //       hidden: false,
-    //     },
-    //   },
-    //   {
-    //     path: 'appstore',
-    //     name: 'console.appstore',
-    //     component: AppStore,
-    //     meta: {
-    //       title: '应用商店',
-    //       icon: '#icon_store',
-    //       // code: 'space.store',
-    //       hidden: false,
-    //     },
-    //   },
-    // ],
-  },
-  {
-    path: 'appstore/allInstance',
-    name: 'appstore.allInstance',
-    component: AllInstance,
-    meta: {
-      title: '全部实例',
-      icon: '#icon_container',
-      // code: 'space.store',
-      hidden: false,
-    },
+    children: [
+      {
+        path: '/',
+        name: 'console.appstore.list',
+        component: AppStore,
+        meta: {
+          title: '全部应用',
+          icon: '#icon_store',
+          hidden: false,
+          public: true,
+        },
+
+      },
+      {
+        path: 'instance',
+        name: 'console.instance.list',
+        component: AllInstance,
+        meta: {
+          title: '全部实例',
+          icon: '#icon_container',
+          hidden: false,
+          public: true,
+        },
+      },
+    ],
   },
   {
     path: 'appstore/detail/:Id',
@@ -817,12 +806,37 @@ export default [
     component: AppStoreDetail,
     meta: {
       hidden: true,
+      keepAlive: true,
     },
   },
   {
-    path: 'appstore/:appid/instance/:instanceid',
+    path: '/:appid/instance/:instanceid',
     name: 'appstore.instance',
     component: AppStoreInstance,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: 'appstore/:appid/form/:version',
+    name: 'appstore.form',
+    component: AppStoreForm,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: 'appstore/:appid/yamlform/:version',
+    name: 'appstore.yamlform',
+    component: AppStoreYaml,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: 'appstore/app',
+    name: 'appstore.app',
+    component: newApp,
     meta: {
       hidden: true,
     },

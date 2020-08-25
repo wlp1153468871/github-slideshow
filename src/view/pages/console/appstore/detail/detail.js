@@ -50,14 +50,14 @@ export default {
   components: {
     MarkDown,
   },
+
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'user']),
   },
 
   created() {
     this.getApp();
-    // this.getChart();
-    this.getCharts();
+    // this.getCharts();
     this.getCategory();
     this.getInstances();
   },
@@ -70,6 +70,15 @@ export default {
         } else {
           this.updateKey();
         }
+      },
+    },
+    chart: {
+      handler() {
+        this.applicationInfos.forEach(item => {
+          if (item.version === this.chart) {
+            this.appInfo.content = item.content;
+          }
+        });
       },
     },
   },
@@ -87,19 +96,25 @@ export default {
             this.form.name = res.name;
           } else {
             this.form.name = `${res.name.split('-')[1]}`;
-            // if (res.name.split('-'))
           }
           this.form.description = res.description;
         }
+        this.getCharts()
       });
     },
+    // 拉取chart信息
     getCharts() {
       AppStoreService.getCharts(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
           this.applicationInfos = res;
+          res.forEach(item => {
+            this.chart = item.version;
+          });
         }
         res.forEach(item => {
-          this.chart = item.version;
+          if (item.version === this.chart) {
+            this.appInfo.content = item.content;
+          }
         });
       });
     },
@@ -139,7 +154,6 @@ export default {
           this.instanceTable = res;
           this.instanceNum();
         }
-        this.loading = false;
       });
     },
     // 删除某个实例

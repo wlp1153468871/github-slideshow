@@ -138,7 +138,7 @@ export default {
           this.$route.query.instanceId)
         .then(res => {
           if (res) {
-            this.instanceName = `${res.name.split('-')[1]}`;
+            this.instanceName = res.name;
           }
         });
     },

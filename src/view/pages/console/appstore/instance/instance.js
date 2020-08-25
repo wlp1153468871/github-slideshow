@@ -1,6 +1,7 @@
 import { mapState } from 'vuex';
 
 import AppStoreService from '@/core/services/appstore.service';
+import MarkDown from '@/view/components/markdown/markdown.vue';
 
 export default {
   name: 'AppStoreInstance',
@@ -15,14 +16,20 @@ export default {
     };
   },
 
+  components: {
+    MarkDown,
+  },
+
   computed: {
     ...mapState(['space', 'zone', 'user']),
   },
+
   created() {
     this.getInstanceOne();
     this.getApp();
     this.getOperator();
   },
+
   methods: {
     toDetail() {
       this.activeName = 'second';
