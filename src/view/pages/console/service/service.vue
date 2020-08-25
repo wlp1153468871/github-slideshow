@@ -1,48 +1,50 @@
 <template>
   <div id="service">
-    <div class="layout-content-header service-header">
-      服务管理
-    </div>
-    <div style="margin: 20px;">
-      可用区：
+    <div class="header">应用管理</div>
+    <div class="box">
+      <span class="title">可用区：</span>
       <dao-select
-        v-model="select"
+        v-model="zoneCat"
         size="sm"
-        style="width: 180px; height: 32px; margin-right: 10px;"
+        style="width: 160px; height: 32px; margin-right: 10px;"
       >
         <dao-option
-          v-for="item in items"
-          :key="item.value"
-          :value="item.value"
-          :label="item.text">
+          v-for="item in zones"
+          :key="item.id"
+          :value="item.name"
+          :label="item.name">
         </dao-option>
       </dao-select>
-      状态：
+      <span class="title">状态：</span>
       <dao-select
-        v-model="select"
+        v-model="statuCat"
         size="sm"
-        style="width: 120px; height: 32px; margin-right: 10px;"
+        style="width: 90px; height: 32px; margin-right: 10px;"
       >
         <dao-option
-          v-for="item in items"
-          :key="item.value"
-          :value="item.value"
-          :label="item.text">
+          v-for="item in status"
+          :key="item.id"
+          :value="item.name"
+          :label="item.name">
         </dao-option>
       </dao-select>
-      资源类型：
+      <span class="title">资源类型：</span>
       <dao-select
-        v-model="select"
+        v-model="appTypeCat"
         size="sm"
-        style="width: 160px; height: 32px;"
+        style="width: 140px; height: 32px;"
       >
         <dao-option
-          v-for="item in items"
-          :key="item.value"
-          :value="item.value"
-          :label="item.text">
+          v-for="item in appType"
+          :key="item.name"
+          :value="item.name"
+          :label="item.name">
         </dao-option>
       </dao-select>
+      <button class="dao-btn blue has-icon" style="margin-left: 10px;">
+        <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
+        <span class="text">创建应用</span>
+      </button>
       <span style="float: right;">
         <dao-input
           search
@@ -59,86 +61,92 @@
         </el-button>
       </span>
     </div>
+    <div class="select" v-if="false">
+      <span class="number">已选择 2 项</span>
+      <button class="dao-btn" style="margin-left:10px">批量下架</button>
+      <button class="dao-btn red">批量删除</button>
+    </div>
     <div style="margin: 20px;">
       <el-table
-        style="width: 100%; height: 420px;"
-        :data="tableData"
+        style="width: 100%;"
+        :data="appInfo"
       >
-        <el-table-column label="服务名" prop="serviceName" @click="linkToDetail"></el-table-column>
-        <el-table-column label="可用区" prop="zone"></el-table-column>
-        <el-table-column label="供应商" prop="supplier"></el-table-column>
-        <el-table-column label="状态" width="100">
+        <el-table-column type="selection" width="50"></el-table-column>
+        <el-table-column label="应用名称" width="200">
           <template slot-scope="scope">
-            <svg class="icon" style="color: #25D473">
-              <use :xlink:href="`#icon_status-dot-small`"></use>
-            </svg>
-            <span>{{ scope.row.state }}</span>
+            <div style="color: #217EF2;">
+              {{ scope.row.name }}
+            </div>
           </template>
         </el-table-column>
-        <el-table-column label="类型" prop="type"></el-table-column>
-        <el-table-column label="服务数" prop="serviceNum" width="100"></el-table-column>
-        <el-table-column label="分类" prop="classify"></el-table-column>
-        <el-table-column label="安装时间" prop="date"></el-table-column>
+        <el-table-column label="可用区" prop="zoneName" width="100"></el-table-column>
+        <el-table-column label="供应商" prop="provider" width="100"></el-table-column>
+        <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
+        <el-table-column label="状态" width="100">
+          <template slot-scope="scope">
+            <div v-if="scope.row.available === 1">
+              <svg class="icon" style="color: #25D473">
+                <use :xlink:href="`#icon_status-dot-small`"></use>
+              </svg>
+              <span>已上架</span>
+            </div>
+            <div v-else>
+              <svg class="icon" style="color: #CCD1D9">
+                <use :xlink:href="`#icon_status-dot-small`"></use>
+              </svg>
+              <span>已下架</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="类型" prop="appType" width="100"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
+        <el-table-column label="分类">
+          <template slot-scope="scope">
+            <span
+              class="str"
+              v-for="(item, index) in scope.row.category"
+              :key="index"
+            >
+              {{item}}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" prop="date" width="200">
+          <template slot-scope="scope">
+            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          </template>
+        </el-table-column>
       </el-table>
+      <div class="footer">
+        <div class="page">共 {{appNumber()}} 项</div>
+        <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
+          <dao-dropdown
+            trigger="click"
+            :append-to-body="true"
+            placement="bottom-start"
+          >
+            <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
+              <span class="text">10条/页</span>
+              <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
+            </button>
+            <dao-dropdown-menu slot="list" style="min-width: 120px;">
+              <dao-dropdown-item style="margin-left: 10px">
+                <span>15条/页</span>
+              </dao-dropdown-item>
+              <dao-dropdown-item style="margin-left: 10px">
+                <span>20条/页</span>
+              </dao-dropdown-item>
+              <dao-dropdown-item style="margin-left: 10px">
+                <span>25条/页</span>
+              </dao-dropdown-item>
+            </dao-dropdown-menu>
+          </dao-dropdown>
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Service',
-  data() {
-    return {
-      select: 1,
-      items: [
-        {
-          text: '全部',
-          value: 1,
-        },
-        {
-          text: '选项1',
-          value: 2,
-        },
-      ],
-      tableData: [
-        {
-          serviceName: 'ectd',
-          zone: '上海-dev',
-          supplier: 'RedHat',
-          state: '已上架',
-          type: 'Operator',
-          serviceNum: 1,
-          classify: '数据库',
-          date: '2020-05-23 12:24',
-        },
-        {
-          serviceName: 'ectd',
-          zone: '上海-dev',
-          supplier: 'RedHat',
-          state: '已上架',
-          type: 'Operator',
-          serviceNum: 1,
-          classify: '数据库',
-          date: '2020-05-23 12:24',
-        },
-      ],
-    };
-  },
-  methods: {
-    linkToDetail() {
-      this.$router.push({ name: 'service.detail' });
-    },
-  },
-};
-</script>
+<script src="./service.js"></script>
 
-<style lang="scss" scoped>
-#service {
-  box-shadow: 0px -1px 0px 0px rgba(228,231,237,1);
-  font-size: 14px;
-  font-family: SFProText-Regular,SFProText;
-  font-weight: 400;
-  color: rgba(89,95,105,1);
-  border-bottom: 1px solid rgb(228,231,237);
-}
-</style>
+<style lang="scss" src="./service.scss" scoped></style>

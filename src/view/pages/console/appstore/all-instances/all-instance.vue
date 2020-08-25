@@ -24,12 +24,12 @@
       >
         <el-table-column label="实例名称" width="250">
           <template slot-scope="scope">
-            <div style="color: #217EF2;" @click="rowClick(scope.row.id)">
+            <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="所属应用" width="">tocat</el-table-column>
+        <el-table-column label="所属应用" prop="appName"></el-table-column>
         <el-table-column label="Chart 版本" prop="chartVersion" width="150"></el-table-column>
         <el-table-column label="状态" width="150">
           <template slot-scope="scope">
@@ -50,7 +50,7 @@
         <el-table-column label="创建者" prop="ownerName"></el-table-column>
         <el-table-column label="创建时间" >
           <template slot-scope="scope">
-                {{ scope.row.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
+            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
           </template>
         </el-table-column>
       </el-table>

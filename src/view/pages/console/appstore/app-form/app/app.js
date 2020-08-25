@@ -87,20 +87,22 @@ export default {
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
-      // const formData = new FormData();
-      // this.fileList.forEach(file => {
-      //   formData.append('blob', file);
-      // });
-      const file = this.fileList[0];
-      AppStoreService.uploadPic(file)
-        .then(res => {
-          this.form.pictureId = res.id;
-          this.createApp();
-        })
-        .catch(err => {
-          this.removeFile();
-          this.$message.error(err);
-        });
+      // let file;
+      console.log(this.fileList.length);
+      if (this.fileList.length) {
+        const file = this.fileList[0];
+        AppStoreService.uploadPic(file)
+          .then(res => {
+            this.form.pictureId = res.id;
+            this.createApp();
+          })
+          .catch(() => {
+            this.removeFile();
+            this.$noty.error('图片上传失败或未上传图片');
+          });
+      } else {
+        this.createApp();
+      }
     },
 
 

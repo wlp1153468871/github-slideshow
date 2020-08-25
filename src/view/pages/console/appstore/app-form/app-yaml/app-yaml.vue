@@ -23,7 +23,12 @@
         </div>
       </dao-dialog>
       <span class="form-title">
-        创建服务实例 {{this.chartName}}  {{this.$route.params.version}}
+        <span v-if="this.$route.query.instanceId">
+          更新实例 {{this.chartName}}  {{this.$route.params.version}}
+        </span>
+        <span v-else>
+          创建实例 {{this.chartName}}  {{this.$route.params.version}}
+        </span>
       </span>
     </div>
     <dao-setting-layout class="basic-info">
@@ -44,42 +49,44 @@
           </dao-input>
         </div>
       </div>
-      <div class="dao-setting-section" style="height: 62px;">
+      <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">版本</div>
           <div class="dao-setting-content">{{this.$route.params.version}}</div>
         </div>
       </div>
-      <div class="dao-setting-section" style="height: 95px;">
+      <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">租户和项目组</div>
           <div class="dao-setting-content">
-            <div>
+            <div class="box">
               <div class="dao-title">租户</div>
-              <div class="dao-title">项目组</div>
+              <dao-select
+                v-model="select1"
+                class="dao-option"
+                size="sm">
+                <dao-option
+                  v-for="item in tenant"
+                  :key="item.value"
+                  :value="item.index"
+                  :label="item.value">
+                </dao-option>
+              </dao-select>
             </div>
-            <dao-select
-              v-model="select1"
-              class="dao-option"
-              size="sm">
-              <dao-option
-                v-for="item in tenant"
-                :key="item.value"
-                :value="item.index"
-                :label="item.value">
-              </dao-option>
-            </dao-select>
-            <dao-select
-              v-model="select2"
-              class="dao-option"
-              size="sm">
-              <dao-option
-                v-for="item in project"
-                :key="item.value"
-                :value="item.index"
-                :label="item.value">
-              </dao-option>
-            </dao-select>
+            <div class="box">
+              <div class="dao-title">项目组</div>
+              <dao-select
+                v-model="select2"
+                class="dao-option"
+                size="sm">
+                <dao-option
+                  v-for="item in project"
+                  :key="item.value"
+                  :value="item.index"
+                  :label="item.value">
+                </dao-option>
+              </dao-select>
+            </div>
           </div>
         </div>
       </div>
@@ -96,7 +103,7 @@
         <button class="dao-btn blue"
           @click="updateYaml"
           v-if="this.$route.query.instanceId"
-        >确认创建</button>
+        >确认更新</button>
         <button class="dao-btn blue" @click="createYmal" v-else>确认创建</button>
       </div>
     </div>
@@ -221,7 +228,6 @@ export default {
         .updateYaml(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.yaml)
         .then(res => {
-          console.log(res);
           if (res) {
             this.$noty.success('实例更新成功');
             this.$router.go(-1);
@@ -246,6 +252,9 @@ export default {
 
 ::v-deep .dao-setting-item:last-child .dao-setting-content>:last-child.dao-select {
   margin-bottom: 0;
+}
+::v-deep .dao-setting-content>:not(:first-child):not(.dao-btn) {
+  margin-top: 0px;
 }
 .app-yamlform {
   .form-header {
@@ -278,22 +287,20 @@ export default {
       color:#3D444F;
     }
     .dao-title {
-      display: inline-block;
-      overflow: hidden;
-      width: 370px;
-      height: 14px;
-      line-height: 14px;
-      margin-right: 20px;
+      height: 20px;
+      line-height: 20px;
       font-family: SFProText-Regular,SFProText;
       font-weight: 400;
     }
     .dao-option {
+      margin: 5px 20px 0 0;
+      height: 32px;
+      width: 90%;
+    }
+    .box {
+      width: 50%;
       display: inline-block;
       overflow: hidden;
-      margin-right: 20px;
-      margin-bottom: 0;
-      height: 32px;
-      width: 370px;
     }
   }
   .yaml {

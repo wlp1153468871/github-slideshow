@@ -13,9 +13,8 @@
     </div>
     <div class="detail-title">
       <span>
-        <svg class="icon icon-size">
-          <use :xlink:href="`#color-icon_microsoft`"></use>
-        </svg>
+        <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+        <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
       </span>
       <div class="title-name">{{instanceInfo.name}}</div>
       <div class="title-desc">
@@ -27,10 +26,10 @@
           {{instanceInfo.status}}
         </div>
         <div class="title1">类型:</div>
-        <div class="title-desc-name">{{appType}}</div>
+        <div class="title-desc-name">{{appInfo.appType}}</div>
         <div class="title1">创建于:</div>
         <div class="title-desc-name">
-          {{ instanceInfo.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
         </div>
       </div>
       <span class="dao-btn-group select-btn">
@@ -45,13 +44,13 @@
           </button>
           <dao-dropdown-menu slot="list" style="min-width: 120px;">
             <dao-dropdown-item style="margin-left: 10px">
-              <span>使用表单更新</span>
+              <span @click="linktoForm()">使用表单更新</span>
             </dao-dropdown-item>
             <dao-dropdown-item style="margin-left: 10px">
-              <span>使用YAML更新</span>
+              <span @click="linktoYamlForm()">使用YAML更新</span>
             </dao-dropdown-item>
             <dao-dropdown-item style="margin-left: 10px">
-              <span style="color: red;">删除</span>
+              <span style="color: red;" @click="deleteInstance()">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
         </dao-dropdown>
@@ -82,7 +81,7 @@
             <div class="info-desc">{{instanceInfo.chartVersion}}</div>
           </div>
         </div>
-        <div style="height: 300px; float:right; overflow: hidden; width: 300px;">
+        <div class="container2">
           <daox-info-table title="操作记录">
             <template slot="operation">
               <a href="javascript:void(0)" @click="toDetail">
@@ -107,12 +106,13 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="操作记录" name="second">
-        <div class="Operation" v-for="(item, index) in operator" :key="index">
-          <div style="padding: 20px 20px 0 23px;">
+        <div class="Operation">
+          <div style="padding: 20px 20px 0 23px;" v-for="(item, index) in operator" :key="index">
             <div style="position: relative; height: 78px;">
               <div class="panel">
                 <div class="circle"></div>
                 <div class="line"></div>
+                <div class="top-line" v-show="index !== 0"></div>
               </div>
               <div class="explain">
                 <div class="title" v-if="index === 0">创建实例</div>

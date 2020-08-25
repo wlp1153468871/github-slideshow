@@ -1,0 +1,90 @@
+::v-deep .dao-setting-item:last-child .dao-setting-content>:last-child.dao-select {
+  margin-bottom: 0;
+}
+::v-deep .dao-setting-content>:not(:first-child) {
+  margin-top: 0;
+}
+::v-deep .dao-setting-content>:not(:first-child):not(.dao-btn) {
+  margin-top: 0px;
+}
+.app-form {
+  .form-header {
+    height: 52px;
+    .body {
+      padding: 20px;
+    }
+    .form-title {
+      margin-left: 20px;
+      height: 16px;
+      line-height: 32px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #3D444F;
+    }
+  }
+  .basic-info {
+    margin: 20px 160px 0 160px;
+    .title-text {
+      font-size: 14px;
+      font-family: SFProText-Semibold,SFProText;
+      font-weight: 600;
+      color: #3D444F;
+    }
+    .dao-name {
+      height: 14px;
+      line-height: 14px;
+      font-family: SFProText-Regular,SFProText;
+      font-weight: 400;
+      color:#3D444F;
+    }
+    .dao-title {
+      height: 20px;
+      line-height: 20px;
+      font-family: SFProText-Regular,SFProText;
+      font-weight: 400;
+    }
+    .dao-option {
+      margin: 5px 20px 0 0;
+      height: 32px;
+      width: 90%;
+    }
+    .box {
+      width: 50%;
+      display: inline-block;
+      overflow: hidden;
+    }
+  }
+  .parameter {
+    margin: 20px 160px 0 160px;
+    background: #fff;
+    min-height: 510px;
+    .header {
+      height: 50px;
+      border-bottom: 1px solid #E4E7ED;
+      .title {
+        padding: 18px 0 0 20px;
+        height: 14px;
+        line-height: 14px;
+        font-size: 14px;
+        font-family: SFProText-Semibold,SFProText;
+        font-weight: 600;
+        color: #3D444F;
+      }
+    }
+    .table {
+      margin: 20px;
+      padding-bottom: 20px;
+    }
+  }
+  .footer-lay {
+    position: relative;
+    overflow: hidden;
+    height: 50px;
+    margin: 20px 0 0 0;
+    .btn-layout {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+    }
+  }
+}

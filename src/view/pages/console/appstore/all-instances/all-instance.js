@@ -41,7 +41,6 @@ export default {
           this.instances = res;
           this.instanceNum();
         }
-        console.log(res);
       });
     },
     // 实例数
@@ -52,11 +51,17 @@ export default {
     // 暂时缺少appid
     // 实例跳转
     rowClick(id) {
-      console.log(id);
+      let appId = '';
+      this.instances.forEach(item => {
+        if (item.id === id) {
+          appId = item.appId;
+        }
+      });
+      console.log(appId);
       this.$router.push({
         name: 'appstore.instance',
         params: {
-          appid: this.appInfo.id,
+          appid: appId,
           instanceid: id,
         },
       });

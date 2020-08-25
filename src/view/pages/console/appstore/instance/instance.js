@@ -7,22 +7,9 @@ export default {
   data() {
     return {
       activeName: 'first',
-      tableData: [
-        {
-          resourceName: 'ngnix-example-1',
-          type: 'Deployment',
-          state: 'Created',
-          date: '2020-5-23 15:12:45',
-        },
-        {
-          resourceName: 'ngnix-example-1',
-          type: 'Deployment',
-          state: 'Created',
-          date: '2020-5-23 15:12:45',
-        },
-      ],
       // 实例
       instanceInfo: '',
+      appInfo: '',
       appType: '',
       operator: [],
     };
@@ -39,6 +26,47 @@ export default {
   methods: {
     toDetail() {
       this.activeName = 'second';
+    },
+    // 表单更新
+    linktoForm() {
+      this.$router.push({
+        name: 'appstore.form',
+        params: {
+          appid: this.$route.params.appid,
+          version: this.instanceInfo.chartVersion,
+        },
+        query: {
+          instanceId: this.$route.params.instanceid,
+        },
+      });
+    },
+    // Yaml更新
+    linktoYamlForm() {
+      this.$router.push({
+        name: 'appstore.yamlform',
+        params: {
+          appid: this.$route.params.appid,
+          version: this.instanceInfo.chartVersion,
+        },
+        query: {
+          instanceId: this.$route.params.instanceid,
+        },
+      });
+    },
+    // 删除实例
+    deleteInstance() {
+      AppStoreService
+        .deleteInstance(this.zone.id, this.space.id,
+          this.$route.params.appid, this.$route.params.instanceid)
+        .then(() => {
+          this.$noty.success('实例删除成功');
+          this.$router.push({
+            name: 'appstore.detail',
+            params: {
+              Id: this.$route.params.appid,
+            },
+          });
+        });
     },
     // 获取实例详情
     getInstanceOne() {
@@ -57,7 +85,7 @@ export default {
         .getApp(this.zone.id, this.space.id, this.$route.params.appid)
         .then(res => {
           if (res) {
-            this.appType = res.appType;
+            this.appInfo = res;
           }
         });
     },
@@ -67,11 +95,14 @@ export default {
         .getOperator(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
+          res.sort((a, b) => {
+            return a.revision - b.revision;
+          });
           if (res) {
-            const obj = {};
-            const owner = {};
             res.forEach((item, index) => {
-              obj.started_at = item.created_at;
+              const obj = {};
+              const owner = {};
+              obj.started_at = item.createdAt;
               if (index === 0) {
                 owner.name = '创建实例';
               } else {

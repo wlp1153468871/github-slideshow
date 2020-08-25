@@ -1,5 +1,5 @@
 import { mapState } from 'vuex';
-// import { debounce } from 'lodash';
+import { debounce } from 'lodash';
 
 import AppStoreService from '@/core/services/appstore.service';
 
@@ -13,7 +13,6 @@ export default {
   data() {
     return {
       key: '',
-      baseUrl: '',
       //  应用数据
       applications: '',
       //  分类
@@ -31,8 +30,7 @@ export default {
       // 供应商
       provider: [],
       checkedPro: [],
-
-      tags: [],
+      appCopy: '',
     };
   },
 
@@ -45,17 +43,17 @@ export default {
     this.init();
   },
 
-  // watch: {
-  //   key: {
-  //     handler() {
-  //       if (this.key === '') {
-  //         // this.getApplications();
-  //       } else {
-  //         this.updateKey();
-  //       }
-  //     },
-  //   },
-  // },
+  watch: {
+    key: {
+      handler() {
+        if (this.key === '') {
+          this.applications = this.appCopy;
+        } else {
+          this.updateKey();
+        }
+      },
+    },
+  },
 
   methods: {
     linkToApp() {
@@ -67,6 +65,7 @@ export default {
     init() {
       this.getApplications();
     },
+
     // 清除tag
     handleClose1() {
       this.checkedApp = [];
@@ -74,23 +73,30 @@ export default {
     handleClose2() {
       this.checkedPro = [];
     },
+    clearAll() {
+      this.checkedApp = [];
+      this.checkedPro = [];
+    },
+
     // 搜索
-    // updateKey: debounce(function updateKey() {
-    //   this.searchApp();
-    // }, 300),
-    // searchApp() {
-    //   this.applications = this.applications.filter(item => item.name.includes(this.key));
-    // },
-    // // 刷新
-    // fresh() {
-    //   this.key = '';
-    //   this.getApplications();
-    // },
+    updateKey: debounce(function updateKey() {
+      this.searchApp();
+    }, 300),
+    searchApp() {
+      this.applications = this.applications.filter(item => item.name.includes(this.key));
+    },
+    // 刷新
+    fresh() {
+      this.key = '';
+      this.applications = this.appCopy;
+    },
+
     // list
     getApplications() {
       AppStoreService.zoneList(this.zone.id, this.space.id).then(res => {
         if (res) {
           this.applications = res;
+          this.appCopy = res;
           this.getCategory();
         }
       }).then(() => {
