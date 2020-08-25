@@ -83,30 +83,31 @@
       </div>
     </div>
 
-    <div
-      v-if="detailed && container.volumeMounts"
-      v-for="(mount, mountIndex) in container.volumeMounts"
-      class="icon-row"
-      :key="mountIndex"
-    >
-      <div class="icon-wrap">
-        <svg class="icon">
-          <use xlink:href="#icon_inbox"></use>
-        </svg>
-      </div>
-      <div class="pod-template-detail word-break">
-        <span class="pod-template-key">Mount:</span>
-        <span>
-          {{ mount.name }}
-          <template v-if="mount.subPath">, subpath {{ mount.subPath }}</template>
-          <svg class="icon text-muted">
-            <use xlink:href="#icon_arrow-right"></use>
+    <div class="outside" v-if="detailed && container.volumeMounts">
+      <div
+        v-for="(mount, mountIndex) in container.volumeMounts"
+        class="icon-row"
+        :key="mountIndex"
+      >
+        <div class="icon-wrap">
+          <svg class="icon">
+            <use xlink:href="#icon_inbox"></use>
           </svg>
-          {{ mount.mountPath }}
-          <small class="text-muted">
-            ({{ mount | volume_mount_mode(podTemplate.spec.volumes) }})
-          </small>
-        </span>
+        </div>
+        <div class="pod-template-detail word-break">
+          <span class="pod-template-key">Mount:</span>
+          <span>
+            {{ mount.name }}
+            <template v-if="mount.subPath">, subpath {{ mount.subPath }}</template>
+            <svg class="icon text-muted">
+              <use xlink:href="#icon_arrow-right"></use>
+            </svg>
+            {{ mount.mountPath }}
+            <small class="text-muted">
+              ({{ mount | volume_mount_mode(podTemplate.spec.volumes) }})
+            </small>
+          </span>
+        </div>
       </div>
     </div>
 

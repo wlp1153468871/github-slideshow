@@ -5,11 +5,13 @@
     </div>
     <div class="dao-view-main">
       <div class="dao-view-content">
-        <x-table
+        <z-table
           :showRefresh="this.$can('platform.organization.get')"
           :loading="loadings.orgs"
           :data="rows"
+          :total="total"
           @refresh="loadOrgs"
+          @switch="switchPage"
           :filter-method="filterMethod"
           style="width: 100%;"
         >
@@ -47,7 +49,7 @@
               {{ org.description | otherwise }}
             </template>
           </el-table-column>
-        </x-table>
+        </z-table>
       </div>
     </div>
     <add-org-dialog

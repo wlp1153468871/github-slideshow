@@ -57,7 +57,7 @@ export default {
         },
         Running: {
           icon: '#icon_refresh',
-          color: '',
+          color: '#22c36a',
         },
         Succeeded: {
           icon: '#icon_checkmark',

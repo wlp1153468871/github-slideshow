@@ -19,7 +19,7 @@ export default {
       this.loadUsers();
       this.loadPlatformRoles();
     } else {
-      this.$noty.error('您暂无用户列表查看前看');
+      this.$noty.error('您暂无用户列表查看权限');
     }
   },
 
@@ -36,9 +36,10 @@ export default {
         users: false,
         create: false,
       },
-      filterMethod: (data, filterKey) => data.username.toLowerCase().includes(filterKey),
+      filterMethod: this.filterUsers,
       other: { status: (_, item) => (!item.is_frozen ? 'SUCCESS' : 'DANGER') },
       ROLES: [],
+      total: 0,
     };
   },
 
@@ -53,18 +54,34 @@ export default {
     isFrozen(f) {
       return f ? '已冻结' : '正常';
     },
-
-    loadUsers() {
+    loadUsers(page, pageSize, q) {
       this.loadings.users = true;
-      return UserService.getUsers()
+      return UserService.getUsers(page, pageSize, q)
         .then(users => {
-          users = orderBy(users, 'username');
-          this.users = users;
-          this.rows = users;
+          users.data = this.filtersRows(orderBy(users.data, 'username'));
+          this.total = users.total;
+          this.users = users.data;
+          this.rows = users.data;
+          return this.rows;
         })
         .finally(() => {
           this.loadings.users = false;
         });
+    },
+    filterUsers(filterKey, pageSize) {
+      this.loadUsers(1, pageSize, filterKey);
+    },
+    switchPage(page, pageSize, filterKey) {
+      this.loadUsers(page, pageSize, filterKey);
+    },
+    filtersRows(rows) {
+      const arr = [...rows];
+      arr.forEach(item => {
+        if (item.roles.length > 0) {
+          item.platform_role = item.roles[0].name;
+        }
+      });
+      return arr;
     },
 
     loadPlatformRoles() {

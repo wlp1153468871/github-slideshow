@@ -66,10 +66,16 @@
           </span>
         </template>
       </el-table-column>
+      <el-table-column min-width="120px" prop="imageVersion" label="镜像版本">
+        <template slot-scope="{ row: pod }">
+          <span class="status-detail">{{ getImageVersion(pod) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column min-width="120px" prop="status" sortable label="状态">
         <template slot-scope="{ row: pod }">
           <status-icon :status="pod | pod_status"></status-icon>
-          <span class="status-detail">{{ pod | pod_status | humanize_pod_status }}</span>
+          <!-- eslint-disable-next-line max-len -->
+          <span class="status-detail" :class="pod | pod_status">{{ pod | pod_status | humanize_pod_status }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="100px" prop="containersReady" label="运行中">
@@ -210,6 +216,9 @@ export default {
       return Vue.filter('num_container_restarts')(a) - Vue.filter('num_container_restarts')(b);
     },
 
+    getImageVersion(pod) {
+      return pod.spec.containers[0].image.split(':')[1];
+    },
     sortStartTime(a, b) {
       const prevTime = dayjs(a.status.startTime);
       const nextTime = dayjs(b.status.startTime);
@@ -243,6 +252,20 @@ export default {
 
   .status-detail {
     flex: 1 1 0%;
+  }
+
+  .el-table__row{
+    .cell{
+      .Running, .Ready{
+        color: #22c36a;
+      }
+      .Pending{
+        color: #f7b32b;
+      }
+      .Failed, .Error{
+        color: #f1483f;
+      }
+    }
   }
 }
 </style>

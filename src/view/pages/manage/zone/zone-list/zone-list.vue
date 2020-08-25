@@ -4,10 +4,12 @@
       可用区设置
     </div>
     <div class="dao-view-main">
-      <x-table
+      <z-table
         :showRefresh="$can('platform.zone.get')"
         :loading="loadings.zone"
         :data="rows"
+        :total="total"
+        @switch="switchPage"
         @refresh="loadZones"
         :filter-method="filterMethod"
         style="width: 100%;"
@@ -36,7 +38,7 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="clusterUrl" label="集群地址">
+        <!-- <el-table-column prop="clusterUrl" label="集群地址">
           <template slot-scope="{ row: zone }">
             <a :href="zone.clusterUrl" target="_blank">
               {{ zone.clusterUrl }}
@@ -47,7 +49,7 @@
           <template slot-scope="{ row: zone }">
             {{ zone.es.esUrl || '-' }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="available" label="状态">
           <template slot-scope="{ row: zone }">
             <!-- {{ zone.available  }} -->
@@ -96,7 +98,7 @@
             </el-dropdown>
           </template>
         </el-table-column>
-      </x-table>
+      </z-table>
     </div>
   </div>
 </template>

@@ -7,7 +7,7 @@
         <dl>
           <div class="dl-item">
             <dt>状态:</dt>
-            <dd>
+            <dd :class="pod | pod_status">
               <status-icon :enable-animation="enableAnimation" :status="pod | pod_status">
               </status-icon>
               {{ pod | pod_status | humanize_pod_status }}
@@ -171,3 +171,18 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.panel-resource{
+  .dl-item{
+    .Running, .Ready{
+      color: #22c36a;
+    }
+    .Pending{
+      color: #f7b32b;
+    }
+    .Failed, .Error{
+      color: #f1483f;
+    }
+  }
+}
+</style>

@@ -63,19 +63,56 @@ export default {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
     if (!config.headers.AuthorizationScope) {
-      if (store.state.isManageView) {
+      const { url } = config;
+      if (/spaces\//.test(url)) {
+        /* 包含`spaces/`且不包含`?zoneId` */
+        if (!config.params || (config.params && !Object.keys(config.params).map(key => key === 'zoneId'))) {
+          const regex = /(?<=(spaces\/))/;
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: url.split(regex)[2].split('/')[0],
+          });
+          /* 包含`spaces/` || 包含 `zoneId` */
+        } else if (config.params && Object.keys(config.params).map(key => key === 'zoneId')) {
+          if (store.getters.spaceId || store.getters.zoneId) {
+            config.headers.AuthorizationScope = JSON.stringify({
+              space_id: store.getters.spaceId,
+              zone_id: store.getters.zoneId,
+            });
+          }
+        }/* 包含`instances/` */
+      } else if (/instances\//.test(url)) {
+        if (store.getters.spaceId || store.getters.zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+            zone_id: store.getters.zoneId,
+          });
+        }
+      } else if (/zones\//.test(url)) {
+        if (store.getters.spaceId || store.getters.zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+            zone_id: store.getters.zoneId,
+          });
+        }
+      } else if (/authorizations\//.test(url)) {
         config.headers.AuthorizationScope = JSON.stringify({
           platform_id: 'dsp',
         });
-      } else {
-        const { spaceId, orgId, zoneId } = store.getters;
-        if (spaceId || orgId || zoneId) {
+      } else if (/organizations\//.test(url)) {
+        const regex = /(?<=(organizations\/))/;
+        config.headers.AuthorizationScope = JSON.stringify({
+          organization_id: url.split(regex)[2].split('/')[0],
+        }); // 特殊处理url,请求路径未符合权限约定
+      } else if (/quota\/approval\//.test(url)) {
+        if (store.getters.orgId) {
           config.headers.AuthorizationScope = JSON.stringify({
-            space_id: spaceId,
-            organization_id: orgId,
-            zone_id: zoneId,
+            platform_id: store.getters.orgId,
           });
         }
+      } else if (store.state.isManageView) { // 管理视图下的操作
+        config.headers.AuthorizationScope = JSON.stringify({
+          platform_id: 'dsp',
+        });
       }
     }
     saveRefreshTime();
