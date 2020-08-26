@@ -66,17 +66,20 @@ export default {
       const { url } = config;
       if (/spaces\//.test(url)) {
         /* 包含`spaces/`且不包含`?zoneId` */
-        if (!config.params || (config.params && !Object.keys(config.params).map(key => key === 'zoneId'))) {
-          const regex = /(?<=(spaces\/))/;
-          config.headers.AuthorizationScope = JSON.stringify({
-            space_id: url.split(regex)[2].split('/')[0],
-          });
-          /* 包含`spaces/` || 包含 `zoneId` */
-        } else if (config.params && Object.keys(config.params).map(key => key === 'zoneId')) {
+        if (!config.params || (config.params && !Object.keys(config.params).some(key => key === 'zoneId'))) {
+          const regex = /(?<=spaces\/)(.*?)(?=\/)/;
+          const result = url.match(regex);
+          if (result) {
+            config.headers.AuthorizationScope = JSON.stringify({
+              space_id: result[0],
+            });
+          }
+          /* 包含`spaces/` || 包含 `?zoneId` */
+        } else if (config.params && Object.keys(config.params).some(key => key === 'zoneId')) {
           if (store.getters.spaceId || store.getters.zoneId) {
             config.headers.AuthorizationScope = JSON.stringify({
               space_id: store.getters.spaceId,
-              zone_id: store.getters.zoneId,
+              zone_id: config.params.zoneId,
             });
           }
         }/* 包含`instances/` */
@@ -86,11 +89,15 @@ export default {
             space_id: store.getters.spaceId,
             zone_id: store.getters.zoneId,
           });
-        }
-      } else if (/zones\//.test(url)) {
+        }/* 包含`zones/`且不包含`?spaceId` */
+      } else if (/zones\//.test(url) && (config.params && !Object.keys(config.params).some(key => key === 'spaceId'))) {
+        config.headers.AuthorizationScope = JSON.stringify({
+          platform_id: 'dsp',
+        });
+      } else if (/zones\//.test(url) && (config.params && Object.keys(config.params).some(key => key === 'spaceId'))) {
         if (store.getters.spaceId || store.getters.zoneId) {
           config.headers.AuthorizationScope = JSON.stringify({
-            space_id: store.getters.spaceId,
+            space_id: config.params.spaceId,
             zone_id: store.getters.zoneId,
           });
         }
@@ -99,10 +106,14 @@ export default {
           platform_id: 'dsp',
         });
       } else if (/organizations\//.test(url)) {
-        const regex = /(?<=(organizations\/))/;
-        config.headers.AuthorizationScope = JSON.stringify({
-          organization_id: url.split(regex)[2].split('/')[0],
-        }); // 特殊处理url,请求路径未符合权限约定
+        const regex = /(?<=organizations\/)(.*?)(?=\/)/;
+        const result = url.match(regex);
+        if (result) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            organization_id: result[0],
+          });
+        }
+        // 特殊处理url,请求路径未符合权限约定
       } else if (/quota\/approval\//.test(url)) {
         if (store.getters.orgId) {
           config.headers.AuthorizationScope = JSON.stringify({
