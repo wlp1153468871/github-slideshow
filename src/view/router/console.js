@@ -10,10 +10,6 @@ import ServiceManDetail from '@/view/pages/console/service/detail/detail.vue';
 import ServiceExample from '@/view/pages/console/service/example/example.vue';
 
 // zone
-import Zone from '@/view/pages/console/zone/zone.vue';
-import ZoneDetail from '@/view/pages/console/zone/detail/detail.vue';
-import Chart from '@/view/pages/console/zone/chart/chart.vue';
-import  newApplication from '@/view/pages/console/zone/detail/detailComponents/new-app.vue'
 
 // appstore
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
