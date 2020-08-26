@@ -2,17 +2,17 @@
   <div id="appstore">
     <div class="appstore-header">
       <div class="img-box">
-        <img src="../../../../assets/images/app-store.png" alt="应用商店" class="img-size" />
+        <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
       <div class="header-title">应用商店</div>
-      <div class="header-desc">欢迎来到DaoCloud应用商店，我们的平台提供了来自不同企业的更多的应用和chart模版，
+      <div class="header-desc">欢迎来到 DaoCloud 应用商店，我们的平台提供了来自不同企业的更多的应用和 chart 模版，
         并支持多终端访问，自建应用，让客户享受安全，便捷，快速的服务。</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;">
       <div class="dao-view-content">
         <dao-select
           v-model="category"
-          style="height: 32px;"
+          class="category"
           size="sm">
           <dao-option
             v-for="item in categories"
@@ -21,10 +21,10 @@
             :label="item.name">
           </dao-option>
         </dao-select>
-        <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
+        <!-- <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
           <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
           <span class="text">新建应用</span>
-        </button>
+        </button> -->
         <div class="screen" v-if="checkedApp.length || checkedPro.length">筛选器:
           <el-tag
             v-for="tag in checkedApp"
@@ -52,13 +52,10 @@
         v-model="key"
         placeholder="搜索">
       </dao-input>
-      <el-button size="mini" style="margin-left: 10px" @click="fresh()">
-        <span>
-          <svg class="icon">
-            <use :xlink:href="`#icon_cw`"></use>
-          </svg>
-        </span>
-      </el-button>
+      <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh()">
+        <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
+        <!-- <img src="@/assets/svgs/icon_reload.svg" alt=""> -->
+      </button>
     </div>
     <div class="store-server-type">
       <span class="type-text">服务类型</span>
@@ -88,18 +85,22 @@
     </div>
 
     <div class="store-item-container" v-if="applications.length">
-      <div class="title">我的创建</div>
+      <!-- <div class="title">我的创建</div>
       <div class="store-item">
         <div v-for="appItem in applications" :key="appItem.id">
           <AppItem :itemData="appItem"></AppItem>
         </div>
-      </div>
+      </div> -->
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
           <div class="store-item">
             <div v-for="appItem in applications" :key="appItem.id">
-              <AppItem :itemData="appItem" v-if="appItem.category.includes(item.name)"></AppItem>
+              <AppItem
+                :itemData="appItem"
+                v-if="appItem.category.includes(item.name)"
+                >
+              </AppItem>
             </div>
           </div>
         </div>
@@ -158,10 +159,13 @@ v-deep .el-tag {
       }
     }
   }
+  .category {
+    height: 32px;
+    float:left;
+  }
   .screen {
-    position: absolute;
-    left: 370px;
-    top: 175px;
+    float: left;
+    padding-left: 20px;
     .clear {
       padding-left: 10px;
       font-size: 14px;
@@ -170,6 +174,11 @@ v-deep .el-tag {
       color: #217EF2;
       cursor: pointer;
     }
+  }
+  .icon-container {
+    width: 32px;
+    height: 32px;
+    padding-left: 10px;
   }
   .store-server-type {
     float: left;

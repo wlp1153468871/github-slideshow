@@ -7,9 +7,9 @@ export default {
   data() {
     return {
       // 分类
-      options1: [],
+      categories: [],
       // 服务类型
-      options2: ['Helm Chart'],
+      appTypes: ['Helm Chart'],
       appInfo: '',
       form: {
         appType: 'chart',
@@ -38,10 +38,8 @@ export default {
     // 初始化数据
     init() {
       AppStoreService.getCategory(this.zone.id, this.space.id).then(res => {
-        console.log(res);
-        this.options1 = res;
+        this.categories = res;
       });
-      console.log(this.token);
     },
 
     cancerForm() {

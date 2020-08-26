@@ -6,7 +6,7 @@
       <dao-select
         v-model="zoneCat"
         size="sm"
-        style="width: 160px; height: 32px; margin-right: 10px;"
+        class="input1"
       >
         <dao-option
           v-for="item in zones"
@@ -19,7 +19,8 @@
       <dao-select
         v-model="statuCat"
         size="sm"
-        style="width: 90px; height: 32px; margin-right: 10px;"
+        class="input1"
+        style="width: 90px;"
       >
         <dao-option
           v-for="item in status"
@@ -32,7 +33,8 @@
       <dao-select
         v-model="appTypeCat"
         size="sm"
-        style="width: 140px; height: 32px;"
+        class="input1"
+        style="width: 140px;"
       >
         <dao-option
           v-for="item in appType"
@@ -41,7 +43,7 @@
           :label="item.name">
         </dao-option>
       </dao-select>
-      <button class="dao-btn blue has-icon" style="margin-left: 10px;">
+      <button class="dao-btn blue has-icon">
         <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
         <span class="text">创建应用</span>
       </button>

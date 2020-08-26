@@ -48,7 +48,7 @@
           <div class="dao-setting-content">{{this.$route.params.version}}</div>
         </div>
       </div>
-      <div class="dao-setting-section">
+      <!-- <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">租户和项目组</div>
           <div class="dao-setting-content">
@@ -82,7 +82,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </dao-setting-layout>
     <div class="parameter">
       <div class="header">

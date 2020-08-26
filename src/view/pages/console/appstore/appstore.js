@@ -42,7 +42,9 @@ export default {
     // 初始化
     this.init();
   },
-
+  // updated() {
+  //   this.isActive();
+  // },
   watch: {
     key: {
       handler() {
@@ -50,6 +52,35 @@ export default {
           this.applications = this.appCopy;
         } else {
           this.updateKey();
+        }
+      },
+    },
+    category: {
+      handler() {
+        if (this.category !== '全部') {
+          this.applications = this.appCopy.filter(item => item.category.includes(this.category));
+        } else {
+          this.applications = this.appCopy;
+        }
+      },
+    },
+    checkedApp: {
+      handler() {
+        if (this.checkedApp.length) {
+          this.applications = this.applications.filter(item =>
+            item.appType.includes(this.checkedApp[0]));
+        } else {
+          this.applications = this.appCopy;
+        }
+      },
+    },
+    checkedPro: {
+      handler() {
+        if (this.checkedPro.length) {
+          this.applications = this.applications.filter(item =>
+            item.provider.includes(this.checkedPro[0]));
+        } else {
+          this.applications = this.appCopy;
         }
       },
     },
@@ -77,7 +108,6 @@ export default {
       this.checkedApp = [];
       this.checkedPro = [];
     },
-
     // 搜索
     updateKey: debounce(function updateKey() {
       this.searchApp();

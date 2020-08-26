@@ -55,7 +55,7 @@
           <div class="dao-setting-content">{{this.$route.params.version}}</div>
         </div>
       </div>
-      <div class="dao-setting-section">
+      <!-- <div class="dao-setting-section">
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">租户和项目组</div>
           <div class="dao-setting-content">
@@ -89,7 +89,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </dao-setting-layout>
     <dao-setting-layout class="yaml">
       <div class="dao-setting-section">
@@ -218,7 +218,7 @@ export default {
           this.$route.query.instanceId)
         .then(res => {
           if (res) {
-            this.instanceName = `${res.name.split('-')[1]}`;
+            this.instanceName = res.name;
           }
         });
     },

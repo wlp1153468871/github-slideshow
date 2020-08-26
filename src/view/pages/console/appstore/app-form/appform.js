@@ -138,7 +138,7 @@ export default {
           this.$route.query.instanceId)
         .then(res => {
           if (res) {
-            this.instanceName = `${res.name.split('-')[1]}`;
+            this.instanceName = res.name;
           }
         });
     },
@@ -148,9 +148,18 @@ export default {
         .updateForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.table)
         .then(res => {
+          console.log('更新1');
           if (res) {
             this.$noty.success('实例更新成功');
-            this.$router.go(-1);
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: 'second',
+              },
+            });
           }
         });
     },

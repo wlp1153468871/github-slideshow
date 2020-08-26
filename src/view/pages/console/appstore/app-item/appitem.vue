@@ -1,5 +1,5 @@
 <template>
-  <div class="itme-container">
+  <div class="itme-container" @click="linkToDetail">
     <div class="icon">
       <span class="icon-left">
         <img :src="`http://jizhidev.k8s01.ats${itemData.pictureUrl}`" class="icon-item" v-if="itemData.pictureId"/>
@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <div  @click="linkToDetail">
+    <div>
       <div class="item-name">
         {{ itemData.name }}
       </div>
@@ -33,17 +33,13 @@ export default {
   },
   methods: {
     linkToDetail() {
-      this.$router.push(`appstore/detail/${this.itemData.id}`);
+      this.$router.push({
+        name: 'appstore.detail',
+        params: {
+          Id: this.itemData.id,
+        },
+      });
     },
-    backUrl(url) {
-      if (process.env.NODE_ENV === 'development') {
-        return `${process.env.VUE_APP_API_URL}${url}`;
-      }
-      return url;
-    },
-  },
-  created() {
-    // this.downloadImg();
   },
 };
 </script>
@@ -51,9 +47,6 @@ export default {
 $appItemWidth: 31.2%;
 .itme-container {
   position: relative;
-  //解决不了宽高自适应的问题
-  /* width:  $appItemWidth; */
-  /* height: 192 * $appItemWidth / 260;  */
   width: 260px;
   height: 200px;
   margin: 0 20px 20px 0;
