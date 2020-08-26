@@ -4,9 +4,8 @@ import SyncServiceDialog from '@/view/pages/dialogs/zone/sync-service';
 import ManagePanel from './panels/manage';
 import OverviewPanel from './panels/overview';
 import AppList from './panels/app-list';
-import test from './panels/test';
 import newApp from './panels/new-app';
-import ChartList from './panels/chart-list'
+import ChartList from './panels/chart-list';
 
 export default {
   name: 'ZoneDetail',
@@ -15,9 +14,8 @@ export default {
     OverviewPanel,
     SyncServiceDialog,
     AppList,
-    test,
     newApp,
-    ChartList
+    ChartList,
   },
   created() {
     this.loadCatalog();

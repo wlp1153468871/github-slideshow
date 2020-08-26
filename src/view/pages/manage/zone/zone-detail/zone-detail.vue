@@ -20,7 +20,6 @@
         </el-tab-pane>
         <el-tab-pane :label="TABS.CHART" :name="TABS.CHART">
           <ChartList :id="zone.id"></ChartList>
-<!--          <newApp></newApp>-->
         </el-tab-pane>
         <el-tab-pane :label="TABS.BINDS" :name="TABS.BINDS">
           <manage-panel
