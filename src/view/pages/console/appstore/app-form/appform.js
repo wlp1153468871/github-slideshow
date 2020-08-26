@@ -148,9 +148,9 @@ export default {
         .updateForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.table)
         .then(res => {
+          console.log('更新1');
           if (res) {
             this.$noty.success('实例更新成功');
-            // this.$router.go(-1);
             this.$router.push({
               name: 'appstore.detail',
               params: {

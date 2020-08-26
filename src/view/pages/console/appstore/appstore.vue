@@ -12,7 +12,7 @@
       <div class="dao-view-content">
         <dao-select
           v-model="category"
-          style="height: 32px; float:left;"
+          class="category"
           size="sm">
           <dao-option
             v-for="item in categories"
@@ -159,10 +159,11 @@ v-deep .el-tag {
       }
     }
   }
+  .category {
+    height: 32px;
+    float:left;
+  }
   .screen {
-    /* position: absolute;
-    left: 370px;
-    top: 175px; */
     float: left;
     padding-left: 20px;
     .clear {

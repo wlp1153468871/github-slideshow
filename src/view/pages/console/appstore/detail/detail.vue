@@ -69,11 +69,11 @@
                     <img
                       :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`"
                       alt="应用图标"
-                      style="width: 60px;height: 60px;"
+                      class="pic"
                       v-if="appInfo.pictureId"/>
                     <img
                       src="@/assets/images/card-Default.png"
-                      style="width: 60px;height: 60px;"
+                      class="pic"
                       v-else/>
                     <div>
                       <button

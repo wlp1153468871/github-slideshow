@@ -56,10 +56,11 @@ export default {
   },
 
   created() {
+    this.activeName = this.$route.query.activeName || 'first';
+
     this.getApp();
     this.getCategory();
     this.getInstances();
-    this.goBack();
   },
 
   watch: {
@@ -284,11 +285,6 @@ export default {
     },
     addClose() {
       this.configAdd = false;
-    },
-    goBack() {
-      if (this.$route.query.activeName) {
-        this.activeName = this.$route.query.activeName;
-      }
     },
     // 获取实例数
     instanceNum() {
