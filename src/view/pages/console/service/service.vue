@@ -63,20 +63,29 @@
         </el-button>
       </span>
     </div>
-    <div class="select" v-if="false">
+    <div class="select" v-if="selectStatus.length">
       <span class="number">已选择 2 项</span>
-      <button class="dao-btn" style="margin-left:10px">批量下架</button>
-      <button class="dao-btn red">批量删除</button>
+      <button
+        class="dao-btn status"
+        v-if="selectStatus[0] === 0 && selectStatus.length === 1">批量上架
+      </button>
+      <button
+        class="dao-btn status"
+        v-if="selectStatus[0] === 1 && selectStatus.length === 1">批量下架
+      </button>
+      <button class="dao-btn red status">批量删除</button>
     </div>
     <div style="margin: 20px;">
       <el-table
         style="width: 100%;"
         :data="appInfo"
+        @select="selectChange"
+        @selection-change="selectAll"
       >
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="应用名称" width="200">
           <template slot-scope="scope">
-            <div style="color: #217EF2;">
+            <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
             </div>
           </template>
@@ -113,7 +122,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="date" width="200">
+        <el-table-column label="创建时间" prop="date">
           <template slot-scope="scope">
             {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
           </template>

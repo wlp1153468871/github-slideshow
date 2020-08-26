@@ -841,15 +841,14 @@ export default [
       hidden: true,
     },
   },
-  // 服务区管理
+  // 应用管理
   {
     path: 'service',
     name: 'console.service',
     component: ServiceMan,
     meta: {
-      title: '服务管理',
+      title: '应用管理',
       icon: '#icon_service',
-      // code: 'space.store',
       hidden: false,
     },
   },
