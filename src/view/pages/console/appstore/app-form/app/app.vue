@@ -68,7 +68,7 @@
               placeholder="选择服务类型"
             >
               <dao-option
-                v-for="item in options2"
+                v-for="item in appTypes"
                 :key="item"
                 :value="item"
                 :label="item">
@@ -88,7 +88,7 @@
               placeholder="选择分类"
               style="width: 98%;">
               <el-option
-                v-for="(item, index) in options1"
+                v-for="(item, index) in categories"
                 :key="item.name"
                 :label="item.name"
                 :value="`${index}`">
@@ -138,7 +138,7 @@
     </dao-setting-layout>
     <div class="dao-setting-layout-footer footer-lay">
       <div class="btn-layout">
-        <button class="dao-btn">取消</button>
+        <button class="dao-btn" @clcik="cancerForm">取消</button>
         <button class="dao-btn blue" @click="handleUpload">确认创建</button>
       </div>
     </div>

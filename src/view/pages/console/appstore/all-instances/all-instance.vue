@@ -24,7 +24,7 @@
       >
         <el-table-column label="实例名称" width="250">
           <template slot-scope="scope">
-            <div style="color: #217EF2;" @click="rowClick(scope.row.id)">
+            <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
             </div>
           </template>
@@ -50,7 +50,7 @@
         <el-table-column label="创建者" prop="ownerName"></el-table-column>
         <el-table-column label="创建时间" >
           <template slot-scope="scope">
-                {{ scope.row.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
+            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
           </template>
         </el-table-column>
       </el-table>

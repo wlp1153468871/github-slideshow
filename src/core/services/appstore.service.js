@@ -53,6 +53,9 @@ class AppStoreService {
       })
       .then(res => {
         return res;
+      })
+      .catch(() => {
+        console.log('上传出错了');
       });
   }
   /**
@@ -92,6 +95,16 @@ class AppStoreService {
    */
   async getApp(zone_id, space_id, app_id) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}`);
+  }
+
+  /**
+   * 用户获取charts（版本）列表
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   */
+  async getCharts(zone_id, space_id, app_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/application_infos`);
   }
 
   /**
@@ -181,6 +194,53 @@ class AppStoreService {
    */
   async updateYaml(zone_id, space_id, app_id, instance_id, data) {
     return this.api.put(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/yaml`, data);
+  }
+
+  /**
+   * 获取最新实例的配置form
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例名
+   */
+  async getNewForm(zone_id, space_id, app_id, instance_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/form`);
+  }
+
+  /**
+   * 更新实例的form
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例ID
+   */
+  async updateForm(zone_id, space_id, app_id, instance_id, data) {
+    return this.api.put(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/form`, data);
+  }
+
+  /**
+   * 获取应用实例原始表单
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} chart_name chart名
+   * @param {String} version chart版本
+   */
+  async getForm(zone_id, space_id, app_id, chart_name, version) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/form`);
+  }
+
+  /**
+   * 以表单创建应用实例
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} chart_name chart名
+   * @param {String} version chart版本
+   * @param {String} instance_name 实例名
+   */
+  async createForm(zone_id, space_id, app_id, chart_name, version, instance_name, data) {
+    return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/${instance_name}/form`, data);
   }
 
   /**

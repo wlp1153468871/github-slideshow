@@ -14,11 +14,11 @@
     <div class="left">
       <div class="left-header">
         <div style="padding: 20px;">
-          <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" />
+          <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+          <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
           <div class="header-text">{{appInfo.name}}</div>
-
           <!-- 新建的应用才有这部分 -->
-          <dao-dropdown
+          <!-- <dao-dropdown
             trigger="click"
             :append-to-body="true"
             placement="bottom-start"
@@ -39,7 +39,7 @@
                 <span style="color: red;" @click="deleteApp">删除</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
-          </dao-dropdown>
+          </dao-dropdown> -->
         </div>
         <dao-dialog
           :visible.sync="configEdit"
@@ -53,6 +53,7 @@
                   <dao-input
                     v-model="form.name"
                     block
+                    :disabled="appInfo.isGlobal"
                     style="width: 98%"
                     placeholder="请输入应用名称">
                   </dao-input>
@@ -65,7 +66,15 @@
                 <div class="dao-setting-content">
                   <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
                   <div v-show="isShow">
-                    <img src="../../../../../assets/images/card-Default.png" alt="应用图标" />
+                    <img
+                      :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`"
+                      alt="应用图标"
+                      class="pic"
+                      v-if="appInfo.pictureId"/>
+                    <img
+                      src="@/assets/images/card-Default.png"
+                      class="pic"
+                      v-else/>
                     <div>
                       <button
                         class="dao-btn red"
@@ -176,37 +185,49 @@
               <div class="desc-text">{{appInfo.description}}</div>
             </div>
             <div class="app">
-                <div class="app-title">应用信息</div>
-              <div>
-                <div class="app-text-name">分类</div>
-                <div class="app-text-name">服务类型</div>
-                <div class="app-text-desc">
-                  <template>
-                    <span
-                      class="str"
-                      v-for="(item, index) in appInfo.category"
-                      :key="index">
-                      {{item}}
-                    </span>
-                  </template>
+              <div class="app-title">应用信息</div>
+              <div class="app-box">
+                <div class="text-name">
+                  服务类型
+                  <div class="text-desc">{{appInfo.appType}}</div>
                 </div>
-                <div class="app-text-desc">{{appInfo.appType}}</div>
+                <div class="text-name">
+                  分类
+                  <div class="text-desc">
+                    <template>
+                      <span
+                        class="str"
+                        v-for="(item, index) in appInfo.category"
+                        :key="index">
+                        {{item}}
+                      </span>
+                    </template>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div class="app-text-name">供应商</div>
-                <div class="app-text-name">版本数</div>
-                <div class="app-text-desc">{{appInfo.provider}}</div>
-                <div class="app-text-desc">{{appInfo.numVersion}}</div>
+              <div class="app-box">
+                <div class="text-name">
+                  供应商
+                  <div class="text-desc">{{appInfo.provider}}</div>
+                </div>
+                <div class="text-name">
+                  版本数
+                  <div class="text-desc">{{appInfo.numVersion}}</div>
+                </div>
               </div>
-              <div>
-                <div class="app-text-name">可用区</div>
-                <div class="app-text-name">Chart 仓库</div>
-                <div class="app-text-desc">{{appInfo.zoneName}}</div>
-                <div class="app-text-desc">{{appInfo.chartRepo}}</div>
+              <div class="app-box">
+                <div class="text-name">
+                  可用区
+                  <div class="text-desc">{{appInfo.zoneName}}</div>
+                </div>
+                <div class="text-name">
+                  Chart 仓库
+                  <div class="text-desc">{{appInfo.chartRepo}}</div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="base-info">
+          <div class="base-info" v-if="appInfo.content">
             <div class="title" style="padding: 20px 0 20px 0px;">README</div>
             <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down>
           </div>
@@ -234,7 +255,7 @@
             >
               <el-table-column label="实例名称">
                 <template slot-scope="scope">
-                  <div style="color: #217EF2;" @click="rowClick(scope.row.id)">
+                  <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
                     {{ scope.row.name }}
                   </div>
                 </template>
@@ -257,9 +278,9 @@
               </el-table-column>
               <el-table-column label="Chart 版本" prop="chartVersion" width="100"></el-table-column>
               <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
-              <el-table-column label="创建时间" >
+              <el-table-column label="创建时间">
                 <template slot-scope="scope">
-                      {{ scope.row.created_at | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                  {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
                 </template>
               </el-table-column>
               <el-table-column  label="操作" width="60">
@@ -275,7 +296,7 @@
                       </svg>
                       <dao-dropdown-menu slot="list" style="min-width: 120px;">
                         <dao-dropdown-item style="margin-left: 10px">
-                          <span @click="linktoForm">使用表单更新</span>
+                          <span @click="linktoForm(scope.row.id)">使用表单更新</span>
                         </dao-dropdown-item>
                         <dao-dropdown-item style="margin-left: 10px">
                           <span @click="linktoYamlForm(scope.row.id)">使用YAML更新</span>
@@ -320,7 +341,13 @@
       </el-tabs>
     </div>
     <div class="right" >
-      <div v-for="(item, index) in applicationInfos" :key="index">
+      <div v-if="applicationInfos.length < 1" class="no-version">
+        <div class="center">
+          <div class="no">暂无版本</div>
+          <div class="add" @click="addEdition">立即添加</div>
+        </div>
+      </div>
+      <div v-for="(item, index) in applicationInfos" :key="index" v-else>
         <div v-if="chart === item.version">
           <div class="right-type">Chart 版本:</div>
           <dao-select

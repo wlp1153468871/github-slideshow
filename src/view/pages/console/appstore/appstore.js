@@ -1,4 +1,5 @@
 import { mapState } from 'vuex';
+import { debounce } from 'lodash';
 
 import AppStoreService from '@/core/services/appstore.service';
 
@@ -12,7 +13,6 @@ export default {
   data() {
     return {
       key: '',
-      baseUrl: '',
       //  应用数据
       applications: '',
       //  分类
@@ -30,8 +30,7 @@ export default {
       // 供应商
       provider: [],
       checkedPro: [],
-
-      tags: [],
+      appCopy: '',
     };
   },
 
@@ -43,18 +42,49 @@ export default {
     // 初始化
     this.init();
   },
-
-  // watch: {
-  //   key: {
-  //     handler() {
-  //       if (this.key === '') {
-  //         // this.getApplications();
-  //       } else {
-  //         this.updateKey();
-  //       }
-  //     },
-  //   },
+  // updated() {
+  //   this.isActive();
   // },
+  watch: {
+    key: {
+      handler() {
+        if (this.key === '') {
+          this.applications = this.appCopy;
+        } else {
+          this.updateKey();
+        }
+      },
+    },
+    category: {
+      handler() {
+        if (this.category !== '全部') {
+          this.applications = this.appCopy.filter(item => item.category.includes(this.category));
+        } else {
+          this.applications = this.appCopy;
+        }
+      },
+    },
+    checkedApp: {
+      handler() {
+        if (this.checkedApp.length) {
+          this.applications = this.applications.filter(item =>
+            item.appType.includes(this.checkedApp[0]));
+        } else {
+          this.applications = this.appCopy;
+        }
+      },
+    },
+    checkedPro: {
+      handler() {
+        if (this.checkedPro.length) {
+          this.applications = this.applications.filter(item =>
+            item.provider.includes(this.checkedPro[0]));
+        } else {
+          this.applications = this.appCopy;
+        }
+      },
+    },
+  },
 
   methods: {
     linkToApp() {
@@ -66,6 +96,7 @@ export default {
     init() {
       this.getApplications();
     },
+
     // 清除tag
     handleClose1() {
       this.checkedApp = [];
@@ -73,23 +104,29 @@ export default {
     handleClose2() {
       this.checkedPro = [];
     },
+    clearAll() {
+      this.checkedApp = [];
+      this.checkedPro = [];
+    },
     // 搜索
-    // updateKey: debounce(function updateKey() {
-    //   this.searchApp();
-    // }, 300),
-    // searchApp() {
-    //   this.applications = this.applications.filter(item => item.name.includes(this.key));
-    // },
-    // // 刷新
-    // fresh() {
-    //   this.key = '';
-    //   this.getApplications();
-    // },
+    updateKey: debounce(function updateKey() {
+      this.searchApp();
+    }, 300),
+    searchApp() {
+      this.applications = this.applications.filter(item => item.name.includes(this.key));
+    },
+    // 刷新
+    fresh() {
+      this.key = '';
+      this.applications = this.appCopy;
+    },
+
     // list
     getApplications() {
       AppStoreService.zoneList(this.zone.id, this.space.id).then(res => {
         if (res) {
           this.applications = res;
+          this.appCopy = res;
           this.getCategory();
         }
       }).then(() => {

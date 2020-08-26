@@ -50,13 +50,15 @@ export default {
   components: {
     MarkDown,
   },
+
   computed: {
-    ...mapState(['space', 'zone']),
+    ...mapState(['space', 'zone', 'user']),
   },
 
   created() {
+    this.activeName = this.$route.query.activeName || 'first';
+
     this.getApp();
-    this.getChart();
     this.getCategory();
     this.getInstances();
   },
@@ -71,6 +73,15 @@ export default {
         }
       },
     },
+    chart: {
+      handler() {
+        this.applicationInfos.forEach(item => {
+          if (item.version === this.chart) {
+            this.appInfo.content = item.content;
+          }
+        });
+      },
+    },
   },
 
   methods: {
@@ -79,21 +90,32 @@ export default {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
           this.appInfo = res;
-
           this.form.category = res.categoryId;
-          this.form.name = `${res.name.split('-')[1]}`;
+
+          const length = `${res.name.split('-').length}`;
+          if (res.isGlobal || length < 2) {
+            this.form.name = res.name;
+          } else {
+            this.form.name = `${res.name.split('-')[1]}`;
+          }
           this.form.description = res.description;
         }
+        this.getCharts();
       });
     },
-    // 获取chart
-    getChart() {
-      AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
+    // 拉取chart信息
+    getCharts() {
+      AppStoreService.getCharts(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
-          this.applicationInfos = res.applicationInfos;
+          this.applicationInfos = res;
+          res.forEach(item => {
+            this.chart = item.version;
+          });
         }
-        res.applicationInfos.forEach(item => {
-          this.chart = item.version;
+        res.forEach(item => {
+          if (item.version === this.chart) {
+            this.appInfo.content = item.content;
+          }
         });
       });
     },
@@ -122,6 +144,7 @@ export default {
             this.$noty.success('修改成功');
             this.editClose();
             this.getApp();
+            this.isShow = true;
           }
         });
     },
@@ -132,7 +155,6 @@ export default {
           this.instanceTable = res;
           this.instanceNum();
         }
-        this.loading = false;
       });
     },
     // 删除某个实例
@@ -148,12 +170,15 @@ export default {
       this.isShow = !this.isShow;
     },
     // 更新表单
-    linktoForm() {
+    linktoForm(id) {
       this.$router.push({
         name: 'appstore.form',
         params: {
           appid: this.appInfo.id,
           version: this.chart,
+        },
+        query: {
+          instanceId: id,
         },
       });
     },
@@ -261,10 +286,6 @@ export default {
     addClose() {
       this.configAdd = false;
     },
-
-    // removeTag(res) {
-    //   this.form.category = res;
-    // },
     // 获取实例数
     instanceNum() {
       return this.instanceTable.length;
@@ -290,30 +311,23 @@ export default {
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
-      // const formData = new FormData();
-      // this.fileList.forEach(file => {
-      //   formData.append('blob', file);
-      // });
-      // AppStoreService.uploadImg(formData)
-      //   .then(res => {
-      //     this.form.pictureId = res.id;
-      //     this.updateApp();
-      //   })
-      //   .catch(err => {
-      //     this.removeFile();
-      //     this.$message.error(err);
-      //   });
-      const file = this.fileList[0];
-      AppStoreService.uploadPic(file)
-        .then(res => {
-          this.form.pictureId = res.id;
-          this.updateApp();
-        })
-        .catch(err => {
-          this.removeFile();
-          this.$message.error(err);
-        });
+      if (this.fileList.length) {
+        const file = this.fileList[0];
+        AppStoreService.uploadPic(file)
+          .then(res => {
+            this.form.pictureId = res.id;
+            this.updateApp();
+          })
+          .catch(err => {
+            this.removeFile();
+            this.$noty.error(err);
+          });
+      } else {
+        this.form.pictureId = this.appInfo.pictureId;
+        this.updateApp();
+      }
     },
+
     // 上传chart文件之前
     beforeUploadChart(file) {
       if (this.chartType.indexOf(file.type) < 0) {
@@ -336,6 +350,9 @@ export default {
         .then(res => {
           if (res) {
             this.$noty.success('上传chart成功');
+            this.getApp();
+            this.getCharts();
+            this.addClose();
           }
         })
         .catch(err => {

@@ -53,7 +53,10 @@ export default {
         !this.$route.path.includes('/console/deploy') &&
         !this.$route.path.includes('/audit') &&
         !this.$route.path.includes('/platform-approval') &&
-        !this.$route.path.includes('/alarm/rule/create')
+        !this.$route.path.includes('/alarm/rule/create') &&
+        !this.$route.path.includes('appstore/:appid/form/:version') &&
+        !this.$route.path.includes('appstore/:appid/yamlform/:version') &&
+        !this.$route.path.includes('appstore/app')
       );
     },
   },

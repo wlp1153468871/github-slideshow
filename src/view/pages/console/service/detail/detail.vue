@@ -18,18 +18,35 @@
           </svg>
           已上架
         </div>
-        <div class="title1">Chart 版本:</div>
-        <div class="title-desc-name">2.6.0</div>
         <div class="title1">创建时间:</div>
         <div class="title-desc-name">2020-05-26 10:23:34</div>
       </div>
+      <dao-dropdown
+        trigger="click"
+        :append-to-body="true"
+        placement="bottom-start"
+        class="more"
+      >
+        <button class="dao-btn has-icons">
+          <span class="text">更多操作</span>
+          <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
+        </button>
+        <dao-dropdown-menu slot="list" style="min-width: 100px;">
+          <dao-dropdown-item style="margin-left: 10px">
+            <span>下架应用</span>
+          </dao-dropdown-item>
+          <dao-dropdown-item style="margin-left: 10px">
+            <span style="color: red;">删除</span>
+          </dao-dropdown-item>
+        </dao-dropdown-menu>
+      </dao-dropdown>
     </div>
     <el-tabs v-model="activeName" style="position:relative;">
       <el-tab-pane label="概览" name="first">
         <div class="lay-left">
           <div class="border-box">
             <div class="title">基本信息</div>
-            <div class="desc">
+            <div class="appdesc">
               <div class="desc-title">应用描述</div>
               <div class="desc-text">klansdkjahksjd</div>
             </div>
@@ -59,7 +76,7 @@
                 <div class="app-text-desc" style="padding-bottom: 20px;">office-dev</div>
             </div>
           </div>
-          <div class="border-box" style="margin-top:20px">
+          <div class="border-box" style="margin-top:20px;padding-left: 20px;">
             <div class="title" style="padding: 20px 0 20px 0px;">README</div>
             <!-- <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down> -->
           </div>
@@ -82,16 +99,12 @@
           </dao-select>
           <div class="right-name">名称</div>
           <div class="right-desc">nginx-ingress</div>
-          <div class="right-name">Chart 版本</div>
+          <div class="right-name">App 版本</div>
           <div class="right-desc">0.25.0</div>
-          <div class="right-name">分类</div>
-          <div class="right-desc">网络</div>
-          <div class="right-name">供应商</div>
-          <div class="right-desc">社区</div>
-          <div class="right-name">帮助链接</div>
+          <div class="right-name">维护者</div>
+          <div class="right-desc">jason</div>
+          <div class="right-name">官网链接</div>
           <div class="right-link">http://nginx.org/en/docs/</div>
-          <div class="right-name">帮官网链接</div>
-          <div class="right-link">http://nginx.org/</div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="项目组" name="second">
