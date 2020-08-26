@@ -42,7 +42,9 @@ export default {
     // 初始化
     this.init();
   },
-
+  // updated() {
+  //   this.isActive();
+  // },
   watch: {
     key: {
       handler() {
@@ -50,6 +52,15 @@ export default {
           this.applications = this.appCopy;
         } else {
           this.updateKey();
+        }
+      },
+    },
+    category: {
+      handler() {
+        if (this.category !== '全部') {
+          this.applications = this.appCopy.filter(item => item.category.includes(this.category));
+        } else {
+          this.applications = this.appCopy;
         }
       },
     },
@@ -97,7 +108,6 @@ export default {
       this.checkedApp = [];
       this.checkedPro = [];
     },
-
     // 搜索
     updateKey: debounce(function updateKey() {
       this.searchApp();

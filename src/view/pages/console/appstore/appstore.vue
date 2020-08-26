@@ -12,7 +12,7 @@
       <div class="dao-view-content">
         <dao-select
           v-model="category"
-          style="height: 32px;"
+          style="height: 32px; float:left;"
           size="sm">
           <dao-option
             v-for="item in categories"
@@ -21,10 +21,10 @@
             :label="item.name">
           </dao-option>
         </dao-select>
-        <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
+        <!-- <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
           <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
           <span class="text">新建应用</span>
-        </button>
+        </button> -->
         <div class="screen" v-if="checkedApp.length || checkedPro.length">筛选器:
           <el-tag
             v-for="tag in checkedApp"
@@ -85,18 +85,22 @@
     </div>
 
     <div class="store-item-container" v-if="applications.length">
-      <div class="title">我的创建</div>
+      <!-- <div class="title">我的创建</div>
       <div class="store-item">
         <div v-for="appItem in applications" :key="appItem.id">
           <AppItem :itemData="appItem"></AppItem>
         </div>
-      </div>
+      </div> -->
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
           <div class="store-item">
             <div v-for="appItem in applications" :key="appItem.id">
-              <AppItem :itemData="appItem" v-if="appItem.category.includes(item.name)"></AppItem>
+              <AppItem
+                :itemData="appItem"
+                v-if="appItem.category.includes(item.name)"
+                >
+              </AppItem>
             </div>
           </div>
         </div>
@@ -156,9 +160,11 @@ v-deep .el-tag {
     }
   }
   .screen {
-    position: absolute;
+    /* position: absolute;
     left: 370px;
-    top: 175px;
+    top: 175px; */
+    float: left;
+    padding-left: 20px;
     .clear {
       padding-left: 10px;
       font-size: 14px;

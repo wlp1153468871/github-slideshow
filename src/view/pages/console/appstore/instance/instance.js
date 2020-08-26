@@ -1,7 +1,15 @@
 import { mapState } from 'vuex';
 
 import AppStoreService from '@/core/services/appstore.service';
+
+import PodTable from '@/view/components/resource/pod-table/pod-table';
+import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
 import MarkDown from '@/view/components/markdown/markdown.vue';
+
+import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
+import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
+import IngressPanel from '@/view/pages/console/app/detail/panels/ingress';
+import ConfigPanel from '@/view/pages/console/app/detail/panels/config';
 
 export default {
   name: 'AppStoreInstance',
@@ -18,6 +26,12 @@ export default {
 
   components: {
     MarkDown,
+    DeploymentPanel,
+    ServicePanel,
+    IngressPanel,
+    PodTable,
+    ConfigPanel,
+    PvcTable,
   },
 
   computed: {

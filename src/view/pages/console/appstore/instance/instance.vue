@@ -95,7 +95,7 @@
           </daox-info-table>
         </div>
         <div class="container1" style="margin-top: 20px;">
-          <div class="c-title">Notes</div>
+          <div class="c-title">记录</div>
           <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down>
         </div>
       </el-tab-pane>
@@ -118,7 +118,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
-        Deployment
+        <deployment-panel> </deployment-panel>
         <!-- <dao-input
           search
           placeholder="搜索">
@@ -170,11 +170,23 @@
           </div>
         </div> -->
       </el-tab-pane>
-      <el-tab-pane label="Service" name="fouth">Service</el-tab-pane>
-      <el-tab-pane label="Ingress" name="fifth">Ingress</el-tab-pane>
-      <el-tab-pane label="Pod" name="sixth">Pod</el-tab-pane>
-      <el-tab-pane label="Config Map" name="seventh">Config Map</el-tab-pane>
-      <el-tab-pane label="PVC" name="eighth">PVC</el-tab-pane>
+      <el-tab-pane label="Service" name="fouth">
+        <service-panel></service-panel>
+      </el-tab-pane>
+      <el-tab-pane label="Ingress" name="fifth">
+        <ingress-panel> </ingress-panel>
+      </el-tab-pane>
+      <el-tab-pane label="Pod" name="sixth">
+        <pod-table :can-refresh="false">
+        </pod-table>
+      </el-tab-pane>
+      <el-tab-pane label="Config Map" name="seventh">
+        <config-panel>
+        </config-panel>
+      </el-tab-pane>
+      <el-tab-pane label="PVC" name="eighth">
+        <pvc-table></pvc-table>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>

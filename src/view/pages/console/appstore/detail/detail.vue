@@ -18,7 +18,7 @@
           <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
           <div class="header-text">{{appInfo.name}}</div>
           <!-- 新建的应用才有这部分 -->
-          <dao-dropdown
+          <!-- <dao-dropdown
             trigger="click"
             :append-to-body="true"
             placement="bottom-start"
@@ -39,7 +39,7 @@
                 <span style="color: red;" @click="deleteApp">删除</span>
               </dao-dropdown-item>
             </dao-dropdown-menu>
-          </dao-dropdown>
+          </dao-dropdown> -->
         </div>
         <dao-dialog
           :visible.sync="configEdit"

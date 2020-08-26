@@ -150,7 +150,16 @@ export default {
         .then(res => {
           if (res) {
             this.$noty.success('实例更新成功');
-            this.$router.go(-1);
+            // this.$router.go(-1);
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: 'second',
+              },
+            });
           }
         });
     },

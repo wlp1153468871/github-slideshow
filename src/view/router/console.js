@@ -536,35 +536,7 @@ export default [
     meta: {
       hidden: true,
     },
-    // 暂时的路由
     children: [
-      // {
-      //   path: 'appstore/:appid/form/:version',
-      //   name: 'appstore.form',
-      //   component: AppStoreForm,
-      //   meta: {
-      //     hidden: true,
-      //     code: 'serviceBroker',
-      //   },
-      // },
-      // {
-      //   path: 'appstore/:appid/yamlform/:version',
-      //   name: 'appstore.yamlform',
-      //   component: AppStoreYaml,
-      //   meta: {
-      //     hidden: true,
-      //     code: 'serviceBroker',
-      //   },
-      // },
-      // {
-      //   path: 'appstore/app',
-      //   name: 'appstore.app',
-      //   component: newApp,
-      //   meta: {
-      //     hidden: true,
-      //     code: 'serviceBroker',
-      //   },
-      // },
       {
         path: 'form/applications',
         name: 'deploy.applications',
@@ -810,7 +782,7 @@ export default [
     },
   },
   {
-    path: '/:appid/instance/:instanceid',
+    path: 'appstore/:appid/instance/:instanceid',
     name: 'appstore.instance',
     component: AppStoreInstance,
     meta: {

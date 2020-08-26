@@ -57,9 +57,9 @@ export default {
 
   created() {
     this.getApp();
-    // this.getCharts();
     this.getCategory();
     this.getInstances();
+    this.goBack();
   },
 
   watch: {
@@ -99,7 +99,7 @@ export default {
           }
           this.form.description = res.description;
         }
-        this.getCharts()
+        this.getCharts();
       });
     },
     // 拉取chart信息
@@ -285,7 +285,11 @@ export default {
     addClose() {
       this.configAdd = false;
     },
-
+    goBack() {
+      if (this.$route.query.activeName) {
+        this.activeName = this.$route.query.activeName;
+      }
+    },
     // 获取实例数
     instanceNum() {
       return this.instanceTable.length;
