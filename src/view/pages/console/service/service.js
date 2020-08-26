@@ -80,8 +80,8 @@ export default {
   },
 
   methods: {
-    linkToDetail() {
-      this.$router.push({ name: 'service.detail' });
+    createApp() {
+      this.$router.push({ name: 'service.app' });
     },
     selectChange(val) {
       const arr = [];
@@ -105,12 +105,9 @@ export default {
     // 实例跳转
     rowClick(id) {
       this.$router.push({
-        name: 'appstore.detail',
+        name: 'service.detail',
         params: {
-          Id: id,
-        },
-        query: {
-          admin: true,
+          id: id,
         },
       });
     },

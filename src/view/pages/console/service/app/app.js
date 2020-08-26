@@ -3,7 +3,7 @@ import { mapState } from 'vuex';
 import AppStoreService from '@/core/services/appstore.service';
 
 export default {
-  name: 'newApp',
+  name: 'createApp',
   data() {
     return {
       // 分类

@@ -1,5 +1,6 @@
 <template>
-  <div class="page-manage">
+  <div>
+  <div class="page-manage" v-if="showAdd">
     <circle-loading v-if="loading"></circle-loading>
 
     <template v-else>
@@ -14,6 +15,13 @@
       </div>
 
       <el-tabs v-model="currentTab" class="zone-tab">
+        <el-tab-pane :label="TABS.APPLICATION" :name="TABS.APPLICATION">
+          <AppList :id="zone.id" @addApplication="addApplication"></AppList>
+        </el-tab-pane>
+        <el-tab-pane :label="TABS.CHART" :name="TABS.CHART">
+          <ChartList :id="zone.id"></ChartList>
+<!--          <newApp></newApp>-->
+        </el-tab-pane>
         <el-tab-pane :label="TABS.BINDS" :name="TABS.BINDS">
           <manage-panel
             :zone="zone"
@@ -43,6 +51,11 @@
     </sync-service-dialog>
     <!--dialog end-->
   </div>
+    <div v-if="!showAdd">
+      <newApp></newApp>
+    </div>
+  </div>
 </template>
 
 <script src="./zone-detail.js"></script>
+

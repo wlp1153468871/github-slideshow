@@ -44,7 +44,6 @@ export default {
         name: '',
         pictureId: '',
       },
-      isAdmin: false,
     };
   },
 
@@ -58,7 +57,6 @@ export default {
 
   created() {
     this.activeName = this.$route.query.activeName || 'first';
-    this.isAdmin = this.$route.query.admin || false;
 
     this.getApp();
     this.getCategory();

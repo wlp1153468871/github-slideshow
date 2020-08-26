@@ -43,9 +43,9 @@
           :label="item.name">
         </dao-option>
       </dao-select>
-      <button class="dao-btn blue has-icon">
+      <button class="dao-btn blue has-icon"  @click="createApp">
         <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
-        <span class="text">创建应用</span>
+        <span class="text" >创建应用</span>
       </button>
       <span style="float: right;">
         <dao-input

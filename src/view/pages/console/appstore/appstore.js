@@ -90,9 +90,6 @@ export default {
     linkToApp() {
       this.$router.push({ name: 'appstore.app' });
     },
-    linkToMy() {
-      this.$router.push({ name: 'appstore.mycreate' });
-    },
     init() {
       this.getApplications();
     },
