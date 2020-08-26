@@ -3,6 +3,10 @@ import SyncServiceDialog from '@/view/pages/dialogs/zone/sync-service';
 // panels
 import ManagePanel from './panels/manage';
 import OverviewPanel from './panels/overview';
+import AppList from './panels/app-list';
+import test from './panels/test';
+import newApp from './panels/new-app';
+import ChartList from './panels/chart-list'
 
 export default {
   name: 'ZoneDetail',
@@ -10,6 +14,10 @@ export default {
     ManagePanel,
     OverviewPanel,
     SyncServiceDialog,
+    AppList,
+    test,
+    newApp,
+    ChartList
   },
   created() {
     this.loadCatalog();
@@ -18,6 +26,8 @@ export default {
     const zoneId = this.$route.params.zone; // 可用区ID
     const TABS = {
       BINDS: '服务管理',
+      APPLICATION: '应用列表',
+      CHART: 'chart管理',
       OVERVIEW: '设置',
     };
     return {
@@ -35,9 +45,16 @@ export default {
       selectedBroker: null,
       currentTab: TABS.BINDS,
       loading: true,
+      showAdd: true, // 是否是新增应用页面
     };
   },
   methods: {
+    /**
+     * 新增应用点击的自定义事件
+     */
+    addApplication() {
+      this.showAdd = true;
+    },
     loadCatalog() {
       this.loading = true;
       const AuthorizationScope = JSON.stringify({

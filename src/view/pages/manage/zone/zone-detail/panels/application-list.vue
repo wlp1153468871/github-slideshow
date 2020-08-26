@@ -8,7 +8,7 @@
         >
           可用区管理
         </el-breadcrumb-item>
-        <el-breadcrumb-item>可用区详情({{zoneName}})</el-breadcrumb-item>
+        <el-breadcrumb-item>可用区详情()</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-tabs v-model="activeName" @tab-click="tabsClick">
@@ -313,7 +313,7 @@
   </div>
 </template>
 
-<script src="./detail.js"></script>
+<script src="./application-list.js"></script>
 
 <style>
   #zone .el-button--mini{
@@ -327,4 +327,4 @@
     border: none;
   }
 </style>
-<style lang="scss" src="./detail.scss"></style>
+<style lang="scss" src="./application-list.scss"></style>
