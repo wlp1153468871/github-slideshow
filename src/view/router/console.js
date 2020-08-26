@@ -829,41 +829,43 @@ export default [
     },
   },
   // 可用区管理
-  {
-    path: 'zone',
-    name: 'console.zone',
-    component: Zone,
-    meta: {
-      title: '可用区管理',
-      icon: '#icon_drive',
-      // code: 'space.store',
-      hidden: false,
-    },
-  },
-  {
-    path: 'zone/detail',
-    name: 'zone.detail',
-    component: ZoneDetail,
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: 'zone/chart',
-    name: 'zone.chart',
-    component: Chart,
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: 'zone/newapp',
-    name: 'zone.newapp',
-    component: newApplication,
-    meta: {
-      hidden: true,
-    },
-  },
+  // {
+  //   path: 'zone',
+  //   name: 'console.zone',
+  //   component: Zone,
+  //   meta: {
+  //     title: '可用区管理',
+  //     icon: '#icon_drive',
+  //     // code: 'space.store',
+  //     hidden: false,
+  //   },
+  // },
+  // {
+  //   path: 'zone/detail/:id/:zoneName',
+  //   name: 'zone.detail',
+  //   component: ZoneDetail,
+  //   meta: {
+  //     hidden: true,
+  //   },
+  //   props: true,
+  // },
+  // {
+  //   path: 'zone/chart',
+  //   name: 'zone.chart',
+  //   component: Chart,
+  //   meta: {
+  //     hidden: true,
+  //   },
+  // },
+  // {
+  //   path: 'zone/newapp/:id/:zoneName',
+  //   name: 'zone.newapp',
+  //   component: newApplication,
+  //   meta: {
+  //     hidden: true,
+  //   },
+  //   props: true,
+  // },
   // 服务区管理
   {
     path: 'service',

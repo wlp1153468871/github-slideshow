@@ -36,18 +36,18 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="clusterUrl" label="集群地址">
-          <template slot-scope="{ row: zone }">
-            <a :href="zone.clusterUrl" target="_blank">
-              {{ zone.clusterUrl }}
-            </a>
-          </template>
-        </el-table-column>
-        <el-table-column prop="es.esUrl" label="ES 地址" :show-overflow-tooltip="true">
-          <template slot-scope="{ row: zone }">
-            {{ zone.es.esUrl || '-' }}
-          </template>
-        </el-table-column>
+<!--        <el-table-column prop="clusterUrl" label="集群地址">-->
+<!--          <template slot-scope="{ row: zone }">-->
+<!--            <a :href="zone.clusterUrl" target="_blank">-->
+<!--              {{ zone.clusterUrl }}-->
+<!--            </a>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column prop="es.esUrl" label="ES 地址" :show-overflow-tooltip="true">-->
+<!--          <template slot-scope="{ row: zone }">-->
+<!--            {{ zone.es.esUrl || '-' }}-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column prop="available" label="状态">
           <template slot-scope="{ row: zone }">
             <!-- {{ zone.available  }} -->

@@ -10,6 +10,12 @@
           <div class="base-info">基本信息</div>
         </template>
         <dao-setting-section>
+          <template slot="label">应用名称</template>
+          <template slot="content">
+            <dao-input v-model="name" placeholder="请输入应用名称"></dao-input>
+          </template>
+        </dao-setting-section>
+        <dao-setting-section>
           <template slot="label">应用图标</template>
           <template slot="content">
             <div class="content-text">建议大小120像素×120像素，支持PNG，文件小于1MB</div>
@@ -47,6 +53,9 @@
         <dao-setting-section>
           <template slot="label">分类</template>
           <template slot="content">
+            <svg class="icon" @click="addCategory">
+              <use :xlink:href="`#icon_plus-circled`"></use>
+            </svg>
             <el-select
               class="category-style"
               v-model="category"
@@ -62,6 +71,27 @@
             </el-select>
           </template>
         </dao-setting-section>
+<!--        新增分类弹窗-->
+        <div v-if="config.showAddCategory">
+          <div class="dao-dialog demo2">
+            <dao-dialog
+              :visible.sync="config.showAddCategory"
+              :header="config.header"
+              @confirm="submit">
+              <dao-setting-layout>
+                <dao-setting-section>
+                  <template slot="label">分类名称</template>
+                  <template slot="content">
+                    <dao-input
+                      v-model="categoryName"
+                      placeholder="请输入分类名称">
+                    </dao-input>
+                  </template>
+                </dao-setting-section>
+              </dao-setting-layout>
+            </dao-dialog>
+          </div>
+        </div>
         <dao-setting-section>
           <template slot="label">描述</template>
           <template slot="content">
@@ -112,24 +142,22 @@
 
 <script>
   import { mapState } from 'vuex';
-  import Space from '../../../../manage/org/org-detail/panels/space';
-  import DaoSettingSection from '../../../../../components/daox/setting-layout/setting-section';
+  import Space from '@/view/pages/manage/org/org-detail/panels/space';
+  import DaoSettingSection from '@/view/components/daox/setting-layout/setting-section';
   import AppStoreService from '@/core/services/appstore.service';
   import ZoneAdminService from '@/core/services/zone-admin.service';
   export default {
     name: 'new-app',
-    props: [ 'id', 'zoneName' ],
     components: { DaoSettingSection, Space },
     data() {
+      const id = this.$route.params.id;
       return {
+        id: id,
         appName: '', // 应用名称
         isWidthLimit: false,
         appType: '', // 服务类型
         fileList: [], // 上传图标
         options: [{
-          text: 'Helm Chart',
-          value: 'Helm Chart',
-        }, {
           text: 'Helm Chart',
           value: 'Helm Chart',
         }],
@@ -141,12 +169,23 @@
           text: 'Helm Chart',
           value: 2,
         }],
+        name: '', // 应用名称
         description: '', // 描述,
         pictureId: '', // 上传图标的id
         fileType: ['image/png'],
         chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
         chartList: [],
         appId: '',
+        showAddCategory: false, // 控制新增分类按钮
+        // 弹窗所需数据
+        config: {
+          showAddCategory: false,
+          header: {
+            title: '新增分类',
+            showClose: true,
+          },
+        },
+        categoryName: '', // 新增分类名称
       };
     },
     created() {
@@ -156,6 +195,22 @@
       ...mapState(['space', 'zone', 'user']),
     },
     methods: {
+      /**
+       * 新增分类按钮被点击
+       * */
+      addCategory() {
+        console.log('新增按钮被点击');
+        this.config.showAddCategory = true;
+      },
+      /**
+       * 新增分类提交
+       **/
+      submit() {
+        ZoneAdminService.addCategory(this.categoryName).then(res => {
+          console.log(res);
+          this.classification.push(res);
+        })
+      },
       /**
        * 分类改变回调函数
        * */
@@ -172,10 +227,12 @@
         })
       },
       handleCancel() {
-        this.$router.push({ name: 'zone.detail' });
+        // this.$router.push({ name: 'zone.detail' });
+        this.$router.back();
       },
       handleBack() {
-        this.$router.push({ name: 'zone.detail' });
+        // this.$router.push({ name: 'zone.detail' });
+        this.$router.back();
       },
       /**
        * 文件上传之前的回调函数
@@ -204,13 +261,15 @@
       },
 
       createApp() {
+        console.log(this.id);
         const formData = {
+          name: this.name,
           pictureId: this.pictureId,
           appType: this.appType,
           category: this.category,
           description: this.description
         }
-        ZoneAdminService.createApplication(formData).then(res => {
+        ZoneAdminService.createApplication(this.id, formData).then(res => {
           if (res) {
             console.log(res);
             this.appId = res.id;
@@ -229,7 +288,6 @@
         console.log('上传图片');
         AppStoreService.uploadPic(file)
           .then(res => {
-            console.log(res, 'heyanfen')
             this.pictureId = res.id;
             // this.createApp();
           })
@@ -264,7 +322,7 @@
         this.chartList.forEach(file => {
           formData.append('chart', file);
         });
-        ZoneAdminService.createChart(this.appId, formData)
+        ZoneAdminService.createChart(this.id, this.appId, formData)
           .then(res => {
             if (res) {
               // this.$noty.success('应用创建成功');
@@ -272,22 +330,24 @@
               //   name: 'console.appstore',
               // });
               console.log('应用创建成功');
-              this.$router.push({ name: 'zone.detail' });
+              // this.$router.push({ name: 'zone.detail' });
+              this.$router.back();
             }
           })
           .catch(err => {
             this.removeFile();
             this.$noty.error('创建失败');
-            ZoneAdminService.deleteApplication(this.appId).then(res => {
-              this.$message({
-                message: '由于chart文件上传失败，应用不能被创建'
-              })
-            }).catch(err => {
-              this.$message({
-                message: '删除失败',
-              });
-            });
-            this.$router.push({ name: 'zone.detail' });
+            // ZoneAdminService.deleteApplication(this.id, this.appId).then(res => {
+            //   this.$message({
+            //     message: '由于chart文件上传失败，应用不能被创建'
+            //   })
+            // }).catch(err => {
+            //   this.$message({
+            //     message: '删除失败',
+            //   });
+            // });
+            // this.$router.push({ name: 'zone.detail' });
+            this.$router.back();
           });
       },
       /**
@@ -368,7 +428,14 @@
     display: flex;
   }
   .category-style {
-    width: 100%;
+    width: 95%;
+    display: inline-block;
     /*border: 1px solid #E4E7ED;*/
+  }
+  .icon {
+    display: inline-block;
+    margin-top: 20px!important;
+    margin-right: 10px;
+    cursor: pointer;
   }
 </style>

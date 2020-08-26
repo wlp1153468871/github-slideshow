@@ -26,15 +26,8 @@
     border-left: 1px solid #E4E7ED;
     border-bottom: 1px solid #E4E7ED;
     background: #fff;
-    .page {
-      float: left;
-      height: 14px;
-      line-height: 14px;
-      padding: 10px 0 0 10px;
-      font-size: 14px;
-      font-family: PingFangSC-Regular,PingFang SC;
-      font-weight: 400;
-      color: #9BA3AF;
+    .el-pagination {
+      padding: 4px 0px;
     }
   }
 }

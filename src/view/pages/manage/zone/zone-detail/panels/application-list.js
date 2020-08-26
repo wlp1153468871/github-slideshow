@@ -1,4 +1,4 @@
-import newApp from './detailComponents/new-app'
+import newApp from './new-app'
 import ZoneAdminService from '@/core/services/zone-admin.service';
 import fa from 'element-ui/src/locale/lang/fa';
 export default {
@@ -6,7 +6,7 @@ export default {
   components: {
     'newApp': newApp
   },
-  props: ['id', 'zoneName'],
+  // props: ['id', 'zoneName'],
   data() {
     return {
       activeName: 'first',
@@ -58,8 +58,8 @@ export default {
     };
   },
   created() {
-    this.getSelectZone();
-    console.log(this.zoneName)
+    // this.getSelectZone();
+    // console.log(this.zoneName)
   },
   methods: {
     /**
@@ -102,8 +102,7 @@ export default {
       ZoneAdminService.deleteApplication(id).then(res => {
         this.getSelectZone();
       })
-    }
-    ,
+    },
     /**
      * 状态搜索
      */

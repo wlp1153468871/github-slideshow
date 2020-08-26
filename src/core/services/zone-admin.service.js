@@ -30,8 +30,8 @@ class ZoneAdmin {
   /**
    * 列出选定可用区下所有的app
    */
-  getSelectedZone(status) {
-    return this.api.get(`/appstore/zones/${this.zoneId}/applications`, {
+  getSelectedZone(zoneId, status) {
+    return this.api.get(`/appstore/zones/${zoneId}/applications`, {
        status: status
     });
   }
@@ -53,64 +53,71 @@ class ZoneAdmin {
   /**
    * 删除应用
    */
-  deleteApplication(id) {
-    return this.api.delete(`/appstore/zone/${this.zoneId}/applications/${id}`);
+  deleteApplication(id, zoneId) {
+    return this.api.delete(`/appstore/zone/${zoneId}/applications/${id}`);
   }
 
   /**
    * 创建新全局应用
    */
-  createApplication(data) {
-    return this.api.post(`/appstore/zones/${this.zoneId}/applications`, data);
+  createApplication(zoneId, data) {
+    return this.api.post(`/appstore/zones/${zoneId}/applications`, data);
   }
 
   /**
    * 上传chart新版本
    */
-  createChart(app_id, data) {
-    return this.api.post(`/appstore/zones/${this.zoneId}/applications/${app_id}/application_infos`, data);
+  createChart(zoneId, app_id, data) {
+    return this.api.post(`/appstore/zones/${zoneId}/applications/${app_id}/application_infos`, data);
   }
 
   /**
    * 可用区的chart仓库信息
    */
-  getChartInformation() {
-    return this.api.get(`/appstore/zones/${this.zoneId}/chart_repo`)
+  getChartInformation(id) {
+    return this.api.get(`/appstore/zones/${id}/chart_repo`)
   }
 
   /**
    * 列出选定可用区下的chart列表
    */
-  getChartList() {
-    return this.api.get(`/appstore/zones/${this.zoneId}/chart_repo/charts`)
+  getChartList(id) {
+    return this.api.get(`/appstore/zones/${id}/chart_repo/charts`)
   }
 
   /**
    * 仓库里一个chart的版本列表
    */
-  getChartVersionList(chart_name) {
-    return this.api.get(`/appstore/zones/${this.zoneId}/chart_repo/charts/${chart_name}`)
+  getChartVersionList(zoneId, chart_name) {
+    return this.api.get(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}`)
   }
 
   /**
    * 删除chart版本
    */
-  deleteChartVersion(name, version) {
-    return this.api.delete(`/appstore/zones/${this.zoneId}/chart_repo/charts/${name}/${version}`);
+  deleteChartVersion(zoneId, name, version) {
+    return this.api.delete(`/appstore/zones/${zoneId}/chart_repo/charts/${name}/${version}`);
   }
 
   /**
    * 下载对应的chart
    */
-  uploadChart(chart_name, version) {
-    return this.api.get(`/appstore/zones/${this.zoneId}/chart_repo/charts/${chart_name}/${version}/download`);
+  uploadChart(zoneId, chart_name, version) {
+    return this.api.get(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}/${version}/download`);
   }
 
   /**
    * 删除chart所有版本
    */
-  deleteChartAll(chart_name) {
-    return this.api.delete(`/appstore/zones/${this.zoneId}/chart_repo/charts/${chart_name}`);
+  deleteChartAll(zoneId, chart_name) {
+    return this.api.delete(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}`);
+  }
+
+  /**
+   * 新增分类接口
+   */
+  addCategory(category_name) {
+    return this.api.post(`/appstore/applications/categories/${category_name}`);
   }
 }
 
