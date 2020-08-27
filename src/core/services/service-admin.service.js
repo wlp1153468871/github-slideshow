@@ -7,8 +7,12 @@ class ServiceAdmin {
   /**
    * 列出所有的apps
    */
-  getAllApp() {
-    return this.api.get('/appstore/applications');
+  getAllApp(zoneId, status, type) {
+    return this.api.get('/appstore/applications', {
+      zoneId,
+      status,
+      type,
+    });
   }
   /**
    * 列出所有的可用区
