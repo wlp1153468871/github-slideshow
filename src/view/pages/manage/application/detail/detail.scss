@@ -286,8 +286,24 @@
     .input  {
       float: right;
     }
-    .icon {
+    .iconlay {
       float: right;
+    }
+    .icon-size {
+      width: 32px;
+      height: 32px;
+    }
+    .selectStatus {
+      padding: 15px 0 0 10px;
+      .number {
+        font-size: 14px;
+        font-family: PingFangSC-Regular,PingFang SC;
+        font-weight: 400;
+        color: #3D444F;
+      }
+      .status {
+        margin-left:10px
+      }
     }
   }
   .footer {

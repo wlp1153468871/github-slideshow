@@ -54,6 +54,7 @@ $appItemWidth: 31.2%;
   box-shadow: 0px 1px 2px 0px rgba(228,231,237,0.5);
   border-radius:  6px;
   border: 1px solid rgba(228,231,237,1);
+  cursor: pointer;
   .icon {
     .icon-left {
       .icon-item {
