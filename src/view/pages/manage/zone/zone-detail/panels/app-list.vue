@@ -32,7 +32,7 @@
           <button class="dao-btn blue has-icon"
                   style="margin-left: 10px;" @click="handleNewApplication">
             <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
-            <span class="text">创建应用</span>
+            <span class="text">导入应用模板</span>
           </button>
         </div>
         <div>
