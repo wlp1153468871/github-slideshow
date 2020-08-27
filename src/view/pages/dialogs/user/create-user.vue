@@ -145,6 +145,7 @@
       <save-button
         class="blue"
         text="创建"
+        v-throttleClick
         :saving="loading"
         :disabled="loading || isValidForm"
         @click="onConfirm()"

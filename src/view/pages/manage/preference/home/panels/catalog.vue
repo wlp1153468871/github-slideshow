@@ -134,7 +134,7 @@
         </div>
       </div>
       <template slot="footer">
-        <button class="dao-btn blue" @click="onSave()">
+        <button class="dao-btn blue" v-throttleClick @click="onSave()">
           保存
         </button>
       </template>
