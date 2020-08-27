@@ -64,16 +64,20 @@
       </span>
     </div>
     <div class="select" v-if="selectStatus.length">
-      <span class="number">已选择 2 项</span>
+      <span class="number">已选择 {{selectedArr.length}} 项</span>
       <button
         class="dao-btn status"
-        v-if="selectStatus[0] === 0 && selectStatus.length === 1">批量上架
+        v-if="selectStatus[0] === 0 && selectStatus.length === 1"
+        @click="handleOnline"
+      >批量上架
       </button>
       <button
         class="dao-btn status"
-        v-if="selectStatus[0] === 1 && selectStatus.length === 1">批量下架
+        v-if="selectStatus[0] === 1 && selectStatus.length === 1"
+        @click="handleOff"
+      >批量下架
       </button>
-      <button class="dao-btn red status">批量删除</button>
+      <button class="dao-btn red status" @click="deleteApplication">批量删除</button>
     </div>
     <div style="margin: 20px;">
       <el-table

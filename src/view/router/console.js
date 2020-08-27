@@ -3,8 +3,7 @@ import store from '@/core/store';
 import NProgress from 'nprogress';
 
 import RouteView from '@/view/layout/route-view';
-
-// appstore
+// serviceMangement
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
 import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
 import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';

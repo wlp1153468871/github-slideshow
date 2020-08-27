@@ -210,7 +210,7 @@ export default [
         name: 'application.app',
         component: CreateApp,
         meta: {
-          activeMenu: 'manage.application.app',
+          activeMenu: 'manage.application',
           hidden: true,
         },
       },

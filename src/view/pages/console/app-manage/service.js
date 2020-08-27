@@ -30,22 +30,31 @@ export default {
           name: '全部',
         },
       ],
-      zoneCat: '全部',
+      zoneCat: '',
 
       status: [
         {
           id: '',
           name: '全部',
+        }, {
+          id: 1,
+          name: '已上架',
+        }, {
+          id: 0,
+          name: '已下架',
         },
       ],
-      statuCat: '全部',
-
-      appType: [
+      statuCat: '',
+      appType: [ // 资源类型
         {
+          id: '',
           name: '全部',
+        }, {
+          id: 'Helm Chart',
+          name: 'Helm Chart',
         },
       ],
-      appTypeCat: '全部',
+      appTypeCat: '',
     };
   },
 
@@ -55,6 +64,7 @@ export default {
 
   created() {
     this.getAllApp();
+    this.getAllZone();
   },
 
   watch: {
@@ -80,6 +90,18 @@ export default {
   },
 
   methods: {
+    /**
+     * 可用区修改, 或者状态，或者资源
+     */
+    changeSearch() {
+      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
+        console.log(res);
+        this.appInfo = res;
+      });
+    },
+    linkToDetail() {
+      this.$router.push({ name: 'service.detail' });
+    },
     createApp() {
       this.$router.push({ name: 'service.app' });
     },
@@ -107,13 +129,13 @@ export default {
       this.$router.push({
         name: 'service.detail',
         params: {
-          id: id,
+          id,
         },
       });
     },
     // app
     getAllApp() {
-      ServiceAdmin.getAllApp().then(res => {
+      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
         if (res) {
           this.appInfo = res;
           this.appInfoCopy = res;
