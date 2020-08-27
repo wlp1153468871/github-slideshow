@@ -31,10 +31,12 @@
             search
             placeholder="搜索"
             class="search"
+            @change="handleChange"
+            v-model="search"
           >
           </dao-input>
           <span class="fresh">
-            <el-button size="mini" style="margin-left: 10px;" >
+            <el-button size="mini" @click="handleRefresh" style="margin-left: 10px;" >
               <span>
                 <svg class="icon">
                   <use :xlink:href="`#icon_cw`"></use>
@@ -45,7 +47,7 @@
         </div>
         <el-table
           style="width: 100%;"
-          :data="chartTableData"
+          :data="renderTable"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
@@ -81,10 +83,10 @@
                             <use :xlink:href="`#icon_more`"></use>
                           </svg>
                           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                            <dao-dropdown-item style="margin-left: 10px">
-                              <span style="width: 100%;display: inline-block;"
+                            <dao-dropdown-item style="margin-left: 10px" class="linkColor">
+                              <a style="width: 100%;display: inline-block;"
                                     @click="uploadChart(scope.row.name, scope.row.version)"
-                              >下载</span>
+                              >下载</a>
                             </dao-dropdown-item>
                             <dao-dropdown-item style="margin-left: 10px">
                               <span style="color: red;"
@@ -201,8 +203,10 @@ export default {
       },
       chartBaseList: {},
       showPass: false, // 是否显示密码
-      chartTableData: [], // chart管理渲染列表
+      chartTableData: [], // chart管理列表
+      renderTable: [], // chart管理渲染列表
       itemChart: [], // 展开行渲染列表
+      search: '', // 搜索字段
     };
   },
   created() {
@@ -232,6 +236,7 @@ export default {
       ZoneAdminService.getChartList(this.id).then(res => {
         console.log(res);
         this.chartTableData = res;
+        this.renderTable = res;
         this.changeExpand();
       });
     },
@@ -281,6 +286,26 @@ export default {
         this.getChartTableData();
       });
     },
+    /**
+     * 搜索
+     */
+    handleChange(val) {
+      this.renderTable = [];
+      console.log(val);
+      this.chartTableData.forEach(item => {
+        const str = item.name;
+        if (str.search(val) !== -1) {
+          this.renderTable.push(item);
+        }
+      });
+    },
+    /**
+     * 刷新
+     */
+    handleRefresh() {
+      this.search = '';
+      this.handleChange('');
+    }
   },
 };
 </script>

@@ -24,6 +24,7 @@ export default {
       appNum: '',
       // 选择的状态
       selectStatus: [],
+      selectedArr: [], // 选中时的数组
       zones: [
         {
           id: '',
@@ -81,9 +82,55 @@ export default {
 
   methods: {
     createApp() {
-      this.$router.push({ name: 'service.app' });
+      this.$router.push({ name: 'application.app' });
+    },
+    /**
+     * 删除/批量删除
+     * @param val
+     */
+    deleteApplication() {
+      console.log('点击批量删除', this.selectedArr);
+      this.selectedArr.forEach(item => {
+        ServiceAdmin.deleteApplication(item.id, item.zoneId).then(res => {
+          // this.$message({
+          //   message: res,
+          //   type: 'success',
+          // });
+          this.getAllApp();
+        }).catch(() => {
+          // this.$message({
+          //   message: err,
+          //   type: 'warning',
+          // });
+        });
+      });
+    },
+    /**
+     * 批量上架
+     * @param val
+     */
+    handleOnline() {
+      this.selectedArr.forEach(item => {
+        ServiceAdmin.availableOn(item.id).then(res => {
+          console.log(res);
+          this.getAllApp();
+        });
+      });
+    },
+    /**
+     * 批量下架
+     * @param val
+     */
+    handleOff() {
+      this.selectedArr.forEach(item => {
+        ServiceAdmin.availableOff(item.id).then(res => {
+          console.log(res);
+          this.getAllApp();
+        });
+      });
     },
     selectChange(val) {
+      console.log('select', val);
       const arr = [];
       val.forEach(item => {
         if (!arr.includes(item.available)) {
@@ -94,6 +141,8 @@ export default {
     },
     // 全选
     selectAll(val) {
+      console.log('selection-change', val);
+      this.selectedArr = val;
       const arr = [];
       val.forEach(item => {
         if (!arr.includes(item.available)) {

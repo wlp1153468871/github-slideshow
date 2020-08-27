@@ -32,7 +32,7 @@
           <button class="dao-btn blue has-icon"
                   style="margin-left: 10px;" @click="handleNewApplication">
             <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
-            <span class="text">创建应用</span>
+            <span class="text">导入应用模板</span>
           </button>
         </div>
         <div>
@@ -40,9 +40,11 @@
             search
             placeholder="搜索"
             style="width: 200px; height: 32px;"
+            @change="handleChange"
+            v-model="search"
           >
           </dao-input>
-          <el-button size="mini" style="margin-left: 10px;">
+          <el-button size="mini" @click="handleRefresh" style="margin-left: 10px;">
               <span>
                 <svg class="icon">
                   <use :xlink:href="`#icon_cw`"></use>
@@ -53,7 +55,7 @@
       </div>
       <el-table
         style="width: 100%; margin-top: 20px;"
-        :data="tableData"
+        :data="renderTable"
         :cell-style="cellStyle"
         @cell-click="cellClick"
       >
@@ -162,6 +164,7 @@ export default {
       activeName: 'first',
       select: 1,
       status: null, // 状态
+      search: '', // 搜索
       statusOptions: [
         {
           text: '全部',
@@ -185,6 +188,7 @@ export default {
         value: 2,
       }],
       tableData: [],
+      renderTable: [], // 渲染table的数据
       chartData: [
         {
           type: '2.6.0',
@@ -219,7 +223,8 @@ export default {
     getSelectZone() {
       ZoneAdminService.getSelectedZone(this.id, this.status).then(res => {
         this.tableData = res;
-        this.tableData.forEach(item => {
+        this.renderTable = res;
+        this.renderTable.forEach(item => {
           const category = item.category.join(',');
           item.category = category;
         });
@@ -293,12 +298,39 @@ export default {
       console.log(row, column);
       if (column.label === '应用名称') {
         this.$router.push({
-          name: 'appstore.detail',
+          name: 'application.detail',
           params: {
-            Id: row.id,
+            id: row.id,
           },
         });
       }
+    },
+    /**
+     * 键盘弹起事件
+     */
+    // handleKeyup(event) {
+    //   console.log(event);
+    // },
+    /**
+     * input的change事件
+     * @param val
+     */
+    handleChange(val) {
+      this.renderTable = [];
+      console.log(val);
+      this.tableData.forEach(item => {
+        const str = item.name;
+        if (str.search(val) !== -1) {
+          this.renderTable.push(item);
+        }
+      });
+    },
+    /**
+     * 刷新输入框
+     */
+    handleRefresh() {
+      this.search = '';
+      this.handleChange('');
     },
   },
 };

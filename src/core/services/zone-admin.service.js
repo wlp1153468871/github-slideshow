@@ -36,7 +36,7 @@ class ZoneAdmin {
   }
 
   /**
-   * 下架可用区app
+   * 下架应用
    */
   availableOff(app_id) {
     return this.api.patch(`/appstore/applications/${app_id}/unavailable`);

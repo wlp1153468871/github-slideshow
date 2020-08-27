@@ -8,8 +8,12 @@ class ServiceAdmin {
   /**
    * 列出所有的apps
    */
-  async getAllApp() {
-    return this.api.get('/appstore/applications');
+  getAllApp(zoneId, status, type) {
+    return this.api.get('/appstore/applications', {
+      zoneId,
+      status,
+      type,
+    });
   }
 
   /**
@@ -33,6 +37,27 @@ class ServiceAdmin {
    */
   async getCharts(app_id) {
     return this.api.get(`/appstore/applications/${app_id}/application_infos`);
+  }
+
+  /**
+   * 下架应用
+   */
+  availableOff(app_id) {
+    return this.api.patch(`/appstore/applications/${app_id}/unavailable`);
+  }
+
+  /**
+   * 上架应用
+   */
+  availableOn(app_id) {
+    return this.api.patch(`/appstore/applications/${app_id}/available`);
+  }
+
+  /**
+   * 删除应用/批量删除也是此接口
+   */
+  deleteApplication(id, zoneId) {
+    return this.api.delete(`/appstore/zone/${zoneId}/applications/${id}`);
   }
 }
 
