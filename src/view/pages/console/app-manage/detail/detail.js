@@ -1,6 +1,7 @@
 import { mapState } from 'vuex';
 
 import ServiceAdmin from '@/core/services/service-admin.service';
+import MarkDown from '@/view/components/markdown/markdown.vue';
 
 export default {
   name: 'AppStoreDetail',
@@ -9,20 +10,6 @@ export default {
       activeName: 'first',
       select: 1,
       item: '全部',
-      items: [
-        {
-          text: '1.9.1',
-          value: 1,
-        },
-        {
-          text: '1.10.2',
-          value: 2,
-        },
-        {
-          text: '2.1.1',
-          value: 3,
-        },
-      ],
       tableData: [
         {
           groupName: '数据应用',
@@ -43,25 +30,47 @@ export default {
           date: '2020-5-23 12:34',
         },
       ],
+      // 应用信息
       appInfo: '',
+      // chart信息
+      applicationInfos: '',
+      chart: '',
     };
   },
 
   computed: {
     ...mapState(['space', 'zone']),
   },
-
+  components: {
+    MarkDown,
+  },
   created() {
     this.getApp();
   },
 
   methods: {
+    // 获取应用信息
     getApp() {
       ServiceAdmin.getApp(this.$route.params.id).then(res => {
         if (res) {
-          console.log(res);
           this.appInfo = res;
         }
+        this.getCharts();
+      });
+    },
+    getCharts() {
+      ServiceAdmin.getCharts(this.$route.params.id).then(res => {
+        if (res) {
+          this.applicationInfos = res;
+          res.forEach(item => {
+            this.chart = item.version;
+          });
+        }
+        res.forEach(item => {
+          if (item.version === this.chart) {
+            this.appInfo.content = item.content;
+          }
+        });
       });
     },
   },

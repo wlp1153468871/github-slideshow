@@ -1,10 +1,11 @@
-import newApp from './new-app'
+import newApp from './new-app';
 import ZoneAdminService from '@/core/services/zone-admin.service';
 import fa from 'element-ui/src/locale/lang/fa';
+
 export default {
   name: 'ZoneDetail',
   components: {
-    'newApp': newApp
+    newApp,
   },
   // props: ['id', 'zoneName'],
   data() {
@@ -69,45 +70,45 @@ export default {
       ZoneAdminService.getSelectedZone(this.id, this.status).then(res => {
         this.tableData = res;
         this.tableData.forEach(item => {
-          let category = item.category.join(',');
+          const category = item.category.join(',');
           item.category = category;
-        })
-      })
+        });
+      });
     },
     /**
      * 下架应用
      */
     handleOff(id) {
-      console.log('点击下架应用')
+      console.log('点击下架应用');
       ZoneAdminService.availableOff(id).then(res => {
         console.log(res);
         this.getSelectZone();
-      })
+      });
     },
     /**
      * 上架应用
      */
     handleOn(id) {
-      console.log('点击上架架应用')
+      console.log('点击上架架应用');
       ZoneAdminService.availableOn(id).then(res => {
         console.log(res);
         this.getSelectZone();
-      })
+      });
     },
     /**
      * 删除应用
      */
     handleClick(id) {
-      console.log('删除应用')
+      console.log('删除应用');
       ZoneAdminService.deleteApplication(id).then(res => {
         this.getSelectZone();
-      })
+      });
     },
     /**
      * 状态搜索
      */
     changeStatus(val) {
-      console.log(val)
+      console.log(val);
       this.getSelectZone();
     },
     showDialog() {
@@ -145,7 +146,7 @@ export default {
       ZoneAdminService.getChartInformation().then(res => {
         console.log(res);
         this.chartBaseList = res;
-      })
+      });
       this.getChartTableData();
     },
     /**
@@ -162,7 +163,7 @@ export default {
         console.log(res);
         this.chartTableData = res;
         this.changeExpand();
-      })
+      });
     },
     /**
      * 展开行改变
@@ -174,8 +175,8 @@ export default {
             console.log(res);
             item[item.name] = res;
             console.log(this.chartTableData, '改变后的数组');
-          })
-        })
+          });
+        });
       }
     },
     /**
@@ -189,7 +190,7 @@ export default {
       }).catch(err => {
         this.$message({
           message: '删除失败',
-          type: 'warning'
+          type: 'warning',
         });
       });
     },
@@ -199,7 +200,7 @@ export default {
     uploadChart(name, version) {
       ZoneAdminService.uploadChart(name, version).then(res => {
         console.log(res);
-      })
+      });
     },
     /**
      * 删除所有chart版本
@@ -207,7 +208,7 @@ export default {
     deleteChartAll(name) {
       ZoneAdminService.deleteChartAll(name).then(res => {
         console.log(res);
-      })
-    }
+      });
+    },
   },
 };
