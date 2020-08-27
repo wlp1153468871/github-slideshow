@@ -3,13 +3,7 @@ import store from '@/core/store';
 import NProgress from 'nprogress';
 
 import RouteView from '@/view/layout/route-view';
-
 // serviceMangement
-import ServiceMan from '@/view/pages/console/service/service.vue';
-import ServiceManDetail from '@/view/pages/console/service/detail/detail.vue';
-import createApp from '@/view/pages/console/service/app/app.vue';
-
-// appstore
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
 import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
 import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
@@ -795,33 +789,6 @@ export default [
     path: 'appstore/:appid/yamlform/:version',
     name: 'appstore.yamlform',
     component: AppStoreYaml,
-    meta: {
-      hidden: true,
-    },
-  },
-  // 服务区管理
-  {
-    path: 'service',
-    name: 'console.service',
-    component: ServiceMan,
-    meta: {
-      title: '应用管理',
-      icon: '#icon_service',
-      hidden: false,
-    },
-  },
-  {
-    path: 'service/detail/:id',
-    name: 'service.detail',
-    component: ServiceManDetail,
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: 'service/app',
-    name: 'service.app',
-    component: createApp,
     meta: {
       hidden: true,
     },

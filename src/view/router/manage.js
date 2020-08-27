@@ -35,6 +35,12 @@ const AuthContainer = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/container.vue');
 const AuthRoles = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/roles.vue');
+const Application = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
+const CreateApp = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/app/app.vue');
+const ApplicationDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
 
 // preference
 const HomeSetting = () =>
@@ -176,6 +182,35 @@ export default [
         component: ServiceDetail,
         meta: {
           activeMenu: 'manage.service.list',
+          hidden: true,
+        },
+      },
+      // 应用管理
+      {
+        path: 'application',
+        name: 'manage.application',
+        component: Application,
+        meta: {
+          title: '应用管理',
+          icon: '#icon_service',
+          hidden: false,
+        },
+      },
+      {
+        path: 'application/detail/:id',
+        name: 'application.detail',
+        component: ApplicationDetail,
+        meta: {
+          activeMenu: 'manage.application.detail',
+          hidden: true,
+        },
+      },
+      {
+        path: 'application/app',
+        name: 'application.app',
+        component: CreateApp,
+        meta: {
+          activeMenu: 'manage.application.app',
           hidden: true,
         },
       },
