@@ -12,7 +12,11 @@
         <dao-setting-section>
           <template slot="label">应用名称</template>
           <template slot="content">
-            <dao-input v-model="name" placeholder="请输入应用名称"></dao-input>
+            <dao-input
+              style="width: 100%"
+              v-model="name"
+              block
+              placeholder="请输入应用名称"></dao-input>
           </template>
         </dao-setting-section>
         <dao-setting-section>
@@ -431,5 +435,8 @@ export default {
     margin-top: 20px!important;
     margin-right: 10px;
     cursor: pointer;
+  }
+  .inputWidth {
+    width: 100%;
   }
 </style>
