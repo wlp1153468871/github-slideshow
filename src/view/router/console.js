@@ -7,6 +7,7 @@ import RouteView from '@/view/layout/route-view';
 // serviceMangement
 import ServiceMan from '@/view/pages/console/service/service.vue';
 import ServiceManDetail from '@/view/pages/console/service/detail/detail.vue';
+import ServiceExample from '@/view/pages/console/service/example/example.vue';
 import createApp from '@/view/pages/console/service/app/app.vue';
 
 // appstore

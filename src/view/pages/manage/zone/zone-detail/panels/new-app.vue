@@ -141,223 +141,217 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-  import Space from '@/view/pages/manage/org/org-detail/panels/space';
-  import DaoSettingSection from '@/view/components/daox/setting-layout/setting-section';
-  import AppStoreService from '@/core/services/appstore.service';
-  import ZoneAdminService from '@/core/services/zone-admin.service';
-  export default {
-    name: 'new-app',
-    components: { DaoSettingSection, Space },
-    data() {
-      const id = this.$route.params.id;
-      return {
-        id: id,
-        appName: '', // 应用名称
-        isWidthLimit: false,
-        appType: '', // 服务类型
-        fileList: [], // 上传图标
-        options: [{
-          text: 'Helm Chart',
-          value: 'Helm Chart',
-        }],
-        category: [], // 分类
-        classification: [{
-          text: 'Helm Chart',
-          value: 1,
-        }, {
-          text: 'Helm Chart',
-          value: 2,
-        }],
-        name: '', // 应用名称
-        description: '', // 描述,
-        pictureId: '', // 上传图标的id
-        fileType: ['image/png'],
-        chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
-        chartList: [],
-        appId: '',
-        showAddCategory: false, // 控制新增分类按钮
-        // 弹窗所需数据
-        config: {
-          showAddCategory: false,
-          header: {
-            title: '新增分类',
-            showClose: true,
-          },
+import { mapState } from 'vuex';
+import Space from '@/view/pages/manage/org/org-detail/panels/space';
+import DaoSettingSection from '@/view/components/daox/setting-layout/setting-section';
+import AppStoreService from '@/core/services/appstore.service';
+import ZoneAdminService from '@/core/services/zone-admin.service';
+
+export default {
+  name: 'new-app',
+  components: { DaoSettingSection, Space },
+  data() {
+    const id = `${this.$route.params.id}`;
+    return {
+      id,
+      appName: '', // 应用名称
+      isWidthLimit: false,
+      appType: '', // 服务类型
+      fileList: [], // 上传图标
+      options: [{
+        text: 'Helm Chart',
+        value: 'Helm Chart',
+      }],
+      category: [], // 分类
+      classification: [{
+        text: 'Helm Chart',
+        value: 1,
+      }, {
+        text: 'Helm Chart',
+        value: 2,
+      }],
+      name: '', // 应用名称
+      description: '', // 描述,
+      pictureId: '', // 上传图标的id
+      fileType: ['image/png'],
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
+      chartList: [],
+      appId: '',
+      showAddCategory: false, // 控制新增分类按钮
+      // 弹窗所需数据
+      config: {
+        showAddCategory: false,
+        header: {
+          title: '新增分类',
+          showClose: true,
         },
-        categoryName: '', // 新增分类名称
+      },
+      categoryName: '', // 新增分类名称
+    };
+  },
+  created() {
+    this.getCategoryList();
+  },
+  computed: {
+    ...mapState(['space', 'zone', 'user']),
+  },
+  methods: {
+    /**
+     * 新增分类按钮被点击
+     */
+    addCategory() {
+      console.log('新增按钮被点击');
+      this.config.showAddCategory = true;
+    },
+    /**
+     * 新增分类提交
+     */
+    submit() {
+      ZoneAdminService.addCategory(this.categoryName).then(res => {
+        console.log(res);
+        this.classification.push(res);
+      });
+    },
+    /**
+     * 分类改变回调函数
+     */
+    handleCategory(val) {
+      console.log(val);
+    },
+    /**
+     * 获取分类列表
+     */
+    getCategoryList() {
+      ZoneAdminService.getCategoryList().then(res => {
+        console.log(res);
+        this.classification = res;
+      });
+    },
+    handleCancel() {
+      // this.$router.push({ name: 'zone.detail' });
+      this.$router.back();
+    },
+    handleBack() {
+      // this.$router.push({ name: 'zone.detail' });
+      this.$router.back();
+    },
+    /**
+     * 文件上传之前的回调函数
+     * @param file
+     * @returns {boolean}
+     */
+    beforeUpload(file) {
+      console.log('文件上传之前');
+      if (this.fileType.indexOf(file.type) < 0) {
+        console.log(`文件MIME: ${file.type}`);
+        this.$noty.warning('请选择.png格式文件');
+        this.removeFile();
+      } else {
+        this.fileList = [];
+        this.fileList = [...this.fileList, file];
+        this.isDisabled = false;
+        this.handleUpload();
+      }
+      return false;
+    },
+    /**
+     * 删除文件
+     */
+    removeFile() {
+      this.$refs.upload.clearFiles();
+    },
+
+    createApp() {
+      console.log(this.id);
+      const formData = {
+        name: this.name,
+        pictureId: this.pictureId,
+        appType: this.appType,
+        category: this.category,
+        description: this.description,
       };
-    },
-    created() {
-      this.getCategoryList();
-    },
-    computed: {
-      ...mapState(['space', 'zone', 'user']),
-    },
-    methods: {
-      /**
-       * 新增分类按钮被点击
-       * */
-      addCategory() {
-        console.log('新增按钮被点击');
-        this.config.showAddCategory = true;
-      },
-      /**
-       * 新增分类提交
-       **/
-      submit() {
-        ZoneAdminService.addCategory(this.categoryName).then(res => {
+      ZoneAdminService.createApplication(this.id, formData).then(res => {
+        if (res) {
           console.log(res);
-          this.classification.push(res);
-        })
-      },
-      /**
-       * 分类改变回调函数
-       * */
-      handleCategory(val) {
-        console.log(val);
-      },
-      /**
-       * 获取分类列表
-       * */
-      getCategoryList() {
-        ZoneAdminService.getCategoryList().then(res => {
-          console.log(res);
-          this.classification = res;
-        })
-      },
-      handleCancel() {
-        // this.$router.push({ name: 'zone.detail' });
-        this.$router.back();
-      },
-      handleBack() {
-        // this.$router.push({ name: 'zone.detail' });
-        this.$router.back();
-      },
-      /**
-       * 文件上传之前的回调函数
-       * @param file
-       * @returns {boolean}
-       */
-      beforeUpload(file) {
-        console.log('文件上传之前')
-        if (this.fileType.indexOf(file.type) < 0) {
-          console.log(`文件MIME: ${file.type}`);
-          this.$noty.warning('请选择.png格式文件');
-          this.removeFile();
-        } else {
-          this.fileList = [];
-          this.fileList = [...this.fileList, file];
-          this.isDisabled = false;
-          this.handleUpload();
+          this.appId = res.id;
+          // this.appInfo = res;
+          this.handleUploadChart();
         }
-        return false;
-      },
-      /**
-       * 删除文件
-       */
-      removeFile() {
-        this.$refs.upload.clearFiles();
-      },
+      });
+    },
 
-      createApp() {
-        console.log(this.id);
-        const formData = {
-          name: this.name,
-          pictureId: this.pictureId,
-          appType: this.appType,
-          category: this.category,
-          description: this.description
-        }
-        ZoneAdminService.createApplication(this.id, formData).then(res => {
+    /**
+     * 图片文件上传
+     */
+    handleUpload() {
+      this.isDisabled = true;
+      const file = this.fileList[0];
+      console.log('上传图片');
+      AppStoreService.uploadPic(file)
+        .then(res => {
+          this.pictureId = res.id;
+          // this.createApp();
+        })
+        .catch(err => {
+          this.removeFile();
+          this.$message.error(err);
+        });
+    },
+
+    /**
+     * chart文件上传之前的回调函数
+     */
+    beforeUploadChart(file) {
+      console.log('chart文件上传前的回调函数');
+      if (this.chartType.indexOf(file.type) < 0) {
+        console.log(`文件MIME: ${file.type}`);
+        this.$noty.warning('请选择正确的压缩格式文件');
+        this.removeFile();
+      } else {
+        this.chartList = [...this.chartList, file];
+        // this.handleUploadChart();
+      }
+      return false;
+    },
+
+    /**
+     * chart文件上传回调函数
+     */
+    handleUploadChart() {
+      const formData = new FormData();
+      this.chartList.forEach(file => {
+        formData.append('chart', file);
+      });
+      ZoneAdminService.createChart(this.id, this.appId, formData)
+        .then(res => {
           if (res) {
-            console.log(res);
-            this.appId = res.id;
-            // this.appInfo = res;
-            this.handleUploadChart();
-          }
-        });
-      },
-
-      /**
-       * 图片文件上传
-       */
-      handleUpload() {
-        this.isDisabled = true;
-        const file = this.fileList[0];
-        console.log('上传图片');
-        AppStoreService.uploadPic(file)
-          .then(res => {
-            this.pictureId = res.id;
-            // this.createApp();
-          })
-          .catch(err => {
-            this.removeFile();
-            this.$message.error(err);
-          });
-      },
-
-      /**
-       * chart文件上传之前的回调函数
-       * */
-
-      beforeUploadChart(file) {
-        console.log('chart文件上传前的回调函数');
-        if (this.chartType.indexOf(file.type) < 0) {
-          console.log(`文件MIME: ${file.type}`);
-          this.$noty.warning('请选择正确的压缩格式文件');
-          this.removeFile();
-        } else {
-          this.chartList = [...this.chartList, file];
-          // this.handleUploadChart();
-        }
-        return false;
-      },
-
-      /**
-       * chart文件上传回调函数
-       */
-      handleUploadChart() {
-        const formData = new FormData();
-        this.chartList.forEach(file => {
-          formData.append('chart', file);
-        });
-        ZoneAdminService.createChart(this.id, this.appId, formData)
-          .then(res => {
-            if (res) {
-              // this.$noty.success('应用创建成功');
-              // this.$router.push({
-              //   name: 'console.appstore',
-              // });
-              console.log('应用创建成功');
-              // this.$router.push({ name: 'zone.detail' });
-              this.$router.back();
-            }
-          })
-          .catch(err => {
-            this.removeFile();
-            this.$noty.error('创建失败');
-            // ZoneAdminService.deleteApplication(this.id, this.appId).then(res => {
-            //   this.$message({
-            //     message: '由于chart文件上传失败，应用不能被创建'
-            //   })
-            // }).catch(err => {
-            //   this.$message({
-            //     message: '删除失败',
-            //   });
+            // this.$noty.success('应用创建成功');
+            // this.$router.push({
+            //   name: 'console.appstore',
             // });
+            console.log('应用创建成功');
             // this.$router.push({ name: 'zone.detail' });
             this.$router.back();
-          });
-      },
-      /**
-       * 删除文件列表
-       */
-      removeFile() {
-        this.$refs.upload.clearFiles();
-      },
+          }
+        })
+        .catch(() => {
+          this.removeFile();
+          this.$noty.error('创建失败');
+          // ZoneAdminService.deleteApplication(this.id, this.appId).then(res => {
+          //   this.$message({
+          //     message: '由于chart文件上传失败，应用不能被创建'
+          //   })
+          // }).catch(err => {
+          //   this.$message({
+          //     message: '删除失败',
+          //   });
+          // });
+          // this.$router.push({ name: 'zone.detail' });
+          this.$router.back();
+        });
     },
-  };
+  },
+};
 </script>
 
 <style>

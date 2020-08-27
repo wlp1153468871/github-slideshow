@@ -15,34 +15,35 @@
       <el-tab-pane label="应用列表" name="first">
         <div class="app-list">
           <div>
-              状态：
-              <dao-select
-                v-model="status"
-                size="sm"
-                style="width: 120px; height: 32px; margin-right: 10px;"
-                @change="changeStatus"
-              >
-                <dao-option
-                  v-for="item in statusOptions"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.text">
-                </dao-option>
-              </dao-select>
-              资源类型：
-              <dao-select
-                v-model="type"
-                size="sm"
-                style="width: 160px; height: 32px;"
-              >
-                <dao-option
-                  v-for="item in typeOptions"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.text">
-                </dao-option>
-              </dao-select>
-            <button class="dao-btn blue has-icon" style="margin-left: 10px;" @click="handleNewApplication">
+            状态：
+            <dao-select
+              v-model="status"
+              size="sm"
+              style="width: 120px; height: 32px; margin-right: 10px;"
+              @change="changeStatus"
+            >
+              <dao-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :value="item.value"
+                :label="item.text">
+              </dao-option>
+            </dao-select>
+            资源类型：
+            <dao-select
+              v-model="type"
+              size="sm"
+              style="width: 160px; height: 32px;"
+            >
+              <dao-option
+                v-for="item in typeOptions"
+                :key="item.value"
+                :value="item.value"
+                :label="item.text">
+              </dao-option>
+            </dao-select>
+            <button class="dao-btn blue has-icon"
+                    style="margin-left: 10px;" @click="handleNewApplication">
               <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
               <span class="text">创建应用</span>
             </button>
@@ -114,8 +115,12 @@
                   </svg>
                   <dao-dropdown-menu slot="list" style="min-width: 120px;">
                     <dao-dropdown-item style="margin-left: 10px">
-                      <span style="width: 100%;display: inline-block;" v-if="scope.row.available === 1" @click="handleOff(scope.row.id)">下架应用</span>
-                      <span style="width: 100%;display: inline-block;" v-if="scope.row.available === 0" @click="handleOn(scope.row.id)">上架应用</span>
+                      <span style="width: 100%;display: inline-block;"
+                            v-if="scope.row.available === 1"
+                            @click="handleOff(scope.row.id)">下架应用</span>
+                      <span style="width: 100%;display: inline-block;"
+                            v-if="scope.row.available === 0"
+                            @click="handleOn(scope.row.id)">上架应用</span>
                     </dao-dropdown-item>
                     <dao-dropdown-item style="margin-left: 10px" @click="handleClick(scope.row.id)">
                       <span style="color: red;">删除</span>
@@ -224,7 +229,10 @@
           >
             <el-table-column type="expand">
               <template slot-scope="scope">
-                <el-table class="in-table" style="width: 100%;" :data="scope.row[scope.row.name]" :header-cell-style="{background:'#fff'}">
+                <el-table class="in-table"
+                          style="width: 100%;"
+                          :data="scope.row[scope.row.name]"
+                          :header-cell-style="{background:'#fff'}">
                   <el-table-column label="Chart 版本" prop="version" width="200"></el-table-column>
                   <el-table-column label="APP版本" prop="appVersion" width="200"></el-table-column>
                   <el-table-column label="维护者">
@@ -250,10 +258,14 @@
                           </svg>
                           <dao-dropdown-menu slot="list" style="min-width: 120px;">
                             <dao-dropdown-item style="margin-left: 10px">
-                              <span style="width: 100%;display: inline-block;" @click="uploadChart(scope.row.name, scope.row.version)">下载</span>
+                              <span style="width: 100%;display: inline-block;"
+                                    @click="uploadChart(scope.row.name, scope.row.version)"
+                              >下载</span>
                             </dao-dropdown-item>
                             <dao-dropdown-item style="margin-left: 10px">
-                              <span style="color: red;" @click="deleteChartVersion(scope.row.name, scope.row.version)">删除</span>
+                              <span style="color: red;"
+                                    @click="deleteChartVersion(scope.row.name, scope.row.version)"
+                              >删除</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
                         </dao-dropdown>

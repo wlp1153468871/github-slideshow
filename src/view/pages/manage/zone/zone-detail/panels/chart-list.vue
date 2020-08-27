@@ -49,12 +49,19 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-table class="in-table" style="width: 100%;" :data="scope.row[scope.row.name]" :header-cell-style="{background:'#fff'}">
+              <el-table class="in-table"
+                        style="width: 100%;"
+                        :data="scope.row[scope.row.name]"
+                        :header-cell-style="{background:'#fff'}">
                 <el-table-column label="Chart 版本" prop="version" width="200"></el-table-column>
                 <el-table-column label="APP版本" prop="appVersion" width="200"></el-table-column>
                 <el-table-column label="维护者">
                   <template slot-scope="scope">
-                    {{ scope.row.maintainers[0].name }}<span v-if="scope.row.maintainers.length != 1">({{scope.row.maintainers.length-1}}others)</span>
+                    {{ scope.row.maintainers[0].name }}
+                    <span
+                      v-if="scope.row.maintainers.length != 1">
+                      ({{scope.row.maintainers.length-1}}others)
+                    </span>
                   </template>
                 </el-table-column>
                 <el-table-column label="创建时间" prop="date">
@@ -75,10 +82,14 @@
                           </svg>
                           <dao-dropdown-menu slot="list" style="min-width: 120px;">
                             <dao-dropdown-item style="margin-left: 10px">
-                              <span style="width: 100%;display: inline-block;" @click="uploadChart(scope.row.name, scope.row.version)">下载</span>
+                              <span style="width: 100%;display: inline-block;"
+                                    @click="uploadChart(scope.row.name, scope.row.version)"
+                              >下载</span>
                             </dao-dropdown-item>
                             <dao-dropdown-item style="margin-left: 10px">
-                              <span style="color: red;" @click="deleteChartVersion(scope.row.name, scope.row.version)">删除</span>
+                              <span style="color: red;"
+                                    @click="deleteChartVersion(scope.row.name, scope.row.version)"
+                              >删除</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
                         </dao-dropdown>
@@ -137,176 +148,140 @@
 </template>
 
 <script>
-  import ZoneAdminService from '@/core/services/zone-admin.service';
-  export default {
-    name: 'chart-list',
-    props: {
-      id: String
-    },
-    data() {
-      return {
-        activeName: 'first',
-        select: 1,
-        status: null, // 状态
-        statusOptions: [
-          {
-            text: '全部',
-            value: null,
-          },
-          {
-            text: '已上架',
-            value: 1,
-          },
-          {
-            text: '已下架',
-            value: 0,
-          },
-        ],
-        type: 1, // 资源状态
-        typeOptions: [{
+import ZoneAdminService from '@/core/services/zone-admin.service';
+
+export default {
+  name: 'chart-list',
+  props: {
+    id: String,
+  },
+  data() {
+    return {
+      activeName: 'first',
+      select: 1,
+      status: null, // 状态
+      statusOptions: [
+        {
           text: '全部',
-          value: 1,
-        }, {
-          text: 'Helm Chart',
-          value: 2,
-        }],
-        tableData: [],
-        chartData: [
-          {
-            type: '2.6.0',
-            state: 'Active',
-            defender: 'codefresh-io (2 other)',
-            date: '2020-5-23 13:23:54',
-          },
-        ],
-        config: {
-          visible: false,
-          footer: {
-            cancelText: '取消',
-            confirmText: '上传',
-            confirmDisabled: true,
-          },
+          value: null,
         },
-        chartBaseList: {},
-        showPass: false, // 是否显示密码
-        chartTableData: [], // chart管理渲染列表
-        itemChart: [], // 展开行渲染列表
-      };
+        {
+          text: '已上架',
+          value: 1,
+        },
+        {
+          text: '已下架',
+          value: 0,
+        },
+      ],
+      type: 1, // 资源状态
+      typeOptions: [{
+        text: '全部',
+        value: 1,
+      }, {
+        text: 'Helm Chart',
+        value: 2,
+      }],
+      tableData: [],
+      chartData: [
+        {
+          type: '2.6.0',
+          state: 'Active',
+          defender: 'codefresh-io (2 other)',
+          date: '2020-5-23 13:23:54',
+        },
+      ],
+      config: {
+        visible: false,
+        footer: {
+          cancelText: '取消',
+          confirmText: '上传',
+          confirmDisabled: true,
+        },
+      },
+      chartBaseList: {},
+      showPass: false, // 是否显示密码
+      chartTableData: [], // chart管理渲染列表
+      itemChart: [], // 展开行渲染列表
+    };
+  },
+  created() {
+    this.getChartData();
+  },
+  methods: {
+    /**
+     * 获取chart列表数据
+     */
+    getChartData() {
+      ZoneAdminService.getChartInformation(this.id).then(res => {
+        console.log(res);
+        this.chartBaseList = res;
+      });
+      this.getChartTableData();
     },
-    created() {
-      this.getChartData();
+    /**
+     * 显示密码
+     */
+    showPassword() {
+      this.showPass = !this.showPass;
     },
-    methods: {
-      /**
-       * 删除应用
-       */
-      // handleClick(id) {
-      //   console.log('删除应用')
-      //   ZoneAdminService.deleteApplication(id).then(res => {
-      //     this.getSelectZone();
-      //   })
-      // },
-      /**
-       * 状态搜索
-       */
-      // changeStatus(val) {
-      //   console.log(val)
-      //   this.getSelectZone();
-      // },
-      // showDialog() {
-      //   this.config.visible = true;
-      // },
-      // handleRemove(file, fileList) {
-      //   console.log(file, fileList);
-      // },
-      // handlePreview(file) {
-      //   console.log(file);
-      // },
-      // linkToChart() {
-      //   this.$router.push({ name: 'zone.chart' });
-      // },
-      /**
-       * tabsClick：选中chart管理
-       */
-      // tabsClick(event) {
-      //   console.log(event);
-      //   if (event.name === 'second') {
-      //     this.getChartData();
-      //   }
-      // },
-      /**
-       * 获取chart列表数据
-       */
-      getChartData() {
-        ZoneAdminService.getChartInformation(this.id).then(res => {
-          console.log(res);
-          this.chartBaseList = res;
-        })
-        this.getChartTableData();
-      },
-      /**
-       * 显示密码
-       */
-      showPassword() {
-        this.showPass = !this.showPass;
-      },
-      /**
-       * 获取chart管理的table数据
-       */
-      getChartTableData() {
-        ZoneAdminService.getChartList(this.id).then(res => {
-          console.log(res);
-          this.chartTableData = res;
-          this.changeExpand();
-        })
-      },
-      /**
-       * 展开行改变
-       */
-      changeExpand() {
-        if (this.chartTableData.length !== 0) {
-          this.chartTableData.forEach(item => {
-            ZoneAdminService.getChartVersionList(this.id, item.name).then(res => {
-              console.log(res);
-              item[item.name] = res;
-              console.log(this.chartTableData, '改变后的数组');
-            })
-          })
-        }
-      },
-      /**
-       * 删除chart版本
-       */
-      deleteChartVersion(name, version) {
-        console.log('删除chart版本');
-        ZoneAdminService.deleteChartVersion(this.id, name, version).then(res => {
-          this.getChartTableData();
-          this.changeExpand();
-        }).catch(err => {
-          this.$message({
-            message: '删除失败',
-            type: 'warning'
+    /**
+     * 获取chart管理的table数据
+     */
+    getChartTableData() {
+      ZoneAdminService.getChartList(this.id).then(res => {
+        console.log(res);
+        this.chartTableData = res;
+        this.changeExpand();
+      });
+    },
+    /**
+     * 展开行改变
+     */
+    changeExpand() {
+      if (this.chartTableData.length !== 0) {
+        this.chartTableData.forEach(item => {
+          ZoneAdminService.getChartVersionList(this.id, item.name).then(res => {
+            console.log(res);
+            item[item.name] = res;
+            console.log(this.chartTableData, '改变后的数组');
           });
         });
-      },
-      /**
-       * 下载chart版本
-       */
-      uploadChart(name, version) {
-        ZoneAdminService.uploadChart(this.id, name, version).then(res => {
-          console.log(res);
-        })
-      },
-      /**
-       * 删除所有chart版本
-       */
-      deleteChartAll(name) {
-        ZoneAdminService.deleteChartAll(this.id, name).then(res => {
-          console.log(res);
-          this.getChartTableData();
-        })
       }
-    }
-  }
+    },
+    /**
+     * 删除chart版本
+     */
+    deleteChartVersion(name, version) {
+      console.log('删除chart版本');
+      ZoneAdminService.deleteChartVersion(this.id, name, version).then(() => {
+        this.getChartTableData();
+        this.changeExpand();
+      }).catch(() => {
+        this.$message({
+          message: '删除失败',
+          type: 'warning',
+        });
+      });
+    },
+    /**
+     * 下载chart版本
+     */
+    uploadChart(name, version) {
+      ZoneAdminService.uploadChart(this.id, name, version).then(res => {
+        console.log(res);
+      });
+    },
+    /**
+     * 删除所有chart版本
+     */
+    deleteChartAll(name) {
+      ZoneAdminService.deleteChartAll(this.id, name).then(res => {
+        console.log(res);
+        this.getChartTableData();
+      });
+    },
+  },
+};
 </script>
 <style lang="scss" src="./application-list.scss"></style>
