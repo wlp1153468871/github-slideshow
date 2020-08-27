@@ -8,15 +8,13 @@ import RouteView from '@/view/layout/route-view';
 import ServiceMan from '@/view/pages/console/service/service.vue';
 import ServiceManDetail from '@/view/pages/console/service/detail/detail.vue';
 import ServiceExample from '@/view/pages/console/service/example/example.vue';
-
-// zone
+import createApp from '@/view/pages/console/service/app/app.vue';
 
 // appstore
 import AppStore from '@/view/pages/console/appstore/appstore.vue';
 import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
 import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
 import AppStoreYaml from '@/view/pages/console/appstore/app-form/app-yaml/app-yaml.vue';
-import newApp from '@/view/pages/console/appstore/app-form/app/app.vue';
 import AppStoreInstance from '@/view/pages/console/appstore/instance/instance.vue';
 import AllInstance from '@/view/pages/console/appstore/all-instances/all-instance.vue';
 
@@ -802,66 +800,19 @@ export default [
       hidden: true,
     },
   },
-  {
-    path: 'appstore/app',
-    name: 'appstore.app',
-    component: newApp,
-    meta: {
-      hidden: true,
-    },
-  },
-  // 可用区管理
-  // {
-  //   path: 'zone',
-  //   name: 'console.zone',
-  //   component: Zone,
-  //   meta: {
-  //     title: '可用区管理',
-  //     icon: '#icon_drive',
-  //     // code: 'space.store',
-  //     hidden: false,
-  //   },
-  // },
-  // {
-  //   path: 'zone/detail/:id/:zoneName',
-  //   name: 'zone.detail',
-  //   component: ZoneDetail,
-  //   meta: {
-  //     hidden: true,
-  //   },
-  //   props: true,
-  // },
-  // {
-  //   path: 'zone/chart',
-  //   name: 'zone.chart',
-  //   component: Chart,
-  //   meta: {
-  //     hidden: true,
-  //   },
-  // },
-  // {
-  //   path: 'zone/newapp/:id/:zoneName',
-  //   name: 'zone.newapp',
-  //   component: newApplication,
-  //   meta: {
-  //     hidden: true,
-  //   },
-  //   props: true,
-  // },
   // 服务区管理
   {
     path: 'service',
     name: 'console.service',
     component: ServiceMan,
     meta: {
-      title: '服务管理',
+      title: '应用管理',
       icon: '#icon_service',
-      // code: 'space.store',
       hidden: false,
     },
   },
   {
-    path: 'service/detail',
+    path: 'service/detail/:id',
     name: 'service.detail',
     component: ServiceManDetail,
     meta: {
@@ -869,9 +820,9 @@ export default [
     },
   },
   {
-    path: 'service/example',
-    name: 'service.example',
-    component: ServiceExample,
+    path: 'service/app',
+    name: 'service.app',
+    component: createApp,
     meta: {
       hidden: true,
     },

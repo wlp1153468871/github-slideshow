@@ -1,9 +1,14 @@
+import { mapState } from 'vuex';
+
+import ServiceAdmin from '@/core/services/service-admin.service';
+
 export default {
   name: 'AppStoreDetail',
   data() {
     return {
       activeName: 'first',
       select: 1,
+      item: '全部',
       items: [
         {
           text: '1.9.1',
@@ -38,6 +43,26 @@ export default {
           date: '2020-5-23 12:34',
         },
       ],
+      appInfo: '',
     };
+  },
+
+  computed: {
+    ...mapState(['space', 'zone']),
+  },
+
+  created() {
+    this.getApp();
+  },
+
+  methods: {
+    getApp() {
+      ServiceAdmin.getApp(this.$route.params.id).then(res => {
+        if (res) {
+          console.log(res);
+          this.appInfo = res;
+        }
+      });
+    },
   },
 };

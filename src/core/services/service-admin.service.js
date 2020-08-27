@@ -7,14 +7,21 @@ class ServiceAdmin {
   /**
    * 列出所有的apps
    */
-  getAllApp() {
+  async getAllApp() {
     return this.api.get('/appstore/applications');
   }
   /**
    * 列出所有的可用区
    */
-  getZone() {
+  async getZone() {
     return this.api.get('/appstore/zones');
+  }
+  /**
+   * 根据app_id获取一个应用
+   * @param {String} app_id
+   */
+  async getApp(app_id) {
+    return this.api.get(`/appstore/applications/${app_id}`);
   }
 }
 
