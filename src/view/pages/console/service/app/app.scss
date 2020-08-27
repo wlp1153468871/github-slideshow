@@ -1,0 +1,51 @@
+.app{
+  .form-header {
+    height: 52px;
+    .body {
+      padding: 20px;
+    }
+    .form-title {
+      margin-left: 20px;
+      height: 16px;
+      line-height: 32px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #3D444F;
+    }
+  }
+  .basic-info {
+    margin: 20px 160px 0 160px;
+    .title-text {
+      font-size: 14px;
+      font-family: SFProText-Semibold,SFProText;
+      font-weight: 600;
+      color: #3D444F;
+    }
+    .dao-name {
+      height: 14px;
+      line-height: 14px;
+      font-family: SFProText-Regular,SFProText;
+      font-weight: 400;
+      color:#3D444F;
+    }
+    .desc {
+      height: 14px;
+      font-size: 12px;
+      font-family: PingFangSC-Regular,PingFang SC;
+      font-weight: 400;
+      color: #3D444F;
+      line-height: 14px;
+    }
+  }
+  .footer-lay {
+    position: relative;
+    overflow: hidden;
+    height: 50px;
+    margin: 20px 0 0 0;
+    .btn-layout {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+    }
+  }
+}

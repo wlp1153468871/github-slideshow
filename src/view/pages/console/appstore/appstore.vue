@@ -54,7 +54,6 @@
       </dao-input>
       <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh()">
         <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
-        <!-- <img src="@/assets/svgs/icon_reload.svg" alt=""> -->
       </button>
     </div>
     <div class="store-server-type">

@@ -23,14 +23,16 @@
     background: #fff;
     border-bottom: 1px solid rgb(228,231,237);
     .icon-size {
-      width: 40px;
-      height: 40px;
-      margin: 20px;
+      float: left;
+      width: 54px;
+      height: 54px;
+      margin: 16px;
     }
     .title-name {
-      position: absolute;
-      left: 70px;
-      top: 14px;
+      // position: absolute;
+      // left: 70px;
+      // top: 14px;
+      float: left;
       font-size: 18px;
       margin-bottom: 20px;
       font-weight:500;
@@ -40,6 +42,7 @@
       position: absolute;
       left: 70px;
       bottom: 20px;
+      // float: left;
       height: 12px;
       line-height: 12px;
       font-size: 14px;
@@ -64,12 +67,13 @@
     }
   }
   .lay-left {
-    position: relative;
+    // position: relative;
+    float: left;
     overflow: hidden;
+    width: 75%;
     .border-box {
       border: 1px solid #E4E7ED;
       box-shadow:0px 0px 0px 1px rgba(228,231,237,1);
-      width: 760px;
       margin-right: 20px;
       .title {
         border-bottom: 1px solid #E4E7ED;
@@ -81,12 +85,11 @@
       }
       .appdesc {
         border-bottom: 1px solid #E4E7ED;
-        // padding-bottom: 15px;
-        padding: 0 0 15px 20px;
+        padding: 0 0 15px 0;
         .desc-title {
           float: left;
           width: 160px;
-          padding: 24px 0 0 0;
+          padding: 24px 0 0 20px;
           font-size: 14px;
           font-family: SFProText-Regular,SFProText;
           font-weight: 400;
@@ -127,6 +130,8 @@
     }
     .app {
       overflow: hidden;
+      padding-bottom: 20px;
+      width: 100%;
       .app-title {
         float: left;
         width: 160px;
@@ -136,29 +141,32 @@
         font-weight: 400;
         color: #3D444F;
       }
-      .app-text-name {
+      .app-box{
         float: right;
-        width: 290px;
-        padding: 20px 20px 10px 0;
-        font-size: 14px;
-        font-family: PingFangSC-Regular,PingFang SC;
-        font-weight: 400;
-        color: #3D444F;
-      }
-      .app-text-desc {
-        float: right;
-        width: 290px;
-        padding: 0 20px 0 0;
-        font-size: 14px;
-        font-family: PingFangSC-Regular,PingFang SC;
-        font-weight: 400;
-        color: #595F69;
-        .str{
-          &::after{
-            content: '、';
-          }
-          &:last-child::after{
-            content: '';
+        width: calc(100% - 160px);
+        .text-name {
+          float: left;
+          width: 50%;
+          padding-top: 20px;
+          font-size: 14px;
+          font-family: PingFangSC-Medium,PingFang SC;
+          font-weight: 500;
+          color: #3D444F;
+          .text-desc {
+            height: 20px;
+            line-height: 20px;
+            font-size: 14px;
+            font-family: PingFangSC-Regular,PingFang SC;
+            font-weight: 400;
+            color:#595F69;
+            .str{
+              &::after{
+                content: '、';
+              }
+              &:last-child::after{
+                content: '';
+              }
+            }
           }
         }
       }
@@ -196,11 +204,9 @@
     }
   }
   .lay-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 280px;
-    height: 100%;
+    float: right;
+    width: 25%;
+    min-height: 660px;
     border-left: 1px solid rgb(228,231,237);
     overflow: hidden;
     .right-type {
@@ -242,6 +248,35 @@
       font-family: SFProText-Regular,SFProText;
       color: #217EF2;
       font-weight: 400;
+    }
+  }
+  .project {
+    .select {
+      width: 120px;
+      height: 32px;
+    }
+    .input  {
+      float: right;
+    }
+    .icon {
+      float: right;
+    }
+  }
+  .footer {
+    height: 40px;
+    border-right: 1px solid #E4E7ED;
+    border-left: 1px solid #E4E7ED;
+    border-bottom: 1px solid #E4E7ED;
+    background: #fff;
+    .page {
+      float: left;
+      height: 14px;
+      line-height: 14px;
+      padding: 10px 0 0 10px;
+      font-size: 14px;
+      font-family: PingFangSC-Regular,PingFang SC;
+      font-weight: 400;
+      color: #9BA3AF;
     }
   }
 }

@@ -22,6 +22,8 @@ export default {
 
       appInfoCopy: [],
       appNum: '',
+      // 选择的状态
+      selectStatus: [],
       zones: [
         {
           id: '',
@@ -72,9 +74,17 @@ export default {
     //   });
     // },
     statuCat: () => {
-      this.appInfo.filter(item => {
-        return this.statuCat === item;
-      });
+      // this.appInfo.filter(item => {
+      //   return this.statuCat === item;
+      // });
+      // if (this.category !== '全部') {
+      //   this.appInfo = this.appInfoCopy.filter(item => item.available)
+      // }
+      // this.applicationInfos.forEach(item => {
+      //   if (item.version === this.statuCat) {
+      //     this.appInfo.content = item.content;
+      //   }
+      // });
       console.log('触发了');
     },
   },
@@ -92,6 +102,37 @@ export default {
     linkToDetail() {
       this.$router.push({ name: 'service.detail' });
     },
+    createApp() {
+      this.$router.push({ name: 'service.app' });
+    },
+    selectChange(val) {
+      const arr = [];
+      val.forEach(item => {
+        if (!arr.includes(item.available)) {
+          arr.push(item.available);
+        }
+      });
+      this.selectStatus = arr;
+    },
+    // 全选
+    selectAll(val) {
+      const arr = [];
+      val.forEach(item => {
+        if (!arr.includes(item.available)) {
+          arr.push(item.available);
+        }
+      });
+      this.selectStatus = arr;
+    },
+    // 实例跳转
+    rowClick(id) {
+      this.$router.push({
+        name: 'service.detail',
+        params: {
+          id,
+        },
+      });
+    },
     // app
     getAllApp() {
       ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
@@ -99,7 +140,6 @@ export default {
           this.appInfo = res;
           this.appInfoCopy = res;
         }
-        console.log(this.appInfo);
       }).then(() => {
         this.getZone();
         this.getStatus();
