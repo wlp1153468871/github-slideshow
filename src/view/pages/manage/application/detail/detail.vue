@@ -53,13 +53,13 @@
             <span @click="addEdition">添加版本</span>
           </dao-dropdown-item>
           <dao-dropdown-item style="margin-left: 10px" v-if="appInfo.available">
-            <span>下架应用</span>
+            <span @click="availableOff">下架应用</span>
           </dao-dropdown-item>
           <dao-dropdown-item style="margin-left: 10px" v-else>
-            <span>上架应用</span>
+            <span @click="availableOn">上架应用</span>
           </dao-dropdown-item>
           <dao-dropdown-item style="margin-left: 10px">
-            <span style="color: red;">删除</span>
+            <span style="color: red;" @click="deleteApplication">删除</span>
           </dao-dropdown-item>
         </dao-dropdown-menu>
       </dao-dropdown>
@@ -310,14 +310,16 @@
             </dao-option>
           </dao-select>
           <span class="selectStatus" v-if="selectStatus.length">
-            <span class="number">已选择 1 项</span>
+            <span class="number">已选择 {{selectItem.length}} 项</span>
             <button
               class="dao-btn status"
-              v-if="selectStatus[0] === '0' && selectStatus.length === 1">批量上架
+              v-if="selectStatus[0] === '0' && selectStatus.length === 1"
+              @click="manyAva">批量上架
             </button>
             <button
               class="dao-btn status"
-              v-if="selectStatus[0] === '1' && selectStatus.length === 1">批量下架
+              v-if="selectStatus[0] === '1' && selectStatus.length === 1"
+              @click="manyUnava">批量下架
             </button>
           </span>
           <span class="iconlay">
@@ -364,7 +366,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="租户名" prop="organizationName"></el-table-column>
-              <!-- <el-table-column label="租户唯一标识符" prop="tenantUnique"></el-table-column> -->
+              <el-table-column label="租户唯一标识符" prop="organizationShortName"></el-table-column>
               <el-table-column label="操作" width="80">
                 <template slot-scope="scope">
                   <span class="dao-btn-group select-btn">
@@ -381,10 +383,10 @@
                           style="margin-left: 10px"
                           v-if="scope.row.available === '1'"
                         >
-                          <span>下架应用</span>
+                          <span @click="unavaOrgApp(scope.row.id)">下架应用</span>
                         </dao-dropdown-item>
                         <dao-dropdown-item style="margin-left: 10px" v-else>
-                          <span>下架应用</span>
+                          <span @click="avaOrgApp(scope.row.id)">上架应用</span>
                         </dao-dropdown-item>
                       </dao-dropdown-menu>
                     </dao-dropdown>
@@ -393,7 +395,7 @@
               </el-table-column>
             </el-table>
             <div class="footer">
-              <div class="page">共 1项</div>
+              <div class="page">共 {{orgNumber}} 项</div>
               <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
                 <dao-dropdown
                   trigger="click"

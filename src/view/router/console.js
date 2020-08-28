@@ -388,6 +388,78 @@ export default [
       },
     ],
   },
+  // 应用商店
+  {
+    path: 'appstore',
+    name: 'console.appstore',
+    component: RouteView,
+    meta: {
+      title: '应用商店',
+      icon: '#icon_store',
+      hidden: false,
+      // code: 'appstore',
+    },
+    children: [
+      {
+        path: '/',
+        name: 'console.appstore.list',
+        component: AppStore,
+        meta: {
+          title: '全部应用',
+          icon: '#icon_store',
+          // code: 'appstore',
+          hidden: false,
+          public: true,
+        },
+
+      },
+      {
+        path: 'instance',
+        name: 'console.instance.list',
+        component: AllInstance,
+        meta: {
+          title: '全部实例',
+          icon: '#icon_container',
+          // code: 'appstore',
+          hidden: false,
+          public: true,
+        },
+      },
+    ],
+  },
+  {
+    path: 'appstore/detail/:Id',
+    name: 'appstore.detail',
+    component: AppStoreDetail,
+    meta: {
+      hidden: true,
+      keepAlive: true,
+    },
+  },
+  {
+    path: 'appstore/:appid/instance/:instanceid',
+    name: 'appstore.instance',
+    component: AppStoreInstance,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: 'appstore/:appid/form/:version',
+    name: 'appstore.form',
+    component: AppStoreForm,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: 'appstore/:appid/yamlform/:version',
+    name: 'appstore.yamlform',
+    component: AppStoreYaml,
+    meta: {
+      hidden: true,
+    },
+  },
   {
     path: 'registry',
     name: 'console.registry',
@@ -724,73 +796,5 @@ export default [
       },
     ],
   },
-  // 应用商店
-  {
-    path: 'appstore',
-    name: 'console.appstore',
-    component: RouteView,
-    meta: {
-      title: '应用商店',
-      icon: '#icon_store',
-      hidden: false,
-    },
-    children: [
-      {
-        path: '/',
-        name: 'console.appstore.list',
-        component: AppStore,
-        meta: {
-          title: '全部应用',
-          icon: '#icon_store',
-          hidden: false,
-          public: true,
-        },
 
-      },
-      {
-        path: 'instance',
-        name: 'console.instance.list',
-        component: AllInstance,
-        meta: {
-          title: '全部实例',
-          icon: '#icon_container',
-          hidden: false,
-          public: true,
-        },
-      },
-    ],
-  },
-  {
-    path: 'appstore/detail/:Id',
-    name: 'appstore.detail',
-    component: AppStoreDetail,
-    meta: {
-      hidden: true,
-      keepAlive: true,
-    },
-  },
-  {
-    path: 'appstore/:appid/instance/:instanceid',
-    name: 'appstore.instance',
-    component: AppStoreInstance,
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: 'appstore/:appid/form/:version',
-    name: 'appstore.form',
-    component: AppStoreForm,
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: 'appstore/:appid/yamlform/:version',
-    name: 'appstore.yamlform',
-    component: AppStoreYaml,
-    meta: {
-      hidden: true,
-    },
-  },
 ];
