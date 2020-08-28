@@ -16,7 +16,7 @@ export default {
     ...mapGetters(['pages']),
 
     showSideMenu() {
-      return !this.$route.path.includes('/deploy/');
+      return !this.$route.path.includes('/deploy/') && !this.$route.path.includes('/newapp/');
     },
   },
   mounted() {

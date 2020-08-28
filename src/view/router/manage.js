@@ -1,5 +1,7 @@
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
 import RouteView from '@/view/layout/route-view';
+import NoSideContainer from '@/view/pages/console/form-container/container.vue';
+import ZoneNewApp from '@/view/pages/manage/zone/zone-detail/panels/new-app.vue';
 
 const QuotaField = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/quota/quota-field/quota-field.vue');
@@ -27,8 +29,6 @@ const ZoneList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-list/zone-list.vue');
 const ZoneDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-detail/zone-detail.vue');
-const ZoneNewApp = () =>
-  import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-detail/panels/new-app.vue');
 const AlarmMetricsList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/alarm/alarm-metrics/alarm-metrics.vue');
 const AuthContainer = () =>
@@ -55,6 +55,7 @@ const HelpInfoConfig = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/help-info-config/help-info-config.vue');
 const DeployZone = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/deploy/deploy.vue');
+
 
 export default [
   {
@@ -152,19 +153,9 @@ export default [
       title: '全局设置',
       code: 'platform.serviceInstance;platform.zone;platform.alert',
       type: 'submenu',
+      // hidden: false,
     },
     children: [
-      // {
-      //   path: 'appList',
-      //   name: 'manage.appList',
-      //   component: ApplicationList,
-      //   meta: {
-      //     icon: '#icon_stack-alt',
-      //     title: '服务管理',
-      //     code: 'platform.serviceInstance',
-      //     hidden: false,
-      //   },
-      // },
       {
         path: 'service',
         name: 'manage.service.list',
@@ -206,15 +197,6 @@ export default [
         },
       },
       {
-        path: 'application/app',
-        name: 'application.app',
-        component: CreateApp,
-        meta: {
-          activeMenu: 'manage.application',
-          hidden: true,
-        },
-      },
-      {
         path: 'zone',
         name: 'manage.zone.list',
         component: ZoneList,
@@ -230,19 +212,12 @@ export default [
         name: 'manage.zone.detail',
         component: ZoneDetail,
         meta: {
-          activeMenu: 'manage.zone.list',
+          // icon: '#icon_globe-alt',
+          // title: '可用区详情',
+          // code: 'platform.zone',
+          // activeMenu: 'manage.zone.list',
           hidden: true,
         },
-      },
-      {
-        path: 'zone/newapp/:id',
-        name: 'manage.zone.newapp',
-        component: ZoneNewApp,
-        meta: {
-          activeMenu: 'manage.zone.list',
-          hidden: true,
-        },
-        prop: true,
       },
       {
         path: 'alarm-metrics',
@@ -253,6 +228,38 @@ export default [
           title: '告警指标',
           code: 'platform.alert',
           hidden: false,
+        },
+      },
+    ],
+  },
+  // 无左侧导航栏
+  {
+    path: 'zone',
+    redirect: {
+      name: 'manage.zone.newapp',
+    },
+    component: NoSideContainer,
+    meta: {
+      hidden: true,
+    },
+    // ZoneNewApp
+    children: [
+      {
+        path: 'newapp/:id',
+        name: 'manage.zone.newapp',
+        component: ZoneNewApp,
+        meta: {
+          activeMenu: 'manage.zone.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'newapp/application/app',
+        name: 'application.app',
+        component: CreateApp,
+        meta: {
+          activeMenu: 'manage.application',
+          hidden: true,
         },
       },
     ],
