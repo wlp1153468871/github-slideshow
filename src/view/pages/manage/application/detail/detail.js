@@ -1,5 +1,3 @@
-import { mapState } from 'vuex';
-
 import ServiceAdmin from '@/core/services/service-admin.service';
 import MarkDown from '@/view/components/markdown/markdown.vue';
 
@@ -28,6 +26,8 @@ export default {
       configAdd: false,
       // 选择状态
       selectStatus: [],
+      // 选择的项目
+      selectItem: [],
       select: 1,
       status: [
         {
@@ -46,17 +46,16 @@ export default {
       chart: '',
       // 项目组
       orginization: [],
+      orgNumber: '',
       // 实例
       instances: [],
     };
   },
 
-  computed: {
-    ...mapState(['space', 'zone']),
-  },
   components: {
     MarkDown,
   },
+
   watch: {
     chart: {
       handler() {
@@ -67,11 +66,21 @@ export default {
         });
       },
     },
+    select: {
+      handler() {
+        if (this.select) {
+          this.getAvaOrganizations();
+        } else {
+          this.getUnavaOrganizations();
+        }
+      },
+    },
   },
 
   created() {
     this.getApp();
-    this.getOrganizations();
+    // 默认上线状态
+    this.getAvaOrganizations();
     this.getCategory();
   },
 
@@ -118,14 +127,43 @@ export default {
         }
       });
     },
-    // 项目组列表
-    getOrganizations() {
-      ServiceAdmin.getOrganizations(this.$route.params.id).then(res => {
+    // 已上架项目组列表
+    getAvaOrganizations() {
+      ServiceAdmin.getAvaOrganizations(this.$route.params.id).then(res => {
         if (res) {
           this.orginization = res;
         }
+        this.organizationNum();
       });
     },
+    // 已下架项目组列表
+    getUnavaOrganizations() {
+      ServiceAdmin.getUnavaOrganizations(this.$route.params.id).then(res => {
+        if (res) {
+          this.orginization = res;
+        }
+        this.organizationNum();
+      });
+    },
+    // 下架一个项目组app
+    unavaOrgApp(id) {
+      ServiceAdmin.unavaOrgApp(id, this.$route.params.id).then(res => {
+        if (res) {
+          this.getAvaOrganizations();
+          this.$noty.success('下架成功');
+        }
+      });
+    },
+    // 上架一个项目在app
+    avaOrgApp(id) {
+      ServiceAdmin.avaOrgApp(id, this.$route.params.id).then(res => {
+        if (res) {
+          this.getUnavaOrganizations();
+          this.$noty.success('上架成功');
+        }
+      });
+    },
+
     // 实例列表
     getInstances() {
       ServiceAdmin.getInstances(this.$route.params.id).then(res => {
@@ -134,7 +172,7 @@ export default {
         }
       });
     },
-
+    //  更新应用
     updateApp() {
       ServiceAdmin.updateApp(this.$route.params.id, this.form).then(res => {
         if (res) {
@@ -145,8 +183,54 @@ export default {
         }
       });
     },
+    // 下架应用
+    availableOff() {
+      ServiceAdmin.availableOff(this.$route.params.id).then(res => {
+        if (res) {
+          this.getApp();
+          this.$noty.success('应用下架成功');
+        }
+      });
+    },
+    // 上架应用
+    availableOn() {
+      ServiceAdmin.availableOn(this.$route.params.id).then(res => {
+        if (res) {
+          this.getApp();
+          this.$noty.success('应用上架成功');
+        }
+      });
+    },
+    // 批量下架
+    manyUnava() {
+      this.selectItem.forEach(item => {
+        this.unavaOrgApp(item.id);
+      });
+    },
+    // 批量上架
+    manyAva() {
+      this.selectItem.forEach(item => {
+        this.avaOrgApp(item.id);
+      });
+    },
+    //  删除应用
+    deleteApplication() {
+      ServiceAdmin.deleteApplication(this.$route.params.id, this.appInfo.zoneId).then(res => {
+        if (res) {
+          this.$noty.success('应用删除成功');
+          this.$router.push({
+            name: 'manage.application',
+          });
+        }
+      });
+    },
+    // 项目组数
+    organizationNum() {
+      this.orgNumber = this.orginization.length;
+    },
     selectChange(val) {
       const arr = [];
+      this.selectItem = val;
       val.forEach(item => {
         if (!arr.includes(item.available)) {
           arr.push(item.available);
@@ -157,6 +241,7 @@ export default {
     // 全选
     selectAll(val) {
       const arr = [];
+      this.selectItem = val;
       val.forEach(item => {
         if (!arr.includes(item.available)) {
           arr.push(item.available);
@@ -164,7 +249,6 @@ export default {
       });
       this.selectStatus = arr;
     },
-
     // 上传文件之前
     beforeUpload(file) {
       if (this.fileType.indexOf(file.type) < 0) {

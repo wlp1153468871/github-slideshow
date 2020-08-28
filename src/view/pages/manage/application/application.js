@@ -91,7 +91,7 @@ export default {
     deleteApplication() {
       console.log('点击批量删除', this.selectedArr);
       this.selectedArr.forEach(item => {
-        ServiceAdmin.deleteApplication(item.id, item.zoneId).then(res => {
+        ServiceAdmin.deleteApplication(item.id, item.zoneId).then(() => {
           // this.$message({
           //   message: res,
           //   type: 'success',
