@@ -130,6 +130,7 @@
       <button
         class="dao-btn blue"
         @click="save"
+        v-throttleClick="1500"
         :disabled="loading"
         v-if="!isPreset && $can('platform.rolePermission.update')"
       >

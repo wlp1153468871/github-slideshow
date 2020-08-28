@@ -112,7 +112,7 @@
 
     <div slot="footer">
       <button class="dao-btn ghost" @click="onClose">关闭</button>
-      <button class="dao-btn blue" @click="create">
+      <button class="dao-btn blue" v-throttleClick="1500" @click="create">
         创建
       </button>
     </div>
