@@ -52,7 +52,7 @@ class ZoneAdmin {
   /**
    * 删除应用
    */
-  deleteApplication(id, zoneId) {
+  async deleteApplication(id, zoneId) {
     return this.api.delete(`/appstore/zone/${zoneId}/applications/${id}`);
   }
 

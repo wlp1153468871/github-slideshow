@@ -98,19 +98,12 @@ export default {
       console.log('点击批量删除', this.selectedArr);
       this.selectedArr.forEach(item => {
         ServiceAdmin.deleteApplication(item.id, item.zoneId).then(() => {
-          // this.$message({
-          //   message: res,
-          //   type: 'success',
-          // });
           this.getAllApp();
         }).catch(() => {
           this.getAllApp();
-          // this.$message({
-          //   message: err,
-          //   type: 'warning',
-          // });
         });
       });
+      this.$noty('删除成功');
     },
     /**
      * 批量上架
