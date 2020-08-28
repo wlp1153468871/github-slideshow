@@ -43,8 +43,7 @@
         </div>
         <dao-dialog
           :visible.sync="configEdit"
-          header="编辑基本信息"
-        >
+          header="编辑基本信息">
           <div class="dao-setting-layout">
             <div class="dao-setting-section" style="padding: 20px;">
               <div class="dao-setting-item">
@@ -147,8 +146,7 @@
         </dao-dialog>
         <dao-dialog
           :visible.sync="configAdd"
-          header="添加版本"
-        >
+          header="添加版本">
           <div class="dao-setting-layout">
             <div class="dao-setting-section" style="padding: 20px;">
               <div class="dao-setting-item">
@@ -176,169 +174,171 @@
           </div>
         </dao-dialog>
       </div>
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="概览" name="first">
-          <div class="base-info">
-            <div class="title">基本信息</div>
-            <div class="desc">
-              <div class="desc-title">应用描述</div>
-              <div class="desc-text">{{appInfo.description}}</div>
+      <div class="el_tab_box">
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="概览" name="first">
+            <div class="base-info">
+              <div class="title">基本信息</div>
+              <div class="desc">
+                <div class="desc-title">应用描述</div>
+                <div class="desc-text">{{appInfo.description}}</div>
+              </div>
+              <div class="app">
+                <div class="app-title">应用信息</div>
+                <div class="app-box">
+                  <div class="text-name">
+                    服务类型
+                    <div class="text-desc">{{appInfo.appType}}</div>
+                  </div>
+                  <div class="text-name">
+                    分类
+                    <div class="text-desc">
+                      <template>
+                        <span
+                          class="str"
+                          v-for="(item, index) in appInfo.category"
+                          :key="index">
+                          {{item}}
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+                <div class="app-box">
+                  <div class="text-name">
+                    供应商
+                    <div class="text-desc">{{appInfo.provider}}</div>
+                  </div>
+                  <div class="text-name">
+                    版本数
+                    <div class="text-desc">{{appInfo.numVersion}}</div>
+                  </div>
+                </div>
+                <div class="app-box">
+                  <div class="text-name">
+                    可用区
+                    <div class="text-desc">{{appInfo.zoneName}}</div>
+                  </div>
+                  <div class="text-name">
+                    Chart 仓库
+                    <div class="text-desc">{{appInfo.chartRepo}}</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="app">
-              <div class="app-title">应用信息</div>
-              <div class="app-box">
-                <div class="text-name">
-                  服务类型
-                  <div class="text-desc">{{appInfo.appType}}</div>
-                </div>
-                <div class="text-name">
-                  分类
-                  <div class="text-desc">
-                    <template>
-                      <span
-                        class="str"
-                        v-for="(item, index) in appInfo.category"
-                        :key="index">
-                        {{item}}
-                      </span>
-                    </template>
-                  </div>
-                </div>
-              </div>
-              <div class="app-box">
-                <div class="text-name">
-                  供应商
-                  <div class="text-desc">{{appInfo.provider}}</div>
-                </div>
-                <div class="text-name">
-                  版本数
-                  <div class="text-desc">{{appInfo.numVersion}}</div>
-                </div>
-              </div>
-              <div class="app-box">
-                <div class="text-name">
-                  可用区
-                  <div class="text-desc">{{appInfo.zoneName}}</div>
-                </div>
-                <div class="text-name">
-                  Chart 仓库
-                  <div class="text-desc">{{appInfo.chartRepo}}</div>
-                </div>
-              </div>
+            <div class="base-info" v-if="appInfo.content">
+              <div class="title" style="padding: 20px 0 20px 0px;">README</div>
+              <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down>
             </div>
-          </div>
-          <div class="base-info" v-if="appInfo.content">
-            <div class="title" style="padding: 20px 0 20px 0px;">README</div>
-            <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="实例" name="second">
-          <dao-input
-            search
-            @change="updateKey"
-            v-model="key"
-            placeholder="搜索">
-          </dao-input>
-          <span style="float: right;" @click="fresh">
-            <el-button size="mini" style="margin-left: 10px;">
-              <span>
-                <svg class="icon">
-                  <use :xlink:href="`#icon_cw`"></use>
-                </svg>
-              </span>
-            </el-button>
-          </span>
-          <div style="margin-top: 20px;">
-            <el-table
-              style="width: 100%;"
-              :data="instanceTable"
-            >
-              <el-table-column label="实例名称">
-                <template slot-scope="scope">
-                  <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
-                    {{ scope.row.name }}
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column label="状态" width="80">
-                <template slot-scope="scope">
-                  <div v-if="scope.row.status === 'deployed'">
-                    <svg class="icon" style="color: #25D473">
-                      <use :xlink:href="`#icon_status-dot-small`"></use>
-                    </svg>
-                    <span>成功</span>
-                  </div>
-                  <div v-else>
-                    <svg class="icon" style="color: red">
-                      <use :xlink:href="`#icon_status-dot-small`"></use>
-                    </svg>
-                    <span>失败</span>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column label="Chart 版本" prop="chartVersion" width="100"></el-table-column>
-              <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
-              <el-table-column label="创建时间">
-                <template slot-scope="scope">
-                  {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
-                </template>
-              </el-table-column>
-              <el-table-column  label="操作" width="60">
-                <template slot-scope="scope">
-                  <span class="dao-btn-group select-btn">
-                    <dao-dropdown
-                      trigger="click"
-                      :append-to-body="true"
-                      placement="bottom-start"
-                    >
-                      <svg class="icon">
-                        <use :xlink:href="`#icon_more`"></use>
+          </el-tab-pane>
+          <el-tab-pane label="实例" name="second">
+            <dao-input
+              search
+              @change="updateKey"
+              v-model="key"
+              placeholder="搜索">
+            </dao-input>
+            <span style="float: right;" @click="fresh">
+              <el-button size="mini" style="margin-left: 10px;">
+                <span>
+                  <svg class="icon">
+                    <use :xlink:href="`#icon_cw`"></use>
+                  </svg>
+                </span>
+              </el-button>
+            </span>
+            <div style="margin-top: 20px;">
+              <el-table
+                style="width: 100%;"
+                :data="instanceTable">
+                <el-table-column label="实例名称">
+                  <template slot-scope="scope">
+                    <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
+                      {{ scope.row.name }}
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="状态" width="80">
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.status === 'deployed'">
+                      <svg class="icon" style="color: #25D473">
+                        <use :xlink:href="`#icon_status-dot-small`"></use>
                       </svg>
-                      <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span @click="linktoForm(scope.row.id)">使用表单更新</span>
-                        </dao-dropdown-item>
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span @click="linktoYamlForm(scope.row.id)">使用YAML更新</span>
-                        </dao-dropdown-item>
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span style="color: red;" @click="deleteInstance(scope.row.id)">删除</span>
-                        </dao-dropdown-item>
-                      </dao-dropdown-menu>
-                    </dao-dropdown>
-                  </span>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="footer">
-              <div class="page">共 {{instanceNum()}} 项</div>
-              <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-                <dao-dropdown
-                  trigger="click"
-                  :append-to-body="true"
-                  placement="bottom-start"
-                >
-                  <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-                    <span class="text">10项/页</span>
-                    <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-                  </button>
-                  <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                    <dao-dropdown-item style="margin-left: 10px">
-                      <span>15项/页</span>
-                    </dao-dropdown-item>
-                    <dao-dropdown-item style="margin-left: 10px">
-                      <span>20项/页</span>
-                    </dao-dropdown-item>
-                    <dao-dropdown-item style="margin-left: 10px">
-                      <span>25项/页</span>
-                    </dao-dropdown-item>
-                  </dao-dropdown-menu>
-                </dao-dropdown>
-              </span>
+                      <span>成功</span>
+                    </div>
+                    <div v-else>
+                      <svg class="icon" style="color: red">
+                        <use :xlink:href="`#icon_status-dot-small`"></use>
+                      </svg>
+                      <span>失败</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="Chart 版本" prop="chartVersion" width="100"></el-table-column>
+                <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
+                <el-table-column label="创建时间">
+                  <template slot-scope="scope">
+                    {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                  </template>
+                </el-table-column>
+                <el-table-column  label="操作" width="60">
+                  <template slot-scope="scope">
+                    <span class="dao-btn-group select-btn">
+                      <dao-dropdown
+                        trigger="click"
+                        :append-to-body="true"
+                        placement="bottom-start"
+                      >
+                        <svg class="icon">
+                          <use :xlink:href="`#icon_more`"></use>
+                        </svg>
+                        <dao-dropdown-menu slot="list" style="min-width: 120px;">
+                          <dao-dropdown-item style="margin-left: 10px">
+                            <span @click="linktoForm(scope.row.id)">使用表单更新</span>
+                          </dao-dropdown-item>
+                          <dao-dropdown-item style="margin-left: 10px">
+                            <span @click="linktoYamlForm(scope.row.id)">使用YAML更新</span>
+                          </dao-dropdown-item>
+                          <dao-dropdown-item style="margin-left: 10px">
+                            <span style="color: red;"
+                            @click="deleteInstance(scope.row.id)">删除</span>
+                          </dao-dropdown-item>
+                        </dao-dropdown-menu>
+                      </dao-dropdown>
+                    </span>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="footer">
+                <div class="page">共 {{instanceNum()}} 项</div>
+                <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
+                  <dao-dropdown
+                    trigger="click"
+                    :append-to-body="true"
+                    placement="bottom-start"
+                  >
+                    <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
+                      <span class="text">10项/页</span>
+                      <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
+                    </button>
+                    <dao-dropdown-menu slot="list" style="min-width: 120px;">
+                      <dao-dropdown-item style="margin-left: 10px">
+                        <span>15项/页</span>
+                      </dao-dropdown-item>
+                      <dao-dropdown-item style="margin-left: 10px">
+                        <span>20项/页</span>
+                      </dao-dropdown-item>
+                      <dao-dropdown-item style="margin-left: 10px">
+                        <span>25项/页</span>
+                      </dao-dropdown-item>
+                    </dao-dropdown-menu>
+                  </dao-dropdown>
+                </span>
+              </div>
             </div>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
     <div class="right" >
       <div v-if="applicationInfos.length < 1" class="no-version">

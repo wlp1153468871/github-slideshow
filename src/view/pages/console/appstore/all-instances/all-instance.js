@@ -51,13 +51,7 @@ export default {
     // 暂时缺少appid
     // 实例跳转
     rowClick(id) {
-      let appId = '';
-      this.instances.forEach(item => {
-        if (item.id === id) {
-          appId = item.appId;
-        }
-      });
-      console.log(appId);
+      const { appId } = this.instances.find(item => item.id === id);
       this.$router.push({
         name: 'appstore.instance',
         params: {

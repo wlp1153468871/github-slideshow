@@ -41,8 +41,7 @@
         text-color="#e4e7ed"
         :default-active="defaultActiveMenu"
         :router="true"
-        :collapse="isCollapse"
-      >
+        :collapse="isCollapse">
         <template v-for="(item, index) in allMenus">
           <template v-if="item.children">
             <el-submenu :index="item.name" v-if="!hiddenMenu(item)" :key="index">
@@ -73,17 +72,14 @@
               <!-- 资源 子菜单 -->
               <template
                 v-if="item.meta.code === 'resource'"
-                v-for="(menuItem, index) in item.children"
-              >
+                v-for="(menuItem, index) in item.children">
                 <el-menu-item
                   :key="index"
                   :route="{ name: menuItem.name }"
                   :index="menuItem.name"
                   v-if="
                     !hiddenMenu(menuItem) &&
-                      Object.keys(apiResource || {}).some(a => a === menuItem.meta.resourceName)
-                  "
-                >
+                      Object.keys(apiResource || {}).some(a => a === menuItem.meta.resourceName)">
                   <svg class="icon">
                     <use :xlink:href="menuItem.meta.icon"></use>
                   </svg>
@@ -91,59 +87,25 @@
                     <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
                   </span>
                 </el-menu-item>
-                <!-- <el-menu-item
-                  v-if="
-                    item.meta.code === 'resource' &&
-                      pages.some(m => m === resource.kind.toLowerCase())
-                  "
-                  :key="resource.name"
-                  :index="resource.route.name"
-                  :route="resource.route"
-                >
-                  <svg class="icon">
-                    <use :xlink:href="resource.icon"></use>
-                  </svg>
-                  <overflow-tooltip slot="title" :text="resource.kind"> </overflow-tooltip>
-                </el-menu-item> -->
               </template>
-              <!-- <template v-for="menu in apiResource">
-                <el-menu-item
-                  v-if="item.meta.code === 'resource'"
-                  :key="menu.id"
-                  :index="compileIndex(menu)"
-                  :route="menu.route"
-                >
-                  <service-logo :src="menu.logo_url" size="small"></service-logo>
-                  <el-tooltip
-                    popper-class="service-name-tooltip"
-                    slot="title"
-                    :content="menu.name"
-                    placement="right"
-                  >
-                    <span class="service-menu-name text-overflow-ellipsis">{{ menu.name }}</span>
-                  </el-tooltip>
-                </el-menu-item>
-              </template> -->
-              <!-- 这里是服务子菜单 -->
+              <!-- 服务 子菜单 -->
               <template v-for="menu in services">
                 <el-menu-item
                   v-if="item.meta.code === 'serviceBroker'"
                   :key="menu.id"
                   :index="compileIndex(menu)"
-                  :route="menu.route"
-                >
+                  :route="menu.route">
                   <service-logo :src="menu.logo_url" size="small"></service-logo>
                   <el-tooltip
                     popper-class="service-name-tooltip"
                     slot="title"
                     :content="menu.name"
-                    placement="right"
-                  >
+                    placement="right">
                     <span class="service-menu-name text-overflow-ellipsis">{{ menu.name }}</span>
                   </el-tooltip>
                 </el-menu-item>
               </template>
-
+              <!-- 无服务 -->
               <el-menu-item v-if="item.meta.code === 'serviceBroker' && services.length === 0">
                 <span class="service-menu-name text-overflow-ellipsis">无服务</span>
               </el-menu-item>
