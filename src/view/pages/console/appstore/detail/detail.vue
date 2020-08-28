@@ -3,7 +3,7 @@
     <div class="layout-content-header detail-header">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
         <el-breadcrumb-item
-          :to="{ path: '/console/appstore' }"
+          :to="{ path: '/console/appstore/view' }"
           class="header-text"
         >
           应用
