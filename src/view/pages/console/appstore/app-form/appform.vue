@@ -93,6 +93,10 @@
           border
           :data="table"
           style="width: 100%;"
+          v-loading.fullscreen.lock="loading"
+          element-loading-text="正在拼命创建中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
        >
           <el-table-column label="key" prop="name"></el-table-column>
           <el-table-column label="value">

@@ -31,6 +31,8 @@ import UserList from '@/view/pages/console/user/user-list/user-list.vue';
 import SpaceQuota from '@/view/pages/console/quota/space-quota.vue';
 import AppList from '@/view/pages/console/app/list/app-list.vue';
 import AppDetail from '@/view/pages/console/app/detail/app-detail.vue';
+import NoSideContainer from '@/view/pages/console/form-container/container.vue';
+
 
 // deploy
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
@@ -396,12 +398,12 @@ export default [
     meta: {
       title: '应用商店',
       icon: '#icon_store',
-      hidden: false,
       // code: 'appstore',
+      hidden: false,
     },
     children: [
       {
-        path: '/',
+        path: 'view',
         name: 'console.appstore.list',
         component: AppStore,
         meta: {
@@ -427,11 +429,44 @@ export default [
       },
     ],
   },
+  // 无左侧导航栏
+  {
+    path: 'appstore',
+    redirect: {
+      name: 'appstore.form',
+    },
+    component: NoSideContainer,
+    meta: {
+      hidden: true,
+    },
+    children: [
+      {
+        path: 'appstore/:appid/form/:version',
+        name: 'appstore.form',
+        component: AppStoreForm,
+        meta: {
+          activeMenu: 'console.instance.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'appstore/:appid/yamlform/:version',
+        name: 'appstore.yamlform',
+        component: AppStoreYaml,
+        meta: {
+          activeMenu: 'console.instance.list',
+          hidden: true,
+        },
+      },
+    ],
+  },
+
   {
     path: 'appstore/detail/:Id',
     name: 'appstore.detail',
     component: AppStoreDetail,
     meta: {
+      activeMenu: 'console.appstore.list',
       hidden: true,
       keepAlive: true,
     },
@@ -441,25 +476,12 @@ export default [
     name: 'appstore.instance',
     component: AppStoreInstance,
     meta: {
+      activeMenu: 'console.instance.list',
       hidden: true,
     },
   },
-  {
-    path: 'appstore/:appid/form/:version',
-    name: 'appstore.form',
-    component: AppStoreForm,
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: 'appstore/:appid/yamlform/:version',
-    name: 'appstore.yamlform',
-    component: AppStoreYaml,
-    meta: {
-      hidden: true,
-    },
-  },
+
+  // 镜像
   {
     path: 'registry',
     name: 'console.registry',
