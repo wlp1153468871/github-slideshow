@@ -134,6 +134,8 @@ export default {
       console.log('什么时候执行');
       ZoneAdminService.deleteChartVersion(this.zoneId, this.form.name, this.version).then(() => {
         this.chartList = [];
+        this.form.name = '';
+        this.form.description = '';
       });
     },
 

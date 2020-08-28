@@ -273,6 +273,8 @@ export default {
       console.log('什么时候执行');
       ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
         this.chartList = [];
+        this.name = '';
+        this.description = '';
       });
     },
     createApp() {
