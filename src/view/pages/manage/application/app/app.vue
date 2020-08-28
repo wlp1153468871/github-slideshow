@@ -2,9 +2,7 @@
   <div class="app">
     <div class="layout-content-header form-header">
       <span @click="cancerForm">
-        <svg class="icon" style="color: #217EF2;">
-          <use :xlink:href="`#icon_close`"></use>
-        </svg>
+        <span style="color: #217EF2;font-size: 25px;cursor: pointer">×</span>
       </span>
       <dao-dialog
         :visible.sync="config.visible"
@@ -23,10 +21,56 @@
     </div>
     <dao-setting-layout class="basic-info">
       <div class="dao-setting-section">
+        <div class="dao-setting-title title-text">可用区</div>
+      </div>
+      <div class="dao-setting-item" style="height: 62px;">
+        <div class="dao-setting-label dao-name">选择可用区</div>
+        <div class="dao-setting-content">
+          <dao-select
+            v-model="zoneId"
+            class="dao-option"
+            size="sm"
+            style="width: 98%;height: 32px;"
+            placeholder="选择可用区"
+          >
+            <dao-option
+              v-for="item in zoneList"
+              :key="item.id"
+              :value="item.id"
+              :label="item.name">
+            </dao-option>
+          </dao-select>
+        </div>
+      </div>
+    </dao-setting-layout>
+    <dao-setting-layout class="basic-info">
+      <div class="dao-setting-section">
+        <div class="dao-setting-title title-text">Chart 文件</div>
+      </div>
+      <div class="dao-setting-item" style="height: 62px;">
+        <div class="dao-setting-label dao-name">Chart 文件</div>
+        <div class="dao-setting-content">
+          <el-upload
+            class="upload-demo"
+            ref="upload"
+            action="#"
+            :http-request="handleUploadChart"
+            :file-list="chartList"
+            accept="application/zip, application/x-compressed, application/x-gzip"
+            :limit="1"
+            :before-upload="beforeUploadChart"
+            :on-remove="removeChart">
+            <button class="dao-btn blue">上传chart</button>
+          </el-upload>
+        </div>
+      </div>
+    </dao-setting-layout>
+    <dao-setting-layout class="basic-info" style="margin-bottom: 60px">
+      <div class="dao-setting-section">
         <div class="dao-setting-title title-text">基本信息</div>
       </div>
       <div class="dao-setting-item" style="height: 42px;">
-        <div class="dao-setting-label dao-name">自定义名称</div>
+        <div class="dao-setting-label dao-name">模板名称</div>
         <div class="dao-setting-content">
           <dao-input
             block
@@ -38,7 +82,7 @@
       </div>
       <div class="dao-setting-section">
         <div class="dao-setting-item">
-          <div class="dao-setting-label dao-name">应用图标</div>
+          <div class="dao-setting-label dao-name">模板图标</div>
           <div class="dao-setting-content">
             <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
             <el-upload
@@ -81,20 +125,44 @@
         <div class="dao-setting-item">
           <div class="dao-setting-label dao-name">分类</div>
           <div class="dao-setting-content">
+            <svg class="icon" @click="addCategory">
+              <use :xlink:href="`#icon_plus-circled`"></use>
+            </svg>
             <el-select
               v-model="form.category"
               multiple
               default-first-option
               placeholder="选择分类"
-              style="width: 98%;">
+              style="width: 97%;">
               <el-option
-                v-for="(item, index) in categories"
-                :key="item.name"
+                v-for="item in categories"
+                :key="item.id"
                 :label="item.name"
-                :value="`${index}`">
+                :value="item.id">
               </el-option>
             </el-select>
           </div>
+        </div>
+      </div>
+      <!--        新增分类弹窗-->
+      <div v-if="categoryConfig.showAddCategory">
+        <div class="dao-dialog demo2">
+          <dao-dialog
+            :visible.sync="categoryConfig.showAddCategory"
+            :header="categoryConfig.header"
+            @confirm="submit">
+            <dao-setting-layout>
+              <dao-setting-section>
+                <template slot="label">分类名称</template>
+                <template slot="content">
+                  <dao-input
+                    v-model="categoryName"
+                    placeholder="请输入分类名称">
+                  </dao-input>
+                </template>
+              </dao-setting-section>
+            </dao-setting-layout>
+          </dao-dialog>
         </div>
       </div>
       <div class="dao-setting-section">
@@ -114,32 +182,10 @@
         </div>
       </div>
     </dao-setting-layout>
-    <dao-setting-layout class="basic-info">
-      <div class="dao-setting-section">
-        <div class="dao-setting-title title-text">Chart 文件</div>
-      </div>
-      <div class="dao-setting-item" style="height: 62px;">
-        <div class="dao-setting-label dao-name">Chart 文件</div>
-        <div class="dao-setting-content">
-          <el-upload
-            class="upload-demo"
-            ref="upload"
-            action="#"
-            :http-request="handleUploadChart"
-            :file-list="chartList"
-            accept="application/zip, application/x-compressed, application/x-gzip"
-            :limit="1"
-            :before-upload="beforeUploadChart"
-            :on-remove="removeFile">
-            <button class="dao-btn blue">上传chart</button>
-          </el-upload>
-        </div>
-      </div>
-    </dao-setting-layout>
     <div class="dao-setting-layout-footer footer-lay">
       <div class="btn-layout">
         <button class="dao-btn" @clcik="cancerForm">取消</button>
-        <button class="dao-btn blue" @click="handleUpload">确认创建</button>
+        <button class="dao-btn blue" @click="createApp">确认创建</button>
       </div>
     </div>
   </div>

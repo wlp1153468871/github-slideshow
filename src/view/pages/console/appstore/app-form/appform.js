@@ -21,26 +21,13 @@ export default {
           index: 2,
         },
       ],
-      tableData: [
-        {
-          key: 'chartmuseum.absoluteUrl',
-          value: 'true',
-        },
-        {
-          key: 'chartmuseum.absoluteUrl',
-          value: 'false',
-        },
-        {
-          key: 'chartmuseum.absoluteUrl',
-          value: 'true',
-        },
-      ],
       config: {
         visible: false,
       },
       chartName: '',
       instanceName: '',
       table: [],
+      loading: false,
     };
   },
 
@@ -121,10 +108,12 @@ export default {
     },
     // 以form创建
     createForm() {
+      this.loading = true;
       AppStoreService
         .createForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.chartName, this.$route.params.version, this.instanceName, this.table)
         .then(res => {
+          this.loading = false;
           if (res) {
             this.$noty.success('实例创建成功');
             this.$router.go(-1);
@@ -144,11 +133,12 @@ export default {
     },
     // 更新实例的form
     updateForm() {
+      this.loading = true;
       AppStoreService
         .updateForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.table)
         .then(res => {
-          console.log('更新1');
+          this.loading = false;
           if (res) {
             this.$noty.success('实例更新成功');
             this.$router.push({

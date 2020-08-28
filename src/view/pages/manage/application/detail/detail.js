@@ -259,7 +259,7 @@ export default {
         this.fileList = [...this.fileList, file];
         this.isDisabled = false;
       }
-      return false;
+      return true;
     },
 
     // 删除文件列表
@@ -295,7 +295,7 @@ export default {
       } else {
         this.chartList = [...this.chartList, file];
       }
-      return false;
+      return true;
     },
 
     // 上传chart文件
@@ -313,9 +313,8 @@ export default {
             this.addClose();
           }
         })
-        .catch(err => {
+        .catch(() => {
           this.removeFile();
-          this.$noty.error(err);
         });
     },
 
