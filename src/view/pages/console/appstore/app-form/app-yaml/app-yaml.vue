@@ -201,11 +201,18 @@ export default {
     },
     // 创建yaml实例
     createYmal() {
+      const loading = this.$loading({
+        lock: true,
+        text: '正在拼命创建中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+      });
       AppStoreService
         .createYmal(this.zone.id, this.space.id, this.$route.params.appid,
           this.chartName, this.$route.params.version, this.instanceName, this.yaml)
         .then(res => {
           if (res) {
+            loading.close();
             this.$noty.success('实例创建成功');
             this.$router.go(-1);
           }
@@ -224,11 +231,18 @@ export default {
     },
     // 更新yaml实例
     updateYaml() {
+      const loading = this.$loading({
+        lock: true,
+        text: '正在拼命更新中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+      });
       AppStoreService
         .updateYaml(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.yaml)
         .then(res => {
           if (res) {
+            loading.close();
             this.$noty.success('实例更新成功');
             this.$router.go(-1);
           }
@@ -322,7 +336,7 @@ export default {
     margin: 20px 0 0 0;
     .btn-layout {
       position: absolute;
-      bottom: 10px;
+      bottom: 5px;
       right: 20px;
     }
   }
