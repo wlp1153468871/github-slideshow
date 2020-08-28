@@ -118,6 +118,9 @@ export default {
             this.$noty.success('实例创建成功');
             this.$router.go(-1);
           }
+        })
+        .catch(() => {
+          this.loading = false;
         });
     },
     // 获取一个实例
@@ -151,6 +154,9 @@ export default {
               },
             });
           }
+        })
+        .catch(() => {
+          this.loading = false;
         });
     },
     cancerForm() {
