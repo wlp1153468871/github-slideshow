@@ -2,7 +2,33 @@
   <div class="new-app">
     <div class="newApp-nav">
       <span style="color: #217EF2;font-size: 25px;cursor: pointer" @click="handleBack">×</span>
-      <span>新建应用</span>
+      <span>新建应用模板</span>
+    </div>
+    <!--    chartw文件-->
+    <div class="newApp-box chart-file" id="chart-file">
+      <dao-setting-layout>
+        <template slot="layout-title">
+          <div class="base-info">Chart文件</div>
+        </template>
+        <dao-setting-section>
+          <template slot="label">chart文件</template>
+          <template slot="content">
+            <el-upload
+              class="upload-demo"
+              ref="uploadChart"
+              action="#"
+              :http-request="handleUploadChart"
+              :file-list="chartList"
+              accept="application/zip, application/x-compressed, application/x-gzip"
+              :limit="1"
+              :before-upload="beforeUploadChart"
+              :on-remove="removeFileChart"
+            >
+              <button class="dao-btn blue">上传chart</button>
+            </el-upload>
+          </template>
+        </dao-setting-section>
+      </dao-setting-layout>
     </div>
     <div class="newApp-box">
       <dao-setting-layout>
@@ -10,7 +36,7 @@
           <div class="base-info">基本信息</div>
         </template>
         <dao-setting-section>
-          <template slot="label">应用名称</template>
+          <template slot="label">模板名称</template>
           <template slot="content">
             <dao-input
               style="width: 100%"
@@ -20,7 +46,7 @@
           </template>
         </dao-setting-section>
         <dao-setting-section>
-          <template slot="label">应用图标</template>
+          <template slot="label">模板图标</template>
           <template slot="content">
             <div class="content-text">建议大小120像素×120像素，支持PNG，文件小于1MB</div>
           </template>
@@ -109,31 +135,6 @@
         </dao-setting-section>
       </dao-setting-layout>
     </div>
-<!--    chartw文件-->
-    <div class="newApp-box chart-file" id="chart-file">
-      <dao-setting-layout>
-        <template slot="layout-title">
-          <div class="base-info">Chart文件</div>
-        </template>
-      <dao-setting-section>
-        <template slot="label">chart文件</template>
-        <template slot="content">
-          <el-upload
-            class="upload-demo"
-            ref="upload"
-            action="#"
-            :http-request="handleUploadChart"
-            :file-list="chartList"
-            accept="application/zip, application/x-compressed, application/x-gzip"
-            :limit="1"
-            :before-upload="beforeUploadChart"
-            :on-remove="removeFile">
-            <button class="dao-btn blue">上传chart</button>
-          </el-upload>
-        </template>
-      </dao-setting-section>
-      </dao-setting-layout>
-    </div>
 <!--    底部取消-->
     <div class="footer">
       <div class="btn-style">
@@ -180,7 +181,6 @@ export default {
       fileType: ['image/png'],
       chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
       chartList: [],
-      appId: '',
       showAddCategory: false, // 控制新增分类按钮
       // 弹窗所需数据
       config: {
@@ -191,6 +191,7 @@ export default {
         },
       },
       categoryName: '', // 新增分类名称
+      version: '', // 版本
     };
   },
   created() {
@@ -264,7 +265,16 @@ export default {
     removeFile() {
       this.$refs.upload.clearFiles();
     },
-
+    /**
+     * 删除chart文件
+     */
+    removeFileChart() {
+      // this.$refs.uploadChart.clearFiles();
+      console.log('什么时候执行');
+      ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
+        this.chartList = [];
+      });
+    },
     createApp() {
       console.log(this.id);
       const formData = {
@@ -276,10 +286,7 @@ export default {
       };
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {
-          console.log(res);
-          this.appId = res.id;
-          // this.appInfo = res;
-          this.handleUploadChart();
+          this.$router.back();
         }
       });
     },
@@ -290,7 +297,6 @@ export default {
     handleUpload() {
       this.isDisabled = true;
       const file = this.fileList[0];
-      console.log('上传图片');
       AppStoreService.uploadPic(file)
         .then(res => {
           this.pictureId = res.id;
@@ -310,12 +316,11 @@ export default {
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
-        this.removeFile();
       } else {
         this.chartList = [...this.chartList, file];
         // this.handleUploadChart();
       }
-      return false;
+      return true;
     },
 
     /**
@@ -323,23 +328,22 @@ export default {
      */
     handleUploadChart() {
       const formData = new FormData();
+      console.log(this.chartList);
       this.chartList.forEach(file => {
         formData.append('chart', file);
       });
-      ZoneAdminService.createChart(this.id, this.appId, formData)
+      console.log(formData);
+      ZoneAdminService.createChart(this.id, formData)
         .then(res => {
           if (res) {
-            // this.$noty.success('应用创建成功');
-            // this.$router.push({
-            //   name: 'console.appstore',
-            // });
-            console.log('应用创建成功');
-            // this.$router.push({ name: 'zone.detail' });
-            this.$router.back();
+            this.name = res.chartName;
+            this.description = res.description;
+            this.version = res.version;
+            console.log('chart文件上传解析成功');
           }
         })
         .catch(() => {
-          this.removeFile();
+          this.chartList = [];
           this.$noty.error('创建失败');
           // ZoneAdminService.deleteApplication(this.id, this.appId).then(res => {
           //   this.$message({
@@ -351,9 +355,15 @@ export default {
           //   });
           // });
           // this.$router.push({ name: 'zone.detail' });
-          this.$router.back();
+          // this.$router.back();
         });
     },
+    /**
+     * 移除文件前的钩子函数
+     */
+    // beforeRemove(file, fileList) {
+    //   return this.$confirm('确定移除' + file.name + '？');
+    // },
   },
 };
 </script>
@@ -384,6 +394,7 @@ export default {
   font-weight: 700;
   font-size: 16px;
   z-index: 999;
+  /*top: -1px;*/
 }
 .newApp-nav span {
   margin-left: 20px;
@@ -392,7 +403,7 @@ export default {
     box-sizing: border-box;
     width: 80%;
     background-color: #fff;
-    margin: 71px auto 0px auto;
+    margin: 20px auto 0px auto;
   }
   .newApp-box .base-info {
     width: 100%;
@@ -408,22 +419,25 @@ export default {
     width: 100%;
   }
   .new-app #chart-file {
-    margin-top: 20px;
-    margin-bottom: 70px;
+    margin-top: 70px;
+    /*margin-bottom: 70px;*/
   }
   .new-app .footer {
-    height: 51px;
+    height: 55px;
     background-color: #fff;
     z-index: 999;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .footer .btn-style {
-    position: absolute;
-    top: 10px;
-    left: 80%;
-    display: flex;
+    /*position: absolute;*/
+    /*top: 10px;*/
+    /*left: 80%;*/
+    /*display: flex;*/
   }
   .category-style {
     width: 95%;

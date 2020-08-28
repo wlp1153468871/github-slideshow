@@ -66,8 +66,8 @@ class ZoneAdmin {
   /**
    * 上传chart新版本
    */
-  createChart(zoneId, app_id, data) {
-    return this.api.post(`/appstore/zones/${zoneId}/applications/${app_id}/application_infos`, data);
+  createChart(zoneId, chart) {
+    return this.api.post(`/appstore/zones/${zoneId}/chart`, chart);
   }
 
   /**

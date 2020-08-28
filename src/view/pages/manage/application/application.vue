@@ -7,11 +7,12 @@
         v-model="zoneCat"
         size="sm"
         class="input1"
+        @change="handleChange"
       >
         <dao-option
           v-for="item in zones"
           :key="item.id"
-          :value="item.name"
+          :value="item.id"
           :label="item.name">
         </dao-option>
       </dao-select>
@@ -21,11 +22,12 @@
         size="sm"
         class="input1"
         style="width: 90px;"
+        @change="handleChange"
       >
         <dao-option
           v-for="item in status"
           :key="item.id"
-          :value="item.name"
+          :value="item.id"
           :label="item.name">
         </dao-option>
       </dao-select>
@@ -35,11 +37,12 @@
         size="sm"
         class="input1"
         style="width: 140px;"
+        @change="handleChange"
       >
         <dao-option
           v-for="item in appType"
-          :key="item.name"
-          :value="item.name"
+          :key="item.id"
+          :value="item.id"
           :label="item.name">
         </dao-option>
       </dao-select>

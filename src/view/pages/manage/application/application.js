@@ -12,10 +12,6 @@ export default {
           text: '全部',
           value: 1,
         },
-        {
-          text: '选项1',
-          value: 2,
-        },
       ],
       // 应用
       appInfo: [],
@@ -31,22 +27,32 @@ export default {
           name: '全部',
         },
       ],
-      zoneCat: '全部',
+      zoneCat: '',
 
       status: [
         {
           id: '',
           name: '全部',
+        }, {
+          id: 1,
+          name: '已上架',
+        }, {
+          id: 0,
+          name: '已下架',
         },
       ],
-      statuCat: '全部',
+      statuCat: '',
 
       appType: [
         {
+          id: '',
           name: '全部',
+        }, {
+          id: 'helm chart',
+          name: 'helm chart',
         },
       ],
-      appTypeCat: '全部',
+      appTypeCat: '',
     };
   },
 
@@ -92,12 +98,13 @@ export default {
       console.log('点击批量删除', this.selectedArr);
       this.selectedArr.forEach(item => {
         ServiceAdmin.deleteApplication(item.id, item.zoneId).then(res => {
-          // this.$message({
-          //   message: res,
-          //   type: 'success',
-          // });
+          this.$message({
+            message: res,
+            type: 'success',
+          });
           this.getAllApp();
         }).catch(() => {
+          this.getAllApp();
           // this.$message({
           //   message: err,
           //   type: 'warning',
@@ -162,7 +169,7 @@ export default {
     },
     // app
     getAllApp() {
-      ServiceAdmin.getAllApp().then(res => {
+      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
         if (res) {
           this.appInfo = res;
           this.appInfoCopy = res;
@@ -170,15 +177,37 @@ export default {
       }).then(() => {
         this.getZone();
         this.getStatus();
-        this.getType();
+        // this.getType();
       });
     },
 
+    /**
+     * 修改筛选条件
+     * @returns {*}
+     */
+    handleChange() {
+      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
+        if (res) {
+          this.appInfo = res;
+          this.appInfoCopy = res;
+        }
+      }).then(() => {
+        this.getZone();
+        this.getStatus();
+        // this.getType();
+      });
+    },
     appNumber() {
       return this.appInfo.length;
     },
     // 所有的可用区
     getZone() {
+      this.zones = [];
+      const obj = {
+        id: '',
+        name: '全部',
+      };
+      this.zones.push(obj);
       ServiceAdmin.getZone().then(res => {
         if (res) {
           res.forEach(item => this.zones.push(item));
