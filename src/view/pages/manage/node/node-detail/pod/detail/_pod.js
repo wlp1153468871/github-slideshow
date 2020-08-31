@@ -141,7 +141,7 @@ export default {
 
     getEvents() {
       NodeService.getPodsEvents(this.namespace, this.podName, this.zoneId).then(response => {
-        this.events = getValue(response, 'originData.items');
+        this.events = getValue(response, 'items');
       });
     },
 

@@ -113,13 +113,24 @@ export default {
       }
       if (e.keyCode === 13) {
         this.keyWords.pop();
-        TerminalHistoryService.saveTerminalHistories(
-          this.space.id,
-          this.zone.id,
-          this.pod.metadata.name,
-          this.container,
-          { message: this.keyWords.join('') },
-        );
+        if (this.isManageView) {
+          NodeService.getPodRealTimeLogssessionId(
+            this.namespace,
+            this.podName,
+            this.container,
+            this.zoneId,
+            { message: this.keyWords.join('') },
+          );
+        } else {
+          TerminalHistoryService.saveTerminalHistories(
+            this.space.id,
+            this.zone.id,
+            this.pod.metadata.name,
+            this.container,
+            { message: this.keyWords.join('') },
+          );
+        }
+
         this.keyWords = [];
       }
     };
