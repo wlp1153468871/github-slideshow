@@ -65,10 +65,12 @@ export default {
 
   created() {
     this.loading = true;
-    this.getPod(true).finally(() => {
-      this.loading = false;
-      this.poll();
-    });
+    if (this.namespace) {
+      this.getPod(true).finally(() => {
+        this.loading = false;
+        this.poll();
+      });
+    }
   },
 
   destroyed() {
