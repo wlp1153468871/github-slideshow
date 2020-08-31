@@ -4,7 +4,7 @@
     <circle-loading v-if="loading"></circle-loading>
 
     <template v-else>
-      <div class="layout-content-header bg-white">
+      <div class="layout-content-header bg-white" style="color: #000000">
         <breadcrumb
           :links="[
             { text: '可用区列表', route: { name: 'manage.zone.list' } },

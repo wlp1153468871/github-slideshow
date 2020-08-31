@@ -309,4 +309,9 @@ export default {
   },
 };
 </script>
+<style scope>
+  .linkColor a:hover {
+    color: #fff;
+  }
+</style>
 <style lang="scss" src="./application-list.scss"></style>
