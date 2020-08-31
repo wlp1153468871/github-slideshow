@@ -33,6 +33,9 @@ export default {
       node: {},
       resource: {},
       processedData: {},
+      other: {
+        status: (_, item) => (this.checkCondition(item.status.conditions) === '未就绪' ? 'DANGER' : 'SUCCESS'),
+      },
     };
   },
   created() {
@@ -95,24 +98,11 @@ export default {
     },
 
     checkCondition(condition) {
-      if (condition.type === 'Ready') {
-        switch (condition.status) {
-          case 'True':
-            return true;
-          case 'False':
-            return false;
-          default:
-            return false;
-        }
-      }
-      switch (condition.status) {
-        case 'True':
-          return false;
-        case 'False':
-          return true;
-        default:
-          return false;
-      }
+      const conditionsArray = condition.map(item => {
+        return ((item.type === 'Ready' && item.status === 'True') || (item.type !== 'Ready' && item.status === 'False'));
+      },
+      );
+      return conditionsArray.indexOf(false) > 0 ? '未就绪' : '健康';
     },
     sortEvents(events) {
       return orderBy(events, 'firstTimestampValue', 'desc');

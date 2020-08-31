@@ -4,7 +4,8 @@
     <template v-else>
       <resource-header :resource="resource">
         <template #labels>
-          <labels :labels="node.metadata.labels || {}"></labels>
+          <x-table-status :row="node" :other="other" :text="`${checkCondition(node.status.conditions)}${node.spec.unschedulable ? '，暂停调度': ''}`">
+          </x-table-status>
         </template>
         <template #action-buttons>
           <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
