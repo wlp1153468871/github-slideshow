@@ -41,7 +41,7 @@ class NodeService {
   getEvents(name: string, zoneId: string) {
     return this.api.get(`/nodes/${name}/events`, { zone: zoneId });
   }
-  
+
   getPods(name: string, zoneId: string) {
     return this.api.get(`/nodes/${name}/pods`, { zone: zoneId });
   }
@@ -71,14 +71,13 @@ class NodeService {
   }
 
   getPodRealTimeLogssessionId(namespace: string, podName: string, containerName: string, zoneId: string) {
-    console.log('12', `/namespaces/${namespace}/pods/${podName}/log`);
     return this.api.get(`/namespaces/${namespace}/pods/${podName}/log`, {zone: zoneId, container_name: containerName, follow: true });
   }
 
   listPodLogs(namespace: string, podName: string, containerName: string, zoneId: string, query = {}) {
     return this.api.get(`/namespaces/${namespace}/pods/${podName}/offlog`, {zone: zoneId, container_name: containerName, ...query});
   }
-  
+
   listSecret(namespace: string,zoneId: string){
     return this.api.get(`/namespaces/${namespace}/secrets`, { zone: zoneId })
   }
