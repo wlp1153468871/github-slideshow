@@ -262,6 +262,17 @@ class AppStoreService {
   async getAllInstances(zone_id, space_id) {
     return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/appinstances`);
   }
+
+  /**
+   * 用户获取实例的资源
+   * @param {String} zone_id
+   * @param {String} spaceId 租户ID
+   * @param {String} app_id 应用ID
+   * @param {String} instance_id 实例ID
+   */
+  async getResource(zone_id, space_id, app_id, instance_id) {
+    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/resource`);
+  }
 }
 
 export default new AppStoreService();

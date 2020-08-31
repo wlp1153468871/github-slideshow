@@ -110,7 +110,7 @@ export default {
       this.searchApp();
     }, 300),
     searchApp() {
-      this.applications = this.applications.filter(item => item.name.includes(this.key));
+      this.applications = this.appCopy.filter(item => item.name.includes(this.key));
     },
     // 刷新
     fresh() {

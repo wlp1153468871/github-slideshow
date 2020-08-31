@@ -189,21 +189,8 @@ export default {
       }],
       tableData: [],
       renderTable: [], // 渲染table的数据
-      chartData: [
-        {
-          type: '2.6.0',
-          state: 'Active',
-          defender: 'codefresh-io (2 other)',
-          date: '2020-5-23 13:23:54',
-        },
-      ],
       config: {
         visible: false,
-        footer: {
-          cancelText: '取消',
-          confirmText: '上传',
-          confirmDisabled: true,
-        },
       },
       chartBaseList: {},
       showPass: false, // 是否显示密码

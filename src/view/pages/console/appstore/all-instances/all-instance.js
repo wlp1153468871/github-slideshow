@@ -10,6 +10,7 @@ export default {
       key: '',
       // 所有实例
       instances: [],
+      instancesCopy: [],
     };
   },
 
@@ -39,6 +40,7 @@ export default {
       AppStoreService.getAllInstances(this.zone.id, this.space.id).then(res => {
         if (res) {
           this.instances = res;
+          this.instancesCopy = res;
           this.instanceNum();
         }
       });
@@ -48,7 +50,6 @@ export default {
       return this.instances.length;
     },
 
-    // 暂时缺少appid
     // 实例跳转
     rowClick(id) {
       const { appId } = this.instances.find(item => item.id === id);
@@ -66,13 +67,13 @@ export default {
       this.searchInstance();
     }, 300),
     searchInstance() {
-      this.instances = this.instances.filter(item => item.name.includes(this.key));
+      this.instances = this.instancesCopy.filter(item => item.name.includes(this.key));
     },
 
     // 刷新
     fresh() {
       this.key = '';
-      this.getAllInstances();
+      this.instances = this.instancesCopy;
     },
   },
 };
