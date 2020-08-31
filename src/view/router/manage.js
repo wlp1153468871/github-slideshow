@@ -41,6 +41,8 @@ const CreateApp = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/app/app.vue');
 const ApplicationDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
+const AdminInstance = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/instance/instance.vue');
 
 // preference
 const HomeSetting = () =>
@@ -193,6 +195,15 @@ export default [
         component: ApplicationDetail,
         meta: {
           activeMenu: 'manage.application.detail',
+          hidden: true,
+        },
+      },
+      {
+        path: 'application/:appid/instance/:instanceid',
+        name: 'application.instance',
+        component: AdminInstance,
+        meta: {
+          activeMenu: 'manage.application.instance',
           hidden: true,
         },
       },

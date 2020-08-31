@@ -54,33 +54,35 @@
         <dao-input
           search
           placeholder="搜索"
+          v-model="key"
+          @change="search"
           style="width: 200px; height: 32px;"
         >
         </dao-input>
-        <el-button size="mini" style="margin-left: 10px;">
-          <span>
-            <svg class="icon">
-              <use :xlink:href="`#icon_cw`"></use>
-            </svg>
-          </span>
-        </el-button>
+        <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh">
+          <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
+        </button>
       </span>
     </div>
-    <div class="select" v-if="selectStatus.length">
+    <div class="select">
       <span class="number">已选择 {{selectedArr.length}} 项</span>
       <button
         class="dao-btn status"
-        v-if="selectStatus[0] === 0 && selectStatus.length === 1"
+        :disabled="selectStatus[0] === 1 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOnline"
       >批量上架
       </button>
       <button
         class="dao-btn status"
-        v-if="selectStatus[0] === 1 && selectStatus.length === 1"
+        :disabled="selectStatus[0] === 0 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOff"
       >批量下架
       </button>
-      <button class="dao-btn red status" @click="deleteApplication">批量删除</button>
+      <button
+        class="dao-btn red status"
+        @click="deleteApplication"
+        :disabled="selectedArr.length < 1">批量删除
+      </button>
     </div>
     <div style="margin: 20px;">
       <el-table
@@ -90,14 +92,14 @@
         @selection-change="selectAll"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称" width="200">
+        <el-table-column label="应用名称">
           <template slot-scope="scope">
             <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="可用区" prop="zoneName" width="100"></el-table-column>
+        <el-table-column label="可用区" prop="zoneName"></el-table-column>
         <el-table-column label="供应商" prop="provider" width="100"></el-table-column>
         <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
         <el-table-column label="状态" width="100">

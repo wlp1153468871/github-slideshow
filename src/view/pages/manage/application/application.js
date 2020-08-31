@@ -7,12 +7,6 @@ export default {
   data() {
     return {
       select: 1,
-      items: [
-        {
-          text: '全部',
-          value: 1,
-        },
-      ],
       // 应用
       appInfo: [],
 
@@ -48,11 +42,12 @@ export default {
           id: '',
           name: '全部',
         }, {
-          id: 'helm chart',
-          name: 'helm chart',
+          id: 'Helm Chart',
+          name: 'Helm Chart',
         },
       ],
       appTypeCat: '',
+      key: '',
     };
   },
 
@@ -64,28 +59,6 @@ export default {
     this.getAllApp();
   },
 
-  watch: {
-    // zoneCat: function () {
-    //   this.appInfo.filter(item => {
-    //     return this.zoneCat === item.zoneName;
-    //   });
-    // },
-    statuCat: () => {
-      // this.appInfo.filter(item => {
-      //   return this.statuCat === item;
-      // });
-      // if (this.category !== '全部') {
-      //   this.appInfo = this.appInfoCopy.filter(item => item.available)
-      // }
-      // this.applicationInfos.forEach(item => {
-      //   if (item.version === this.statuCat) {
-      //     this.appInfo.content = item.content;
-      //   }
-      // });
-      console.log('触发了');
-    },
-  },
-
   methods: {
     createApp() {
       this.$router.push({ name: 'application.app' });
@@ -95,7 +68,6 @@ export default {
      * @param val
      */
     deleteApplication() {
-      console.log('点击批量删除', this.selectedArr);
       this.selectedArr.forEach(item => {
         ServiceAdmin.deleteApplication(item.id, item.zoneId).then(() => {
           this.getAllApp();
@@ -111,8 +83,7 @@ export default {
      */
     handleOnline() {
       this.selectedArr.forEach(item => {
-        ServiceAdmin.availableOn(item.id).then(res => {
-          console.log(res);
+        ServiceAdmin.availableOn(item.id).then(() => {
           this.getAllApp();
         });
       });
@@ -123,14 +94,12 @@ export default {
      */
     handleOff() {
       this.selectedArr.forEach(item => {
-        ServiceAdmin.availableOff(item.id).then(res => {
-          console.log(res);
+        ServiceAdmin.availableOff(item.id).then(() => {
           this.getAllApp();
         });
       });
     },
     selectChange(val) {
-      console.log('select', val);
       const arr = [];
       val.forEach(item => {
         if (!arr.includes(item.available)) {
@@ -141,7 +110,6 @@ export default {
     },
     // 全选
     selectAll(val) {
-      console.log('selection-change', val);
       this.selectedArr = val;
       const arr = [];
       val.forEach(item => {
@@ -231,6 +199,15 @@ export default {
           this.appType.push(obj);
         }
       });
+    },
+    // 搜索
+    search(val) {
+      this.appInfo = this.appInfoCopy.filter(item => item.name.includes(val));
+    },
+    // 刷新
+    fresh() {
+      this.key = '';
+      this.appInfo = this.appInfoCopy;
     },
   },
 };

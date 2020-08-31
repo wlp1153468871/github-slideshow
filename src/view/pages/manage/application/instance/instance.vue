@@ -3,10 +3,10 @@
     <div class="layout-content-header detail-header">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
         <el-breadcrumb-item
-          :to="{ path: '/console/appstore/view' }"
+          :to="{ name: 'manage.application' }"
           class="header-text"
         >
-          应用
+          应用模板管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>实例详情({{instanceInfo.name}})</el-breadcrumb-item>
       </el-breadcrumb>
@@ -32,30 +32,6 @@
           {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
         </div>
       </div>
-      <span class="dao-btn-group select-btn">
-        <dao-dropdown
-          trigger="click"
-          :append-to-body="true"
-          placement="bottom-start"
-          v-if="appInfo.ownerId === user.id"
-        >
-          <button class="dao-btn has-icons" style="width: 98px">
-            <span class="text">更多操作</span>
-            <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-          </button>
-          <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item style="margin-left: 10px">
-              <span @click="linktoForm()">使用表单更新</span>
-            </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px">
-              <span @click="linktoYamlForm()">使用YAML更新</span>
-            </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px">
-              <span style="color: red;" @click="deleteInstance()">删除</span>
-            </dao-dropdown-item>
-          </dao-dropdown-menu>
-        </dao-dropdown>
-      </span>
     </div>
     <el-tabs v-model="activeName" style="position:relative;">
       <el-tab-pane label="基本属性" name="first">
@@ -63,11 +39,11 @@
           <div class="c-title">基本属性</div>
           <div class="info-title1-layout">
             <div class="info-title">租户</div>
-            <div class="info-desc">{{this.space.organization.name}}</div>
+            <div class="info-desc">{{instanceInfo.organizationName}}</div>
           </div>
           <div class="info-title1-layout" style="float: right;">
             <div class="info-title">项目组</div>
-            <div class="info-desc">{{this.space.name}}</div>
+            <div class="info-desc">{{instanceInfo.spaceName}}</div>
           </div>
           <div class="info-title2-layout">
             <div class="info-title">创建者</div>
@@ -75,7 +51,7 @@
           </div>
           <div class="info-title2-layout"  style="float: right;">
             <div class="info-title">可用区</div>
-            <div class="info-desc">{{this.zone.name}}</div>
+            <div class="info-desc">{{appInfo.zoneName}}</div>
           </div>
           <div class="info-title2-layout">
             <div class="info-title">Chart 版本</div>

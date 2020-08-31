@@ -150,6 +150,33 @@ class ServiceAdmin {
   deleteApplication(id, zoneId) {
     return this.api.delete(`/appstore/zone/${zoneId}/applications/${id}`);
   }
+
+  /**
+   * 获取应用的一个实例
+   * @param {String} app_id
+   * @param {String} instance_id  实例id
+   */
+  async getInstance(app_id, instance_id) {
+    return this.api.get(`/appstore/applications/${app_id}/instances/${instance_id}`);
+  }
+
+  /**
+   * 获取实例的操作记录
+   * @param {String} app_id
+   * @param {String} instance_id  实例id
+   */
+  async getOperator(app_id, instance_id) {
+    return this.api.get(`/appstore/applications/${app_id}/instances/${instance_id}/ops_log`);
+  }
+
+  /**
+   * 获取实例的资源
+   * @param {String} app_id
+   * @param {String} instance_id  实例id
+   */
+  async getResources(app_id, instance_id) {
+    return this.api.get(`/appstore/applications/${app_id}/instances/${instance_id}/resource`);
+  }
 }
 
 export default new ServiceAdmin();
