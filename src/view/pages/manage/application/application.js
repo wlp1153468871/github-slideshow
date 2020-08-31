@@ -103,7 +103,7 @@ export default {
           this.getAllApp();
         });
       });
-      this.$noty('删除成功');
+      this.$noty.success('删除成功');
     },
     /**
      * 批量上架

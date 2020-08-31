@@ -1,7 +1,7 @@
 <template>
     <div id="zone">
       <div class="app-list">
-        <div>
+        <div style="min-width: 560px">
           状态：
           <dao-select
             v-model="status"
@@ -35,7 +35,7 @@
             <span class="text">导入应用模板</span>
           </button>
         </div>
-        <div>
+        <div style="min-width: 260px">
           <dao-input
             search
             placeholder="搜索"

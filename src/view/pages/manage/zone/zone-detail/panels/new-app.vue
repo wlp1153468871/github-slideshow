@@ -234,10 +234,12 @@ export default {
     },
     handleCancel() {
       // this.$router.push({ name: 'zone.detail' });
+      this.removeFileChart();
       this.$router.back();
     },
     handleBack() {
       // this.$router.push({ name: 'zone.detail' });
+      this.removeFileChart();
       this.$router.back();
     },
     /**
@@ -382,49 +384,49 @@ export default {
     width: 100%;
   }
 </style>
-<style scoped>
+<style lang="scss" scoped>
 .new-app {
-  min-height: 100vh;
+  /*min-height: 100vh;*/
+  min-height: 915px;
   background-color: #F1F3F6;
   border: 1px solid #F1F3F6;
-}
-.new-app .newApp-nav {
-  position: fixed;
-  background-color: #fff;
-  line-height: 51px;
-  width: 100%;
-  font-weight: 700;
-  font-size: 16px;
-  z-index: 999;
-  /*top: -1px;*/
-}
-.newApp-nav span {
-  margin-left: 20px;
-}
-  .new-app .newApp-box {
+  .newApp-nav {
+    position: fixed;
+    background-color: #fff;
+    line-height: 51px;
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    z-index: 999;
+    /*top: -1px;*/
+    span {
+      margin-left: 20px;
+    }
+  }
+  .newApp-box {
     box-sizing: border-box;
     width: 80%;
     background-color: #fff;
-    margin: 20px auto 0px auto;
-  }
-  .newApp-box .base-info {
-    width: 100%;
-    margin-left: 20px;
-    font-weight: 700;
-    font-size: 16px;
-    padding: 10px 0px;
+    margin: 20px auto 60px auto;
+    .base-info {
+      width: 100%;
+      margin-left: 20px;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 10px 0px;
+    }
   }
   .content-text {
     font-size: 12px;
   }
-  .new-app .dao-control {
+  .dao-control {
     width: 100%;
   }
-  .new-app #chart-file {
+  #chart-file {
     margin-top: 70px;
     /*margin-bottom: 70px;*/
   }
-  .new-app .footer {
+  .footer {
     height: 55px;
     background-color: #fff;
     z-index: 999;
@@ -432,14 +434,11 @@ export default {
     bottom: 0;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-  }
-  .footer .btn-style {
-    /*position: absolute;*/
-    /*top: 10px;*/
-    /*left: 80%;*/
-    /*display: flex;*/
+    .btn-style {
+      margin-right: 30px;
+    }
   }
   .category-style {
     width: 95%;
@@ -448,11 +447,12 @@ export default {
   }
   .icon {
     display: inline-block;
-    margin-top: 20px!important;
+    margin-top: 16px!important;
     margin-right: 10px;
     cursor: pointer;
   }
   .inputWidth {
     width: 100%;
   }
+}
 </style>

@@ -88,6 +88,7 @@ export default {
     },
 
     cancerForm() {
+      this.removeChart();
       this.config.visible = true;
     },
 
