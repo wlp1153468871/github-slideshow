@@ -90,7 +90,7 @@
             {{ node.advertisedIp }}
           </template>
         </el-table-column>
-        <el-table-column prop="taints" sortable label="污点" width="200px">
+        <el-table-column prop="taints" sortable label="污点" width="350px">
           <template slot-scope="{ row: node }">
             <span>
               <hover-card
