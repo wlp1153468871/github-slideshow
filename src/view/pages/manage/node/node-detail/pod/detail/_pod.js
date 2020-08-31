@@ -1,12 +1,10 @@
 import { find, get as getValue, head, keys } from 'lodash';
-import { RESOURCE_TYPE } from '@/core/constants/resource';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import NodeService from '@/core/services/node.service';
 import FileSaveInContainer from '@/view/components/resource/file-save-in-container/file-save-in-container';
 import PodLogPanel from '@/view/components/log/pod-log.vue';
 import PodLogOfflinePanel from '@/view/components/log/pod-offline-log.vue';
 import TerminalHistoryPanel from '@/view/components/log/terminal-history.vue';
-import ResourceMixin from '@/view/mixins/resource';
 
 import PodStatusPanel from './panels/pod-status';
 import PodTemplatePanel from './panels/pod-template';
@@ -36,8 +34,6 @@ export default {
     MonitorPanel,
   },
 
-  mixins: [ResourceMixin(RESOURCE_TYPE.POD)],
-
   data() {
     const { podName, namespace, zone: zoneId } = this.$route.params;
 
@@ -63,6 +59,7 @@ export default {
       selectedTerminalContainer: null,
       terminalCols: 120,
       terminalRows: 100,
+      resource: {},
     };
   },
 
@@ -95,6 +92,17 @@ export default {
     getPod(initial = false) {
       return NodeService.getPodsDetail(this.namespace, this.podName, this.zoneId).then(pod => {
         this.pod = pod;
+        this.resource = {
+          key: this.pod.metadata.uid,
+          name: this.pod.metadata.name,
+          icon: '#icon_node',
+          logo: '#icon_node-logo',
+          links: [
+            { text: '节点管理', route: { name: 'manage.node.list' } },
+            { text: this.namespace, route: { name: 'manage.node.detail' } },
+            { text: this.pod.metadata.name },
+          ],
+        };
         if (initial) this.containerTerminals = this.makeTerminals();
         this.updateContainersYet(this.pod);
       });
