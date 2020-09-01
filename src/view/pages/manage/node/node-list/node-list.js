@@ -54,7 +54,11 @@ export default {
       return ZoneService.getZones()
         .then(zones => {
           this.zoneList = zones.filter(item => { return item.available; });
-          this.currentZone = this.zone ? this.zone.id : head(this.zoneList).id;
+          if (this.currentZone) {
+            this.currentZone = this.currentZone;
+          } else {
+            this.currentZone = this.zone ? this.zone.id : head(this.zoneList).id;
+          }
           this.getNodeList(this.currentZone);
         });
     },
