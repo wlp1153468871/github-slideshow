@@ -117,7 +117,8 @@
             <dao-dialog
               :visible.sync="config.showAddCategory"
               :header="config.header"
-              @confirm="submit">
+              @confirm="submit"
+              @cancel="cancel">
               <dao-setting-layout>
                 <dao-setting-section>
                   <template slot="label">分类名称</template>
@@ -224,7 +225,17 @@ export default {
     submit() {
       ZoneAdminService.addCategory(this.categoryName).then(res => {
         this.classification.push(res);
+        this.$noty.success('新增分类成功');
       });
+      this.categoryName = '';
+      this.config.showAddCategory = false;
+    },
+    /**
+     * 取消新增
+     * */
+    cancel() {
+      this.categoryName = '';
+      this.config.showAddCategory = false;
     },
     /**
      * 分类改变回调函数
@@ -280,11 +291,11 @@ export default {
      * 删除chart文件
      */
     removeFileChart() {
-      // this.$refs.uploadChart.clearFiles();
       ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
         this.chartList = [];
         this.name = '';
         this.description = '';
+        this.$noty.success('chart文件删除');
       });
     },
     createApp() {
@@ -298,6 +309,7 @@ export default {
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {
           this.$router.back();
+          this.$noty.success('创建成功');
         }
       });
     },
@@ -328,7 +340,6 @@ export default {
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
         this.chartList = [...this.chartList, file];
-        // this.handleUploadChart();
       }
       return true;
     },
@@ -347,31 +358,14 @@ export default {
             this.name = res.chartName;
             this.description = res.description;
             this.version = res.version;
-            console.log('chart文件上传解析成功');
           }
+          this.$noty.success('chart上传成功');
         })
         .catch(() => {
           this.chartList = [];
           this.$noty.error('创建失败');
-          // ZoneAdminService.deleteApplication(this.id, this.appId).then(res => {
-          //   this.$message({
-          //     message: '由于chart文件上传失败，应用不能被创建'
-          //   })
-          // }).catch(err => {
-          //   this.$message({
-          //     message: '删除失败',
-          //   });
-          // });
-          // this.$router.push({ name: 'zone.detail' });
-          // this.$router.back();
         });
     },
-    /**
-     * 移除文件前的钩子函数
-     */
-    // beforeRemove(file, fileList) {
-    //   return this.$confirm('确定移除' + file.name + '？');
-    // },
   },
 };
 </script>

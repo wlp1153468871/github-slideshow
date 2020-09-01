@@ -83,10 +83,11 @@
                             <use :xlink:href="`#icon_more`"></use>
                           </svg>
                           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                            <dao-dropdown-item style="margin-left: 10px" class="linkColor">
-                              <a style="width: 100%;display: inline-block;"
-                                    @click="uploadChart(scope.row.name, scope.row.version)"
-                              >下载</a>
+                            <dao-dropdown-item
+                              @click="uploadChartVersion(scope.row.name, scope.row.version)"
+                              style="margin-left: 10px" class="linkColor">
+                              <a ref="upload" @click="beginUpload"
+                                 style="width: 100%;display: inline-block;">下载</a>
                             </dao-dropdown-item>
                             <dao-dropdown-item style="margin-left: 10px">
                               <span style="color: red;"
@@ -194,6 +195,7 @@ export default {
       renderTable: [], // chart管理渲染列表
       itemChart: [], // 展开行渲染列表
       search: '', // 搜索字段
+      flag: false, // 下载事件冒泡
     };
   },
   created() {
@@ -244,6 +246,7 @@ export default {
       ZoneAdminService.deleteChartVersion(this.id, name, version).then(() => {
         this.getChartTableData();
         this.changeExpand();
+        this.$noty.success('删除成功');
       }).catch(() => {
         this.$message({
           message: '删除失败',
@@ -254,10 +257,28 @@ export default {
     /**
      * 下载chart版本
      */
-    uploadChart(name, version) {
+    uploadChartVersion(name, version) {
+      this.flag = true;
       ZoneAdminService.uploadChart(this.id, name, version).then(res => {
-        console.log(res);
+        const blob = new Blob([res], { type: 'application/x-compressed' });
+        const a = this.$refs.upload;
+        a.href = URL.createObjectURL(blob);
+        a.download = `${name}-${version}.tgz`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        a.remove();
+      }).catch(() => {
+        this.$noty.error('下载失败');
       });
+    },
+    /**
+     *
+     * */
+    beginUpload(evt) {
+      if (this.flag) {
+        evt.stopPropagation();
+        this.flag = false;
+      }
     },
     /**
      * 删除所有chart版本
@@ -265,6 +286,7 @@ export default {
     deleteChartAll(name) {
       ZoneAdminService.deleteChartAll(this.id, name).then(() => {
         this.getChartTableData();
+        this.$noty.success('删除成功');
       });
     },
     /**
