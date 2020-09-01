@@ -4,7 +4,11 @@
     <template v-else>
       <resource-header :resource="resource">
         <template #labels>
-          <x-table-status :row="node" :other="other" :text="`${checkCondition(node.status.conditions)}${node.spec.unschedulable ? '，暂停调度': ''}`">
+          <x-table-status
+          :row="node"
+          :other="other"
+          :text="`${checkCondition(node.status.conditions)}${node.spec.unschedulable ? '，暂停调度': ''}`"
+          >
           </x-table-status>
         </template>
         <template #action-buttons>
@@ -108,7 +112,10 @@
       </div>
     </template>
     <!-- dialog -->
-     <node-operation-dialog ref="NodeOperationDialog" @updatetNodeList='getNodeDetail'></node-operation-dialog>
+     <node-operation-dialog
+     ref="NodeOperationDialog"
+      @updatetNodeList='getNodeDetail'>
+     </node-operation-dialog>
   </div>
 </template>
 <script src='./node-detail.js'></script>
