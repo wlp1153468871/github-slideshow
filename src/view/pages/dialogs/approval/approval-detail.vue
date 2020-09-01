@@ -18,6 +18,11 @@
         </template>
       </dao-setting-section>
     </dao-setting-layout>
+     <div slot="footer">
+      <button class="dao-btn blue" @click="onClose">
+        关闭
+      </button>
+    </div>
   </dao-dialog>
 </template>
 
