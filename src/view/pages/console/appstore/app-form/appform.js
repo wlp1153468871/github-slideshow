@@ -113,9 +113,15 @@ export default {
         .createForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.chartName, this.$route.params.version, this.instanceName, this.table)
         .then(res => {
-          if (res) {
+          console.log(res);
+          if (res.status === 'deployed') {
             this.$router.go(-1);
             this.$noty.success('实例创建成功');
+          } else if (res.status === 'timeOut') {
+            this.$noty.warning('实例创建超时');
+            this.$router.go(-1);
+          } else {
+            this.$noty.error('实例创建失败');
           }
         })
         .finally(() => {

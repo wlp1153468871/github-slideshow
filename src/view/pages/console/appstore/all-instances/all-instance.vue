@@ -21,6 +21,7 @@
     <div class="table">
       <el-table
         :data="instances"
+        v-loading="loading.instance"
       >
         <el-table-column label="实例名称" width="250">
           <template slot-scope="scope">
@@ -33,18 +34,10 @@
         <el-table-column label="Chart 版本" prop="chartVersion" width="150"></el-table-column>
         <el-table-column label="状态" width="150">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === 'deployed'">
-              <svg class="icon" style="color: #25D473">
-                <use :xlink:href="`#icon_status-dot-small`"></use>
-              </svg>
-              <span>运行中</span>
-            </div>
-            <div v-else>
-              <svg class="icon" style="color: red">
-                <use :xlink:href="`#icon_status-dot-small`"></use>
-              </svg>
-              <span>失败</span>
-            </div>
+            <svg class="icon" :class="stateClass(scope.row.status)">
+              <use :xlink:href="`#icon_status-dot-small`"></use>
+            </svg>
+            <span>{{ scope.row.status | ops_status }}</span>
           </template>
         </el-table-column>
         <el-table-column label="创建者" prop="ownerName"></el-table-column>

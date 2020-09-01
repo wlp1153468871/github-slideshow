@@ -20,10 +20,10 @@
       <div class="title-desc">
         状态:
         <div class="title-desc-name">
-          <svg class="icon" style="color: #25D473">
+          <svg class="icon" :class="stateClass">
             <use :xlink:href="`#icon_status-dot-small`"></use>
           </svg>
-          {{instanceInfo.status}}
+          {{instanceInfo.status | ops_status }}
         </div>
         <div class="title1">类型:</div>
         <div class="title-desc-name">{{appInfo.appType}}</div>
@@ -120,7 +120,7 @@
         </config-panel>
       </el-tab-pane>
       <el-tab-pane label="PVC" name="eighth">
-        <pvc-table :pvcs="resources.PVC" :loading="loading.resources"></pvc-table>
+        <pvc-table :pvcs="resources.PersistentVolumeClaim" :loading="loading.resources"></pvc-table>
       </el-tab-pane>
     </el-tabs>
   </div>

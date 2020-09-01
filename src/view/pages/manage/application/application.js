@@ -48,6 +48,10 @@ export default {
       ],
       appTypeCat: '',
       key: '',
+      loading: {
+        appInfo: false,
+      },
+      lineCode: 0,
     };
   },
 
@@ -82,12 +86,18 @@ export default {
      * @param val
      */
     handleOnline() {
-      this.selectedArr.forEach(item => {
+      this.selectedArr.forEach((item, index) => {
         ServiceAdmin.availableOn(item.id).then(() => {
           this.getAllApp();
         });
-        this.$noty.success('上架成功');
+        if (index === this.selectedArr.length - 1) {
+          this.lineCode = 200;
+        }
       });
+      if (this.lineCode === 200) {
+        this.$noty.success('上架成功');
+        this.lineCode = 0;
+      }
     },
     /**
      * 批量下架
@@ -132,16 +142,21 @@ export default {
     },
     // app
     getAllApp() {
-      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
-        if (res) {
-          this.appInfo = res;
-          this.appInfoCopy = res;
-        }
-      }).then(() => {
-        this.getZone();
-        this.getStatus();
-        // this.getType();
-      });
+      this.loading.appInfo = true;
+      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat)
+        .then(res => {
+          if (res) {
+            this.appInfo = res;
+            this.appInfoCopy = res;
+          }
+        })
+        .then(() => {
+          this.getZone();
+          this.getStatus();
+        })
+        .finally(() => {
+          this.loading.appInfo = false;
+        });
     },
 
     /**
