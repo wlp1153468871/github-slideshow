@@ -35,7 +35,7 @@
               :readonly="isPreset"
               name="description"
               type="text"
-              v-validate="'min:0|max:80'"
+              v-validate="'min:0|max:20'"
               icon-inside
               :message="veeErrors.first('description')"
               :status="veeErrors.has('description') ? 'error' : ''"

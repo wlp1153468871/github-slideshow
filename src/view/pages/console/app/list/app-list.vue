@@ -128,7 +128,7 @@
                 v-model.trim="name"
                 @blur="checkIsDuplicateName()"
                 data-vv-as="应用名"
-                v-validate="'required|namespace_code|dns_1035_label|min:6|max:20'"
+                v-validate="'required|dns_1035_label|min:6|max:20'"
                 :message="veeErrors.first('name')"
                 :status="veeErrors.has('name') ? 'error' : ''"
               >
