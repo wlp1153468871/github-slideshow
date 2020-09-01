@@ -11,6 +11,15 @@ export default {
       // 所有实例
       instances: [],
       instancesCopy: [],
+      loading: {
+        instance: false,
+      },
+      //  状态
+      stateMap: {
+        deployed: 'success',
+        failed: 'error',
+        timeOut: 'warning',
+      },
     };
   },
 
@@ -35,15 +44,23 @@ export default {
   },
 
   methods: {
+    stateClass(status) {
+      return this.stateMap[status] || '';
+    },
     // 获取所有实例
     getAllInstances() {
-      AppStoreService.getAllInstances(this.zone.id, this.space.id).then(res => {
-        if (res) {
-          this.instances = res;
-          this.instancesCopy = res;
-          this.instanceNum();
-        }
-      });
+      this.loading.instance = true;
+      AppStoreService.getAllInstances(this.zone.id, this.space.id)
+        .then(res => {
+          if (res) {
+            this.instances = res;
+            this.instancesCopy = res;
+            this.instanceNum();
+          }
+        })
+        .finally(() => {
+          this.loading.instance = false;
+        });
     },
     // 实例数
     instanceNum() {

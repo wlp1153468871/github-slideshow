@@ -437,7 +437,6 @@
             </div>
           </div>
         </div>
-
       </el-tab-pane>
       <el-tab-pane label="实例" name="thrid">
         <dao-input
@@ -445,7 +444,6 @@
           placeholder="搜索"
           v-model="instanceKey"
           @change="searchInstance"
-          v-loading="loading.instance"
         >
         </dao-input>
         <span style="float: right;">
@@ -457,6 +455,7 @@
           <el-table
             style="width: 100%;"
             :data="instances"
+            v-loading="loading.instance"
           >
             <el-table-column label="实例名">
               <template slot-scope="scope">
@@ -476,18 +475,10 @@
             </el-table-column>
             <el-table-column label="状态">
               <template slot-scope="scope">
-                <div v-if="scope.row.status === 'deployed'">
-                  <svg class="icon" style="color: #25D473">
-                    <use :xlink:href="`#icon_status-dot-small`"></use>
-                  </svg>
-                  <span>运行中</span>
-                </div>
-                <!-- <div v-else>
-                  <svg class="icon" style="color: rgb(204, 209, 217)">
-                    <use :xlink:href="`#icon_status-dot-small`"></use>
-                  </svg>
-                  <span>已下架</span>
-                </div> -->
+                <svg class="icon" :class="stateClass(scope.row.status)">
+                  <use :xlink:href="`#icon_status-dot-small`"></use>
+                </svg>
+                <span>{{ scope.row.status | ops_status }}</span>
               </template>
             </el-table-column>
             <el-table-column label="创建者" prop="ownerName"></el-table-column>

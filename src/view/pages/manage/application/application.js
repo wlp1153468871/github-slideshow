@@ -48,6 +48,9 @@ export default {
       ],
       appTypeCat: '',
       key: '',
+      loading: {
+        appInfo: false,
+      },
     };
   },
 
@@ -132,16 +135,21 @@ export default {
     },
     // app
     getAllApp() {
-      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
-        if (res) {
-          this.appInfo = res;
-          this.appInfoCopy = res;
-        }
-      }).then(() => {
-        this.getZone();
-        this.getStatus();
-        // this.getType();
-      });
+      this.loading.appInfo = true;
+      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat)
+        .then(res => {
+          if (res) {
+            this.appInfo = res;
+            this.appInfoCopy = res;
+          }
+        })
+        .then(() => {
+          this.getZone();
+          this.getStatus();
+        })
+        .finally(() => {
+          this.loading.appInfo = false;
+        });
     },
 
     /**

@@ -232,7 +232,7 @@ export default {
     },
     /**
      * 取消新增
-     * */
+     */
     cancel() {
       this.categoryName = '';
       this.config.showAddCategory = false;

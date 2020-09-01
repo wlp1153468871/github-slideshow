@@ -88,6 +88,7 @@
       <el-table
         style="width: 100%;"
         :data="appInfo"
+        v-loading="loading.appInfo"
         @select="selectChange"
         @selection-change="selectAll"
       >

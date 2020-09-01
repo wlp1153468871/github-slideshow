@@ -15,10 +15,8 @@ export default {
       // 实例列表
       instanceTable: [],
       instanceTableCopy: [],
-      tableLoading: true,
 
       key: '',
-      loading: true,
       fileType: ['image/png'],
       fileList: [],
       chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
@@ -44,6 +42,15 @@ export default {
         description: '',
         name: '',
         pictureId: '',
+      },
+      //  状态
+      stateMap: {
+        deployed: 'success',
+        failed: 'error',
+        timeOut: 'warning',
+      },
+      loading: {
+        instanceTable: false,
       },
     };
   },
@@ -86,6 +93,9 @@ export default {
   },
 
   methods: {
+    stateClass(status) {
+      return this.stateMap[status] || '';
+    },
     // 获取应用信息
     async getApp() {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
@@ -151,13 +161,18 @@ export default {
     },
     // 获取实例列表
     getInstances() {
-      AppStoreService.getInstances(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
-        if (res) {
-          this.instanceTable = res;
-          this.instanceTableCopy = res;
-          this.instanceNum();
-        }
-      });
+      this.loading.instanceTable = true;
+      AppStoreService.getInstances(this.zone.id, this.space.id, this.$route.params.Id)
+        .then(res => {
+          if (res) {
+            this.instanceTable = res;
+            this.instanceTableCopy = res;
+            this.instanceNum();
+          }
+        })
+        .finally(() => {
+          this.loading.instanceTable = false;
+        });
     },
     // 删除某个实例
     deleteInstance(instanceId) {

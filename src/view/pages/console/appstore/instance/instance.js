@@ -31,11 +31,17 @@ export default {
         Ingress: [],
         Pod: [],
         ConfigMap: [],
-        PVC: [],
+        PersistentVolumeClaim: [],
       },
       //  懒加载
       loading: {
         resources: false,
+      },
+      //  状态
+      stateMap: {
+        deployed: 'success',
+        failed: 'error',
+        timeOut: 'warning',
       },
     };
   },
@@ -53,6 +59,9 @@ export default {
 
   computed: {
     ...mapState(['space', 'zone', 'user']),
+    stateClass() {
+      return this.stateMap[this.instanceInfo.status] || '';
+    },
   },
 
   created() {
@@ -138,7 +147,6 @@ export default {
         .getOperator(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
-          console.log(res);
           if (res) {
             res.forEach(item => {
               const obj = {};
@@ -158,12 +166,14 @@ export default {
           }
         });
     },
+    // 获取资源
     getResource() {
       this.loading.resources = true;
       AppStoreService
         .getResource(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
+          console.log(res);
           if (res) {
             this.resources = groupBy(res, 'kind');
           }
