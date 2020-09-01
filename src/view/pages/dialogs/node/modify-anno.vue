@@ -88,7 +88,7 @@ export default {
       });
       _.forEach(this.tmpAnnotations, pair => {
         if (!_.has(annotations, pair.annotation)) {
-          annotations[pair.annotation] = null;
+          delete annotations[pair.annotation];
         }
       });
       this.changedData.metadata.annotations = annotations;
