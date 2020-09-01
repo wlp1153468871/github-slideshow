@@ -284,7 +284,7 @@ export default {
      * 删除所有chart版本
      */
     deleteChartAll(name) {
-      ZoneAdminService.deleteChartAll(this.id, name).then(res => {
+      ZoneAdminService.deleteChartAll(this.id, name).then(() => {
         this.getChartTableData();
         this.$noty.success('删除成功');
       });

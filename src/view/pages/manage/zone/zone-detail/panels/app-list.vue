@@ -252,7 +252,7 @@ export default {
        * 下架应用
        */
     handleOff(id) {
-      ZoneAdminService.availableOff(id).then(res => {
+      ZoneAdminService.availableOff(id).then(() => {
         this.getSelectZone();
         this.$noty.success('下架成功');
       });
