@@ -186,7 +186,7 @@
     </div>
     <div class="dao-setting-layout-footer footer-lay">
       <div class="btn-layout">
-        <button class="dao-btn" @clcik="cancerForm">取消</button>
+        <button class="dao-btn" @click="cancel">取消</button>
         <button class="dao-btn blue" @click="createApp">确认创建</button>
       </div>
     </div>

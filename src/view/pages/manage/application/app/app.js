@@ -2,6 +2,7 @@ import { mapState } from 'vuex';
 
 import AppStoreService from '@/core/services/appstore.service';
 import ZoneAdminService from '@/core/services/zone-admin.service';
+import fa from 'element-ui/src/locale/lang/fa';
 
 export default {
   name: 'createApp',
@@ -85,6 +86,12 @@ export default {
     },
 
     cancerForm() {
+      console.log('点击')
+      this.config.visible = true;
+    },
+
+    cancel() {
+      console.log('点击');
       this.config.visible = true;
     },
 
@@ -93,15 +100,32 @@ export default {
     },
     // 回到上一层
     giveUp() {
-      if (this.chartList.lenght) {
+      if (this.chartList.length !== 0) {
         this.removeChart();
       }
       this.$router.go(-1);
     },
 
     createApp() {
+      if (this.chartList.length === 0) {
+        this.$noty.error('chart文件不能为空');
+        return;
+      } else if (this.zoneId === '') {
+        this.$noty.error('可用区不能为空');
+        return;
+      } else if (this.form.name === '') {
+        this.$noty.error('模板名称不能为空');
+        return;
+      } else if (this.form.appType === '') {
+        this.$noty.error('服务类型不能为空');
+        return;
+      } else if (this.form.category.length === 0) {
+        this.$noty.error('分类不能为空');
+        return;
+      }
       ZoneAdminService.createApplication(this.zoneId, this.form).then(res => {
         if (res) {
+          this.$noty.success('创建成功');
           this.$router.back();
         }
       });
@@ -131,11 +155,13 @@ export default {
      * 删除chart文件
      */
     removeChart() {
-      ZoneAdminService.deleteChartVersion(this.zoneId, this.form.name, this.version).then(() => {
-        this.chartList = [];
-        this.form.name = '';
-        this.form.description = '';
-      });
+      if (this.zoneId !== '') {
+        ZoneAdminService.deleteChartVersion(this.zoneId, this.form.name, this.version).then(() => {
+          this.chartList = [];
+          this.form.name = '';
+          this.form.description = '';
+        });
+      }
     },
 
     // 上传图片文件
@@ -146,7 +172,6 @@ export default {
         AppStoreService.uploadPic(file)
           .then(res => {
             this.form.pictureId = res.id;
-            // this.createApp();
           })
           .catch(() => {
             this.removeFile();
@@ -160,7 +185,10 @@ export default {
 
     // 上传chart文件之前
     beforeUploadChart(file) {
-      if (this.chartType.indexOf(file.type) < 0) {
+      if (this.zoneId === '') {
+        this.$noty.error('请先选择可用区');
+        return false;
+      } else if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
@@ -171,6 +199,10 @@ export default {
 
     // 上传chart文件
     handleUploadChart() {
+      console.log(this.zoneId);
+      if (this.zoneId === '') {
+        return;
+      }
       const formData = new FormData();
       this.chartList.forEach(file => {
         formData.append('chart', file);

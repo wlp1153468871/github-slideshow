@@ -51,6 +51,7 @@ export default {
       loading: {
         appInfo: false,
       },
+      lineCode: 0,
     };
   },
 
@@ -85,12 +86,18 @@ export default {
      * @param val
      */
     handleOnline() {
-      this.selectedArr.forEach(item => {
+      this.selectedArr.forEach((item, index) => {
         ServiceAdmin.availableOn(item.id).then(() => {
           this.getAllApp();
         });
-        this.$noty.success('上架成功');
+        if (index === this.selectedArr.length - 1) {
+          this.lineCode = 200;
+        }
       });
+      if (this.lineCode === 200) {
+        this.$noty.success('上架成功');
+        this.lineCode = 0;
+      }
     },
     /**
      * 批量下架

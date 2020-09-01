@@ -255,6 +255,9 @@ export default {
       this.visibleForm = true;
     },
     giveUp() {
+      if (this.chartList.length !== 0) {
+        this.removeFileChart();
+      }
       this.visibleForm = false;
     },
     handleBack() {
