@@ -44,7 +44,7 @@ export default {
               const tmp = _.countBy(_new, 'label');
 
               if (tmp[_old.label] > 1) {
-                return '键值不可以重复';
+                return '键不可以重复';
               }
 
               const reg = new RegExp('^([A-Za-z0-9][-A-Za-z0-9_./]*)?[A-Za-z0-9]$');
@@ -53,7 +53,7 @@ export default {
                 return '键不能为空';
               }
               if (!reg.exec(_old.label)) {
-                return '键不能为空';
+                return '键不能包含非法字符';
               }
               return true;
             },
