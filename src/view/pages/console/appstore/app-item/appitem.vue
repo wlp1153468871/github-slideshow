@@ -11,13 +11,27 @@
         </div>
       </div>
     </div>
-    <div>
+    <div class="father-style">
       <div class="item-name">
         {{ itemData.name }}
       </div>
-      <div class="item-desc">
-        {{ itemData.description }}
-      </div>
+      <!-- <el-popover
+        placement="bottom"
+        style="color: #fff;background-color: #000;"
+        width="400"
+        trigger="hover"
+        close-delay="300"
+        class="popper-style"
+        :content="itemData.description">
+        <div slot="reference" class="item-desc">
+          {{ itemData.description }}
+        </div>
+      </el-popover> -->
+      <dao-tooltip :content="`${itemData.description}`" placement="bottom">
+        <div class="item-desc">
+          {{ itemData.description }}
+        </div>
+      </dao-tooltip>
       <div class="item-footer">
         {{ itemData.provider }}
       </div>
@@ -43,6 +57,17 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+  .father-style {
+    .el-popover {
+      color: #fff;
+      background-color: #000;
+    }
+    .popper__arrow::after {
+      border-bottom-color: #000000;
+    }
+  }
+</style>
 <style lang="scss" scoped>
 $appItemWidth: 31.2%;
 .itme-container {
@@ -61,23 +86,25 @@ $appItemWidth: 31.2%;
         width: 40px;
         height: 40px;
         margin: 20px 0 0 15px;
+        border-radius: 3px;
       }
     }
     .icon-right {
       float: right;
       margin: 20px 15px 0 0;
-      width: 94px;
-      height: 18px;
+      width: 76px;
+      height: 19px;
       background:#F1F7FE;
       border-radius:1px;
       border:1px solid #4C9BFF;
+      vertical-align: top;
       .icon-item {
         font-size: 12px;
         font-family: PingFangSC-Regular,PingFang SC;
         font-weight: 400;
         color: #3890FF;
-        height: 18px;
-        line-height: 18px;
+        height: 16px;
+        line-height: 16px;
         text-align: center;
       }
     }
@@ -92,7 +119,7 @@ $appItemWidth: 31.2%;
     color: #3D444F;
   }
   .item-desc {
-    margin: 0 12px 0 12px;
+    margin: 0 15px 0 15px;
     color:#595F69;
     font-weight: 400;
     font-size: 12px;
@@ -114,5 +141,12 @@ $appItemWidth: 31.2%;
     font-weight: 400;
     color: #595F69;
   }
+  .popper-style {
+    color: #fff!important;
+    background-color: #000000!important;
+  }
 }
+  .itme-container:hover {
+    background-color: #F5F7FA;
+  }
 </style>

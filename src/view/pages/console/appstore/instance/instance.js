@@ -1,4 +1,5 @@
 import { mapState } from 'vuex';
+import { groupBy } from 'lodash';
 
 import AppStoreService from '@/core/services/appstore.service';
 
@@ -10,6 +11,7 @@ import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
 import IngressPanel from '@/view/pages/console/app/detail/panels/ingress';
 import ConfigPanel from '@/view/pages/console/app/detail/panels/config';
+import JobPanel from '@/view/pages/console/app/detail/panels/job';
 
 export default {
   name: 'AppStoreInstance',
@@ -21,6 +23,20 @@ export default {
       appInfo: '',
       appType: '',
       operator: [],
+      //  资源列表
+      resources: {
+        Depolyment: [],
+        DeploymentConfig: [],
+        Service: [],
+        Ingress: [],
+        Pod: [],
+        ConfigMap: [],
+        PVC: [],
+      },
+      //  懒加载
+      loading: {
+        resources: false,
+      },
     };
   },
 
@@ -32,6 +48,7 @@ export default {
     PodTable,
     ConfigPanel,
     PvcTable,
+    JobPanel,
   },
 
   computed: {
@@ -39,9 +56,12 @@ export default {
   },
 
   created() {
+    this.activeName = this.$route.query.activeName || 'first';
+
     this.getInstanceOne();
     this.getApp();
     this.getOperator();
+    this.getResource();
   },
 
   methods: {
@@ -58,6 +78,8 @@ export default {
         },
         query: {
           instanceId: this.$route.params.instanceid,
+          isInstance: true,
+          activeName: this.activeName,
         },
       });
     },
@@ -116,23 +138,38 @@ export default {
         .getOperator(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
-          res.sort((a, b) => {
-            return a.revision - b.revision;
-          });
+          console.log(res);
           if (res) {
-            res.forEach((item, index) => {
+            res.forEach(item => {
               const obj = {};
               const owner = {};
-              obj.started_at = item.createdAt;
-              if (index === 0) {
-                owner.name = '创建实例';
+              obj.name = item.statusRecord;
+              obj.started_at = item.startedAt;
+              obj.ended_at = item.endedAt;
+              if (item.status === 'deployed') {
+                obj.status = 'succeed';
               } else {
-                owner.name = '更新实例';
+                obj.status = item.status;
               }
+              owner.name = item.operator;
               obj.owner = owner;
               this.operator.push(obj);
             });
           }
+        });
+    },
+    getResource() {
+      this.loading.resources = true;
+      AppStoreService
+        .getResource(this.zone.id, this.space.id, this.$route.params.appid,
+          this.$route.params.instanceid)
+        .then(res => {
+          if (res) {
+            this.resources = groupBy(res, 'kind');
+          }
+        })
+        .finally(() => {
+          this.loading.resources = false;
         });
     },
   },

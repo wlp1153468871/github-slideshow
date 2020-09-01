@@ -3,10 +3,10 @@
     <div class="layout-content-header detail-header">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
         <el-breadcrumb-item
-          :to="{ path: '/console/appstore/view' }"
+          :to="{ name: 'manage.application' }"
           class="header-text"
         >
-          应用
+          应用模板管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>实例详情({{instanceInfo.name}})</el-breadcrumb-item>
       </el-breadcrumb>
@@ -32,30 +32,6 @@
           {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
         </div>
       </div>
-      <span class="dao-btn-group select-btn">
-        <dao-dropdown
-          trigger="click"
-          :append-to-body="true"
-          placement="bottom-start"
-          v-if="appInfo.ownerId === user.id"
-        >
-          <button class="dao-btn has-icons" style="width: 98px">
-            <span class="text">更多操作</span>
-            <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-          </button>
-          <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item style="margin-left: 10px">
-              <span @click="linktoForm()">使用表单更新</span>
-            </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px">
-              <span @click="linktoYamlForm()">使用YAML更新</span>
-            </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px">
-              <span style="color: red;" @click="deleteInstance()">删除</span>
-            </dao-dropdown-item>
-          </dao-dropdown-menu>
-        </dao-dropdown>
-      </span>
     </div>
     <el-tabs v-model="activeName" style="position:relative;">
       <el-tab-pane label="基本属性" name="first">
@@ -63,11 +39,11 @@
           <div class="c-title">基本属性</div>
           <div class="info-title1-layout">
             <div class="info-title">租户</div>
-            <div class="info-desc">{{this.space.organization.name}}</div>
+            <div class="info-desc">{{instanceInfo.organizationName}}</div>
           </div>
           <div class="info-title1-layout" style="float: right;">
             <div class="info-title">项目组</div>
-            <div class="info-desc">{{this.space.name}}</div>
+            <div class="info-desc">{{instanceInfo.spaceName}}</div>
           </div>
           <div class="info-title2-layout">
             <div class="info-title">创建者</div>
@@ -75,7 +51,7 @@
           </div>
           <div class="info-title2-layout"  style="float: right;">
             <div class="info-title">可用区</div>
-            <div class="info-desc">{{this.zone.name}}</div>
+            <div class="info-desc">{{appInfo.zoneName}}</div>
           </div>
           <div class="info-title2-layout">
             <div class="info-title">Chart 版本</div>
@@ -100,10 +76,75 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="操作记录" name="second">
-        <job-panel :jobs="operator"> </job-panel>
+        <div class="Operation">
+          <div style="padding: 20px 20px 0 23px;" v-for="(item, index) in operator" :key="index">
+            <div style="position: relative; height: 78px;">
+              <div class="panel">
+                <div class="circle"></div>
+                <div class="line"></div>
+                <div class="top-line" v-show="index !== 0"></div>
+              </div>
+              <div class="explain">
+                <div class="title" v-if="index === 0">创建实例</div>
+                <div class="title" v-else>更新实例</div>
+                <div class="date">{{item.started_at | unix_date('YYYY/MM/DD HH:mm:ss')}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
         <deployment-panel :deployments="resources.Deployment"></deployment-panel>
+        <!-- <dao-input
+          search
+          placeholder="搜索">
+        </dao-input>
+        <span style="float: right;">
+          <el-button size="mini" style="margin-left: 10px;">
+            <span>
+              <svg class="icon">
+                <use :xlink:href="`#icon_cw`"></use>
+              </svg>
+            </span>
+          </el-button>
+        </span>
+        <div style="margin-top: 20px;">
+          <el-table
+            style="width: 100%;"
+            :data="tableData"
+          >
+            <el-table-column label="资源名" prop="resourceName" width="400"></el-table-column>
+            <el-table-column label="类型" prop="type"></el-table-column>
+            <el-table-column label="状态" prop="state"></el-table-column>
+            <el-table-column label="创建时间" prop="date"></el-table-column>
+          </el-table>
+          <div class="footer">
+            <div class="page">共 4 项</div>
+            <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
+              <dao-dropdown
+                trigger="click"
+                :append-to-body="true"
+                placement="bottom-start"
+              >
+                <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
+                  <span class="text">10项/页</span>
+                  <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
+                </button>
+                <dao-dropdown-menu slot="list" style="min-width: 120px;">
+                  <dao-dropdown-item style="margin-left: 10px">
+                    <span>15项/页</span>
+                  </dao-dropdown-item>
+                  <dao-dropdown-item style="margin-left: 10px">
+                    <span>20项/页</span>
+                  </dao-dropdown-item>
+                  <dao-dropdown-item style="margin-left: 10px">
+                    <span>25项/页</span>
+                  </dao-dropdown-item>
+                </dao-dropdown-menu>
+              </dao-dropdown>
+            </span>
+          </div>
+        </div> -->
       </el-tab-pane>
       <el-tab-pane label="Service" name="fouth">
         <service-panel :services="resources.Service"></service-panel>
@@ -116,11 +157,11 @@
         </pod-table>
       </el-tab-pane>
       <el-tab-pane label="Config Map" name="seventh">
-        <config-panel :config-maps="resources.ConfigMap">
+        <config-panel>
         </config-panel>
       </el-tab-pane>
       <el-tab-pane label="PVC" name="eighth">
-        <pvc-table :pvcs="resources.PVC" :loading="loading.resources"></pvc-table>
+        <pvc-table></pvc-table>
       </el-tab-pane>
     </el-tabs>
   </div>

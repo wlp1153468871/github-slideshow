@@ -14,6 +14,7 @@ export default {
       activeName: 'first',
       // 实例列表
       instanceTable: [],
+      instanceTableCopy: [],
       tableLoading: true,
 
       key: '',
@@ -67,7 +68,7 @@ export default {
     key: {
       handler() {
         if (this.key === '') {
-          this.getInstances();
+          this.instanceTable = this.instanceTableCopy;
         } else {
           this.updateKey();
         }
@@ -153,6 +154,7 @@ export default {
       AppStoreService.getInstances(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
           this.instanceTable = res;
+          this.instanceTableCopy = res;
           this.instanceNum();
         }
       });
@@ -242,13 +244,13 @@ export default {
       this.searchInstance();
     }, 300),
     searchInstance() {
-      this.instanceTable = this.instanceTable.filter(item => item.name.includes(this.key));
+      this.instanceTable = this.instanceTableCopy.filter(item => item.name.includes(this.key));
     },
 
     // 刷新
     fresh() {
       this.key = '';
-      this.getInstances();
+      this.instanceTable = this.instanceTableCopy;
     },
     // 立即创建
     showCreate() {

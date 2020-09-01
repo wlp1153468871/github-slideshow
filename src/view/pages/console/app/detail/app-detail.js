@@ -91,7 +91,6 @@ export default {
       events: [],
       resources: {
         Deployment: [],
-        DeploymentConfig: [],
         Service: [],
         Pod: [],
         ConfigMap: [],

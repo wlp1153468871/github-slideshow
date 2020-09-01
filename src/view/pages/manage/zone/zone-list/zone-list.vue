@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="layout-content-header">
-      可用区设置
+      可用区管理
     </div>
     <div class="search-style"
          style="width: 97%;margin: 20px auto;display: flex;justify-content: space-between">

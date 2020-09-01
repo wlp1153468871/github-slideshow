@@ -1,6 +1,14 @@
 .app{
+  border-top: 1px solid #fff;
+  background-color: #f1f3f6;
+  height: 100vh;
   .form-header {
     height: 52px;
+    position: fixed;
+    width: 100%;
+    background-color: #fff;
+    z-index: 999;
+    border: 1px solid #fff;
     .body {
       padding: 20px;
     }
@@ -13,8 +21,13 @@
       color: #3D444F;
     }
   }
+  .app-box {
+    box-sizing: border-box;
+    width: 80%;
+    //background-color: #fff;
+    margin: 60px auto 60px auto;
+  }
   .basic-info {
-    margin: 20px 160px 0 160px;
     .title-text {
       font-size: 14px;
       font-family: SFProText-Semibold,SFProText;
@@ -39,34 +52,34 @@
   }
   .footer-lay {
     position: fixed;
-    overflow: hidden;
+    //overflow: hidden;
     height: 55px;
     //margin: 20px 0 0 0;
     width: 100%;
     bottom: 0px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
 
     .btn-layout {
       //position: absolute;
       //bottom: 10px;
       //right: 20px;
-      height: 50px;
-      margin-top: 90px;
+      //height: 50px;
+      //margin-top: 90px;
 
-      .btn-layout {
-        position: absolute;
-        bottom: 5px;
-        right: 20px;
-      }
+      //.btn-layout {
+      //  position: absolute;
+      //  bottom: 5px;
+      //  right: 20px;
+      //}
     }
 
-    .icon {
-      display: inline-block;
-      margin-top: 20px !important;
-      //margin-right: 10px;
-      cursor: pointer;
-    }
+    //.icon {
+    //  display: inline-block;
+    //  margin-top: 20px !important;
+    //  //margin-right: 10px;
+    //  cursor: pointer;
+    //}
   }
 }

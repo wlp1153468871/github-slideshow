@@ -46,9 +46,17 @@ export default {
       chart: '',
       // 项目组
       orginization: [],
-      orgNumber: '',
+      orginizationCopy: [],
       // 实例
       instances: [],
+      instancesCopy: [],
+      key: '',
+      instanceKey: '',
+      //  懒加载
+      loading: {
+        onLine: false,
+        instance: false,
+      },
     };
   },
 
@@ -82,6 +90,7 @@ export default {
     // 默认上线状态
     this.getAvaOrganizations();
     this.getCategory();
+    this.getInstances();
   },
 
   methods: {
@@ -129,21 +138,33 @@ export default {
     },
     // 已上架项目组列表
     getAvaOrganizations() {
-      ServiceAdmin.getAvaOrganizations(this.$route.params.id).then(res => {
-        if (res) {
-          this.orginization = res;
-        }
-        this.organizationNum();
-      });
+      this.loading.onLine = true;
+      ServiceAdmin.getAvaOrganizations(this.$route.params.id)
+        .then(res => {
+          if (res) {
+            this.orginization = res;
+            this.orginizationCopy = res;
+          }
+          this.organizationNum();
+        })
+        .finally(() => {
+          this.loading.onLine = false;
+        });
     },
     // 已下架项目组列表
     getUnavaOrganizations() {
-      ServiceAdmin.getUnavaOrganizations(this.$route.params.id).then(res => {
-        if (res) {
-          this.orginization = res;
-        }
-        this.organizationNum();
-      });
+      this.loading.onLine = true;
+      ServiceAdmin.getUnavaOrganizations(this.$route.params.id)
+        .then(res => {
+          if (res) {
+            this.orginization = res;
+            this.orginizationCopy = res;
+          }
+          this.organizationNum();
+        })
+        .finally(() => {
+          this.loading.onLine = false;
+        });
     },
     // 下架一个项目组app
     unavaOrgApp(id) {
@@ -166,11 +187,29 @@ export default {
 
     // 实例列表
     getInstances() {
-      ServiceAdmin.getInstances(this.$route.params.id).then(res => {
-        if (res) {
-          this.instances = res;
-        }
-      });
+      this.loading.instance = true;
+      ServiceAdmin.getInstances(this.$route.params.id)
+        .then(res => {
+          if (res) {
+            this.instances = res;
+            this.instancesCopy = res;
+          }
+        })
+        .finally(() => {
+          this.loading.instance = false;
+        });
+    },
+    // 实例数
+    instancesNum() {
+      return this.instances.length;
+    },
+    searchInstance(val) {
+      this.instances = this.instancesCopy.filter(item => item.name.includes(val));
+    },
+    // 刷新
+    freshInstance() {
+      this.instanceKey = '';
+      this.instances = this.instancesCopy;
     },
     //  更新应用
     updateApp() {
@@ -226,7 +265,7 @@ export default {
     },
     // 项目组数
     organizationNum() {
-      this.orgNumber = this.orginization.length;
+      return this.orginization.length;
     },
     selectChange(val) {
       const arr = [];
@@ -249,6 +288,17 @@ export default {
       });
       this.selectStatus = arr;
     },
+
+    // 搜索
+    search(val) {
+      this.orginization = this.orginizationCopy.filter(item => item.name.includes(val));
+    },
+    // 刷新
+    fresh() {
+      this.key = '';
+      this.orginization = this.orginizationCopy;
+    },
+
     // 上传文件之前
     beforeUpload(file) {
       if (this.fileType.indexOf(file.type) < 0) {
@@ -256,17 +306,47 @@ export default {
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {
+        this.fileList = [];
         this.fileList = [...this.fileList, file];
         this.isDisabled = false;
       }
-      return true;
+      return false;
     },
 
     // 删除文件列表
     removeFile() {
       this.$refs.upload.clearFiles();
     },
-
+    // 租户
+    linkOrg(id) {
+      this.$router.push({
+        name: 'manage.org.detail',
+        params: {
+          org: id,
+        },
+      });
+    },
+    // 项目组
+    linkSpace(orgId, spaceId) {
+      this.$router.push({
+        name: 'manage.org.space',
+        params: {
+          org: orgId,
+          space: spaceId,
+        },
+      });
+    },
+    //  实例
+    linkInstance(appid, instanceid) {
+      this.$router.push({
+        name: 'application.instance',
+        params: {
+          appid,
+          instanceid,
+        },
+      });
+      // console.log(appid, instanceid);
+    },
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
@@ -295,7 +375,7 @@ export default {
       } else {
         this.chartList = [...this.chartList, file];
       }
-      return true;
+      return false;
     },
 
     // 上传chart文件

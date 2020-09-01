@@ -323,7 +323,7 @@
             </button>
           </span>
           <span class="iconlay">
-            <button class="dao-btn icon-btn" style="margin-left: 10px;">
+            <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh">
               <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
             </button>
           </span>
@@ -331,6 +331,8 @@
             search
             placeholder="搜索"
             class="input"
+            v-model="key"
+            @change="search"
           >
           </dao-input>
           <div style="margin-top: 20px;">
@@ -339,6 +341,7 @@
               :data="orginization"
               @select="selectChange"
               @selection-change="selectAll"
+              v-loading="loading.onLine"
             >
               <el-table-column type="selection" width="50"></el-table-column>
               <el-table-column label="项目组名" prop="name"></el-table-column>
@@ -360,13 +363,25 @@
               </el-table-column>
               <el-table-column label="项目组唯一标识符" prop="shortName">
                 <template slot-scope="scope">
-                  <div style="color: #217EF2;cursor: pointer;">
+                  <div
+                    style="color: #217EF2;cursor: pointer;"
+                    @click="linkSpace(scope.row.organizationId, scope.row.id)"
+                  >
                     {{ scope.row.shortName }}
                   </div>
                 </template>
               </el-table-column>
               <el-table-column label="租户名" prop="organizationName"></el-table-column>
-              <el-table-column label="租户唯一标识符" prop="organizationShortName"></el-table-column>
+              <el-table-column label="租户唯一标识符">
+                <template slot-scope="scope">
+                  <div
+                    style="color: #217EF2;cursor: pointer;"
+                    @click="linkOrg(scope.row.organizationId)"
+                  >
+                    {{ scope.row.organizationShortName }}
+                  </div>
+                </template>
+              </el-table-column>
               <el-table-column label="操作" width="80">
                 <template slot-scope="scope">
                   <span class="dao-btn-group select-btn">
@@ -395,7 +410,7 @@
               </el-table-column>
             </el-table>
             <div class="footer">
-              <div class="page">共 {{orgNumber}} 项</div>
+              <div class="page">共 {{organizationNum()}} 项</div>
               <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
                 <dao-dropdown
                   trigger="click"
@@ -427,10 +442,14 @@
       <el-tab-pane label="实例" name="thrid">
         <dao-input
           search
-          placeholder="搜索">
+          placeholder="搜索"
+          v-model="instanceKey"
+          @change="searchInstance"
+          v-loading="loading.instance"
+        >
         </dao-input>
         <span style="float: right;">
-          <button class="dao-btn icon-btn" style="margin-left: 10px;">
+          <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="freshInstance">
             <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
           </button>
         </span>
@@ -439,22 +458,31 @@
             style="width: 100%;"
             :data="instances"
           >
-            <el-table-column label="实例名" prop="name"></el-table-column>
-            <el-table-column label="Chart 版本" prop="chartVersion" width="100"></el-table-column>
-            <el-table-column label="租户/项目组" prop="tenant"></el-table-column>
-            <el-table-column label="状态" width="100">
+            <el-table-column label="实例名">
               <template slot-scope="scope">
-                <svg class="icon" style="color: #25D473">
-                  <use :xlink:href="`#icon_status-dot-small`"></use>
-                </svg>
-                <span>{{ scope.row.status }}</span>
-                <!-- <div v-if="scope.row.available === '1'">
+                <div
+                  style="color: #217EF2;cursor: pointer;"
+                  @click="linkInstance(scope.row.appId, scope.row.id)"
+                >
+                  {{ scope.row.name }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="Chart 版本" prop="chartVersion"></el-table-column>
+            <el-table-column label="租户/项目组">
+              <template slot-scope="scope">
+                {{scope.row.organizationName}}/{{scope.row.spaceName}}
+              </template>
+            </el-table-column>
+            <el-table-column label="状态">
+              <template slot-scope="scope">
+                <div v-if="scope.row.status === 'deployed'">
                   <svg class="icon" style="color: #25D473">
                     <use :xlink:href="`#icon_status-dot-small`"></use>
                   </svg>
-                  <span>已上架</span>
+                  <span>运行中</span>
                 </div>
-                <div v-else>
+                <!-- <div v-else>
                   <svg class="icon" style="color: rgb(204, 209, 217)">
                     <use :xlink:href="`#icon_status-dot-small`"></use>
                   </svg>
@@ -470,7 +498,7 @@
             </el-table-column>
           </el-table>
           <div class="footer">
-            <div class="page">共 1 项</div>
+            <div class="page">共 {{instancesNum()}} 项</div>
             <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
               <dao-dropdown
                 trigger="click"

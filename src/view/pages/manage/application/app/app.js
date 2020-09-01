@@ -52,7 +52,6 @@ export default {
      * 新增分类按钮被点击
      */
     addCategory() {
-      console.log('新增按钮被点击');
       this.categoryConfig.showAddCategory = true;
     },
     /**
@@ -60,7 +59,6 @@ export default {
      */
     submit() {
       ZoneAdminService.addCategory(this.categoryName).then(res => {
-        console.log(res);
         this.categories.push(res);
       });
     },
@@ -70,7 +68,6 @@ export default {
     getAllZones() {
       this.zoneList = [];
       ZoneAdminService.getzoneList().then(res => {
-        console.log(res);
         res.forEach(item => {
           const obj = {
             id: item.id,
@@ -96,6 +93,9 @@ export default {
     },
     // 回到上一层
     giveUp() {
+      if (this.chartList.lenght) {
+        this.removeChart();
+      }
       this.$router.go(-1);
     },
 
@@ -131,7 +131,6 @@ export default {
      * 删除chart文件
      */
     removeChart() {
-      console.log('什么时候执行');
       ZoneAdminService.deleteChartVersion(this.zoneId, this.form.name, this.version).then(() => {
         this.chartList = [];
         this.form.name = '';
@@ -142,7 +141,6 @@ export default {
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
-      console.log(this.fileList.length);
       if (this.fileList.length) {
         const file = this.fileList[0];
         AppStoreService.uploadPic(file)
@@ -183,7 +181,6 @@ export default {
             this.form.name = res.chartName;
             this.form.description = res.description;
             this.version = res.version;
-            console.log('chart文件上传解析成功');
           }
         })
         .catch(() => {
