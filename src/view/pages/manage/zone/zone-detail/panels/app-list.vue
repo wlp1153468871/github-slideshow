@@ -199,9 +199,7 @@ export default {
     };
   },
   created() {
-    console.log('有没有刷新');
     this.getSelectZone();
-    // console.log(this.zoneName)
   },
   methods: {
     /**
@@ -215,6 +213,7 @@ export default {
           const category = item.category.join(',');
           item.category = category;
         });
+        this.$noty.success('请求成功');
       });
     },
     /**

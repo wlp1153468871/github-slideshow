@@ -205,7 +205,6 @@ export default {
      * 新增分类按钮被点击
      */
     addCategory() {
-      console.log('新增按钮被点击');
       this.config.showAddCategory = true;
     },
     /**
@@ -215,6 +214,7 @@ export default {
       ZoneAdminService.addCategory(this.categoryName).then(res => {
         console.log(res);
         this.classification.push(res);
+        this.$noty.success('新增分类成功');
       });
     },
     /**
@@ -230,6 +230,7 @@ export default {
       ZoneAdminService.getCategoryList().then(res => {
         console.log(res);
         this.classification = res;
+        this.$noty.success('获取分类列表成功');
       });
     },
     handleCancel() {
@@ -248,7 +249,6 @@ export default {
      * @returns {boolean}
      */
     beforeUpload(file) {
-      console.log('文件上传之前');
       if (this.fileType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择.png格式文件');
@@ -271,12 +271,11 @@ export default {
      * 删除chart文件
      */
     removeFileChart() {
-      // this.$refs.uploadChart.clearFiles();
-      console.log('什么时候执行');
       ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
         this.chartList = [];
         this.name = '';
         this.description = '';
+        this.$noty.success('chart文件删除');
       });
     },
     createApp() {
@@ -291,6 +290,7 @@ export default {
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {
           this.$router.back();
+          this.$noty.success('请求成功');
         }
       });
     },
@@ -322,7 +322,6 @@ export default {
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
         this.chartList = [...this.chartList, file];
-        // this.handleUploadChart();
       }
       return true;
     },
@@ -343,8 +342,8 @@ export default {
             this.name = res.chartName;
             this.description = res.description;
             this.version = res.version;
-            console.log('chart文件上传解析成功');
           }
+          this.$noty.success('chart上传成功');
         })
         .catch(() => {
           this.chartList = [];

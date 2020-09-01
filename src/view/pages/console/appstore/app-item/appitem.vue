@@ -20,7 +20,7 @@
         style="color: #fff;background-color: #000;"
         width="400"
         trigger="hover"
-        close-delay="300"
+        :close-delay="300"
         class="popper-style"
         :content="itemData.description">
         <div slot="reference" class="item-desc">
