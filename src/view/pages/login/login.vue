@@ -139,7 +139,7 @@ export default {
             this.loginSuccess();
           })
           .catch(() => {
-            this.$noty.error('登陆失败');
+            this.$noty.error('登录失败');
             this.loadings.login = false;
           });
       }
