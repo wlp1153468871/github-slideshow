@@ -100,7 +100,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="操作记录" name="second">
-        <div class="Operation">
+        <!-- <div class="Operation">
           <div style="padding: 20px 20px 0 23px;" v-for="(item, index) in operator" :key="index">
             <div style="position: relative; height: 78px;">
               <div class="panel">
@@ -115,7 +115,8 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
+        <job-panel :jobs="operator"> </job-panel>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
         <deployment-panel :deployments="resources.Deployment"></deployment-panel>

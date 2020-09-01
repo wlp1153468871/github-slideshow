@@ -396,7 +396,7 @@ export default [
     name: 'console.appstore',
     component: RouteView,
     meta: {
-      title: '应用商店',
+      title: '服务市场',
       icon: '#icon_store',
       // code: 'appstore',
       hidden: false,
@@ -407,7 +407,7 @@ export default [
         name: 'console.appstore.list',
         component: AppStore,
         meta: {
-          title: '全部应用',
+          title: '服务目录',
           icon: '#icon_store',
           // code: 'appstore',
           hidden: false,
@@ -420,7 +420,7 @@ export default [
         name: 'console.instance.list',
         component: AllInstance,
         meta: {
-          title: '全部实例',
+          title: '服务实例',
           icon: '#icon_container',
           // code: 'appstore',
           hidden: false,

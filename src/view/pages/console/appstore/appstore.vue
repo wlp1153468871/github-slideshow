@@ -4,8 +4,8 @@
       <div class="img-box">
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
-      <div class="header-title">应用商店</div>
-      <div class="header-desc">欢迎来到 DaoCloud 应用商店，我们的平台提供了来自不同企业的更多的应用和 chart 模版，
+      <div class="header-title">服务市场</div>
+      <div class="header-desc">欢迎来到 DaoCloud 服务市场，我们的平台提供了来自不同企业的更多的应用和 chart 模版，
         并支持多终端访问，自建应用，让客户享受安全，便捷，快速的服务。</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;margin-top: 20px">

@@ -341,6 +341,7 @@
               :data="orginization"
               @select="selectChange"
               @selection-change="selectAll"
+              v-loading="loading.onLine"
             >
               <el-table-column type="selection" width="50"></el-table-column>
               <el-table-column label="项目组名" prop="name"></el-table-column>
@@ -444,6 +445,7 @@
           placeholder="搜索"
           v-model="instanceKey"
           @change="searchInstance"
+          v-loading="loading.instance"
         >
         </dao-input>
         <span style="float: right;">

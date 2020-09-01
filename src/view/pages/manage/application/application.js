@@ -86,6 +86,7 @@ export default {
         ServiceAdmin.availableOn(item.id).then(() => {
           this.getAllApp();
         });
+        this.$noty.success('上架成功');
       });
     },
     /**
@@ -97,6 +98,7 @@ export default {
         ServiceAdmin.availableOff(item.id).then(() => {
           this.getAllApp();
         });
+        this.$noty.success('下架成功');
       });
     },
     selectChange(val) {
