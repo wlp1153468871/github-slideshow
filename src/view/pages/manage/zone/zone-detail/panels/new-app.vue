@@ -117,7 +117,8 @@
             <dao-dialog
               :visible.sync="config.showAddCategory"
               :header="config.header"
-              @confirm="submit">
+              @confirm="submit"
+              @cancel="cancel">
               <dao-setting-layout>
                 <dao-setting-section>
                   <template slot="label">分类名称</template>
@@ -226,6 +227,15 @@ export default {
         this.classification.push(res);
         this.$noty.success('新增分类成功');
       });
+      this.categoryName = '';
+      this.config.showAddCategory = false;
+    },
+    /**
+     * 取消新增
+     * */
+    cancel() {
+      this.categoryName = '';
+      this.config.showAddCategory = false;
     },
     /**
      * 分类改变回调函数
@@ -239,7 +249,6 @@ export default {
     getCategoryList() {
       ZoneAdminService.getCategoryList().then(res => {
         this.classification = res;
-        this.$noty.success('获取分类列表成功');
       });
     },
     cancer() {
@@ -300,7 +309,7 @@ export default {
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {
           this.$router.back();
-          this.$noty.success('请求成功');
+          this.$noty.success('创建成功');
         }
       });
     },
@@ -355,25 +364,8 @@ export default {
         .catch(() => {
           this.chartList = [];
           this.$noty.error('创建失败');
-          // ZoneAdminService.deleteApplication(this.id, this.appId).then(res => {
-          //   this.$message({
-          //     message: '由于chart文件上传失败，应用不能被创建'
-          //   })
-          // }).catch(err => {
-          //   this.$message({
-          //     message: '删除失败',
-          //   });
-          // });
-          // this.$router.push({ name: 'zone.detail' });
-          // this.$router.back();
         });
     },
-    /**
-     * 移除文件前的钩子函数
-     */
-    // beforeRemove(file, fileList) {
-    //   return this.$confirm('确定移除' + file.name + '？');
-    // },
   },
 };
 </script>

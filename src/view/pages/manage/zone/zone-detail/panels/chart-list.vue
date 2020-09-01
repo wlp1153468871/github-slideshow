@@ -86,7 +86,8 @@
                             <dao-dropdown-item
                               @click="uploadChartVersion(scope.row.name, scope.row.version)"
                               style="margin-left: 10px" class="linkColor">
-                              <a ref="upload" style="width: 100%;display: inline-block;">下载</a>
+                              <a ref="upload" @click="beginUpload"
+                                 style="width: 100%;display: inline-block;">下载</a>
                             </dao-dropdown-item>
                             <dao-dropdown-item style="margin-left: 10px">
                               <span style="color: red;"
@@ -194,6 +195,7 @@ export default {
       renderTable: [], // chart管理渲染列表
       itemChart: [], // 展开行渲染列表
       search: '', // 搜索字段
+      flag: false, // 下载事件冒泡
     };
   },
   created() {
@@ -206,7 +208,6 @@ export default {
     getChartData() {
       ZoneAdminService.getChartInformation(this.id).then(res => {
         this.chartBaseList = res;
-        this.$noty.success('获取chart列表成功');
       });
       this.getChartTableData();
     },
@@ -257,17 +258,27 @@ export default {
      * 下载chart版本
      */
     uploadChartVersion(name, version) {
+      this.flag = true;
       ZoneAdminService.uploadChart(this.id, name, version).then(res => {
         const blob = new Blob([res], { type: 'application/x-compressed' });
         const a = this.$refs.upload;
         a.href = URL.createObjectURL(blob);
-        a.download = `${name}.tgz`;
+        a.download = `${name}-${version}.tgz`;
         a.click();
         URL.revokeObjectURL(a.href);
         a.remove();
       }).catch(() => {
         this.$noty.error('下载失败');
       });
+    },
+    /**
+     *
+     * */
+    beginUpload(evt) {
+      if (this.flag) {
+        evt.stopPropagation();
+        this.flag = false;
+      }
     },
     /**
      * 删除所有chart版本

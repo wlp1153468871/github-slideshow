@@ -43,7 +43,6 @@ export default {
       return ZoneService.getZones()
         .then(zones => {
           this.rows = zones;
-          this.$noty.success('请求成功');
         })
         .finally(() => {
           this.loadings.zone = false;

@@ -225,7 +225,6 @@ export default {
         .finally(() => {
           this.loading.zone = false;
         });
-      this.$noty.success('请求成功');
     },
     // 数量
     TableNum() {
