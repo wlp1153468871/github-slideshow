@@ -17,29 +17,6 @@
           <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
           <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
           <div class="header-text">{{appInfo.name}}</div>
-          <!-- 新建的应用才有这部分 -->
-          <!-- <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-start"
-            style="float: right;margin-top: 10px;"
-          >
-            <button class="dao-btn has-icons" style="width: 98px;">
-              <span class="text">更多操作</span>
-              <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-            </button>
-            <dao-dropdown-menu slot="list" style="min-width: 120px;">
-              <dao-dropdown-item style="margin-left: 10px">
-                <span @click="editInfo">编辑基本信息</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span @click="addEdition">添加版本</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span style="color: red;" @click="deleteApp">删除</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown> -->
         </div>
         <dao-dialog
           :visible.sync="configEdit"

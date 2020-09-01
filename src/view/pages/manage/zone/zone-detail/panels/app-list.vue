@@ -58,6 +58,7 @@
         :data="renderTable"
         :cell-style="cellStyle"
         @cell-click="cellClick"
+        v-loading="loading.zone"
       >
         <el-table-column label="应用名称" prop="name">
         </el-table-column>
@@ -108,8 +109,10 @@
                             v-if="scope.row.available === 0"
                             @click="handleOn(scope.row.id)">上架应用</span>
                     </dao-dropdown-item>
-                    <dao-dropdown-item style="margin-left: 10px"
-                                       @click="handleClick(scope.row.id, scope.row.zoneId)">
+                    <dao-dropdown-item
+                      style="margin-left: 10px"
+                      @click="handleClick(scope.row.id, scope.row.zoneId)"
+                    >
                       <span style="color: red;">删除</span>
                     </dao-dropdown-item>
                   </dao-dropdown-menu>
@@ -119,7 +122,7 @@
         </el-table-column>
       </el-table>
       <div class="footer">
-        <div class="page">共 1 项</div>
+        <div class="page">共 {{TableNum()}} 项</div>
         <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
             <dao-dropdown
               trigger="click"
@@ -196,32 +199,41 @@ export default {
       showPass: false, // 是否显示密码
       chartTableData: [], // chart管理渲染列表
       itemChart: [], // 展开行渲染列表
+      loading: {
+        zone: false,
+      },
     };
   },
   created() {
-    console.log('有没有刷新');
     this.getSelectZone();
-    // console.log(this.zoneName)
   },
   methods: {
     /**
        * 请求可用区选中应用list
        */
     getSelectZone() {
-      ZoneAdminService.getSelectedZone(this.id, this.status).then(res => {
-        this.tableData = res;
-        this.renderTable = res;
-        this.renderTable.forEach(item => {
-          const category = item.category.join(',');
-          item.category = category;
+      this.loading.zone = true;
+      ZoneAdminService.getSelectedZone(this.id, this.status)
+        .then(res => {
+          this.tableData = res;
+          this.renderTable = res;
+          this.renderTable.forEach(item => {
+            const category = item.category.join(',');
+            item.category = category;
+          });
+        })
+        .finally(() => {
+          this.loading.zone = false;
         });
-      });
+    },
+    // 数量
+    TableNum() {
+      return this.renderTable.length;
     },
     /**
        * 状态搜索
        */
     changeStatus(val) {
-      console.log(val);
       this.getSelectZone();
     },
     /**
@@ -240,27 +252,24 @@ export default {
        * 下架应用
        */
     handleOff(id) {
-      console.log('点击下架应用');
       ZoneAdminService.availableOff(id).then(res => {
-        console.log(res);
         this.getSelectZone();
+        this.$noty.success('下架成功');
       });
     },
     /**
        * 上架应用
        */
     handleOn(id) {
-      console.log('点击上架架应用');
       ZoneAdminService.availableOn(id).then(res => {
-        console.log(res);
         this.getSelectZone();
+        this.$noty.success('上架成功');
       });
     },
     /**
        * 删除应用
        */
     handleClick(id, zoneId) {
-      console.log('删除应用');
       ZoneAdminService.deleteApplication(id, zoneId).then(() => {
         this.getSelectZone();
       });
@@ -270,7 +279,6 @@ export default {
        */
     cellStyle(column) {
       if (column.columnIndex === 0) {
-        console.log(column.columnIndex);
         return {
           color: '#217EF2',
           cursor: 'pointer',
@@ -282,7 +290,6 @@ export default {
        * 表格某列被点击
        */
     cellClick(row, column) {
-      console.log(row, column);
       if (column.label === '应用名称') {
         this.$router.push({
           name: 'application.detail',
@@ -304,7 +311,6 @@ export default {
      */
     handleChange(val) {
       this.renderTable = [];
-      console.log(val);
       this.tableData.forEach(item => {
         const str = item.name;
         if (str.search(val) !== -1) {

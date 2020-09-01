@@ -185,21 +185,8 @@ export default {
         value: 2,
       }],
       tableData: [],
-      chartData: [
-        {
-          type: '2.6.0',
-          state: 'Active',
-          defender: 'codefresh-io (2 other)',
-          date: '2020-5-23 13:23:54',
-        },
-      ],
       config: {
         visible: false,
-        footer: {
-          cancelText: '取消',
-          confirmText: '上传',
-          confirmDisabled: true,
-        },
       },
       chartBaseList: {},
       showPass: false, // 是否显示密码
@@ -218,7 +205,6 @@ export default {
      */
     getChartData() {
       ZoneAdminService.getChartInformation(this.id).then(res => {
-        console.log(res);
         this.chartBaseList = res;
       });
       this.getChartTableData();
@@ -234,7 +220,6 @@ export default {
      */
     getChartTableData() {
       ZoneAdminService.getChartList(this.id).then(res => {
-        console.log(res);
         this.chartTableData = res;
         this.renderTable = res;
         this.changeExpand();
@@ -247,9 +232,7 @@ export default {
       if (this.chartTableData.length !== 0) {
         this.chartTableData.forEach(item => {
           ZoneAdminService.getChartVersionList(this.id, item.name).then(res => {
-            console.log(res);
             item[item.name] = res;
-            console.log(this.chartTableData, '改变后的数组');
           });
         });
       }
@@ -258,7 +241,6 @@ export default {
      * 删除chart版本
      */
     deleteChartVersion(name, version) {
-      console.log('删除chart版本');
       ZoneAdminService.deleteChartVersion(this.id, name, version).then(() => {
         this.getChartTableData();
         this.changeExpand();
@@ -282,7 +264,6 @@ export default {
      */
     deleteChartAll(name) {
       ZoneAdminService.deleteChartAll(this.id, name).then(res => {
-        console.log(res);
         this.getChartTableData();
       });
     },
@@ -291,7 +272,6 @@ export default {
      */
     handleChange(val) {
       this.renderTable = [];
-      console.log(val);
       this.chartTableData.forEach(item => {
         const str = item.name;
         if (str.search(val) !== -1) {

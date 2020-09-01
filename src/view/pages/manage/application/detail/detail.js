@@ -52,6 +52,11 @@ export default {
       instancesCopy: [],
       key: '',
       instanceKey: '',
+      //  懒加载
+      loading: {
+        onLine: false,
+        instance: false,
+      },
     };
   },
 
@@ -133,23 +138,33 @@ export default {
     },
     // 已上架项目组列表
     getAvaOrganizations() {
-      ServiceAdmin.getAvaOrganizations(this.$route.params.id).then(res => {
-        if (res) {
-          this.orginization = res;
-          this.orginizationCopy = res;
-        }
-        this.organizationNum();
-      });
+      this.loading.onLine = true;
+      ServiceAdmin.getAvaOrganizations(this.$route.params.id)
+        .then(res => {
+          if (res) {
+            this.orginization = res;
+            this.orginizationCopy = res;
+          }
+          this.organizationNum();
+        })
+        .finally(() => {
+          this.loading.onLine = false;
+        });
     },
     // 已下架项目组列表
     getUnavaOrganizations() {
-      ServiceAdmin.getUnavaOrganizations(this.$route.params.id).then(res => {
-        if (res) {
-          this.orginization = res;
-          this.orginizationCopy = res;
-        }
-        this.organizationNum();
-      });
+      this.loading.onLine = true;
+      ServiceAdmin.getUnavaOrganizations(this.$route.params.id)
+        .then(res => {
+          if (res) {
+            this.orginization = res;
+            this.orginizationCopy = res;
+          }
+          this.organizationNum();
+        })
+        .finally(() => {
+          this.loading.onLine = false;
+        });
     },
     // 下架一个项目组app
     unavaOrgApp(id) {
@@ -172,12 +187,17 @@ export default {
 
     // 实例列表
     getInstances() {
-      ServiceAdmin.getInstances(this.$route.params.id).then(res => {
-        if (res) {
-          this.instances = res;
-          this.instancesCopy = res;
-        }
-      });
+      this.loading.instance = true;
+      ServiceAdmin.getInstances(this.$route.params.id)
+        .then(res => {
+          if (res) {
+            this.instances = res;
+            this.instancesCopy = res;
+          }
+        })
+        .finally(() => {
+          this.loading.instance = false;
+        });
     },
     // 实例数
     instancesNum() {

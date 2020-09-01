@@ -1,8 +1,18 @@
 <template>
   <div class="new-app">
     <div class="newApp-nav">
-      <span style="color: #217EF2;font-size: 25px;cursor: pointer" @click="handleBack">×</span>
+      <span style="color: #217EF2;font-size: 25px;cursor: pointer" @click="cancer">×</span>
       <span>新建应用模板</span>
+      <dao-dialog
+        :visible.sync="visibleForm"
+        header="确认是否放弃编辑"
+      >
+        <div class="body">确认是否放弃当前编辑，放弃后不可撤销。</div>
+        <div slot="footer">
+          <button class="dao-btn red" @click="handleBack">放弃</button>
+          <button class="dao-btn" @click="giveUp">取消</button>
+        </div>
+      </dao-dialog>
     </div>
     <!--    chartw文件-->
     <div class="newApp-box chart-file" id="chart-file">
@@ -138,7 +148,7 @@
 <!--    底部取消-->
     <div class="footer">
       <div class="btn-style">
-        <button class="dao-btn" @click="handleCancel">取消</button>
+        <button class="dao-btn" @click="cancer">取消</button>
         <button class="dao-btn blue" @click="createApp">确认创建</button>
       </div>
     </div>
@@ -192,6 +202,7 @@ export default {
       },
       categoryName: '', // 新增分类名称
       version: '', // 版本
+      visibleForm: false,
     };
   },
   created() {
@@ -205,7 +216,6 @@ export default {
      * 新增分类按钮被点击
      */
     addCategory() {
-      console.log('新增按钮被点击');
       this.config.showAddCategory = true;
     },
     /**
@@ -213,7 +223,6 @@ export default {
      */
     submit() {
       ZoneAdminService.addCategory(this.categoryName).then(res => {
-        console.log(res);
         this.classification.push(res);
       });
     },
@@ -228,18 +237,19 @@ export default {
      */
     getCategoryList() {
       ZoneAdminService.getCategoryList().then(res => {
-        console.log(res);
         this.classification = res;
       });
     },
-    handleCancel() {
-      // this.$router.push({ name: 'zone.detail' });
-      this.removeFileChart();
-      this.$router.back();
+    cancer() {
+      this.visibleForm = true;
+    },
+    giveUp() {
+      this.visibleForm = false;
     },
     handleBack() {
-      // this.$router.push({ name: 'zone.detail' });
-      this.removeFileChart();
+      if (this.chartList.length) {
+        this.removeFileChart();
+      }
       this.$router.back();
     },
     /**
@@ -248,7 +258,6 @@ export default {
      * @returns {boolean}
      */
     beforeUpload(file) {
-      console.log('文件上传之前');
       if (this.fileType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择.png格式文件');
@@ -272,7 +281,6 @@ export default {
      */
     removeFileChart() {
       // this.$refs.uploadChart.clearFiles();
-      console.log('什么时候执行');
       ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
         this.chartList = [];
         this.name = '';
@@ -280,7 +288,6 @@ export default {
       });
     },
     createApp() {
-      console.log(this.id);
       const formData = {
         name: this.name,
         pictureId: this.pictureId,
@@ -316,7 +323,6 @@ export default {
      * chart文件上传之前的回调函数
      */
     beforeUploadChart(file) {
-      console.log('chart文件上传前的回调函数');
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
@@ -332,11 +338,9 @@ export default {
      */
     handleUploadChart() {
       const formData = new FormData();
-      console.log(this.chartList);
       this.chartList.forEach(file => {
         formData.append('chart', file);
       });
-      console.log(formData);
       ZoneAdminService.createChart(this.id, formData)
         .then(res => {
           if (res) {
@@ -401,6 +405,9 @@ export default {
     /*top: -1px;*/
     span {
       margin-left: 20px;
+    }
+    .body {
+      padding: 20px;
     }
   }
   .newApp-box {
