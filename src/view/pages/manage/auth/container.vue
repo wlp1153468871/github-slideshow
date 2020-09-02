@@ -7,7 +7,7 @@
       <!-- <ul class="dao-tab-nav">
         <li class="dao-tab-nav-item">{{ org.name }}</li>
       </ul> -->
-      <ul class="dao-tab-nav dao-tab-nav-tab">
+      <ul class="dao-tab-nav dao-tab-nav-tab" v-if="$can('platform.rolePermission.get')">
         <template v-for="tab in TABS">
           <router-link :key="tab.name" class="dao-tab-nav-item" tag="li" exact :to="tab.to">
             {{ tab.name }}
@@ -16,7 +16,13 @@
       </ul>
       <ul class="dao-tab-nav"></ul>
     </div>
-    <div class="dao-tab__body" style="margin-top: 15px;">
+    <div class="dao-tab__body"
+    v-if="!$can('platform.rolePermission.get')"
+    style="margin-top: 15px;">
+      <img src="@/assets/images/403.png"/>
+    </div>
+    <div v-if="$can('platform.rolePermission.get')"
+    class="dao-tab__body" style="margin-top: 15px;">
       <router-view></router-view>
     </div>
   </div>
