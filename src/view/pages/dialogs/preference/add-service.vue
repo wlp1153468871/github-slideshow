@@ -39,7 +39,7 @@ export default {
   extends: dialog('添加服务'),
 
   props: {
-    services: { type: Array, default: () => [] },
+    services: [Object, Array],
     usedServices: { type: Array, default: () => [] },
   },
 
