@@ -10,19 +10,19 @@
     >
       <el-table-column prop="space_name" :label="spaceDescription"> </el-table-column>
 
-      <el-table-column prop="hard.cpu" label="CPU（核）">
+      <el-table-column prop="hard.cpu" label="CPU（Core）">
         <template #default="{ row: approval }">
           {{ approval.hard && approval.hard.cpu | byte2gib('CPU') }}
         </template>
       </el-table-column>
 
-      <el-table-column prop="hard.memory" label="内存（GiB）">
+      <el-table-column prop="hard.memory" label="内存（G）">
         <template #default="{ row: approval }">
           {{ approval.hard && approval.hard.memory | byte2gib }}
         </template>
       </el-table-column>
 
-      <el-table-column prop="hard.storage" label="存储（GiB）">
+      <el-table-column prop="hard.storage" label="存储（G）">
         <template #default="{ row: approval }">
           {{ approval.hard && approval.hard.storage | byte2gib }}
         </template>

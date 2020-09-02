@@ -22,4 +22,7 @@
       flex-wrap: nowrap;
     }
   }
+  .el-select-dropdown__item.selected::after {
+    right: 5px;
+  }
 }
