@@ -1,15 +1,14 @@
 <template>
   <div id="servicedetail">
-    <div class="layout-content-header detail-header">
-      <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
-        <el-breadcrumb-item
-          :to="{ name: 'manage.application' }"
-          class="header-text"
-        >
-          应用模板管理
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>实例详情({{instanceInfo.name}})</el-breadcrumb-item>
-      </el-breadcrumb>
+    <div class="layout-content-header">
+      <breadcrumb
+        :links="[
+          { text: '应用模板管理', route: { name: 'manage.application' } },
+          { text: `实例详情(${instanceInfo.name})` },
+        ]"
+        class="header-text"
+      >
+      </breadcrumb>
     </div>
     <div class="detail-title">
       <span>

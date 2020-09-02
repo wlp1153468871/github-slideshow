@@ -2,7 +2,6 @@ import { mapState } from 'vuex';
 
 import AppStoreService from '@/core/services/appstore.service';
 import ZoneAdminService from '@/core/services/zone-admin.service';
-import fa from 'element-ui/src/locale/lang/fa';
 
 export default {
   name: 'createApp',
@@ -86,12 +85,10 @@ export default {
     },
 
     cancerForm() {
-      console.log('点击')
       this.config.visible = true;
     },
 
     cancel() {
-      console.log('点击');
       this.config.visible = true;
     },
 
@@ -192,6 +189,7 @@ export default {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
+        this.chartList = [];
         this.chartList = [...this.chartList, file];
       }
       return true;
@@ -213,6 +211,7 @@ export default {
             this.form.name = res.chartName;
             this.form.description = res.description;
             this.version = res.version;
+            this.chartList = [];
           }
         })
         .catch(() => {
