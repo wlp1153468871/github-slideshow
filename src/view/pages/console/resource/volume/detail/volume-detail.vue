@@ -30,12 +30,16 @@
             </button>
 
             <dao-dropdown-menu slot="list">
-              <dao-dropdown-item v-if="$can('pvc.update')" @click="dialogConfigs.yamlEdit = true">
+              <!-- 驱动端接口未完成，根据测试人员建议，暂时隐藏更新入口 -->
+              <dao-dropdown-item
+                v-if="$can('pvc.update') && false"
+                @click="dialogConfigs.yamlEdit = true">
                 <span>Yaml 更新</span>
               </dao-dropdown-item>
 
               <dao-dropdown-item
                 v-if="$can('pvc.delete')"
+                :is-disabled="objrefs.length"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >
