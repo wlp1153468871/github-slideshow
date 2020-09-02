@@ -89,10 +89,11 @@
                               <a ref="upload" @click="beginUpload"
                                  style="width: 100%;display: inline-block;">下载</a>
                             </dao-dropdown-item>
-                            <dao-dropdown-item style="margin-left: 10px">
-                              <span style="color: red;"
-                                    @click="deleteChartVersion(scope.row.name, scope.row.version)"
-                              >删除</span>
+                            <dao-dropdown-item
+                              style="margin-left: 10px"
+                              @click="deleteChartVersion(scope.row.name, scope.row.version)"
+                            >
+                              <span style="color: red;">删除</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
                         </dao-dropdown>

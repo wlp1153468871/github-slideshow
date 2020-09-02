@@ -1,8 +1,7 @@
 <template>
   <div id="servicedetail1">
-    <div class="layout-content-header detail-header">
-      <!-- <div class="header-text">服务 > 服务详情(Nginx)</div> -->
-      <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
+    <div class="layout-content-header">
+      <!-- <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
         <el-breadcrumb-item
           :to="{ path: '/seeting/application' }"
           class="header-text"
@@ -10,7 +9,15 @@
           应用模板管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>{{appInfo.name}}({{appInfo.zoneName}})</el-breadcrumb-item>
-      </el-breadcrumb>
+      </el-breadcrumb> -->
+      <breadcrumb
+        :links="[
+          { text: '应用模板管理', route: { path: '/seeting/application' } },
+          { text: `${appInfo.name}(${appInfo.name})` },
+        ]"
+        class="header-text"
+      >
+      </breadcrumb>
     </div>
     <div class="detail-title">
       <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
@@ -46,17 +53,21 @@
           <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
         </button>
         <dao-dropdown-menu slot="list" style="min-width: 100px;">
-          <dao-dropdown-item style="margin-left: 10px">
-            <span @click="editInfo">编辑基本信息</span>
+          <dao-dropdown-item style="margin-left: 10px" @click="editInfo">
+            <span>编辑基本信息</span>
           </dao-dropdown-item>
-          <dao-dropdown-item style="margin-left: 10px">
-            <span @click="addEdition">添加版本</span>
+          <dao-dropdown-item style="margin-left: 10px" @click="addEdition">
+            <span>添加版本</span>
           </dao-dropdown-item>
-          <dao-dropdown-item style="margin-left: 10px" v-if="appInfo.available">
-            <span @click="availableOff">下架应用</span>
+          <dao-dropdown-item
+            style="margin-left: 10px"
+            v-if="appInfo.available"
+            @click="availableOff"
+          >
+            <span>下架应用</span>
           </dao-dropdown-item>
-          <dao-dropdown-item style="margin-left: 10px" v-else>
-            <span @click="availableOn">上架应用</span>
+          <dao-dropdown-item style="margin-left: 10px" v-else @click="availableOn">
+            <span>上架应用</span>
           </dao-dropdown-item>
           <dao-dropdown-item style="margin-left: 10px">
             <span style="color: red;" @click="deleteApplication">删除</span>
@@ -397,11 +408,16 @@
                         <dao-dropdown-item
                           style="margin-left: 10px"
                           v-if="scope.row.available === '1'"
+                           @click="unavaOrgApp(scope.row.id)"
                         >
-                          <span @click="unavaOrgApp(scope.row.id)">下架应用</span>
+                          <span>下架应用</span>
                         </dao-dropdown-item>
-                        <dao-dropdown-item style="margin-left: 10px" v-else>
-                          <span @click="avaOrgApp(scope.row.id)">上架应用</span>
+                        <dao-dropdown-item
+                          style="margin-left: 10px"
+                          @click="avaOrgApp(scope.row.id)"
+                          v-else
+                        >
+                          <span>上架应用</span>
                         </dao-dropdown-item>
                       </dao-dropdown-menu>
                     </dao-dropdown>

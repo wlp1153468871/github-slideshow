@@ -8,14 +8,10 @@
 }
 #servicedetail {
   background: #F1F3F6;
-  .detail-header {
-    height: 32px;
-    .header-text {
-      line-height: 16px;
-      font-size: 14px;
-      font-weight: 400;
-      color: #595F69;
-    }
+  .header-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: #595F69;
   }
   .el-tabs .el-tab-pane{
     overflow: hidden;

@@ -115,11 +115,27 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === 'deployed') {
-            this.$router.go(-1);
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: 'second',
+              },
+            });
             this.$noty.success('实例创建成功');
           } else if (res.status === 'timeOut') {
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: 'second',
+              },
+            });
             this.$noty.warning('实例创建超时');
-            this.$router.go(-1);
           } else {
             this.$noty.error('实例创建失败');
           }
@@ -180,7 +196,15 @@ export default {
       this.config.visible = false;
     },
     giveUp() {
-      this.$router.go(-1);
+      this.$router.push({
+        name: 'appstore.detail',
+        params: {
+          Id: this.$route.params.appid,
+        },
+        query: {
+          activeName: 'second',
+        },
+      });
     },
   },
 };
