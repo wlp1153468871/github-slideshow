@@ -51,7 +51,7 @@ export default {
 
   computed: {
     serviceOptions() {
-      return differenceBy(this.services, this.usedServices, 'id').filter(
+      return differenceBy(this.services.data, this.usedServices, 'id').filter(
         service => service.available === 'available',
       );
     },
