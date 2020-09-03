@@ -120,6 +120,12 @@ export default {
             platform_id: store.getters.orgId,
           });
         }
+      } else if (/user\/approvals\//.test(url)) {
+        if (store.getters.spaceId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+          });
+        }
       } else if (store.state.isManageView) { // 管理视图下的操作
         config.headers.AuthorizationScope = JSON.stringify({
           platform_id: 'dsp',
@@ -148,7 +154,7 @@ export default {
     const { response = {} } = error;
     if (response.status === 502) {
       notifyErrorResponse({}, '后端出问题了, 请联系管理员');
-    } else if (response.status === 401 && response.data.message === 'token has expired') {
+    } else if (response.status === 401 && response.data.message === '令牌已过期') {
       const nowTime = new Date();
       const refreshTime = new Date(Date.parse(Vue.ls.get('refreshTime')));
       // 在用户操作的活跃期内
