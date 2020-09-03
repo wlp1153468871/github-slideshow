@@ -47,7 +47,7 @@ export default {
       ZONE: '可用区',
     };
     const orgId = this.$route.params.org;
-    const { tab = SIDE_BAR.TEAM } = this.$route.query;
+    const { tab = SIDE_BAR.OVERVIEW } = this.$route.query;
     return {
       tab,
       SIDE_BAR,
