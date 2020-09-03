@@ -138,8 +138,12 @@ export default {
           .then(() => {
             this.loginSuccess();
           })
-          .catch(() => {
-            this.$noty.error('登录失败');
+          .catch(res => {
+            if (res.data.error_info) {
+              this.$noty.error(res.data.error_info);
+            } else {
+              this.$noty.error('登陆失败');
+            }
             this.loadings.login = false;
           });
       }
