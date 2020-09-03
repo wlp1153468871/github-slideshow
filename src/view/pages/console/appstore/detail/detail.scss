@@ -15,8 +15,7 @@
   }
   .left {
     float: left;
-    width: 69%;
-    max-width: 960px;
+    width: 960px;
     margin: 20px 0 0 20px;
     background: #fff;
     .left-header {
@@ -149,7 +148,7 @@
           padding-top: 20px;
           font-size: 14px;
           font-family: PingFangSC-Medium,PingFang SC;
-          font-weight: 500;
+          font-weight: bold;
           color: #3D444F;
           .text-desc {
             height: 20px;
@@ -303,6 +302,12 @@
       border-width: 0 2px 2px 0;
       transform: rotateZ(45deg);
     }
+  }
+  .content_box {
+    width: 1280px;
+    min-height: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
   .success {
     color: #22c36a;

@@ -382,6 +382,7 @@ export default {
         this.$noty.warning('请选择正确的压缩格式文件');
         this.removeFile();
       } else {
+        this.chartList = [];
         this.chartList = [...this.chartList, file];
       }
       return false;
@@ -404,6 +405,9 @@ export default {
         })
         .catch(() => {
           this.removeFile();
+        })
+        .finally(() => {
+          this.chartList = [];
         });
     },
 
@@ -421,6 +425,7 @@ export default {
     },
     addClose() {
       this.configAdd = false;
+      this.chartList = [];
     },
   },
 };

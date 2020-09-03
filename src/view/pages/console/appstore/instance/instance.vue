@@ -1,15 +1,14 @@
 <template>
   <div id="servicedetail">
-    <div class="layout-content-header detail-header">
-      <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
-        <el-breadcrumb-item
-          :to="{ path: '/console/appstore/view' }"
-          class="header-text"
-        >
-          应用
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>实例详情({{instanceInfo.name}})</el-breadcrumb-item>
-      </el-breadcrumb>
+    <div class="layout-content-header">
+      <breadcrumb
+        :links="[
+          { text: '应用', route: { path: '/console/appstore/view' } },
+          { text: `实例详情(${instanceInfo.name})` },
+        ]"
+        class="header-text"
+      >
+      </breadcrumb>
     </div>
     <div class="detail-title">
       <span>
@@ -44,14 +43,14 @@
             <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
           </button>
           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item style="margin-left: 10px">
-              <span @click="linktoForm()">使用表单更新</span>
+            <dao-dropdown-item style="margin-left: 10px" @click="linktoForm()">
+              <span>使用表单更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px">
-              <span @click="linktoYamlForm()">使用YAML更新</span>
+            <dao-dropdown-item style="margin-left: 10px" @click="linktoYamlForm()">
+              <span>使用YAML更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px">
-              <span style="color: red;" @click="deleteInstance()">删除</span>
+            <dao-dropdown-item style="margin-left: 10px" @click="deleteInstance()">
+              <span style="color: red;">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
         </dao-dropdown>
