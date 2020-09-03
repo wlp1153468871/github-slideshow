@@ -35,7 +35,7 @@
               :readonly="isPreset"
               name="description"
               type="text"
-              v-validate="'min:0|max:20'"
+              v-validate="'min:0|max:80'"
               icon-inside
               :message="veeErrors.first('description')"
               :status="veeErrors.has('description') ? 'error' : ''"
@@ -285,6 +285,8 @@ export default {
 
     async save() {
       try {
+        const valid = await this.$validator.validateAll();
+        if (!valid) return;
         this.loading = true;
         const permission = treeData2permission(cloneDeep(this.treeData));
         await Promise.all([

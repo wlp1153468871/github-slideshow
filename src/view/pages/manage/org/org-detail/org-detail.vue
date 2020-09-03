@@ -8,6 +8,10 @@
     </div>
 
     <el-tabs v-model="tab">
+      <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
+        <overview-panel :org-id="orgId" :org="org" :users="users" @save="updateOrg">
+        </overview-panel>
+      </el-tab-pane>
       <el-tab-pane
         v-if="$can('platform.organization.space')"
         :label="SIDE_BAR.TEAM"
@@ -63,10 +67,6 @@
         :lazy="true"
       >
         <registry-panel :org-id="orgId"></registry-panel>
-      </el-tab-pane>
-      <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
-        <overview-panel :org-id="orgId" :org="org" :users="users" @save="updateOrg">
-        </overview-panel>
       </el-tab-pane>
     </el-tabs>
   </div>

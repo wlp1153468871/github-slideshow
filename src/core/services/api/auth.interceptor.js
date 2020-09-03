@@ -120,6 +120,12 @@ export default {
             platform_id: store.getters.orgId,
           });
         }
+      } else if (/user\/approvals\//.test(url)) {
+        if (store.getters.orgId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+          });
+        }
       } else if (store.state.isManageView) { // 管理视图下的操作
         config.headers.AuthorizationScope = JSON.stringify({
           platform_id: 'dsp',
