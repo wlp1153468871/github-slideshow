@@ -89,12 +89,12 @@
                               <a ref="upload"
                                  style="width: 100%;display: inline-block;">下载</a>
                             </dao-dropdown-item>
-                            <dao-dropdown-item
-                              style="margin-left: 10px"
-                              @click="deleteChartVersion(scope.row.name, scope.row.version)"
-                            >
-                              <span style="color: red;">删除</span>
-                            </dao-dropdown-item>
+<!--                            <dao-dropdown-item-->
+<!--                              style="margin-left: 10px"-->
+<!--                              @click="deleteChartVersion(scope.row.name, scope.row.version)"-->
+<!--                            >-->
+<!--                              <span style="color: red;">删除</span>-->
+<!--                            </dao-dropdown-item>-->
                           </dao-dropdown-menu>
                         </dao-dropdown>
                       </span>
@@ -126,26 +126,26 @@
               {{ scope.row.created.split('T')[0] }}
             </template>
           </el-table-column>
-          <el-table-column width="50">
-            <template slot-scope="scope">
-                <span class="dao-btn-group">
-                <dao-dropdown
-                  trigger="click"
-                  :append-to-body="true"
-                  placement="right-start"
-                >
-                  <svg class="icon">
-                    <use :xlink:href="`#icon_more`"></use>
-                  </svg>
-                  <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                    <dao-dropdown-item style="margin-left: 10px">
-                      <span style="color: red;" @click="deleteChartAll(scope.row.name)">删除</span>
-                    </dao-dropdown-item>
-                  </dao-dropdown-menu>
-                </dao-dropdown>
-              </span>
-            </template>
-          </el-table-column>
+<!--          <el-table-column width="50">-->
+<!--            <template slot-scope="scope">-->
+<!--                <span class="dao-btn-group">-->
+<!--                <dao-dropdown-->
+<!--                  trigger="click"-->
+<!--                  :append-to-body="true"-->
+<!--                  placement="right-start"-->
+<!--                >-->
+<!--                  <svg class="icon">-->
+<!--                    <use :xlink:href="`#icon_more`"></use>-->
+<!--                  </svg>-->
+<!--                  <dao-dropdown-menu slot="list" style="min-width: 120px;">-->
+<!--                    <dao-dropdown-item style="margin-left: 10px">-->
+<!--                      <span style="color: red;" @click="deleteChartAll(scope.row.name)">删除</span>-->
+<!--                    </dao-dropdown-item>-->
+<!--                  </dao-dropdown-menu>-->
+<!--                </dao-dropdown>-->
+<!--              </span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
         </el-table>
       </div>
     </div>

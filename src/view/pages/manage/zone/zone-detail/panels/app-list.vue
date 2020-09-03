@@ -1,21 +1,34 @@
 <template>
     <div id="zone">
       <div class="app-list">
-        <div style="min-width: 560px">
-          状态：
-          <dao-select
-            v-model="status"
-            size="sm"
-            style="width: 120px; height: 32px; margin-right: 10px;"
-            @change="changeStatus"
+        <div v-if="showImport">
+          <dao-dialog
+            v-if="showImport"
+            :visible.sync="showImport"
+            header="确认"
           >
-            <dao-option
-              v-for="item in statusOptions"
-              :key="item.value"
-              :value="item.value"
-              :label="item.text">
-            </dao-option>
-          </dao-select>
+            <div class="body">确认是否导入?</div>
+            <div slot="footer">
+              <button class="dao-btn red" @click="sureImport">确认</button>
+              <button class="dao-btn" @click="ImportCancel">取消</button>
+            </div>
+          </dao-dialog>
+        </div>
+        <div style="min-width: 560px">
+<!--          状态：-->
+<!--          <dao-select-->
+<!--            v-model="status"-->
+<!--            size="sm"-->
+<!--            style="width: 120px; height: 32px; margin-right: 10px;"-->
+<!--            @change="changeStatus"-->
+<!--          >-->
+<!--            <dao-option-->
+<!--              v-for="item in statusOptions"-->
+<!--              :key="item.value"-->
+<!--              :value="item.value"-->
+<!--              :label="item.text">-->
+<!--            </dao-option>-->
+<!--          </dao-select>-->
           资源类型：
           <dao-select
             v-model="type"
@@ -33,6 +46,11 @@
                   style="margin-left: 10px;" @click="handleNewApplication">
             <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
             <span class="text">导入应用模板</span>
+          </button>
+          <button class="dao-btn blue has-icon"
+                  style="margin-left: 10px;" @click="handleNewApplication">
+            <svg class="icon"><use xlink:href="#icon_update"></use></svg>
+            <span class="text">同步</span>
           </button>
         </div>
         <div style="min-width: 260px">
@@ -64,23 +82,23 @@
         </el-table-column>
         <el-table-column label="供应商" prop="provider" width="100"></el-table-column>
         <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
-        <el-table-column label="状态" width="100">
-          <template slot-scope="scope">
-            <div v-if="scope.row.available === 1">
-              <svg class="icon" style="color: #25D473">
-                <use :xlink:href="`#icon_status-dot-small`"></use>
-              </svg>
-              <span>已上架</span>
-            </div>
-            <div v-if="scope.row.available === 0">
-              <svg class="icon" style="color: #CCD1D9">
-                <use :xlink:href="`#icon_status-dot-small`"></use>
-              </svg>
-              <span>已下架</span>
-            </div>
+<!--        <el-table-column label="状态" width="100">-->
+<!--          <template slot-scope="scope">-->
+<!--            <div v-if="scope.row.available === 1">-->
+<!--              <svg class="icon" style="color: #25D473">-->
+<!--                <use :xlink:href="`#icon_status-dot-small`"></use>-->
+<!--              </svg>-->
+<!--              <span>已上架</span>-->
+<!--            </div>-->
+<!--            <div v-if="scope.row.available === 0">-->
+<!--              <svg class="icon" style="color: #CCD1D9">-->
+<!--                <use :xlink:href="`#icon_status-dot-small`"></use>-->
+<!--              </svg>-->
+<!--              <span>已下架</span>-->
+<!--            </div>-->
 
-          </template>
-        </el-table-column>
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column label="类型" prop="appType"></el-table-column>
         <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
         <el-table-column label="分类" prop="category"></el-table-column>
@@ -103,11 +121,10 @@
                   <dao-dropdown-menu slot="list" style="min-width: 120px;">
                     <dao-dropdown-item style="margin-left: 10px">
                       <span style="width: 100%;display: inline-block;"
-                            v-if="scope.row.available === 1"
-                            @click="handleOff(scope.row.id)">下架应用</span>
-                      <span style="width: 100%;display: inline-block;"
-                            v-if="scope.row.available === 0"
-                            @click="handleOn(scope.row.id)">上架应用</span>
+                            @click="handleImport">导入</span>
+<!--                      <span style="width: 100%;display: inline-block;"-->
+<!--                            v-if="scope.row.available === 0"-->
+<!--                            @click="handleOn(scope.row.id)">上架应用</span>-->
                     </dao-dropdown-item>
                     <dao-dropdown-item
                       style="margin-left: 10px"
@@ -202,6 +219,7 @@ export default {
       loading: {
         zone: false,
       },
+      showImport: false, // 是否点击了导入按钮
     };
   },
   created() {
@@ -324,6 +342,24 @@ export default {
     handleRefresh() {
       this.search = '';
       this.handleChange('');
+    },
+    /**
+     * 点击导入按钮
+     */
+    handleImport() {
+      this.showImport = true;
+    },
+    /**
+     * 确认导入
+     */
+    sureImport() {
+      this.showImport = false;
+    },
+    /**
+     * 放弃导入
+     */
+    ImportCancel() {
+      this.showImport = false;
     },
   },
 };
