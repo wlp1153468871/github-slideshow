@@ -10,6 +10,7 @@ import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
 import IngressPanel from '@/view/pages/console/app/detail/panels/ingress';
 import ConfigPanel from '@/view/pages/console/app/detail/panels/config';
+import JobPanel from '@/view/pages/console/app/detail/panels/job';
 
 export default {
   name: 'AdminInstance',
@@ -28,11 +29,17 @@ export default {
         Ingress: [],
         Pod: [],
         ConfigMap: [],
-        PVC: [],
+        PersistentVolumeClaim: [],
       },
       //  懒加载
       loading: {
         resources: false,
+      },
+      //  状态
+      stateMap: {
+        deployed: 'success',
+        failed: 'error',
+        timeOut: 'warning',
       },
     };
   },
@@ -45,6 +52,13 @@ export default {
     PodTable,
     ConfigPanel,
     PvcTable,
+    JobPanel,
+  },
+
+  computed: {
+    stateClass() {
+      return this.stateMap[this.instanceInfo.status] || '';
+    },
   },
 
   created() {
@@ -53,7 +67,6 @@ export default {
     this.getOperator();
     this.getResources();
   },
-
 
   methods: {
     toDetail() {
@@ -83,19 +96,19 @@ export default {
       ServiceAdmin
         .getOperator(this.$route.params.appid, this.$route.params.instanceid)
         .then(res => {
-          res.sort((a, b) => {
-            return a.revision - b.revision;
-          });
           if (res) {
-            res.forEach((item, index) => {
+            res.forEach(item => {
               const obj = {};
               const owner = {};
-              obj.started_at = item.createdAt;
-              if (index === 0) {
-                owner.name = '创建实例';
+              obj.name = item.statusRecord;
+              obj.started_at = item.startedAt;
+              obj.ended_at = item.endedAt;
+              if (item.status === 'deployed') {
+                obj.status = 'succeed';
               } else {
-                owner.name = '更新实例';
+                obj.status = item.status;
               }
+              owner.name = item.operator;
               obj.owner = owner;
               this.operator.push(obj);
             });

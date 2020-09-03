@@ -53,6 +53,15 @@
         display: inline-block;
         font-weight: 400;
         color: #3D444F;
+        .success {
+          color: #22c36a;
+        }
+        .error {
+          color: #f1483f;
+        }
+        .warning {
+          color: rgb(190, 163, 10);
+        }
       }
       .title1 {
         margin-left: 10px;

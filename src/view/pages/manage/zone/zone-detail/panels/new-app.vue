@@ -29,7 +29,8 @@
               action="#"
               :http-request="handleUploadChart"
               :file-list="chartList"
-              accept="application/zip, application/x-compressed, application/x-gzip"
+              accept="application/zip, application/x-compressed,
+              application/x-gzip, application/gzip, application/x-tar"
               :limit="1"
               :before-upload="beforeUploadChart"
               :on-remove="removeFileChart"
@@ -190,7 +191,7 @@ export default {
       description: '', // 描述,
       pictureId: '', // 上传图标的id
       fileType: ['image/png'],
-      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar'],
       chartList: [],
       showAddCategory: false, // 控制新增分类按钮
       // 弹窗所需数据
@@ -338,6 +339,7 @@ export default {
      * chart文件上传之前的回调函数
      */
     beforeUploadChart(file) {
+      console.log(file, file.type, '文件类型');
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
@@ -355,6 +357,7 @@ export default {
       this.chartList.forEach(file => {
         formData.append('chart', file);
       });
+      console.log(formData, '文件内容')
       ZoneAdminService.createChart(this.id, formData)
         .then(res => {
           if (res) {

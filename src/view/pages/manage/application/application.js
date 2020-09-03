@@ -49,6 +49,9 @@ export default {
       appTypeCat: '',
       key: '',
       lineCode: 0,
+      loading: {
+        appInfo: false,
+      },
     };
   },
 
@@ -86,10 +89,10 @@ export default {
       this.selectedArr.forEach((item, index) => {
         ServiceAdmin.availableOn(item.id).then(() => {
           this.getAllApp();
+          if (index === this.selectedArr.length - 1) {
+            this.lineCode = 200;
+          }
         });
-        if (index === this.selectedArr.length - 1) {
-          this.lineCode = 200;
-        }
       });
       if (this.lineCode === 200) {
         this.$noty.success('上架成功');
@@ -139,16 +142,21 @@ export default {
     },
     // app
     getAllApp() {
-      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
-        if (res) {
-          this.appInfo = res;
-          this.appInfoCopy = res;
-        }
-      }).then(() => {
-        this.getZone();
-        this.getStatus();
-        // this.getType();
-      });
+      this.loading.appInfo = true;
+      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat)
+        .then(res => {
+          if (res) {
+            this.appInfo = res;
+            this.appInfoCopy = res;
+          }
+        })
+        .then(() => {
+          this.getZone();
+          this.getStatus();
+        })
+        .finally(() => {
+          this.loading.appInfo = false;
+        });
     },
 
     /**

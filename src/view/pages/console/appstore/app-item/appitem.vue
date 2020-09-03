@@ -15,7 +15,7 @@
       <div class="item-name">
         {{ itemData.name }}
       </div>
-      <el-popover
+      <!-- <el-popover
         placement="bottom"
         style="color: #fff;background-color: #000;"
         width="400"
@@ -26,7 +26,19 @@
         <div slot="reference" class="item-desc">
           {{ itemData.description }}
         </div>
-      </el-popover>
+      </el-popover> -->
+      <dao-tooltip
+        :content="`${itemData.description}`"
+        placement="bottom"
+        v-if="itemData.description.length > 60"
+      >
+        <div class="item-desc">
+          {{ itemData.description }}
+        </div>
+      </dao-tooltip>
+      <div class="item-desc" v-else>
+        {{ itemData.description }}
+      </div>
       <div class="item-footer">
         {{ itemData.provider }}
       </div>

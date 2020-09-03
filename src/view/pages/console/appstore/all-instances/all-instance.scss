@@ -19,6 +19,15 @@
   }
   .table {
     margin: 0 20px 20px;
+    .success {
+      color: #22c36a;
+    }
+    .error {
+      color: #f1483f;
+    }
+    .warning {
+      color: rgb(190, 163, 10);
+    }
   }
   .footer {
     height: 40px;

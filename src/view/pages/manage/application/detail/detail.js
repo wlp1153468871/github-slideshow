@@ -52,6 +52,12 @@ export default {
       instancesCopy: [],
       key: '',
       instanceKey: '',
+      //  状态
+      stateMap: {
+        deployed: 'success',
+        failed: 'error',
+        timeOut: 'warning',
+      },
       //  懒加载
       loading: {
         onLine: false,
@@ -94,6 +100,9 @@ export default {
   },
 
   methods: {
+    stateClass(status) {
+      return this.stateMap[status] || '';
+    },
     // 获取应用信息
     getApp() {
       ServiceAdmin.getApp(this.$route.params.id).then(res => {

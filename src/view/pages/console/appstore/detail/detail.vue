@@ -227,7 +227,9 @@
             <div style="margin-top: 20px;">
               <el-table
                 style="width: 100%;"
-                :data="instanceTable">
+                :data="instanceTable"
+                v-loading="loading.instanceTable"
+              >
                 <el-table-column label="实例名称">
                   <template slot-scope="scope">
                     <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
@@ -235,24 +237,16 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column label="状态" width="80">
+                <el-table-column label="状态">
                   <template slot-scope="scope">
-                    <div v-if="scope.row.status === 'deployed'">
-                      <svg class="icon" style="color: #25D473">
-                        <use :xlink:href="`#icon_status-dot-small`"></use>
-                      </svg>
-                      <span>成功</span>
-                    </div>
-                    <div v-else>
-                      <svg class="icon" style="color: red">
-                        <use :xlink:href="`#icon_status-dot-small`"></use>
-                      </svg>
-                      <span>失败</span>
-                    </div>
+                    <svg class="icon" :class="stateClass(scope.row.status)">
+                      <use :xlink:href="`#icon_status-dot-small`"></use>
+                    </svg>
+                    <span>{{ scope.row.status | ops_status }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="Chart 版本" prop="chartVersion" width="100"></el-table-column>
-                <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
+                <el-table-column label="Chart 版本" prop="chartVersion"></el-table-column>
+                <el-table-column label="创建者" prop="ownerName"></el-table-column>
                 <el-table-column label="创建时间">
                   <template slot-scope="scope">
                     {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}

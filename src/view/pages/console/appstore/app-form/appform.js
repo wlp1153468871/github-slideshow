@@ -113,13 +113,18 @@ export default {
         .createForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.chartName, this.$route.params.version, this.instanceName, this.table)
         .then(res => {
-          this.loading = false;
-          if (res) {
-            this.$noty.success('实例创建成功');
+          console.log(res);
+          if (res.status === 'deployed') {
             this.$router.go(-1);
+            this.$noty.success('实例创建成功');
+          } else if (res.status === 'timeOut') {
+            this.$noty.warning('实例创建超时');
+            this.$router.go(-1);
+          } else {
+            this.$noty.error('实例创建失败');
           }
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false;
         });
     },
@@ -141,21 +146,30 @@ export default {
         .updateForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.table)
         .then(res => {
-          this.loading = false;
           if (res) {
             this.$noty.success('实例更新成功');
-            this.$router.push({
-              name: 'appstore.detail',
-              params: {
-                Id: this.$route.params.appid,
-              },
-              query: {
-                activeName: 'second',
-              },
-            });
+            if (this.$route.query.isInstance) {
+              this.$router.push({
+                name: 'appstore.instance',
+                params: {
+                  appid: this.$route.params.appid,
+                  instanceid: this.$route.query.instanceId,
+                },
+              });
+            } else {
+              this.$router.push({
+                name: 'appstore.detail',
+                params: {
+                  Id: this.$route.params.appid,
+                },
+                query: {
+                  activeName: 'second',
+                },
+              });
+            }
           }
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false;
         });
     },

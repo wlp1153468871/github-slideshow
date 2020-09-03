@@ -31,11 +31,17 @@ export default {
         Ingress: [],
         Pod: [],
         ConfigMap: [],
-        PVC: [],
+        PersistentVolumeClaim: [],
       },
       //  懒加载
       loading: {
         resources: false,
+      },
+      //  状态
+      stateMap: {
+        deployed: 'success',
+        failed: 'error',
+        timeOut: 'warning',
       },
     };
   },
@@ -53,9 +59,14 @@ export default {
 
   computed: {
     ...mapState(['space', 'zone', 'user']),
+    stateClass() {
+      return this.stateMap[this.instanceInfo.status] || '';
+    },
   },
 
   created() {
+    this.activeName = this.$route.query.activeName || 'first';
+
     this.getInstanceOne();
     this.getApp();
     this.getOperator();
@@ -76,6 +87,8 @@ export default {
         },
         query: {
           instanceId: this.$route.params.instanceid,
+          isInstance: true,
+          activeName: this.activeName,
         },
       });
     },
@@ -134,27 +147,33 @@ export default {
         .getOperator(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
-          console.log(res);
           if (res) {
             res.forEach(item => {
               const obj = {};
               const owner = {};
               obj.name = item.statusRecord;
-              obj.started_at = item.createdAt;
+              obj.started_at = item.startedAt;
+              obj.ended_at = item.endedAt;
+              if (item.status === 'deployed') {
+                obj.status = 'succeed';
+              } else {
+                obj.status = item.status;
+              }
               owner.name = item.operator;
               obj.owner = owner;
               this.operator.push(obj);
             });
-            // this.operator = orderBy(res, 'started_at', 'desc');
           }
         });
     },
+    // 获取资源
     getResource() {
       this.loading.resources = true;
       AppStoreService
         .getResource(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
+          console.log(res);
           if (res) {
             this.resources = groupBy(res, 'kind');
           }
