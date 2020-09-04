@@ -2,10 +2,10 @@ import { mapState } from 'vuex';
 import { groupBy } from 'lodash';
 
 import AppStoreService from '@/core/services/appstore.service';
+import markdown from '@/view/filters/markdown.filter.js';
 
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
-import MarkDown from '@/view/components/markdown/markdown.vue';
 
 import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
@@ -43,11 +43,11 @@ export default {
         failed: 'error',
         timeOut: 'warning',
       },
+      mdHtml: '',
     };
   },
 
   components: {
-    MarkDown,
     DeploymentPanel,
     ServicePanel,
     IngressPanel,
@@ -110,14 +110,19 @@ export default {
       AppStoreService
         .deleteInstance(this.zone.id, this.space.id,
           this.$route.params.appid, this.$route.params.instanceid)
-        .then(() => {
-          this.$noty.success('实例删除成功');
-          this.$router.push({
-            name: 'appstore.detail',
-            params: {
-              Id: this.$route.params.appid,
-            },
-          });
+        .then(res => {
+          console.log(res);
+          if (res) {
+            this.$noty.success('实例删除成功');
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+            });
+          } else {
+            this.$noty.error('实例删除失败');
+          }
         });
     },
     // 获取实例详情
@@ -129,6 +134,7 @@ export default {
           if (res) {
             this.instanceInfo = res;
           }
+          this.mdHtml = markdown(this.instanceInfo.notes);
         });
     },
     // 获取应用
@@ -173,7 +179,6 @@ export default {
         .getResource(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
-          console.log(res);
           if (res) {
             this.resources = groupBy(res, 'kind');
           }

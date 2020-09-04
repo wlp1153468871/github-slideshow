@@ -8,10 +8,16 @@
 }
 #servicedetail1 {
   background: #fff;
-  .header-text {
+  .detail-header {
+    padding-left: 10px;
+    height: 32px;
+    line-height: 32px;
+    background: #E6E9EF;
     font-size: 14px;
+    font-family: SFProText-Regular,SFProText;
     font-weight: 400;
     color: #595F69;
+    border-bottom: 1px solid #D5DBE3;
   }
   .detail-title {
     position: relative;
@@ -155,7 +161,7 @@
           padding-top: 20px;
           font-size: 14px;
           font-family: PingFangSC-Medium,PingFang SC;
-          font-weight: 500;
+          font-weight: bold;
           color: #3D444F;
           .text-desc {
             height: 20px;

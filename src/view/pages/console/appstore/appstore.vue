@@ -60,7 +60,7 @@
     </div>
     <div class="store-server-type">
       <span class="type-text">服务类型</span>
-      <el-checkbox-group v-model="checkedApp">
+      <el-checkbox-group v-model="checkedApp" class="option-blank">
         <el-checkbox
           style="color:#3d444f"
           v-for="(item, index) in appType"
@@ -186,7 +186,7 @@ v-deep .el-tag {
   .store-server-type {
     float: left;
     overflow: hidden;
-    width: 240px;
+    width: 200px;
     .type-text {
       width:180px;
       height:12px;
@@ -195,6 +195,9 @@ v-deep .el-tag {
       font-weight:400;
       color:rgba(155,163,175,1);
       line-height:12px;
+    }
+    .option-blank {
+      margin-bottom: 8px;
     }
     .type-layout {
       margin: 0 0 0 30px;

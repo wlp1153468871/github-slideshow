@@ -172,7 +172,6 @@ export default {
       }).then(() => {
         this.getZone();
         this.getStatus();
-        // this.getType();
       });
     },
     appNumber() {
@@ -224,7 +223,7 @@ export default {
     // 刷新
     fresh() {
       this.key = '';
-      this.appInfo = this.appInfoCopy;
+      this.getAllApp();
     },
   },
 };

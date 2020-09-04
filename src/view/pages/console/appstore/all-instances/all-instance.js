@@ -90,7 +90,7 @@ export default {
     // 刷新
     fresh() {
       this.key = '';
-      this.instances = this.instancesCopy;
+      this.getAllInstances();
     },
   },
 };

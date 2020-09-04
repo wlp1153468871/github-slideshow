@@ -46,10 +46,10 @@
           :label="item.name">
         </dao-option>
       </dao-select>
-      <button class="dao-btn blue has-icon"  @click="createApp">
+      <!-- <button class="dao-btn blue has-icon"  @click="createApp">
         <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
         <span class="text" >导入应用模板</span>
-      </button>
+      </button> -->
       <span style="float: right;">
         <dao-input
           search
@@ -78,11 +78,11 @@
         @click="handleOff"
       >批量下架
       </button>
-      <button
+      <!-- <button
         class="dao-btn red status"
         @click="deleteApplication"
         :disabled="selectedArr.length < 1">批量删除
-      </button>
+      </button> -->
     </div>
     <div style="margin: 20px;">
       <el-table

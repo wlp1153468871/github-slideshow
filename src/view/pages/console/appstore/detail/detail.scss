@@ -5,13 +5,15 @@
   background: #F1F3F6;
   overflow: hidden;
   .detail-header {
+    padding-left: 10px;
+    height: 32px;
+    line-height: 32px;
     background: #E6E9EF;
-    .header-text {
-      font-size: 14px;
-      font-family: SFProText-Regular,SFProText;
-      font-weight: 400;
-      color: #595F69;
-    }
+    font-size: 14px;
+    font-family: SFProText-Regular,SFProText;
+    font-weight: 400;
+    color: #595F69;
+    border-bottom: 1px solid #D5DBE3;
   }
   .left {
     float: left;
@@ -318,4 +320,5 @@
   .warning {
     color: rgb(190, 163, 10);
   }
+  
 }
