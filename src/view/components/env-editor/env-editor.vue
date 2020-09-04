@@ -80,7 +80,12 @@ export default {
 
   methods: {
     onSave() {
-      this.$emit('envUpdate', this.envs);
+      const index = this.envs[0].env.findIndex(item => {
+        return !item.name;
+      });
+      if (index < 0) {
+        this.$emit('envUpdate', this.envs);
+      }
     },
     onEnvChange() {
       this.changed = true;

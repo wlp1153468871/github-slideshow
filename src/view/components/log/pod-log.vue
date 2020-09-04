@@ -50,9 +50,11 @@
           class="log-icon icon-download"
           @click="saveLog"
         >
-          <svg class="icon">
-            <use xlink:href="#icon_download"></use>
-          </svg>
+          <el-tooltip effect="dark" content="下载实时日志" placement="top">
+            <svg class="icon">
+              <use xlink:href="#icon_download"></use>
+            </svg>
+          </el-tooltip>
         </span>
         <el-tooltip effect="dark" content="实时跟踪日志输出" placement="top">
           <span @click="onScrollBottom" class="log-icon scroll-bottom">
@@ -64,11 +66,13 @@
       </div>
 
       <div class="bottom-operation">
-        <span @click="onScrollTop" class="log-icon scroll-top">
-          <svg class="icon">
-            <use xlink:href="#icon_scroll-top"></use>
-          </svg>
-        </span>
+        <el-tooltip effect="dark" content="返回至顶端" placement="top">
+          <span @click="onScrollTop" class="log-icon scroll-top">
+            <svg class="icon">
+              <use xlink:href="#icon_scroll-top"></use>
+            </svg>
+          </span>
+        </el-tooltip>
       </div>
 
       <div @mousewheel.passive="onScroll" class="log-view-output" ref="logView">
