@@ -46,10 +46,18 @@
           </dao-select>
         </div>
         <div style="margin-left: 10px">
-          <button class="dao-btn" :disabled="offArr.length !== 0 || haveOn" @click="handleOn">批量上架</button>
+          <button
+            class="dao-btn"
+            :disabled="offArr.length !== 0 || haveOn"
+            @click="handleOn">批量上架
+          </button>
         </div>
         <div style="margin-left: 10px">
-          <button class="dao-btn" :disabled="onArr.length !== 0 || haveOff" @click="handleOff">批量下架</button>
+          <button
+            class="dao-btn"
+            :disabled="onArr.length !== 0 || haveOff"
+            @click="handleOff">批量下架
+          </button>
         </div>
       </div>
       <div class="search">

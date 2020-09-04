@@ -429,4 +429,4 @@
 
 <script src="./detail.js"></script>
 
-<style lang="scss" src="./detail.scss" scoped></style>
+<style lang="scss" src="./detail.scss"></style>

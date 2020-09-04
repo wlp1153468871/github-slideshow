@@ -93,7 +93,7 @@
           </daox-info-table>
         </div>
         <div class="container1" style="margin-top: 20px;">
-          <div class="c-title">Notes</div>
+          <div class="c-title">实例信息</div>
           <!-- <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down> -->
           {{mdHtml}}
         </div>

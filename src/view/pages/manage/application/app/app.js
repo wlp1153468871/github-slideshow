@@ -185,7 +185,7 @@ export default {
       if (this.zoneId === '') {
         this.$noty.error('请先选择可用区');
         return false;
-      } else if (this.chartType.indexOf(file.type) < 0) {z
+      } else if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
