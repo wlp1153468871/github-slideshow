@@ -1,8 +1,25 @@
-$maxWidth: 1280px;
-$maxLeft: 96px;
 
-$minWidth: 1060px;
-$minLeft: 740px;
+@media screen and (min-width: 1440px) {
+  #appdetail{
+    .left{
+      width: 960px;
+    }
+    .content_box{
+      width: 1280px;
+    }
+  }
+}
+
+@media screen and (max-width: 1439px) {
+  #appdetail{
+    .left{
+      width:740px;
+    }
+    .content_box{
+      width: 1060px;
+    }
+  }
+}
 ::v-deep .el_tabs .el-tab-pane{
   margin: 0;
 }
@@ -22,7 +39,6 @@ $minLeft: 740px;
   }
   .left {
     float: left;
-    width: 960px;
     margin: 20px 0 0 20px;
     background: #fff;
     .left-header {
@@ -311,7 +327,6 @@ $minLeft: 740px;
     }
   }
   .content_box {
-    width: $maxWidth;
     min-height: 100%;
     margin: 0 auto;
     box-sizing: border-box;

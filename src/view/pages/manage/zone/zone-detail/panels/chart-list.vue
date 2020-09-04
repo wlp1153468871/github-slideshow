@@ -139,7 +139,7 @@
 <!--                  </svg>-->
 <!--                  <dao-dropdown-menu slot="list" style="min-width: 120px;">-->
 <!--                    <dao-dropdown-item style="margin-left: 10px">-->
-<!--                      <span style="color: red;" @click="deleteChartAll(scope.row.name)">删除</span>-->
+<!--                  <span style="color: red;" @click="deleteChartAll(scope.row.name)">删除</span>-->
 <!--                    </dao-dropdown-item>-->
 <!--                  </dao-dropdown-menu>-->
 <!--                </dao-dropdown>-->
@@ -153,7 +153,6 @@
 
 <script>
 import ZoneAdminService from '@/core/services/zone-admin.service';
-import fileSave from 'file-saver';
 
 export default {
   name: 'chart-list',
