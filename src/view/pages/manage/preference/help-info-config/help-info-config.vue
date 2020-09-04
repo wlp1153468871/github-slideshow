@@ -44,11 +44,6 @@ export default {
       return isEmpty(this.helpURLDict);
     },
   },
-  created() {
-    if (!this.$can('platform.settings.assets')) {
-      this.$noty.error('您暂无帮助信息设置权限');
-    }
-  },
   methods: {
     onSave() {
       new Promise(res => {
