@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getAllService() {
-      ServiceService.getServices().then(services => {
+      ServiceService.getServices(1, -1).then(services => {
         this.services = services;
       });
     },
