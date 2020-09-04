@@ -36,6 +36,46 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label
+          >地址</template
+          >
+          <template #content>
+            {{ zone.area_name }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label
+          >仓库名称</template
+          >
+          <template #content>
+            {{ zone.area_name }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label
+          >账户</template
+          >
+          <template #content>
+            {{ zone.area_name }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label
+          >密码</template
+          >
+          <template #content>
+            {{ zone.area_name }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
     </dao-setting-layout>
 
     <dao-setting-layout>

@@ -5,7 +5,7 @@
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
       <div class="header-title">服务市场</div>
-      <div class="header-desc">欢迎来到 DaoCloud 服务市场，我们的平台提供了来自不同企业的更多的应用和 chart 模版，
+      <div class="header-desc">欢迎来到 DaoCloud 服务市场，我们的平台提供了来自不同企业的更多的应用和 Chart 模版，
         并支持多终端访问，自建应用，让客户享受安全，便捷，快速的服务。</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;margin-top: 20px">
@@ -60,7 +60,7 @@
     </div>
     <div class="store-server-type">
       <span class="type-text">服务类型</span>
-      <el-checkbox-group v-model="checkedApp">
+      <el-checkbox-group v-model="checkedApp" class="option-blank">
         <el-checkbox
           style="color:#3d444f"
           v-for="(item, index) in appType"
@@ -186,7 +186,7 @@ v-deep .el-tag {
   .store-server-type {
     float: left;
     overflow: hidden;
-    width: 240px;
+    width: 200px;
     .type-text {
       width:180px;
       height:12px;
@@ -195,6 +195,9 @@ v-deep .el-tag {
       font-weight:400;
       color:rgba(155,163,175,1);
       line-height:12px;
+    }
+    .option-blank {
+      margin-bottom: 8px;
     }
     .type-layout {
       margin: 0 0 0 30px;

@@ -83,6 +83,7 @@ import alarmScope from './alarm-scope.filter';
 import scanOverviewStatus from './resource/scan-overview-status.filter.js';
 import roleFormat from './roleFormat.filter';
 import dateTimeFormat from './date-time-format.filter';
+import markdownFilter from './markdown.filter';
 
 const filters = {
   accessModes,
@@ -168,6 +169,7 @@ const filters = {
   scanOverviewStatus,
   roleFormat,
   dateTimeFormat,
+  markdownFilter,
 };
 
 Object.keys(filters).forEach(key => {

@@ -86,15 +86,15 @@
                             <dao-dropdown-item
                               @click="uploadChartVersion(scope.row.name, scope.row.version)"
                               style="margin-left: 10px" class="linkColor">
-                              <a ref="upload" @click="beginUpload"
+                              <a ref="upload"
                                  style="width: 100%;display: inline-block;">下载</a>
                             </dao-dropdown-item>
-                            <dao-dropdown-item
-                              style="margin-left: 10px"
-                              @click="deleteChartVersion(scope.row.name, scope.row.version)"
-                            >
-                              <span style="color: red;">删除</span>
-                            </dao-dropdown-item>
+<!--                            <dao-dropdown-item-->
+<!--                              style="margin-left: 10px"-->
+<!--                              @click="deleteChartVersion(scope.row.name, scope.row.version)"-->
+<!--                            >-->
+<!--                              <span style="color: red;">删除</span>-->
+<!--                            </dao-dropdown-item>-->
                           </dao-dropdown-menu>
                         </dao-dropdown>
                       </span>
@@ -126,26 +126,26 @@
               {{ scope.row.created.split('T')[0] }}
             </template>
           </el-table-column>
-          <el-table-column width="50">
-            <template slot-scope="scope">
-                <span class="dao-btn-group">
-                <dao-dropdown
-                  trigger="click"
-                  :append-to-body="true"
-                  placement="right-start"
-                >
-                  <svg class="icon">
-                    <use :xlink:href="`#icon_more`"></use>
-                  </svg>
-                  <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                    <dao-dropdown-item style="margin-left: 10px">
-                      <span style="color: red;" @click="deleteChartAll(scope.row.name)">删除</span>
-                    </dao-dropdown-item>
-                  </dao-dropdown-menu>
-                </dao-dropdown>
-              </span>
-            </template>
-          </el-table-column>
+<!--          <el-table-column width="50">-->
+<!--            <template slot-scope="scope">-->
+<!--                <span class="dao-btn-group">-->
+<!--                <dao-dropdown-->
+<!--                  trigger="click"-->
+<!--                  :append-to-body="true"-->
+<!--                  placement="right-start"-->
+<!--                >-->
+<!--                  <svg class="icon">-->
+<!--                    <use :xlink:href="`#icon_more`"></use>-->
+<!--                  </svg>-->
+<!--                  <dao-dropdown-menu slot="list" style="min-width: 120px;">-->
+<!--                    <dao-dropdown-item style="margin-left: 10px">-->
+<!--                      <span style="color: red;" @click="deleteChartAll(scope.row.name)">删除</span>-->
+<!--                    </dao-dropdown-item>-->
+<!--                  </dao-dropdown-menu>-->
+<!--                </dao-dropdown>-->
+<!--              </span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
         </el-table>
       </div>
     </div>
@@ -153,6 +153,7 @@
 
 <script>
 import ZoneAdminService from '@/core/services/zone-admin.service';
+import fileSave from 'file-saver';
 
 export default {
   name: 'chart-list',
@@ -197,6 +198,7 @@ export default {
       itemChart: [], // 展开行渲染列表
       search: '', // 搜索字段
       flag: false, // 下载事件冒泡
+      url: '',
     };
   },
   created() {
@@ -261,14 +263,28 @@ export default {
     uploadChartVersion(name, version) {
       this.flag = true;
       ZoneAdminService.uploadChart(this.id, name, version).then(res => {
-        const blob = new Blob([res], { type: 'application/x-compressed' });
-        const a = this.$refs.upload;
-        a.href = URL.createObjectURL(blob);
-        a.download = `${name}-${version}.tgz`;
-        a.click();
-        URL.revokeObjectURL(a.href);
-        a.remove();
-      }).catch(() => {
+        // const blob = new Blob([res], { type: 'application/x-tar' });
+        // console.log(blob, typeof res, 'heyanfen', res.body);
+        // const a = this.$refs.upload;
+        this.url = URL.createObjectURL(res);
+        console.log(this.url);
+        window.open(this.url);
+        // a.download = `${name}-${version}.tgz`;
+        // a.click();
+        // URL.revokeObjectURL(a.href);
+        // a.remove();
+        // fileSave.saveAs(res, `${name}-${version}.tar`);
+        // const reader = new FileReader();
+        // reader.onloadend = function () {
+        //   console.log(typeof reader.result, 'heyanfen');
+        //   fileSave.saveAs(reader.result, `${name}-${version}.tar`);
+        // }
+        // reader.readAsBinaryString(blob);
+      }).catch(res => {
+        console.log(res);
+        this.url = URL.createObjectURL(res);
+        console.log(this.url);
+        window.open(this.url);
         this.$noty.error('下载失败');
       });
     },

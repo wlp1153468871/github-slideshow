@@ -1,12 +1,11 @@
 <template>
   <div id="appdetail">
-    <div class="layout-content-header detail-header">
+    <div class="detail-header">
       <breadcrumb
         :links="[
-          { text: '应用', route: { path: '/console/appstore/view' } },
-          { text: `应用详情(${appInfo.name})` },
+          { text: '服务', route: { path: '/console/appstore/view' } },
+          { text: `服务详情(${appInfo.name})` },
         ]"
-        class="header-text"
       >
       </breadcrumb>
     </div>
@@ -157,11 +156,11 @@
               <div class="base-info">
                 <div class="title">基本信息</div>
                 <div class="desc">
-                  <div class="desc-title">应用描述</div>
+                  <div class="desc-title">服务描述</div>
                   <div class="desc-text">{{appInfo.description}}</div>
                 </div>
                 <div class="app">
-                  <div class="app-title">应用信息</div>
+                  <div class="app-title">服务信息</div>
                   <div class="app-box">
                     <div class="text-name">
                       服务类型
@@ -205,7 +204,7 @@
               </div>
               <div class="base-info" v-if="appInfo.content">
                 <div class="title" style="padding: 20px 0 20px 0px;">README</div>
-                <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down>
+                <div v-html="mdHtml"></div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="实例" name="second">

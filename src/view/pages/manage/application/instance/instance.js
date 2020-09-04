@@ -1,10 +1,10 @@
 import { groupBy } from 'lodash';
 
 import ServiceAdmin from '@/core/services/service-admin.service';
+import markdown from '@/view/filters/markdown.filter.js';
 
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
-import MarkDown from '@/view/components/markdown/markdown.vue';
 
 import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
@@ -41,11 +41,11 @@ export default {
         failed: 'error',
         timeOut: 'warning',
       },
+      mdHtml: '',
     };
   },
 
   components: {
-    MarkDown,
     DeploymentPanel,
     ServicePanel,
     IngressPanel,
@@ -80,6 +80,7 @@ export default {
           if (res) {
             this.instanceInfo = res;
           }
+          this.mdHtml = markdown(this.instanceInfo.notes);
         });
     },
     // 获取应用
@@ -89,6 +90,7 @@ export default {
           if (res) {
             this.appInfo = res;
           }
+          console.log(this.appInfo);
         });
     },
     // 获取操作

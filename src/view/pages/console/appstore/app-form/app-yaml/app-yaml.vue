@@ -251,7 +251,7 @@ export default {
             this.$router.go(-1);
           }
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false;
         });
     },
@@ -287,7 +287,6 @@ export default {
     width: 100%;
     height: 52px;
     position: fixed;
-    top: 56px;
     left: 0;
     z-index: 9;
     .form-title {

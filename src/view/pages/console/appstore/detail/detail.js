@@ -1,8 +1,8 @@
 import { mapState } from 'vuex';
 import { debounce } from 'lodash';
 
-import MarkDown from '@/view/components/markdown/markdown.vue';
 import AppStoreService from '@/core/services/appstore.service';
+import markdown from '@/view/filters/markdown.filter.js';
 
 export default {
   name: 'AppStoreDetail',
@@ -52,11 +52,8 @@ export default {
       loading: {
         instanceTable: false,
       },
+      mdHtml: '',
     };
-  },
-
-  components: {
-    MarkDown,
   },
 
   computed: {
@@ -96,6 +93,7 @@ export default {
     stateClass(status) {
       return this.stateMap[status] || '';
     },
+
     // 获取应用信息
     async getApp() {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
@@ -128,6 +126,7 @@ export default {
             this.appInfo.content = item.content;
           }
         });
+        this.mdHtml = markdown(this.appInfo.content);
       });
     },
     // 获取分类列表
@@ -265,7 +264,7 @@ export default {
     // 刷新
     fresh() {
       this.key = '';
-      this.instanceTable = this.instanceTableCopy;
+      this.getInstances();
     },
     // 立即创建
     showCreate() {

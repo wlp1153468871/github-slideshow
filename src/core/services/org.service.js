@@ -94,6 +94,27 @@ class OrgService {
       type,
     });
   }
+
+  /**
+   * 项目组管理员可见的所有应用列表
+   */
+  getSpaceAllAppList(org_id, space_id) {
+    return this.api.get(`/appstore/organization/${org_id}/space/${space_id}/applications`);
+  }
+
+  /**
+   * 上架应用给一个项目组
+   */
+  OnApplication(organization_id, space_id, app_id) {
+    return this.api.patch(`/appstore/organization/${organization_id}/space/${space_id}/applications/${app_id}/available`);
+  }
+
+  /**
+   * 下架应用给一个项目组
+   */
+  offApplication(organization_id, space_id, app_id) {
+    return this.api.patch(`/appstore/organization/${organization_id}/space/${space_id}/applications/${app_id}/unavailable`);
+  }
 }
 
 export default new OrgService();

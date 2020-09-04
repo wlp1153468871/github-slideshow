@@ -15,22 +15,10 @@
       <div class="item-name">
         {{ itemData.name }}
       </div>
-      <!-- <el-popover
-        placement="bottom"
-        style="color: #fff;background-color: #000;"
-        width="400"
-        trigger="hover"
-        :close-delay="300"
-        class="popper-style"
-        :content="itemData.description">
-        <div slot="reference" class="item-desc">
-          {{ itemData.description }}
-        </div>
-      </el-popover> -->
       <dao-tooltip
         :content="`${itemData.description}`"
         placement="bottom"
-        v-if="itemData.description.length > 60"
+        v-if="itemData.description.length > 70"
       >
         <div class="item-desc">
           {{ itemData.description }}
@@ -42,6 +30,14 @@
       <div class="item-footer">
         {{ itemData.provider }}
       </div>
+      <dao-tooltip
+        content="DaoCloud 认证"
+        placement="bottom"
+        class="daocloud-lay"
+        v-if="itemData.daoAuth"
+      >
+        <img src="@/assets/images/daocloud-auth.png" alt="daocloud" class="daocloud"/>
+      </dao-tooltip>
     </div>
   </div>
 </template>
@@ -65,15 +61,7 @@ export default {
 };
 </script>
 <style lang="scss">
-  .father-style {
-    .el-popover {
-      color: #fff;
-      background-color: #000;
-    }
-    .popper__arrow::after {
-      border-bottom-color: #000000;
-    }
-  }
+
 </style>
 <style lang="scss" scoped>
 $appItemWidth: 31.2%;
@@ -100,7 +88,7 @@ $appItemWidth: 31.2%;
       float: right;
       margin: 20px 15px 0 0;
       width: 76px;
-      height: 19px;
+      height: 18px;
       background:#F1F7FE;
       border-radius:1px;
       border:1px solid #4C9BFF;
@@ -153,7 +141,31 @@ $appItemWidth: 31.2%;
     background-color: #000000!important;
   }
 }
-  .itme-container:hover {
-    background-color: #F5F7FA;
+.father-style {
+  .el-popover {
+    color: #fff;
+    background-color: #000;
   }
+  .popper__arrow::after {
+    border-bottom-color: #000000;
+  }
+  .daocloud-lay {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    .daocloud {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+}
+.itme-container:hover {
+  background-color: #F5F7FA;
+  box-shadow: 0px 1px 2px 0px rgba(204, 209, 217, 0.5);
+  border-color: #CCD1D9;
+}
 </style>

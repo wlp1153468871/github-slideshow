@@ -1,21 +1,11 @@
 <template>
   <div id="servicedetail1">
-    <div class="layout-content-header">
-      <!-- <el-breadcrumb separator-class="el-icon-arrow-right" class="header-text">
-        <el-breadcrumb-item
-          :to="{ path: '/seeting/application' }"
-          class="header-text"
-        >
-          应用模板管理
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>{{appInfo.name}}({{appInfo.zoneName}})</el-breadcrumb-item>
-      </el-breadcrumb> -->
+    <div class="detail-header">
       <breadcrumb
         :links="[
-          { text: '应用模板管理', route: { path: '/seeting/application' } },
+          { text: '服务模板管理', route: { path: '/seeting/application' } },
           { text: `${appInfo.name}(${appInfo.name})` },
         ]"
-        class="header-text"
       >
       </breadcrumb>
     </div>
@@ -56,9 +46,9 @@
           <dao-dropdown-item style="margin-left: 10px" @click="editInfo">
             <span>编辑基本信息</span>
           </dao-dropdown-item>
-          <dao-dropdown-item style="margin-left: 10px" @click="addEdition">
+          <!-- <dao-dropdown-item style="margin-left: 10px" @click="addEdition">
             <span>添加版本</span>
-          </dao-dropdown-item>
+          </dao-dropdown-item> -->
           <dao-dropdown-item
             style="margin-left: 10px"
             v-if="appInfo.available"
@@ -69,9 +59,9 @@
           <dao-dropdown-item style="margin-left: 10px" v-else @click="availableOn">
             <span>上架应用</span>
           </dao-dropdown-item>
-          <dao-dropdown-item style="margin-left: 10px">
+          <!-- <dao-dropdown-item style="margin-left: 10px">
             <span style="color: red;" @click="deleteApplication">删除</span>
-          </dao-dropdown-item>
+          </dao-dropdown-item> -->
         </dao-dropdown-menu>
       </dao-dropdown>
     </div>
@@ -215,11 +205,11 @@
           <div class="border-box">
             <div class="title">基本信息</div>
             <div class="appdesc">
-              <div class="desc-title">应用描述</div>
+              <div class="desc-title">服务描述</div>
               <div class="desc-text">{{appInfo.description}}</div>
             </div>
             <div class="app">
-              <div class="app-title">应用信息</div>
+              <div class="app-title">服务信息</div>
               <div class="app-box">
                 <div class="text-name">
                   服务类型
@@ -263,7 +253,7 @@
           </div>
           <div class="border-box reademe" v-if="appInfo.content">
             <div class="title name">README</div>
-            <mark-down class="content" :text="`${appInfo.content}`"></mark-down>
+            <div v-html="mdHtml"></div>
           </div>
         </div>
         <div class="lay-right">
@@ -297,7 +287,7 @@
               <div class="right-name">维护者</div>
               <div v-for="(data, key) in item.supplier" :key="key">
                 <div class="right-desc">{{data.name}}</div>
-                <div class="right-desc">{{data.email}}</div>
+                <div class="right-desc">({{data.email}})</div>
               </div>
               <div class="right-name">官网链接</div>
               <a :href="`${item.homeUrl}`" class="right-link">{{item.homeUrl}}</a>
@@ -305,7 +295,7 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="项目组" name="second">
+      <!-- <el-tab-pane label="项目组" name="second">
         <div class="project">
           状态：
           <dao-select
@@ -453,7 +443,7 @@
             </div>
           </div>
         </div>
-      </el-tab-pane>
+      </el-tab-pane> -->
       <el-tab-pane label="实例" name="thrid">
         <dao-input
           search

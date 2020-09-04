@@ -22,9 +22,6 @@
         <el-tab-pane :label="TABS.APPLICATION" :name="TABS.APPLICATION">
           <AppList :id="zone.id" @addApplication="addApplication"></AppList>
         </el-tab-pane>
-        <el-tab-pane :label="TABS.CHART" :name="TABS.CHART">
-          <ChartList :id="zone.id"></ChartList>
-        </el-tab-pane>
         <el-tab-pane :label="TABS.BINDS" :name="TABS.BINDS">
           <manage-panel
             :zone="zone"
