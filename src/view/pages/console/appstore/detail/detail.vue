@@ -3,8 +3,8 @@
     <div class="detail-header">
       <breadcrumb
         :links="[
-          { text: '应用', route: { path: '/console/appstore/view' } },
-          { text: `应用详情(${appInfo.name})` },
+          { text: '服务', route: { path: '/console/appstore/view' } },
+          { text: `服务详情(${appInfo.name})` },
         ]"
       >
       </breadcrumb>
@@ -156,11 +156,11 @@
               <div class="base-info">
                 <div class="title">基本信息</div>
                 <div class="desc">
-                  <div class="desc-title">应用描述</div>
+                  <div class="desc-title">服务描述</div>
                   <div class="desc-text">{{appInfo.description}}</div>
                 </div>
                 <div class="app">
-                  <div class="app-title">应用信息</div>
+                  <div class="app-title">服务信息</div>
                   <div class="app-box">
                     <div class="text-name">
                       服务类型

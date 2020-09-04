@@ -1,3 +1,8 @@
+$maxWidth: 1280px;
+$maxLeft: 96px;
+
+$minWidth: 1060px;
+$minLeft: 740px;
 ::v-deep .el_tabs .el-tab-pane{
   margin: 0;
 }
@@ -306,7 +311,7 @@
     }
   }
   .content_box {
-    width: 1280px;
+    width: $maxWidth;
     min-height: 100%;
     margin: 0 auto;
     box-sizing: border-box;
