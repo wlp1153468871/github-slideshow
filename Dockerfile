@@ -15,7 +15,7 @@ USER root
 
 # install project dependencies
 # RUN npm ci
-RUN yarn
+RUN npm install
 
 COPY . /app/
 
