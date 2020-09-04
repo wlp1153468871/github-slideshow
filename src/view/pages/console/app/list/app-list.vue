@@ -74,7 +74,13 @@
               </x-table-status>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="" align="center" header-align="center" width="56" v-if="$can('serviceInstance.delete')">
+          <el-table-column
+            fixed="right"
+            label=""
+            align="center"
+            header-align="center"
+            width="56"
+            v-if="$can('serviceInstance.delete')">
             <template slot-scope="{ row: instances }">
               <el-dropdown @command="handleOperate($event, instances)" trigger="click">
                 <span>
