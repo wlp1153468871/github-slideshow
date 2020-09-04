@@ -15,7 +15,6 @@
 
         <template #action-buttons>
           <dao-dropdown
-            v-if="$can('route.delete', 'route')"
             trigger="click"
             :append-to-body="true"
             placement="bottom-end"
@@ -28,10 +27,13 @@
             </button>
 
             <dao-dropdown-menu slot="list">
-              <dao-dropdown-item @click="dialogConfigs.yamlEdit = true">
+              <dao-dropdown-item
+                 v-if="$can('route.update', 'route')"
+                 @click="dialogConfigs.yamlEdit = true">
                 <span>Yaml 更新</span>
               </dao-dropdown-item>
               <dao-dropdown-item
+                v-if="$can('route.delete', 'route')"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >
