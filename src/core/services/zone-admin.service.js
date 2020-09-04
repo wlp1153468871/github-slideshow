@@ -29,9 +29,9 @@ class ZoneAdmin {
   /**
    * 列出选定可用区下所有的app
    */
-  getSelectedZone(zoneId, status) {
+  getSelectedZone(zoneId, type) {
     return this.api.get(`/appstore/zones/${zoneId}/applications`, {
-      status,
+      type,
     });
   }
 
@@ -117,6 +117,13 @@ class ZoneAdmin {
    */
   addCategory(category_name) {
     return this.api.post(`/appstore/applications/categories/${category_name}`);
+  }
+
+  /**
+   * 同步本平台与harbor的chart版本
+   */
+  syncHarborChart(zone_id) {
+    return this.api.post(`/appstore/zones/${zone_id}/sync_chart`);
   }
 }
 

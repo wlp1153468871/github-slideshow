@@ -8,6 +8,7 @@ import ServicePanel from './panels/service';
 import SettingPanel from './panels/setting';
 import UserPanel from './panels/user';
 import ZonePanel from './panels/zone';
+import LIST from './panels/applist';
 
 export default {
   name: 'SpaceDetail',
@@ -20,6 +21,7 @@ export default {
     SettingPanel,
     UserPanel,
     ZonePanel,
+    LIST,
   },
 
   created() {
@@ -33,6 +35,7 @@ export default {
   data() {
     const SIDE_BAR = {
       OVERVIEW: '设置',
+      LIST: '可用chart模板',
       USER: '用户列表',
       ZONE: '可用区',
       SERVICE: '可用服务',

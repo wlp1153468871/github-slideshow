@@ -48,10 +48,10 @@ export default {
       ],
       appTypeCat: '',
       key: '',
+      lineCode: 0,
       loading: {
         appInfo: false,
       },
-      lineCode: 0,
     };
   },
 
@@ -89,10 +89,10 @@ export default {
       this.selectedArr.forEach((item, index) => {
         ServiceAdmin.availableOn(item.id).then(() => {
           this.getAllApp();
+          if (index === this.selectedArr.length - 1) {
+            this.lineCode = 200;
+          }
         });
-        if (index === this.selectedArr.length - 1) {
-          this.lineCode = 200;
-        }
       });
       if (this.lineCode === 200) {
         this.$noty.success('上架成功');

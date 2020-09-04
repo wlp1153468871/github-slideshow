@@ -25,7 +25,6 @@ export default {
     const TABS = {
       BINDS: '服务管理',
       APPLICATION: '应用列表',
-      CHART: 'chart管理',
       OVERVIEW: '设置',
     };
     return {

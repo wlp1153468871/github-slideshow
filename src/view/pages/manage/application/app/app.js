@@ -185,7 +185,7 @@ export default {
       if (this.zoneId === '') {
         this.$noty.error('请先选择可用区');
         return false;
-      } else if (this.chartType.indexOf(file.type) < 0) {
+      } else if (this.chartType.indexOf(file.type) < 0) {z
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
@@ -211,7 +211,6 @@ export default {
             this.form.name = res.chartName;
             this.form.description = res.description;
             this.version = res.version;
-            this.chartList = [];
           }
         })
         .catch(() => {

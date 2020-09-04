@@ -29,7 +29,8 @@
               action="#"
               :http-request="handleUploadChart"
               :file-list="chartList"
-              accept="application/zip, application/x-compressed, application/x-gzip"
+              accept="application/zip, application/x-compressed,
+              application/x-gzip, application/gzip, application/x-tar"
               :limit="1"
               :before-upload="beforeUploadChart"
               :on-remove="removeFileChart"
@@ -49,10 +50,11 @@
           <template slot="label">模板名称</template>
           <template slot="content">
             <dao-input
+              readonly
               style="width: 100%"
               v-model="name"
               block
-              placeholder="请输入应用名称"></dao-input>
+              placeholder="请上传chart版本"></dao-input>
           </template>
         </dao-setting-section>
         <dao-setting-section>
@@ -73,6 +75,15 @@
               :on-remove="removeFile">
               <button class="dao-btn blue">上传图标</button>
             </el-upload>
+          </template>
+        </dao-setting-section>
+        <dao-setting-section>
+          <template slot="label">是否认证</template>
+          <template slot="content">
+            <el-radio-group v-model="daoAuth">
+              <el-radio :label="true">是</el-radio>
+              <el-radio :label="false">否</el-radio>
+            </el-radio-group>
           </template>
         </dao-setting-section>
         <dao-setting-section>
@@ -189,8 +200,9 @@ export default {
       name: '', // 应用名称
       description: '', // 描述,
       pictureId: '', // 上传图标的id
+      daoAuth: false, // 是否上传
       fileType: ['image/png'],
-      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar'],
       chartList: [],
       showAddCategory: false, // 控制新增分类按钮
       // 弹窗所需数据
@@ -302,6 +314,16 @@ export default {
       });
     },
     createApp() {
+      if (this.pictureId === '') {
+        this.$noty.error('模板图标为必传');
+        return;
+      } else if (this.appType === '') {
+        this.$noty.error('服务类型不能为空');
+        return;
+      } else if (this.category.length === 0) {
+        this.$noty.error('分类不能为空');
+        return;
+      }
       const formData = {
         name: this.name,
         pictureId: this.pictureId,
@@ -338,6 +360,7 @@ export default {
      * chart文件上传之前的回调函数
      */
     beforeUploadChart(file) {
+      console.log(file, file.type, '文件类型');
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
@@ -355,6 +378,7 @@ export default {
       this.chartList.forEach(file => {
         formData.append('chart', file);
       });
+      console.log(formData, '文件内容');
       ZoneAdminService.createChart(this.id, formData)
         .then(res => {
           if (res) {
