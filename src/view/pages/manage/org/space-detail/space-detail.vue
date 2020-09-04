@@ -25,7 +25,7 @@
       </el-tab-pane>
 
       <el-tab-pane :label="SIDE_BAR.LIST" :name="SIDE_BAR.LIST">
-        <LIST></LIST>
+        <LIST :spaceId="spaceId" :orgId="orgId"></LIST>
       </el-tab-pane>
 
       <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">

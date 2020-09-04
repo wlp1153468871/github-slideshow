@@ -1,39 +1,29 @@
 <template>
     <div id="zone">
       <div class="app-list">
-        <div v-if="showImport">
+        <div v-if="isSync">
           <dao-dialog
-            v-if="showImport"
-            :visible.sync="showImport"
-            header="确认"
+            v-if="isSync"
+            :visible.sync="isSync"
+            header="确认是否同步"
           >
-            <div class="body">确认是否导入?</div>
+            <div class="body">
+              <div>确定同步本平台与harbor仓库的chart模板？</div>
+              <div>此操作耗时可能较大，请耐心等待!</div>
+            </div>
             <div slot="footer">
-              <button class="dao-btn red" @click="sureImport">确认</button>
+              <button class="dao-btn blue" @click="sureImport">确认</button>
               <button class="dao-btn" @click="ImportCancel">取消</button>
             </div>
           </dao-dialog>
         </div>
         <div style="min-width: 560px">
-<!--          状态：-->
-<!--          <dao-select-->
-<!--            v-model="status"-->
-<!--            size="sm"-->
-<!--            style="width: 120px; height: 32px; margin-right: 10px;"-->
-<!--            @change="changeStatus"-->
-<!--          >-->
-<!--            <dao-option-->
-<!--              v-for="item in statusOptions"-->
-<!--              :key="item.value"-->
-<!--              :value="item.value"-->
-<!--              :label="item.text">-->
-<!--            </dao-option>-->
-<!--          </dao-select>-->
           资源类型：
           <dao-select
             v-model="type"
             size="sm"
             style="width: 160px; height: 32px;"
+            @change="changeStatus"
           >
             <dao-option
               v-for="item in typeOptions"
@@ -48,7 +38,7 @@
             <span class="text">导入应用模板</span>
           </button>
           <button class="dao-btn blue has-icon"
-                  style="margin-left: 10px;" @click="handleNewApplication">
+                  style="margin-left: 10px;" @click="synchronism">
             <svg class="icon"><use xlink:href="#icon_update"></use></svg>
             <span class="text">同步</span>
           </button>
@@ -119,13 +109,6 @@
                     <use :xlink:href="`#icon_more`"></use>
                   </svg>
                   <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                    <dao-dropdown-item style="margin-left: 10px">
-                      <span style="width: 100%;display: inline-block;"
-                            @click="handleImport">导入</span>
-<!--                      <span style="width: 100%;display: inline-block;"-->
-<!--                            v-if="scope.row.available === 0"-->
-<!--                            @click="handleOn(scope.row.id)">上架应用</span>-->
-                    </dao-dropdown-item>
                     <dao-dropdown-item
                       style="margin-left: 10px"
                       @click="handleClick(scope.row.id, scope.row.zoneId)"
@@ -199,13 +182,13 @@ export default {
           value: 0,
         },
       ],
-      type: 1, // 资源状态
+      type: '', // 资源状态
       typeOptions: [{
         text: '全部',
-        value: 1,
+        value: '',
       }, {
         text: 'Helm Chart',
-        value: 2,
+        value: 'Helm Chart',
       }],
       tableData: [],
       renderTable: [], // 渲染table的数据
@@ -219,7 +202,7 @@ export default {
       loading: {
         zone: false,
       },
-      showImport: false, // 是否点击了导入按钮
+      isSync: false, // 是否点击了同步按钮
     };
   },
   created() {
@@ -231,7 +214,7 @@ export default {
        */
     getSelectZone() {
       this.loading.zone = true;
-      ZoneAdminService.getSelectedZone(this.id, this.status)
+      ZoneAdminService.getSelectedZone(this.id, this.type)
         .then(res => {
           this.tableData = res;
           this.renderTable = res;
@@ -289,6 +272,7 @@ export default {
        */
     handleClick(id, zoneId) {
       ZoneAdminService.deleteApplication(id, zoneId).then(() => {
+        this.$noty.success('删除成功');
         this.getSelectZone();
       });
     },
@@ -344,22 +328,34 @@ export default {
       this.handleChange('');
     },
     /**
-     * 点击导入按钮
-     */
-    handleImport() {
-      this.showImport = true;
-    },
-    /**
      * 确认导入
      */
     sureImport() {
-      this.showImport = false;
+      this.isSync = false;
+      this.loading.zone = true;
+      ZoneAdminService.syncHarborChart(this.id).then(res => {
+        this.tableData = res;
+        this.renderTable = res;
+        this.renderTable.forEach(item => {
+          const category = item.category.join(',');
+          item.category = category;
+        });
+        this.$noty.success('同步成功');
+      }).finally(() => {
+        this.loading.zone = false;
+      });
     },
     /**
      * 放弃导入
      */
     ImportCancel() {
-      this.showImport = false;
+      this.isSync = false;
+    },
+    /**
+     * 点击同步按钮
+     */
+    synchronism() {
+      this.isSync = true;
     },
   },
 };

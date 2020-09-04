@@ -80,10 +80,10 @@
         <dao-setting-section>
           <template slot="label">是否认证</template>
           <template slot="content">
-            <dao-radio-group>
-              <dao-radio :label="1" v-model="authentication">是</dao-radio>
-              <dao-radio :label="0" v-model="authentication">否</dao-radio>
-            </dao-radio-group>
+            <el-radio-group v-model="daoAuth">
+              <el-radio :label="true">是</el-radio>
+              <el-radio :label="false">否</el-radio>
+            </el-radio-group>
           </template>
         </dao-setting-section>
         <dao-setting-section>
@@ -200,7 +200,7 @@ export default {
       name: '', // 应用名称
       description: '', // 描述,
       pictureId: '', // 上传图标的id
-      authentication: '', // 是否上传
+      daoAuth: false, // 是否上传
       fileType: ['image/png'],
       chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar'],
       chartList: [],
@@ -316,6 +316,12 @@ export default {
     createApp() {
       if (this.pictureId === '') {
         this.$noty.error('模板图标为必传');
+        return;
+      } else if (this.appType === '') {
+        this.$noty.error('服务类型不能为空');
+        return;
+      } else if (this.category.length === 0) {
+        this.$noty.error('分类不能为空');
         return;
       }
       const formData = {
