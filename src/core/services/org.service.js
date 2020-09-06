@@ -98,8 +98,13 @@ class OrgService {
   /**
    * 项目组管理员可见的所有应用列表
    */
-  getSpaceAllAppList(org_id, space_id) {
-    return this.api.get(`/appstore/organization/${org_id}/space/${space_id}/applications`);
+  getSpaceAllAppList(org_id, space_id, status, zoneId, appType) {
+    // console.log(typeof statusId);
+    return this.api.get(`/appstore/organization/${org_id}/space/${space_id}/applications`, {
+      status,
+      zoneId,
+      appType,
+    });
   }
 
   /**

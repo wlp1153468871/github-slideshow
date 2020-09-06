@@ -17,6 +17,39 @@
             </div>
           </dao-dialog>
         </div>
+        <div v-if="showNewVersion">
+          <dao-dialog
+            v-if="showNewVersion"
+            :visible.sync="showNewVersion"
+            header="新增chart版本"
+          >
+            <div class="dao-setting-layout">
+              <div class="dao-setting-section" style="padding: 20px;">
+                <div class="dao-setting-item">
+                  <div class="dao-setting-label dao-name">Chart 文件</div>
+                  <div class="dao-setting-content">
+                    <el-upload
+                      class="upload-demo"
+                      ref="upload"
+                      action="#"
+                      :http-request="handleUploadChart"
+                      :file-list="chartList"
+                      accept="application/zip, application/x-compressed, application/x-gzip"
+                      :limit="1"
+                      :before-upload="beforeUploadChart"
+                      :on-remove="removeFileChart">
+                      <button class="dao-btn blue">上传chart</button>
+                    </el-upload>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div slot="footer">
+              <button class="dao-btn blue" @click="handleUploadChart">确认</button>
+              <button class="dao-btn" @click="cancelUpload">取消</button>
+            </div>
+          </dao-dialog>
+        </div>
         <div style="min-width: 560px">
           资源类型：
           <dao-select
@@ -64,31 +97,67 @@
       <el-table
         style="width: 100%; margin-top: 20px;"
         :data="renderTable"
-        :cell-style="cellStyle"
-        @cell-click="cellClick"
         v-loading="loading.zone"
       >
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-table class="in-table"
+                      style="width: 100%;"
+                      :data="scope.row[scope.row.name]"
+                      :header-cell-style="{background:'#fff'}">
+              <el-table-column label="Chart 版本" prop="version" width="200"></el-table-column>
+              <el-table-column label="APP版本" prop="appVersion" width="200"></el-table-column>
+              <el-table-column label="维护者">
+                <template slot-scope="scope">
+                  {{ scope.row.supplier[0].name }}
+                  <span
+                    v-if="scope.row.supplier.length != 1">
+                      ({{scope.row.supplier.length-1}}others)
+                    </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="创建时间" prop="date">
+                <template slot-scope="scope">
+                  {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                </template>
+              </el-table-column>
+              <el-table-column width="50">
+                <template slot-scope="scope">
+                      <span class="dao-btn-group">
+                        <dao-dropdown
+                          trigger="click"
+                          :append-to-body="true"
+                          placement="right-start"
+                        >
+                          <svg class="icon">
+                            <use :xlink:href="`#icon_more`"></use>
+                          </svg>
+                          <dao-dropdown-menu slot="list" style="min-width: 120px;">
+<!--                            <dao-dropdown-item-->
+<!--                              @click="uploadChartVersion(scope.row.name, scope.row.version)"-->
+<!--                              style="margin-left: 10px" class="linkColor">-->
+<!--                              <a ref="upload"-->
+<!--                                 style="width: 100%;display: inline-block;">下载</a>-->
+<!--                            </dao-dropdown-item>-->
+                              <dao-dropdown-item
+                                style="margin-left: 10px"
+                                @click="deleteChartVersion(scope.row.appId,
+                                scope.row.chartName, scope.row.version)"
+                              >
+                                <span style="color: red;">删除</span>
+                              </dao-dropdown-item>
+                          </dao-dropdown-menu>
+                        </dao-dropdown>
+                      </span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
         <el-table-column label="应用名称" prop="name">
         </el-table-column>
         <el-table-column label="供应商" prop="provider" width="100"></el-table-column>
         <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
-<!--        <el-table-column label="状态" width="100">-->
-<!--          <template slot-scope="scope">-->
-<!--            <div v-if="scope.row.available === 1">-->
-<!--              <svg class="icon" style="color: #25D473">-->
-<!--                <use :xlink:href="`#icon_status-dot-small`"></use>-->
-<!--              </svg>-->
-<!--              <span>已上架</span>-->
-<!--            </div>-->
-<!--            <div v-if="scope.row.available === 0">-->
-<!--              <svg class="icon" style="color: #CCD1D9">-->
-<!--                <use :xlink:href="`#icon_status-dot-small`"></use>-->
-<!--              </svg>-->
-<!--              <span>已下架</span>-->
-<!--            </div>-->
-
-<!--          </template>-->
-<!--        </el-table-column>-->
         <el-table-column label="类型" prop="appType"></el-table-column>
         <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
         <el-table-column label="分类" prop="category"></el-table-column>
@@ -110,7 +179,10 @@
                   </svg>
                   <dao-dropdown-menu slot="list" style="min-width: 120px;">
                     <dao-dropdown-item
-                      style="margin-left: 10px"
+                      @click="handleNewChartVersion(scope.row.id, scope.row.zoneId)">
+                      <span style="color: #000;">新增chart版本</span>
+                    </dao-dropdown-item>
+                    <dao-dropdown-item
                       @click="handleClick(scope.row.id, scope.row.zoneId)"
                     >
                       <span style="color: red;">删除</span>
@@ -203,6 +275,11 @@ export default {
         zone: false,
       },
       isSync: false, // 是否点击了同步按钮
+      showNewVersion: false, // 是否打开新增chart版本接口
+      chartList: [], // charts上传
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
+      newChartVersionId: '', // 上传chart文件保存的ID
+      newChartVersionZoneId: '', // 上传chart文件保存的ZoneID
     };
   },
   created() {
@@ -219,13 +296,46 @@ export default {
           this.tableData = res;
           this.renderTable = res;
           this.renderTable.forEach(item => {
-            const category = item.category.join(',');
+            const category = item.category.join('，');
             item.category = category;
           });
+          this.changeExpand();
         })
         .finally(() => {
           this.loading.zone = false;
         });
+    },
+    /**
+     * 展开行改变
+     */
+    changeExpand() {
+      if (this.tableData.length !== 0) {
+        this.tableData.forEach(item => {
+          ZoneAdminService.getChartVersionList(item.id).then(res => {
+            item[item.name] = res;
+          });
+        });
+        console.log(this.tableData, '展开', this.renderTable);
+      }
+    },
+    /**
+     * 删除chart版本
+     */
+    deleteChartVersion(app_id, name, version) {
+      // console.log(this.renderTable[name]);
+      // if (this.renderTable[name].length === 1) {
+      //   this.$noty.error('当前chart只有一个版本，不支持删除');
+      //   return;
+      // }
+      ZoneAdminService.deleteChartVersion(this.id, app_id, name, version).then(() => {
+        this.getSelectZone();
+        this.$noty.success('删除成功');
+      }).catch(() => {
+        this.$message({
+          message: '删除失败',
+          type: 'warning',
+        });
+      });
     },
     // 数量
     TableNum() {
@@ -266,6 +376,15 @@ export default {
         this.getSelectZone();
         this.$noty.success('上架成功');
       });
+    },
+    /**
+     * 上传chart新版本
+     */
+    handleNewChartVersion(id, zoneId) {
+      this.showNewVersion = true;
+      this.newChartVersionId = id;
+      this.newChartVersionZoneId = zoneId;
+      console.log(this.newChartVersionId, this.newChartVersionZoneId);
     },
     /**
        * 删除应用
@@ -356,6 +475,56 @@ export default {
      */
     synchronism() {
       this.isSync = true;
+    },
+    /**
+     * 确认上传chart新版本-上传chart文件
+     */
+    handleUploadChart() {
+      const formData = new FormData();
+      this.chartList.forEach(file => {
+        formData.append('chart', file);
+      });
+      console.log(formData);
+      ZoneAdminService.uploadNewChartVersion(
+        this.newChartVersionZoneId, this.newChartVersionId, formData)
+        .then(res => {
+          if (res) {
+            this.$noty.success('上传chart成功');
+            this.getSelectZone();
+          }
+        })
+        .catch(() => {
+          this.removeFileChart();
+        });
+    },
+    // 上传chart文件之前
+    beforeUploadChart(file) {
+      if (this.chartType.indexOf(file.type) < 0) {
+        console.log(`文件MIME: ${file.type}`);
+        this.$noty.warning('请选择正确的压缩格式文件');
+        this.removeFileChart();
+      } else {
+        this.chartList = [];
+        this.chartList = [...this.chartList, file];
+      }
+      return true;
+    },
+    /**
+     * 删除chart文件
+     */
+    removeFileChart() {
+      ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
+        this.chartList = [];
+        this.name = '';
+        this.description = '';
+        this.$noty.success('chart文件删除');
+      });
+    },
+    /**
+     * 取消上传chart新版本
+     */
+    cancelUpload() {
+      this.showNewVersion = false;
     },
   },
 };

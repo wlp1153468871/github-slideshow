@@ -8,6 +8,7 @@
           v-model="zone"
           placeholder="请选择"
           style="width: 160px"
+          @change="handleChange"
           >
           <dao-option
             v-for="item in zoneOptions"
@@ -22,7 +23,8 @@
           <dao-select
             v-model="status"
             placeholder="请选择"
-            style="width: 150px">
+            style="width: 150px"
+          @change="handleChange">
             <dao-option
               v-for="item in statusOptions"
               :key="item.id"
@@ -36,7 +38,8 @@
           <dao-select
             v-model="type"
             placeholder="请选择"
-            style="width: 150px">
+            style="width: 150px"
+          @change="handleChange">
             <dao-option
               v-for="item in typeOptions"
               :key="item.id"
@@ -46,10 +49,14 @@
           </dao-select>
         </div>
         <div style="margin-left: 10px">
-          <button class="dao-btn" :disabled="offArr.length !== 0 || haveOn" @click="handleOn">批量上架</button>
+          <button class="dao-btn"
+                  :disabled="offArr.length !== 0 || haveOn"
+                  @click="handleOn">批量上架</button>
         </div>
         <div style="margin-left: 10px">
-          <button class="dao-btn" :disabled="onArr.length !== 0 || haveOff" @click="handleOff">批量下架</button>
+          <button class="dao-btn"
+                  :disabled="onArr.length !== 0 || haveOff"
+                  @click="handleOff">批量下架</button>
         </div>
       </div>
       <div class="search">
@@ -237,6 +244,7 @@ export default {
   },
   created() {
     this.getSpaceAllAppList();
+    this.getZone();
   },
   methods: {
     /**
@@ -244,13 +252,13 @@ export default {
      */
     getSpaceAllAppList() {
       this.loading.appInfo = true;
-      OrgService.getSpaceAllAppList(this.orgId, this.spaceId).then(res => {
-        console.log(res);
-        this.tableData = res;
-      }).finally(() => {
-        this.loading.appInfo = false;
-      });
-      this.getZone();
+      OrgService.getSpaceAllAppList(this.orgId, this.spaceId, this.status, this.zone, this.type)
+        .then(res => {
+          console.log(res);
+          this.tableData = res;
+        }).finally(() => {
+          this.loading.appInfo = false;
+        });
     },
     /**
      * 可用区列表
@@ -332,6 +340,13 @@ export default {
           });
         });
       }
+    },
+    /**
+     * 搜索
+     */
+    handleChange(val) {
+      console.log(typeof val);
+      this.getSpaceAllAppList();
     },
   },
 };

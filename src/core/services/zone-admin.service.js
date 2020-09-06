@@ -29,9 +29,9 @@ class ZoneAdmin {
   /**
    * 列出选定可用区下所有的app
    */
-  getSelectedZone(zoneId, type) {
+  getSelectedZone(zoneId, appType) {
     return this.api.get(`/appstore/zones/${zoneId}/applications`, {
-      type,
+      appType,
     });
   }
 
@@ -85,17 +85,24 @@ class ZoneAdmin {
   }
 
   /**
-   * 仓库里一个chart的版本列表
+   * 仓库里一个chart的版本列表(废弃)
    */
-  getChartVersionList(zoneId, chart_name) {
-    return this.api.get(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}`);
+  // getChartVersionList(zoneId, chart_name) {
+  //   return this.api.get(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}`);
+  // }
+
+  /**
+   * 获取charts（版本）列表
+   */
+  getChartVersionList(app_id) {
+    return this.api.get(`/appstore/applications/${app_id}/application_infos`);
   }
 
   /**
    * 删除chart版本
    */
-  deleteChartVersion(zoneId, name, version) {
-    return this.api.delete(`/appstore/zones/${zoneId}/chart_repo/charts/${name}/${version}`);
+  deleteChartVersion(zoneId, app_id, name, version) {
+    return this.api.delete(`/appstore/zones/${zoneId}/applications/${app_id}/charts/${name}/${version}`);
   }
 
   /**
@@ -124,6 +131,13 @@ class ZoneAdmin {
    */
   syncHarborChart(zone_id) {
     return this.api.post(`/appstore/zones/${zone_id}/sync_chart`);
+  }
+
+  /**
+   * 上传chart新版本
+   */
+  uploadNewChartVersion(zone_id, app_id, data) {
+    return this.api.post(`/appstore/zones/${zone_id}/applications/${app_id}/application_infos`, data);
   }
 }
 
