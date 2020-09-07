@@ -215,13 +215,16 @@
                 placeholder="搜索">
               </dao-input>
               <span style="float: right;" @click="fresh">
-                <el-button size="mini" style="margin-left: 10px;">
+                <!-- <el-button size="mini" style="margin-left: 10px;">
                   <span>
                     <svg class="icon">
                       <use :xlink:href="`#icon_cw`"></use>
                     </svg>
                   </span>
-                </el-button>
+                </el-button> -->
+                <button class="dao-btn icon-btn" style="margin-left: 10px;">
+                  <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
+                </button>
               </span>
               <div style="margin-top: 20px;">
                 <el-table
@@ -248,7 +251,7 @@
                   <el-table-column label="创建者" prop="ownerName"></el-table-column>
                   <el-table-column label="创建时间">
                     <template slot-scope="scope">
-                      {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                      {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
                     </template>
                   </el-table-column>
                   <el-table-column  label="操作" width="60">
@@ -264,19 +267,16 @@
                           </svg>
                           <dao-dropdown-menu slot="list" style="min-width: 120px;">
                             <dao-dropdown-item
-                              style="margin-left: 10px"
                               @click="linktoForm(scope.row.id)"
                             >
                               <span>使用表单更新</span>
                             </dao-dropdown-item>
                             <dao-dropdown-item
-                              style="margin-left: 10px"
                               @click="linktoYamlForm(scope.row.id)"
                             >
-                              <span>使用YAML更新</span>
+                              <span>使用 YAML 更新</span>
                             </dao-dropdown-item>
                             <dao-dropdown-item
-                              style="margin-left: 10px"
                               @click="deleteInstance(scope.row.id)"
                             >
                               <span style="color: red;">删除</span>
@@ -289,29 +289,13 @@
                 </el-table>
                 <div class="footer">
                   <div class="page">共 {{instanceNum()}} 项</div>
-                  <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-                    <dao-dropdown
-                      trigger="click"
-                      :append-to-body="true"
-                      placement="bottom-start"
-                    >
-                      <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-                        <span class="text">10项/页</span>
-                        <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-                      </button>
-                      <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span>15项/页</span>
-                        </dao-dropdown-item>
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span>20项/页</span>
-                        </dao-dropdown-item>
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span>25项/页</span>
-                        </dao-dropdown-item>
-                      </dao-dropdown-menu>
-                    </dao-dropdown>
-                  </span>
+                  <el-pagination
+                    :page-sizes="[10, 15, 20, 25]"
+                    :page-size="100"
+                    layout="sizes"
+                    style="padding-top: 5px;"
+                  >
+                  </el-pagination>
                 </div>
               </div>
             </el-tab-pane>
@@ -358,6 +342,7 @@
             <dao-dialog
               :visible.sync="configCreate"
               :header="`创建实例 | ${item.chartName}`"
+              @before-close="destoryDialog"
             >
               <div class="dao-setting-layout">
                 <div class="dao-setting-section" style="padding: 20px;">

@@ -220,6 +220,9 @@
     min-height: 760px;
     border-left: 1px solid rgb(228,231,237);
     overflow: hidden;
+    // 跟随左边高度
+    padding-bottom:9999px;
+    margin-bottom:-9999px;
     .no-version {
       height: 524px;
       .center {
@@ -334,7 +337,7 @@
       float: left;
       height: 14px;
       line-height: 14px;
-      padding: 10px 0 0 10px;
+      padding: 12px 0 0 10px;
       font-size: 14px;
       font-family: PingFangSC-Regular,PingFang SC;
       font-weight: 400;

@@ -28,6 +28,7 @@ export default {
       instanceName: '',
       table: [],
       loading: false,
+      giveup: false,
     };
   },
 
@@ -113,7 +114,6 @@ export default {
         .createForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.chartName, this.$route.params.version, this.instanceName, this.table)
         .then(res => {
-          console.log(res);
           if (res.status === 'deployed') {
             this.$router.push({
               name: 'appstore.detail',
@@ -121,7 +121,7 @@ export default {
                 Id: this.$route.params.appid,
               },
               query: {
-                activeName: 'second',
+                activeName: this.$route.query.activeName,
               },
             });
             this.$noty.success('实例创建成功');
@@ -132,7 +132,7 @@ export default {
                 Id: this.$route.params.appid,
               },
               query: {
-                activeName: 'second',
+                activeName: this.$route.query.activeName,
               },
             });
             this.$noty.warning('实例创建超时');
@@ -179,7 +179,7 @@ export default {
                   Id: this.$route.params.appid,
                 },
                 query: {
-                  activeName: 'second',
+                  activeName: this.$route.query.activeName,
                 },
               });
             }
@@ -195,16 +195,22 @@ export default {
     close() {
       this.config.visible = false;
     },
+    destoryDialog() {
+      if (this.giveup) {
+        this.$router.push({
+          name: 'appstore.detail',
+          params: {
+            Id: this.$route.params.appid,
+          },
+          query: {
+            activeName: this.$route.query.activeName,
+          },
+        });
+      }
+    },
     giveUp() {
-      this.$router.push({
-        name: 'appstore.detail',
-        params: {
-          Id: this.$route.params.appid,
-        },
-        query: {
-          activeName: 'second',
-        },
-      });
+      this.config.visible = false;
+      this.giveup = true;
     },
   },
 };

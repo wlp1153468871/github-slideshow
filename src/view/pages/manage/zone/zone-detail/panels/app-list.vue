@@ -85,13 +85,9 @@
             v-model="search"
           >
           </dao-input>
-          <el-button size="mini" @click="handleRefresh" style="margin-left: 10px;">
-              <span>
-                <svg class="icon">
-                  <use :xlink:href="`#icon_cw`"></use>
-                </svg>
-              </span>
-          </el-button>
+          <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="handleRefresh">
+            <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
+          </button>
         </div>
       </div>
       <el-table
@@ -102,9 +98,10 @@
         <el-table-column type="expand">
           <template slot-scope="scope">
             <el-table class="in-table"
-                      style="width: 100%;"
-                      :data="scope.row[scope.row.name]"
-                      :header-cell-style="{background:'#fff'}">
+              style="width: 100%;"
+              :data="scope.row[scope.row.name]"
+              :header-cell-style="{background:'#fff'}"
+            >
               <el-table-column label="Chart 版本" prop="version" width="200"></el-table-column>
               <el-table-column label="APP版本" prop="appVersion" width="200"></el-table-column>
               <el-table-column label="维护者">
@@ -315,7 +312,6 @@ export default {
             item[item.name] = res;
           });
         });
-        console.log(this.tableData, '展开', this.renderTable);
       }
     },
     /**
@@ -384,7 +380,6 @@ export default {
       this.showNewVersion = true;
       this.newChartVersionId = id;
       this.newChartVersionZoneId = zoneId;
-      console.log(this.newChartVersionId, this.newChartVersionZoneId);
     },
     /**
        * 删除应用
@@ -484,7 +479,6 @@ export default {
       this.chartList.forEach(file => {
         formData.append('chart', file);
       });
-      console.log(formData);
       ZoneAdminService.uploadNewChartVersion(
         this.newChartVersionZoneId, this.newChartVersionId, formData)
         .then(res => {

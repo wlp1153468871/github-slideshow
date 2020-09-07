@@ -3,7 +3,7 @@
     <div class="header">
       <breadcrumb
         :links="[
-          { text: '应用', route: { path: '/console/appstore/view' } },
+          { text: '服务', route: { path: '/console/appstore/view' } },
           { text: `实例详情(${instanceInfo.name})` },
         ]"
       >
@@ -27,7 +27,7 @@
         <div class="title-desc-name">{{appInfo.appType}}</div>
         <div class="title1">创建于:</div>
         <div class="title-desc-name">
-          {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ instanceInfo.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
         </div>
       </div>
       <span class="dao-btn-group select-btn">
@@ -42,13 +42,13 @@
             <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
           </button>
           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item style="margin-left: 10px" @click="linktoForm()">
+            <dao-dropdown-item @click="linktoForm()">
               <span>使用表单更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px" @click="linktoYamlForm()">
+            <dao-dropdown-item @click="linktoYamlForm()">
               <span>使用YAML更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px" @click="deleteInstance()">
+            <dao-dropdown-item @click="deleteInstance()">
               <span style="color: red;">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
@@ -95,7 +95,8 @@
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">实例信息</div>
           <!-- <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down> -->
-          {{mdHtml}}
+          <!-- {{mdHtml}} -->
+          <div v-html="mdHtml" style="padding:20px;"></div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
@@ -119,7 +120,7 @@
         <pvc-table :pvcs="resources.PersistentVolumeClaim" :loading="loading.resources"></pvc-table>
       </el-tab-pane>
       <el-tab-pane label="操作记录" name="second">
-        <job-panel :jobs="operator"> </job-panel>
+        <job-panel :jobs="operator"></job-panel>
       </el-tab-pane>
     </el-tabs>
   </div>

@@ -140,7 +140,7 @@
       </el-table>
       <div class="footer">
         <div class="page">共 {{appNumber()}} 项</div>
-        <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
+        <!-- <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
           <dao-dropdown
             trigger="click"
             :append-to-body="true"
@@ -162,7 +162,14 @@
               </dao-dropdown-item>
             </dao-dropdown-menu>
           </dao-dropdown>
-        </span>
+        </span> -->
+        <el-pagination
+          :page-sizes="[10, 15, 20, 25]"
+          :page-size="100"
+          layout="sizes"
+          style="padding-top: 5px;"
+        >
+        </el-pagination>
       </div>
     </div>
   </div>

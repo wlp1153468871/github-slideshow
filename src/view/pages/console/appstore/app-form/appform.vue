@@ -9,6 +9,7 @@
       <dao-dialog
         :visible.sync="config.visible"
         header="确认是否放弃编辑"
+        @before-close="destoryDialog"
       >
         <div class="dialog_body">确认是否放弃当前编辑，放弃后不可撤销。</div>
         <div slot="footer">
