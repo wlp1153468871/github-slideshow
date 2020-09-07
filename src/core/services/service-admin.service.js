@@ -21,7 +21,7 @@ class ServiceAdmin {
    * 列出所有的可用区
    */
   async getZone() {
-    return this.api.get('/appstore/zones');
+    return this.api.get('/zones');
   }
 
   /**

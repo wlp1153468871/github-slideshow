@@ -125,6 +125,7 @@
 v-deep .el-tag {
   background: #E4E7ED;
 }
+
 #appstore {
   background: #F1F3F6;
   overflow: hidden;
@@ -202,6 +203,9 @@ v-deep .el-tag {
     .type-layout {
       margin: 0 0 0 30px;
       width: 100%;
+    }
+    .type-layout:hover {
+      background: rgba(56, 144, 255, 0.1);;
     }
   }
   .title {
