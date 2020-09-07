@@ -68,16 +68,20 @@
           search
           placeholder="搜索"
           style="width: 200px; height: 32px;"
-          v-model="search"
+          v-model="key"
+          @change="search"
         >
         </dao-input>
-        <el-button size="mini" style="margin-left: 10px;">
-              <span>
-                <svg class="icon">
-                  <use :xlink:href="`#icon_cw`"></use>
-                </svg>
-              </span>
-        </el-button>
+        <!-- <el-button size="mini" style="margin-left: 10px;">
+          <span>
+            <svg class="icon">
+              <use :xlink:href="`#icon_cw`"></use>
+            </svg>
+          </span>
+        </el-button> -->
+        <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh">
+          <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
+        </button>
       </div>
     </div>
     <div style="margin: 20px;">
@@ -88,12 +92,12 @@
         @selection-change="selectChange"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称" width="200">
-          <template slot-scope="scope">
+        <el-table-column label="应用名称" prop="name" width="200">
+          <!-- <template slot-scope="scope">
             <div style="color: #217EF2;">
               {{ scope.row.name }}
             </div>
-          </template>
+          </template> -->
         </el-table-column>
         <el-table-column label="可用区" prop="zoneName" width="200"></el-table-column>
         <el-table-column label="供应商" prop="provider" width="150"></el-table-column>
@@ -123,7 +127,7 @@
         </el-table-column>
         <el-table-column label="创建时间" prop="date" width="200">
           <template slot-scope="scope">
-            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+            {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>
         </el-table-column>
 <!--        <el-table-column  label="操作">-->
@@ -229,8 +233,9 @@ export default {
         name: 'Broker',
         id: 'Broker',
       }],
-      search: '', // 搜索
+      key: '', // 搜索
       tableData: [], // 表格数据
+      tableDataCopy: [],
       loading: { // 加载圈圈
         appInfo: false,
       },
@@ -258,9 +263,10 @@ export default {
       this.loading.appInfo = true;
       OrgService.getSpaceAllAppList(this.orgId, this.spaceId, this.status, this.zone, this.type)
         .then(res => {
-          console.log(res);
           this.tableData = res;
-        }).finally(() => {
+          this.tableDataCopy = res;
+        })
+        .finally(() => {
           this.loading.appInfo = false;
         });
     },
@@ -293,8 +299,6 @@ export default {
      * 改变选择
      */
     selectChange(data) {
-      console.log('选择改变');
-      console.log(data);
       this.onArr = [];
       this.offArr = [];
       data.forEach(item => {
@@ -323,12 +327,11 @@ export default {
     handleOn() {
       if (this.selectedArray.length !== 0) {
         this.selectedArray.forEach(item => {
-          OrgService.OnApplication(this.orgId, this.spaceId, item.id).then(res => {
-            console.log(res);
-            this.$noty.success('上架成功');
+          OrgService.OnApplication(this.orgId, this.spaceId, item.id).then(() => {
             this.getSpaceAllAppList();
           });
         });
+        this.$noty.success('上架成功');
       }
     },
     /**
@@ -337,19 +340,23 @@ export default {
     handleOff() {
       if (this.selectedArray.length !== 0) {
         this.selectedArray.forEach(item => {
-          OrgService.offApplication(this.orgId, this.spaceId, item.id).then(res => {
-            console.log(res);
-            this.$noty.success('下架成功');
+          OrgService.offApplication(this.orgId, this.spaceId, item.id).then(() => {
             this.getSpaceAllAppList();
           });
         });
+        this.$noty.success('下架成功');
       }
     },
-    /**
-     * 搜索
-     */
-    handleChange(val) {
-      console.log(typeof val);
+    handleChange() {
+      this.getSpaceAllAppList();
+    },
+    // 搜索
+    search(val) {
+      this.tableData = this.tableDataCopy.filter(item => item.name.includes(val));
+    },
+    // 刷新
+    fresh() {
+      this.key = '';
       this.getSpaceAllAppList();
     },
   },

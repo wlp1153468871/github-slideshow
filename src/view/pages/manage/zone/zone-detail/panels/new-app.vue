@@ -6,6 +6,7 @@
       <dao-dialog
         :visible.sync="visibleForm"
         header="确认是否放弃编辑"
+        @before-close="destoryDialog"
       >
         <div class="body">确认是否放弃当前编辑，放弃后不可撤销。</div>
         <div slot="footer">
@@ -216,6 +217,7 @@ export default {
       categoryName: '', // 新增分类名称
       version: '', // 版本
       visibleForm: false,
+      giveup: false,
     };
   },
   created() {
@@ -266,6 +268,11 @@ export default {
     cancer() {
       this.visibleForm = true;
     },
+    destoryDialog() {
+      if (this.giveup) {
+        this.$router.back();
+      }
+    },
     giveUp() {
       if (this.chartList.length !== 0) {
         this.removeFileChart();
@@ -276,7 +283,8 @@ export default {
       if (this.chartList.length) {
         this.removeFileChart();
       }
-      this.$router.back();
+      this.giveup = true;
+      this.visibleForm = false;
     },
     /**
      * 文件上传之前的回调函数

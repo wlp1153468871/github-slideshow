@@ -4,7 +4,7 @@
       <breadcrumb
         :links="[
           { text: '服务模板管理', route: { path: '/seeting/application' } },
-          { text: `${appInfo.name}(${appInfo.name})` },
+          { text: `${appInfo.name}` },
         ]"
       >
       </breadcrumb>
@@ -43,23 +43,22 @@
           <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
         </button>
         <dao-dropdown-menu slot="list" style="min-width: 100px;">
-          <dao-dropdown-item style="margin-left: 10px" @click="editInfo">
+          <dao-dropdown-item @click="editInfo">
             <span>编辑基本信息</span>
           </dao-dropdown-item>
-          <!-- <dao-dropdown-item style="margin-left: 10px" @click="addEdition">
+          <!-- <dao-dropdown-item @click="addEdition">
             <span>添加版本</span>
           </dao-dropdown-item> -->
           <dao-dropdown-item
-            style="margin-left: 10px"
             v-if="appInfo.available"
             @click="availableOff"
           >
             <span>下架应用</span>
           </dao-dropdown-item>
-          <dao-dropdown-item style="margin-left: 10px" v-else @click="availableOn">
+          <dao-dropdown-item v-else @click="availableOn">
             <span>上架应用</span>
           </dao-dropdown-item>
-          <!-- <dao-dropdown-item style="margin-left: 10px">
+          <!-- <dao-dropdown-item>
             <span style="color: red;" @click="deleteApplication">删除</span>
           </dao-dropdown-item> -->
         </dao-dropdown-menu>
@@ -496,7 +495,7 @@
           </el-table>
           <div class="footer">
             <div class="page">共 {{instancesNum()}} 项</div>
-            <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
+            <!-- <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
               <dao-dropdown
                 trigger="click"
                 :append-to-body="true"
@@ -518,7 +517,14 @@
                   </dao-dropdown-item>
                 </dao-dropdown-menu>
               </dao-dropdown>
-            </span>
+            </span> -->
+            <el-pagination
+              :page-sizes="[10, 15, 20, 25]"
+              :page-size="100"
+              layout="sizes"
+              style="padding-top: 5px;"
+            >
+            </el-pagination>
           </div>
         </div>
       </el-tab-pane>

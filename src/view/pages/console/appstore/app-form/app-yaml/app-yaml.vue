@@ -97,7 +97,8 @@
     <dao-dialog
       :visible.sync="config.visible"
       header="确认是否放弃编辑"
-      :footer="config.footer">
+      @before-close="destoryDialog"
+    >
       <div class="dialog_body">确认是否放弃当前编辑，放弃后不可撤销。</div>
       <div slot="footer">
         <button class="dao-btn red" @click="giveUp">
@@ -147,6 +148,7 @@ export default {
       yaml: {
         data: '',
       },
+      giveup: false,
     };
   },
 
@@ -212,14 +214,34 @@ export default {
         .createYmal(this.zone.id, this.space.id, this.$route.params.appid,
           this.chartName, this.$route.params.version, this.instanceName, this.yaml)
         .then(res => {
-          if (res) {
-            loading.close();
+          if (res.status === 'deployed') {
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: this.$route.query.activeName,
+              },
+            });
             this.$noty.success('实例创建成功');
-            this.$router.go(-1);
+          } else if (res.status === 'timeOut') {
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: this.$route.query.activeName,
+              },
+            });
+            this.$noty.warning('实例创建超时');
+          } else {
+            this.$noty.error('实例创建失败');
           }
         })
-        .catch(() => {
-          this.loading = false;
+        .finally(() => {
+          loading.close();
         });
     },
     // 获取一个实例
@@ -248,7 +270,15 @@ export default {
           if (res) {
             loading.close();
             this.$noty.success('实例更新成功');
-            this.$router.go(-1);
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: this.$route.query.activeName,
+              },
+            });
           }
         })
         .finally(() => {
@@ -261,8 +291,22 @@ export default {
     close() {
       this.config.visible = false;
     },
+    destoryDialog() {
+      if (this.giveup) {
+        this.$router.push({
+          name: 'appstore.detail',
+          params: {
+            Id: this.$route.params.appid,
+          },
+          query: {
+            activeName: this.$route.query.activeName,
+          },
+        });
+      }
+    },
     giveUp() {
-      this.$router.go(-1);
+      this.giveup = true;
+      this.config.visible = false;
     },
   },
 };

@@ -154,12 +154,14 @@ export default {
           this.$route.params.instanceid)
         .then(res => {
           if (res) {
+            console.log(res);
             res.forEach(item => {
               const obj = {};
               const owner = {};
               obj.name = item.statusRecord;
               obj.started_at = item.startedAt;
               obj.ended_at = item.endedAt;
+              obj.description = item.description;
               if (item.status === 'deployed') {
                 obj.status = 'succeed';
               } else {

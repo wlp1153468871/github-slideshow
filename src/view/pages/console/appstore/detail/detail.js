@@ -53,6 +53,7 @@ export default {
         instanceTable: false,
       },
       mdHtml: '',
+      isDestory: true,
     };
   },
 
@@ -176,10 +177,14 @@ export default {
     // 删除某个实例
     deleteInstance(instanceId) {
       AppStoreService.deleteInstance(this.zone.id, this.space.id, this.$route.params.Id, instanceId)
-        .then(() => {
-          this.$noty.success('实例删除成功');
-          this.getInstances();
-          this.instanceNum();
+        .then(res => {
+          if (res) {
+            this.$noty.success('实例删除成功');
+            this.getInstances();
+            this.instanceNum();
+          } else {
+            this.$noty.error('实例删除失败');
+          }
         });
     },
     changeShow() {
@@ -211,14 +216,16 @@ export default {
         },
       });
     },
-    // 创建实例，跳转
-    creatExample() {
+    destoryDialog() {
       if (this.selectState === 1) {
         this.$router.push({
           name: 'appstore.form',
           params: {
             appid: this.appInfo.id,
             version: this.chart,
+          },
+          query: {
+            activeName: this.activeName,
           },
         });
       } else if (this.selectState === 2) {
@@ -228,10 +235,40 @@ export default {
             appid: this.appInfo.id,
             version: this.chart,
           },
+          query: {
+            activeName: this.activeName,
+          },
         });
-      } else {
-        this.$noty.warning('请选择创建方式');
       }
+    },
+    // 创建实例，跳转
+    creatExample() {
+      if (this.selectState === 0) {
+        this.$noty.warning('请选择创建方式');
+      } else {
+        this.configCreate = false;
+      }
+      // if (this.selectState === 1) {
+      //   this.configCreate = false;
+      //   this.$router.push({
+      //     name: 'appstore.form',
+      //     params: {
+      //       appid: this.appInfo.id,
+      //       version: this.chart,
+      //     },
+      //   });
+      // } else if (this.selectState === 2) {
+      //   this.configCreate = false;
+      //   this.$router.push({
+      //     name: 'appstore.yamlform',
+      //     params: {
+      //       appid: this.appInfo.id,
+      //       version: this.chart,
+      //     },
+      //   });
+      // } else {
+      //   this.$noty.warning('请选择创建方式');
+      // }
     },
     // 删除chart版本
     deleteChart(version) {
@@ -275,6 +312,7 @@ export default {
       this.configDelete = true;
     },
     closeCreate() {
+      this.selectState = 0;
       this.configCreate = false;
     },
     closeDelete() {
