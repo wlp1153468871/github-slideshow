@@ -73,6 +73,7 @@ export default {
         this.applicationInfos.forEach(item => {
           if (item.version === this.chart) {
             this.appInfo.content = item.content;
+            this.mdHtml = markdown(this.appInfo.content);
           }
         });
       },

@@ -65,7 +65,6 @@ export default {
     this.getInstance();
     this.getApp();
     this.getOperator();
-    this.getResources();
   },
 
   methods: {
@@ -84,6 +83,11 @@ export default {
             this.mdHtml = markdown(this.instanceInfo.notes);
           } else {
             this.mdHtml = '空';
+          }
+        })
+        .then(() => {
+          if(this.instanceInfo.status !== 'failed') {
+            this.getResources();
           }
         });
     },
