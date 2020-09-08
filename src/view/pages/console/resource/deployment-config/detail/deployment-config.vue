@@ -11,10 +11,14 @@
         </template>
 
         <template
-          v-if="$can('deploymentConfig.update') || $can('deploymentConfig.delete')"
           #action-buttons
         >
-          <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
+          <dao-dropdown
+          trigger="click"
+          :append-to-body="true"
+          placement="bottom-end"
+          v-if="$can('deploymentConfig.update') || $can('deploymentConfig.delete')"
+          >
             <button class="dao-btn ghost has-icon">
               操作
               <svg class="icon">

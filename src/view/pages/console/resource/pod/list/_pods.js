@@ -38,6 +38,9 @@ export default {
 
   methods: {
     poll() {
+      if (this.$route.path.includes('/login')) {
+        this.unsetPolling();
+      }
       this.pollTimer = setTimeout(() => {
         clearTimeout(this.pollTimer);
         this.getPods().then(() => {
