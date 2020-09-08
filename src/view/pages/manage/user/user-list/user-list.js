@@ -15,9 +15,9 @@ export default {
   },
 
   created() {
+    this.loadPlatformRoles();
     if (this.$can('platform.user.get')) {
       this.loadUsers();
-      this.loadPlatformRoles();
     } else {
       this.$noty.error('您暂无用户列表查看权限');
     }
