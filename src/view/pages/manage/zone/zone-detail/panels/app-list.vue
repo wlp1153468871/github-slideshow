@@ -21,7 +21,7 @@
           <dao-dialog
             v-if="showNewVersion"
             :visible.sync="showNewVersion"
-            header="新增chart版本"
+            header="新增 Chart 版本"
           >
             <div class="dao-setting-layout">
               <div class="dao-setting-section" style="padding: 20px;">
@@ -103,25 +103,30 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
+            <!-- {{scope.row[scope.row.name]}} -->
             <el-table class="in-table"
               style="width: 100%;"
               :data="scope.row[scope.row.name]"
               :header-cell-style="{background:'#fff'}"
             >
-              <el-table-column label="Chart 版本" prop="version" width="200"></el-table-column>
+              <el-table-column label="Chart 版本" prop="version" width="200">
+              </el-table-column>
               <el-table-column label="APP版本" prop="appVersion" width="200"></el-table-column>
               <el-table-column label="维护者">
                 <template slot-scope="scope">
-                  {{ scope.row.supplier[0].name }}
-                  <span
-                    v-if="scope.row.supplier.length != 1">
-                      ({{scope.row.supplier.length-1}}others)
+                  <div v-if="`${scope.row.supplier}` === 'null'"></div>
+                  <div v-else>
+                    {{ scope.row.supplier[0].name }}
+                    <span
+                      v-if="scope.row.supplier.length != 1">
+                        ({{scope.row.supplier.length-1}}others)
                     </span>
+                  </div>
                 </template>
               </el-table-column>
               <el-table-column label="创建时间" prop="date">
                 <template slot-scope="scope">
-                  {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                  {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
                 </template>
               </el-table-column>
               <el-table-column width="50">
@@ -307,11 +312,6 @@ export default {
      * 删除chart版本
      */
     deleteChartVersion(app_id, name, version) {
-      // console.log(this.renderTable[name]);
-      // if (this.renderTable[name].length === 1) {
-      //   this.$noty.error('当前chart只有一个版本，不支持删除');
-      //   return;
-      // }
       ZoneAdminService.deleteChartVersion(this.id, app_id, name, version).then(() => {
         this.getSelectZone();
         this.$noty.success('删除成功');
@@ -443,7 +443,10 @@ export default {
           const category = item.category.join(',');
           item.category = category;
         });
+        this.changeExpand();
         this.$noty.success('同步成功');
+        console.log(this.tableData);
+        console.log(this.renderTable);
       }).finally(() => {
         this.loading.zone = false;
       });
@@ -473,10 +476,14 @@ export default {
         .then(res => {
           if (res) {
             this.$noty.success('上传chart成功');
-            this.getSelectZone();
+            this.cancelUpload();
           }
         })
+        .then(() => {
+          this.getSelectZone();
+        })
         .catch(() => {
+          this.chartList = [];
           this.removeFileChart();
         });
     },
@@ -489,24 +496,27 @@ export default {
       } else {
         this.chartList = [];
         this.chartList = [...this.chartList, file];
+        this.isDisabled = false;
       }
-      return true;
+      return false;
     },
     /**
      * 删除chart文件
      */
     removeFileChart() {
-      ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
-        this.chartList = [];
-        this.name = '';
-        this.description = '';
-        this.$noty.success('chart文件删除');
-      });
+      // ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
+      //   this.chartList = [];
+      //   this.name = '';
+      //   this.description = '';
+      //   this.$noty.success('chart文件删除');
+      // });
+      this.$refs.upload.clearFiles();
     },
     /**
      * 取消上传chart新版本
      */
     cancelUpload() {
+      this.chartList = [];
       this.showNewVersion = false;
     },
   },

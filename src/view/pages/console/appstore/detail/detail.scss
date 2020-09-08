@@ -358,15 +358,12 @@
 
     pre code {
       white-space: pre;
-      overflow:hidden;  /*超出部分隐藏*/ 
-      white-space:nowrap; /*文本溢出用"..."表示*/
-      text-overflow:ellipsis;
+      overflow: hidden;  /*超出部分隐藏*/ 
+      white-space: break-spaces; /*文本溢出用"..."表示*/
+      text-overflow: ellipsis;
     }
     pre {
-      .language-bash {
-        width: 100%;
-        overflow: hidden;
-      }
+      background: rgb(248,248,248);
     }
   }
 }
