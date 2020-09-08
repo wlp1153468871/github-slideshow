@@ -39,7 +39,7 @@
         <el-table-column label="创建者" prop="ownerName"></el-table-column>
         <el-table-column label="创建时间" >
           <template slot-scope="scope">
-            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+            {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>
         </el-table-column>
       </el-table>
