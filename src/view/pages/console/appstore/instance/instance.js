@@ -111,7 +111,6 @@ export default {
         .deleteInstance(this.zone.id, this.space.id,
           this.$route.params.appid, this.$route.params.instanceid)
         .then(res => {
-          console.log(res);
           if (res) {
             this.$noty.success('实例删除成功');
             this.$router.push({
@@ -122,6 +121,9 @@ export default {
             });
           } else {
             this.$noty.error('实例删除失败');
+            this.getOperator();
+            this.getInstanceOne();
+            this.getResource();
           }
         });
     },
@@ -134,7 +136,11 @@ export default {
           if (res) {
             this.instanceInfo = res;
           }
-          this.mdHtml = markdown(this.instanceInfo.notes);
+          if (this.instanceInfo.notes) {
+            this.mdHtml = markdown(this.instanceInfo.notes);
+          } else {
+            this.mdHtml = '空';
+          }
         });
     },
     // 获取应用
@@ -154,7 +160,6 @@ export default {
           this.$route.params.instanceid)
         .then(res => {
           if (res) {
-            console.log(res);
             res.forEach(item => {
               const obj = {};
               const owner = {};

@@ -314,7 +314,7 @@ export default {
      * 删除chart文件
      */
     removeFileChart() {
-      ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
+      ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version).then(() => {
         this.chartList = [];
         this.name = '';
         this.description = '';
@@ -373,7 +373,9 @@ export default {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
+        this.chartList = [];
         this.chartList = [...this.chartList, file];
+        this.isDisabled = false;
       }
       return true;
     },

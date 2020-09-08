@@ -108,8 +108,8 @@ export default {
         ServiceAdmin.availableOff(item.id).then(() => {
           this.getAllApp();
         });
-        this.$noty.success('下架成功');
       });
+      this.$noty.success('下架成功');
     },
     selectChange(val) {
       const arr = [];
@@ -164,15 +164,7 @@ export default {
      * @returns {*}
      */
     handleChange() {
-      ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat).then(res => {
-        if (res) {
-          this.appInfo = res;
-          this.appInfoCopy = res;
-        }
-      }).then(() => {
-        this.getZone();
-        this.getStatus();
-      });
+      this.getAllApp();
     },
     appNumber() {
       return this.appInfo.length;

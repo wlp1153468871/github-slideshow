@@ -65,9 +65,9 @@
       </span>
     </div>
     <div class="select">
-      <span class="number">已选择 {{selectedArr.length}} 项</span>
+      <!-- <span class="number">已选择 {{selectedArr.length}} 项</span> -->
       <button
-        class="dao-btn status"
+        class="dao-btn"
         :disabled="selectStatus[0] === 1 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOnline"
       >批量上架
@@ -134,35 +134,13 @@
         </el-table-column>
         <el-table-column label="创建时间" prop="date">
           <template slot-scope="scope">
-            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+            {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>
         </el-table-column>
       </el-table>
       <div class="footer">
-        <div class="page">共 {{appNumber()}} 项</div>
-        <!-- <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-          <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-start"
-          >
-            <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-              <span class="text">10条/页</span>
-              <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-            </button>
-            <dao-dropdown-menu slot="list" style="min-width: 120px;">
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>15条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>20条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>25条/页</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown>
-        </span> -->
+        <div class="page" v-if="selectedArr.length">已选择 {{selectedArr.length}} 项</div>
+        <div class="page" v-else>共 {{appNumber()}} 项</div>
         <el-pagination
           :page-sizes="[10, 15, 20, 25]"
           :page-size="100"

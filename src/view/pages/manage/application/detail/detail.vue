@@ -29,7 +29,7 @@
         </div>
         <div class="title1">创建于：</div>
         <div class="title-desc-name">
-          {{ appInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ appInfo.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
         </div>
       </div>
       <dao-dropdown
@@ -462,15 +462,15 @@
             :data="instances"
             v-loading="loading.instance"
           >
-            <el-table-column label="实例名">
-              <template slot-scope="scope">
+            <el-table-column label="实例名" prop="name">
+              <!-- <template slot-scope="scope">
                 <div
                   style="color: #217EF2;cursor: pointer;"
                   @click="linkInstance(scope.row.appId, scope.row.id)"
                 >
                   {{ scope.row.name }}
                 </div>
-              </template>
+              </template> -->
             </el-table-column>
             <el-table-column label="Chart 版本" prop="chartVersion"></el-table-column>
             <el-table-column label="租户/项目组">
@@ -489,7 +489,7 @@
             <el-table-column label="创建者" prop="ownerName"></el-table-column>
             <el-table-column label="创建日期">
               <template slot-scope="scope">
-                {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
               </template>
             </el-table-column>
           </el-table>
