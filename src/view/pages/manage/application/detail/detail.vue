@@ -29,7 +29,7 @@
         </div>
         <div class="title1">创建于：</div>
         <div class="title-desc-name">
-          {{ appInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ appInfo.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
         </div>
       </div>
       <dao-dropdown
@@ -489,7 +489,7 @@
             <el-table-column label="创建者" prop="ownerName"></el-table-column>
             <el-table-column label="创建日期">
               <template slot-scope="scope">
-                {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
               </template>
             </el-table-column>
           </el-table>

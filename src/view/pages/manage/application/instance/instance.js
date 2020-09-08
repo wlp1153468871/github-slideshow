@@ -80,7 +80,11 @@ export default {
           if (res) {
             this.instanceInfo = res;
           }
-          this.mdHtml = markdown(this.instanceInfo.notes);
+          if (this.instanceInfo.notes) {
+            this.mdHtml = markdown(this.instanceInfo.notes);
+          } else {
+            this.mdHtml = '空';
+          }
         });
     },
     // 获取应用
@@ -90,7 +94,6 @@ export default {
           if (res) {
             this.appInfo = res;
           }
-          console.log(this.appInfo);
         });
     },
     // 获取操作
@@ -105,6 +108,7 @@ export default {
               obj.name = item.statusRecord;
               obj.started_at = item.startedAt;
               obj.ended_at = item.endedAt;
+              obj.description = item.description;
               if (item.status === 'deployed') {
                 obj.status = 'succeed';
               } else {

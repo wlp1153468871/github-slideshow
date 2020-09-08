@@ -27,7 +27,7 @@
         <div class="title-desc-name">{{appInfo.appType}}</div>
         <div class="title1">创建于:</div>
         <div class="title-desc-name">
-          {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ instanceInfo.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
         </div>
       </div>
     </div>
@@ -71,7 +71,8 @@
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">Notes</div>
           <!-- <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down> -->
-          {{mdHtml}}
+          <!-- {{mdHtml}} -->
+          <div v-html="mdHtml" style="padding: 20px;"></div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">

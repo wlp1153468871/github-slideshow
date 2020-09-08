@@ -204,7 +204,7 @@
               </div>
               <div class="base-info" v-if="appInfo.content">
                 <div class="title" style="padding: 20px 0 20px 0px;">README</div>
-                <div v-html="mdHtml"></div>
+                <div v-html="mdHtml" class="mark-down"></div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="实例" name="second">
@@ -266,19 +266,13 @@
                             <use :xlink:href="`#icon_more`"></use>
                           </svg>
                           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                            <dao-dropdown-item
-                              @click="linktoForm(scope.row.id)"
-                            >
+                            <dao-dropdown-item @click="linktoForm(scope.row.id)">
                               <span>使用表单更新</span>
                             </dao-dropdown-item>
-                            <dao-dropdown-item
-                              @click="linktoYamlForm(scope.row.id)"
-                            >
+                            <dao-dropdown-item @click="linktoYamlForm(scope.row.id)">
                               <span>使用 YAML 更新</span>
                             </dao-dropdown-item>
-                            <dao-dropdown-item
-                              @click="deleteInstance(scope.row.id)"
-                            >
+                            <dao-dropdown-item @click="deleteInstance(scope.row.id)">
                               <span style="color: red;">删除</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
