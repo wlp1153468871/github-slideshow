@@ -2,7 +2,6 @@
   <dao-dialog
     :config="config"
     :visible.sync="isShow"
-    @dao-dialog-confirm="onConfirm"
     @dao-dialog-close="onClose"
     @dao-dialog-cancel="onClose"
   >
