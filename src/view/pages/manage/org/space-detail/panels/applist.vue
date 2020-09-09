@@ -156,34 +156,12 @@
       </el-table>
       <div class="footer">
         <div class="page">共 {{appNumber}} 项</div>
-        <!-- <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-          <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-start"
-          >
-            <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-              <span class="text">10条/页</span>
-              <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-            </button>
-            <dao-dropdown-menu slot="list" style="min-width: 120px;">
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>15条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>20条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>25条/页</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown>
-        </span> -->
         <el-pagination
           :page-sizes="[10, 15, 20, 25]"
           :page-size="100"
           layout="sizes"
           style="padding-top: 5px;"
+          @size-change="changeSize"
         >
         </el-pagination>
       </div>
@@ -251,11 +229,19 @@ export default {
       offArr: '',
       haveOn: true,
       haveOff: true,
+      size: 10,
     };
   },
   computed: {
     appNumber() {
       return this.tableData.length;
+    },
+  },
+  watch: {
+    size: {
+      handler(size) {
+        this.tableData = this.tableDataCopy.slice(0, size);
+      },
     },
   },
   created() {
@@ -270,7 +256,7 @@ export default {
       this.loading.appInfo = true;
       OrgService.getSpaceAllAppList(this.orgId, this.spaceId, this.status, this.zone, this.type)
         .then(res => {
-          this.tableData = res;
+          this.tableData = res.slice(0, 10);
           this.tableDataCopy = res;
         })
         .finally(() => {
@@ -365,6 +351,9 @@ export default {
     fresh() {
       this.key = '';
       this.getSpaceAllAppList();
+    },
+    changeSize(size) {
+      this.size = size;
     },
   },
 };
