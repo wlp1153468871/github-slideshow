@@ -162,7 +162,7 @@ export default {
         .updateForm(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.query.instanceId, this.table)
         .then(res => {
-          if (res) {
+          if (res.status === 'deployed') {
             this.$noty.success('实例更新成功');
             if (this.$route.query.isInstance) {
               this.$router.push({
@@ -172,7 +172,7 @@ export default {
                   instanceid: this.$route.query.instanceId,
                 },
               });
-            } else {
+            } else if (res.status === 'timeOut') {
               this.$router.push({
                 name: 'appstore.detail',
                 params: {
@@ -182,6 +182,9 @@ export default {
                   activeName: this.$route.query.activeName,
                 },
               });
+              this.$noty.warning('实例更新超时');
+            } else {
+              this.$noty.error('实例更新失败');
             }
           }
         })

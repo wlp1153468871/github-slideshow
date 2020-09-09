@@ -1,10 +1,10 @@
 import { groupBy } from 'lodash';
 
 import ServiceAdmin from '@/core/services/service-admin.service';
-import markdown from '@/view/filters/markdown.filter.js';
 
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
+import Marked from '@/view/components/marked/marked.vue';
 
 import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
@@ -41,7 +41,6 @@ export default {
         failed: 'error',
         timeOut: 'warning',
       },
-      mdHtml: '',
     };
   },
 
@@ -53,6 +52,7 @@ export default {
     ConfigPanel,
     PvcTable,
     JobPanel,
+    Marked,
   },
 
   computed: {
@@ -79,14 +79,9 @@ export default {
           if (res) {
             this.instanceInfo = res;
           }
-          if (this.instanceInfo.notes) {
-            this.mdHtml = markdown(this.instanceInfo.notes);
-          } else {
-            this.mdHtml = '空';
-          }
         })
         .then(() => {
-          if(this.instanceInfo.status !== 'failed') {
+          if (this.instanceInfo.status !== 'failed') {
             this.getResources();
           }
         });
@@ -125,6 +120,7 @@ export default {
           }
         });
     },
+    //  拉取资源
     getResources() {
       this.loading.resources = true;
       ServiceAdmin.getResources(this.$route.params.appid, this.$route.params.instanceid)

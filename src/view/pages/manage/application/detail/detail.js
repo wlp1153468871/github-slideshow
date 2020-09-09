@@ -1,5 +1,6 @@
 import ServiceAdmin from '@/core/services/service-admin.service';
-import markdown from '@/view/filters/markdown.filter.js';
+
+import Marked from '@/view/components/marked/marked.vue';
 
 export default {
   name: 'AppStoreDetail',
@@ -63,17 +64,18 @@ export default {
         onLine: false,
         instance: false,
       },
-      mdHtml: '',
     };
   },
 
+  components: {
+    Marked,
+  },
   watch: {
     chart: {
       handler() {
         this.applicationInfos.forEach(item => {
           if (item.version === this.chart) {
             this.appInfo.content = item.content;
-            this.mdHtml = markdown(this.appInfo.content);
           }
         });
       },
@@ -133,7 +135,6 @@ export default {
             this.appInfo.content = item.content;
           }
         });
-        this.mdHtml = markdown(this.appInfo.content);
       });
     },
     // 获取应用分类列表

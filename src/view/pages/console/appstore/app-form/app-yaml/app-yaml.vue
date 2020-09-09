@@ -279,6 +279,19 @@ export default {
                 activeName: this.$route.query.activeName,
               },
             });
+          } else if (res.status === 'timeOut') {
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: this.$route.query.activeName,
+              },
+            });
+            this.$noty.warning('实例更新超时');
+          } else {
+            this.$noty.error('实例更新失败');
           }
         })
         .finally(() => {

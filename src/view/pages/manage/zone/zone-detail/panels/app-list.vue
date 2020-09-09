@@ -380,31 +380,6 @@ export default {
       });
     },
     /**
-       * 给表格第一列加字体样式
-       */
-    cellStyle(column) {
-      if (column.columnIndex === 0) {
-        return {
-          color: '#217EF2',
-          cursor: 'pointer',
-        };
-      }
-      return {};
-    },
-    /**
-       * 表格某列被点击
-       */
-    cellClick(row, column) {
-      if (column.label === '应用名称') {
-        this.$router.push({
-          name: 'application.detail',
-          params: {
-            id: row.id,
-          },
-        });
-      }
-    },
-    /**
      * 键盘弹起事件
      */
     // handleKeyup(event) {
@@ -428,7 +403,8 @@ export default {
      */
     handleRefresh() {
       this.search = '';
-      this.handleChange('');
+      // this.handleChange('');
+      this.getSelectZone();
     },
     /**
      * 确认导入
