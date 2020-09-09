@@ -34,7 +34,8 @@
                       action="#"
                       :http-request="handleUploadChart"
                       :file-list="chartList"
-                      accept="application/zip, application/x-compressed, application/x-gzip"
+                      accept="application/zip, application/x-compressed,
+              application/x-gzip, application/gzip, application/x-tar"
                       :limit="1"
                       :before-upload="beforeUploadChart"
                       :on-remove="removeFileChart">
@@ -207,6 +208,7 @@
           :page-size="100"
           layout="sizes"
           style="padding-top: 5px;"
+          @size-change="changeSize"
         >
         </el-pagination>
       </div>
@@ -255,6 +257,7 @@ export default {
       }],
       tableData: [],
       renderTable: [], // 渲染table的数据
+      renderTableCopy: [],
       config: {
         visible: false,
       },
@@ -268,14 +271,25 @@ export default {
       isSync: false, // 是否点击了同步按钮
       showNewVersion: false, // 是否打开新增chart版本接口
       chartList: [], // charts上传
-      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar', 'application/gzip', 'application/x-gzip'],
       newChartVersionId: '', // 上传chart文件保存的ID
       newChartVersionZoneId: '', // 上传chart文件保存的ZoneID
+      size: 10,
     };
   },
+
+  watch: {
+    size: {
+      handler(size) {
+        this.renderTable = this.renderTableCopy.slice(0, size);
+      },
+    },
+  },
+
   created() {
     this.getSelectZone();
   },
+
   methods: {
     /**
        * 请求可用区选中应用list
@@ -285,7 +299,8 @@ export default {
       ZoneAdminService.getSelectedZone(this.id, this.type)
         .then(res => {
           this.tableData = res;
-          this.renderTable = res;
+          this.renderTable = res.slice(0, 10);
+          this.renderTableCopy = res;
           this.renderTable.forEach(item => {
             const category = item.category.join('，');
             item.category = category;
@@ -494,6 +509,9 @@ export default {
     cancelUpload() {
       this.chartList = [];
       this.showNewVersion = false;
+    },
+    changeSize(size) {
+      this.size = size;
     },
   },
 };

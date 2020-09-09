@@ -203,7 +203,7 @@ export default {
       pictureId: '', // 上传图标的id
       daoAuth: false, // 是否上传
       fileType: ['image/png'],
-      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar'],
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar', 'application/gzip', 'application/x-gzip'],
       chartList: [],
       showAddCategory: false, // 控制新增分类按钮
       // 弹窗所需数据

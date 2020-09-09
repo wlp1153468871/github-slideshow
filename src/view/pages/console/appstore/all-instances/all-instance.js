@@ -20,6 +20,7 @@ export default {
         failed: 'error',
         timeOut: 'warning',
       },
+      size: 10,
     };
   },
 
@@ -41,6 +42,11 @@ export default {
         }
       },
     },
+    size: {
+      handler(size) {
+        this.instances = this.instancesCopy.slice(0, size);
+      },
+    },
   },
 
   methods: {
@@ -53,7 +59,7 @@ export default {
       AppStoreService.getAllInstances(this.zone.id, this.space.id)
         .then(res => {
           if (res) {
-            this.instances = res;
+            this.instances = res.slice(0, 10);
             this.instancesCopy = res;
             this.instanceNum();
           }
@@ -91,6 +97,9 @@ export default {
     fresh() {
       this.key = '';
       this.getAllInstances();
+    },
+    changeSize(size) {
+      this.size = size;
     },
   },
 };
