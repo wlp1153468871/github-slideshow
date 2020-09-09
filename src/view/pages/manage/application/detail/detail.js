@@ -64,6 +64,7 @@ export default {
         onLine: false,
         instance: false,
       },
+      size: 10,
     };
   },
 
@@ -87,6 +88,13 @@ export default {
         } else {
           this.getUnavaOrganizations();
         }
+      },
+    },
+    watch: {
+      size: {
+        handler(size) {
+          this.instances = this.instancesCopy.slice(0, size);
+        },
       },
     },
   },
@@ -200,7 +208,7 @@ export default {
       ServiceAdmin.getInstances(this.$route.params.id)
         .then(res => {
           if (res) {
-            this.instances = res;
+            this.instances = res.slice(0, 10);
             this.instancesCopy = res;
           }
         })
@@ -426,6 +434,10 @@ export default {
     addClose() {
       this.configAdd = false;
       this.chartList = [];
+    },
+    // 分页
+    changeSize(size) {
+      this.size = size;
     },
   },
 };

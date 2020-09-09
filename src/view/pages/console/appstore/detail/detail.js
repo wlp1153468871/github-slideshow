@@ -54,6 +54,7 @@ export default {
         instanceTable: false,
       },
       isDestory: true,
+      size: 10,
     };
   },
 
@@ -90,6 +91,11 @@ export default {
             this.appInfo.content = item.content;
           }
         });
+      },
+    },
+    size: {
+      handler(size) {
+        this.instanceTable = this.instanceTableCopy.slice(0, size);
       },
     },
   },
@@ -168,7 +174,7 @@ export default {
       AppStoreService.getInstances(this.zone.id, this.space.id, this.$route.params.Id)
         .then(res => {
           if (res) {
-            this.instanceTable = res;
+            this.instanceTable = res.slice(0, 10);
             this.instanceTableCopy = res;
             this.instanceNum();
           }
@@ -416,6 +422,9 @@ export default {
           this.removeFile();
           this.$noty.error(err);
         });
+    },
+    changeSize(size) {
+      this.size = size;
     },
   },
 };

@@ -73,7 +73,7 @@
       <span class="type-text">
         供应商
       </span>
-      <el-checkbox-group v-model="checkedPro">
+      <el-checkbox-group v-model="checkedPro" :max="max">
         <el-checkbox
           style="color:#3d444f"
           v-for="(item, index) in provider"

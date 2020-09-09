@@ -73,6 +73,7 @@
           :page-size="100"
           layout="sizes"
           style="padding-top: 5px;"
+          @size-change="changeSize"
         >
         </el-pagination>
       </div>

@@ -52,6 +52,7 @@ export default {
       loading: {
         appInfo: false,
       },
+      size: 10,
     };
   },
 
@@ -61,6 +62,14 @@ export default {
 
   created() {
     this.getAllApp();
+  },
+
+  watch: {
+    size: {
+      handler(size) {
+        this.appInfo = this.appInfoCopy.slice(0, size);
+      },
+    },
   },
 
   methods: {
@@ -146,7 +155,7 @@ export default {
       ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat)
         .then(res => {
           if (res) {
-            this.appInfo = res;
+            this.appInfo = res.slice(0, 10);
             this.appInfoCopy = res;
           }
         })
@@ -216,6 +225,9 @@ export default {
     fresh() {
       this.key = '';
       this.getAllApp();
+    },
+    changeSize(size) {
+      this.size = size;
     },
   },
 };

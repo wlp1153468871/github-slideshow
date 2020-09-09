@@ -31,6 +31,7 @@ export default {
       provider: [],
       checkedPro: [],
       appCopy: '',
+      max: 1,
     };
   },
 
