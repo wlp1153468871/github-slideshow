@@ -6,7 +6,7 @@
         <p class="hint-title">暂无任何服务</p>
         <p class="hint-desc">
           点击【同步服务目录】按钮，系统将会自动同步当前集群上已经安装好的所有Broker 服务，同步成功的服务可在
-          【<router-link
+          <router-link
           :to="{
             name: 'manage.service.list',
           }"
