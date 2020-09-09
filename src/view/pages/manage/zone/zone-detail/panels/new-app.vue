@@ -338,6 +338,7 @@ export default {
         appType: this.appType,
         category: this.category,
         description: this.description,
+        daoAuth: this.daoAuth,
       };
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {

@@ -94,9 +94,7 @@
         </div>
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">实例信息</div>
-          <!-- <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down> -->
-          <!-- {{mdHtml}} -->
-          <div v-html="mdHtml" style="padding:20px;"></div>
+          <marked :text="instanceInfo.notes"></marked>
         </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">

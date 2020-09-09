@@ -2,10 +2,10 @@ import { mapState } from 'vuex';
 import { groupBy } from 'lodash';
 
 import AppStoreService from '@/core/services/appstore.service';
-import markdown from '@/view/filters/markdown.filter.js';
 
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
+import Marked from '@/view/components/marked/marked.vue';
 
 import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
@@ -55,6 +55,7 @@ export default {
     ConfigPanel,
     PvcTable,
     JobPanel,
+    Marked,
   },
 
   computed: {
@@ -70,7 +71,6 @@ export default {
     this.getInstanceOne();
     this.getApp();
     this.getOperator();
-    this.getResource();
   },
 
   methods: {
@@ -123,7 +123,6 @@ export default {
             this.$noty.error('实例删除失败');
             this.getOperator();
             this.getInstanceOne();
-            this.getResource();
           }
         });
     },
@@ -136,10 +135,10 @@ export default {
           if (res) {
             this.instanceInfo = res;
           }
-          if (this.instanceInfo.notes) {
-            this.mdHtml = markdown(this.instanceInfo.notes);
-          } else {
-            this.mdHtml = '空';
+        })
+        .then(() => {
+          if (this.instanceInfo.status !== 'failed') {
+            this.getResources();
           }
         });
     },

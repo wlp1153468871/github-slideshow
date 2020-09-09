@@ -3,7 +3,7 @@
     <div class="detail-header">
       <breadcrumb
         :links="[
-          { text: '服务模板管理', route: { path: '/seeting/application' } },
+          { text: '应用模板管理', route: { path: '/seeting/application' } },
           { text: `${appInfo.name}` },
         ]"
       >
@@ -252,7 +252,7 @@
           </div>
           <div class="border-box reademe" v-if="appInfo.content">
             <div class="title name">README</div>
-            <div v-html="mdHtml"></div>
+            <marked :text="appInfo.content"></marked>
           </div>
         </div>
         <div class="lay-right">

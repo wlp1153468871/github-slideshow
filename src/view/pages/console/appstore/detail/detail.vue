@@ -204,7 +204,7 @@
               </div>
               <div class="base-info" v-if="appInfo.content">
                 <div class="title" style="padding: 20px 0 20px 0px;">README</div>
-                <div v-html="mdHtml" class="mark-down"></div>
+                <marked :text="appInfo.content"></marked>
               </div>
             </el-tab-pane>
             <el-tab-pane label="实例" name="second">
