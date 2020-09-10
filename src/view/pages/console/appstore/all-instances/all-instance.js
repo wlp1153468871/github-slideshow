@@ -21,6 +21,8 @@ export default {
         timeOut: 'warning',
       },
       size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
@@ -47,6 +49,12 @@ export default {
         this.instances = this.instancesCopy.slice(0, size);
       },
     },
+    currentPage: {
+      handler(currentPage) {
+        this.instances = this.instancesCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
+      },
+    },
   },
 
   methods: {
@@ -61,6 +69,7 @@ export default {
           if (res) {
             this.instances = res.slice(0, 10);
             this.instancesCopy = res;
+            this.total = res.length;
             this.instanceNum();
           }
         })
@@ -100,6 +109,9 @@ export default {
     },
     changeSize(size) {
       this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

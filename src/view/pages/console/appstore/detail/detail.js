@@ -55,6 +55,8 @@ export default {
       },
       isDestory: true,
       size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
@@ -96,6 +98,12 @@ export default {
     size: {
       handler(size) {
         this.instanceTable = this.instanceTableCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.instanceTable = this.instanceTableCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
       },
     },
   },
@@ -176,6 +184,7 @@ export default {
           if (res) {
             this.instanceTable = res.slice(0, 10);
             this.instanceTableCopy = res;
+            this.total = res.length;
             this.instanceNum();
           }
         })
@@ -425,6 +434,9 @@ export default {
     },
     changeSize(size) {
       this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

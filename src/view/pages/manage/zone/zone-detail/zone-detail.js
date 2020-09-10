@@ -24,7 +24,7 @@ export default {
     const zoneId = this.$route.params.zone; // 可用区ID
     const TABS = {
       BINDS: '服务管理',
-      APPLICATION: '应用列表',
+      APPLICATION: '应用模板管理',
       OVERVIEW: '设置',
     };
     return {

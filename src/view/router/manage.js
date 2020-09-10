@@ -153,7 +153,7 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceInstance;platform.zone;platform.alert',
+      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications',
       type: 'submenu',
       // hidden: false,
     },
@@ -184,8 +184,9 @@ export default [
         name: 'manage.application',
         component: Application,
         meta: {
-          title: '应用管理',
+          title: '应用模板管理',
           icon: '#icon_service',
+          // code: 'platform.applications',
           hidden: false,
         },
       },

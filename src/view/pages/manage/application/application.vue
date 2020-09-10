@@ -70,13 +70,13 @@
         class="dao-btn"
         :disabled="selectStatus[0] === 1 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOnline"
-      >批量上架
+      >批量启用
       </button>
       <button
         class="dao-btn status"
         :disabled="selectStatus[0] === 0 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOff"
-      >批量下架
+      >批量禁用
       </button>
       <!-- <button
         class="dao-btn red status"
@@ -84,7 +84,7 @@
         :disabled="selectedArr.length < 1">批量删除
       </button> -->
     </div>
-    <div style="margin: 20px;">
+    <div style="margin: 15px;">
       <el-table
         style="width: 100%;"
         :data="appInfo"
@@ -109,13 +109,13 @@
               <svg class="icon" style="color: #25D473">
                 <use :xlink:href="`#icon_status-dot-small`"></use>
               </svg>
-              <span>已上架</span>
+              <span>已启用</span>
             </div>
             <div v-else>
               <svg class="icon" style="color: #CCD1D9">
                 <use :xlink:href="`#icon_status-dot-small`"></use>
               </svg>
-              <span>已下架</span>
+              <span>已禁用</span>
             </div>
           </template>
         </el-table-column>
@@ -142,11 +142,15 @@
         <div class="page" v-if="selectedArr.length">已选择 {{selectedArr.length}} 项</div>
         <div class="page" v-else>共 {{appNumber()}} 项</div>
         <el-pagination
+          v-if="total"
           :page-sizes="[10, 15, 20, 25]"
           :page-size="100"
-          layout="sizes"
+          :current-page.sync="currentPage"
+          layout="sizes, prev, pager, next"
           style="padding-top: 5px;"
           @size-change="changeSize"
+          @current-change="handleCurrentChange"
+          :total="total"
         >
         </el-pagination>
       </div>

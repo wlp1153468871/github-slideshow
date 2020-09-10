@@ -43,7 +43,6 @@ export default {
         failed: 'error',
         timeOut: 'warning',
       },
-      mdHtml: '',
     };
   },
 
@@ -138,7 +137,7 @@ export default {
         })
         .then(() => {
           if (this.instanceInfo.status !== 'failed') {
-            this.getResources();
+            this.getResource();
           }
         });
     },

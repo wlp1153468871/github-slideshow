@@ -3,23 +3,7 @@
 </template>
 
 <script>
-import marked from 'marked';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
-
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  highlight: code => {
-    return hljs.highlightAuto(code).value;
-  },
-  pedantic: false,
-  gfm: true,
-  breaks: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  xhtml: false,
-});
+let marked = null;
 export default {
   name: 'Marked',
 
@@ -33,24 +17,45 @@ export default {
     };
   },
 
-  // watch: {
-  //   text: {
-  //     handler(text) {
-  //       this.getMarked(text);
-  //     },
-  //   },
-  // },
-  created() {
-    this.getMarked(this.text);
+  watch: {
+    text: {
+      //  立即执行handle方法
+      immediate: true,
+      handler(text) {
+        this.getMarked().then(() => {
+          this.markdownHtml = marked(text);
+        });
+      },
+    },
   },
 
   methods: {
-    getMarked(text) {
-      if (text) {
-        this.markdownHtml = marked(text);
-      } else {
-        this.markdownHtml = marked('空');
+    getMarked() {
+      if (marked) {
+        return Promise.resolve(marked);
       }
+      return Promise.all([
+        import(/* webpackChunkName: "marked" */ /* webpackMode: "lazy" */ 'marked'),
+        import(/* webpackChunkName: "highlight.js" */ /* webpackMode: "lazy" */ 'highlight.js'),
+        import(/* webpackChunkName: "showdown" */ /* webpackMode: "lazy" */ 'github-markdown-css'),
+      ]).then(res => {
+        marked = res[0].default;
+        const hljs = res[1].default;
+        marked.setOptions({
+          renderer: new marked.Renderer(),
+          highlight: code => {
+            return hljs.highlightAuto(code).value;
+          },
+          pedantic: false,
+          gfm: true,
+          breaks: false,
+          sanitize: false,
+          smartLists: true,
+          smartypants: false,
+          xhtml: false,
+        });
+        return marked;
+      });
     },
   },
 };
@@ -58,9 +63,7 @@ export default {
 
 <style lang="scss">
   .marked-body {
-    /* padding: 20px; */
-    padding-bottom: 20px;
-    padding-right: 20px;
+    padding: 0 20px 20px 0;
     h1 {
       color: #3d444f;
     }

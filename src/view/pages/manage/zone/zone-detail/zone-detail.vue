@@ -6,8 +6,8 @@
       <div class="break-navBar">
         <breadcrumb
           :links="[
-            { text: '服务', route: {  name: 'manage.zone.list' } },
-            { text: '服务详情' },
+            { text: '可用区管理 ', route: {  name: 'manage.zone.list' } },
+            { text: '可用区详情' },
           ]"
         >
         </breadcrumb>
@@ -53,29 +53,26 @@
 </template>
 
 <script src="./zone-detail.js"></script>
-<style lang="scss">
-  .page-manage {
-    .breadcrumb {
-      .el-breadcrumb__inner .is-link{
-        font-weight: normal;
-      }
-    }
-  }
-</style>
 <style lang="scss" scoped>
   .page-manage {
     .break-navBar {
+      background: #D5DBE3;
+      padding-left: 10px;
       height: 32px;
       line-height: 32px;
       font-size: 14px;
+      font-family: SFProText-Regular,SFProText;
+      font-weight: 400;
+      color: #595F69;
+      border-bottom: 1px solid #D5DBE3;
     }
-    .breadcrumb {
+    /* .breadcrumb {
       height: 32px;
       line-height: 32px;
       font-size: 14px;
       margin-left: 20px;
       color: #595F69;
-    }
+    } */
   }
 </style>
 

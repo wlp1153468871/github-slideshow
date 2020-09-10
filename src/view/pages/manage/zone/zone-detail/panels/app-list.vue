@@ -98,7 +98,7 @@
         </span>
       </div>
       <el-table
-        style="width: 100%; margin-top: 20px;"
+        style="width: 100%; margin-top: 15px;"
         :data="renderTable"
         v-loading="loading.zone"
       >
@@ -204,11 +204,15 @@
       <div class="footer">
         <div class="page">共 {{TableNum()}} 项</div>
         <el-pagination
+          v-if="total"
           :page-sizes="[10, 15, 20, 25]"
           :page-size="100"
-          layout="sizes"
+          :current-page.sync="currentPage"
+          layout="sizes, prev, pager, next"
           style="padding-top: 5px;"
           @size-change="changeSize"
+          @current-change="handleCurrentChange"
+          :total="total"
         >
         </el-pagination>
       </div>
@@ -275,6 +279,8 @@ export default {
       newChartVersionId: '', // 上传chart文件保存的ID
       newChartVersionZoneId: '', // 上传chart文件保存的ZoneID
       size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
@@ -282,6 +288,12 @@ export default {
     size: {
       handler(size) {
         this.renderTable = this.renderTableCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.renderTable = this.renderTableCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
       },
     },
   },
@@ -301,6 +313,7 @@ export default {
           this.tableData = res;
           this.renderTable = res.slice(0, 10);
           this.renderTableCopy = res;
+          this.total = res.length;
           this.renderTable.forEach(item => {
             const category = item.category.join('，');
             item.category = category;
@@ -512,6 +525,9 @@ export default {
     },
     changeSize(size) {
       this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

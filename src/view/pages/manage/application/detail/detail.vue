@@ -19,13 +19,13 @@
           <svg class="icon" style="color: #25D473">
             <use :xlink:href="`#icon_status-dot-small`"></use>
           </svg>
-          <span>已上架</span>
+          <span>已启用</span>
         </div>
         <div class="title-desc-name" v-else>
           <svg class="icon" style="color: #CCD1D9">
             <use :xlink:href="`#icon_status-dot-small`"></use>
           </svg>
-          <span>已下架</span>
+          <span>已禁用</span>
         </div>
         <div class="title1">创建于：</div>
         <div class="title-desc-name">
@@ -53,10 +53,10 @@
             v-if="appInfo.available"
             @click="availableOff"
           >
-            <span>下架应用</span>
+            <span>禁用应用</span>
           </dao-dropdown-item>
           <dao-dropdown-item v-else @click="availableOn">
-            <span>上架应用</span>
+            <span>启用应用</span>
           </dao-dropdown-item>
           <!-- <dao-dropdown-item>
             <span style="color: red;" @click="deleteApplication">删除</span>
@@ -289,7 +289,9 @@
                 <div class="right-desc">({{data.email}})</div>
               </div>
               <div class="right-name">官网链接</div>
-              <a :href="`${item.homeUrl}`" class="right-link">{{item.homeUrl}}</a>
+              <div class="right-link">
+                <a :href="`${item.homeUrl}`">{{item.homeUrl}}</a>
+              </div>
             </div>
           </div>
         </div>
@@ -456,7 +458,7 @@
             <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
           </button>
         </span>
-        <div style="margin-top: 20px;">
+        <div style="margin-top: 15px;">
           <el-table
             style="width: 100%;"
             :data="instances"
@@ -495,35 +497,16 @@
           </el-table>
           <div class="footer">
             <div class="page">共 {{instancesNum()}} 项</div>
-            <!-- <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-              <dao-dropdown
-                trigger="click"
-                :append-to-body="true"
-                placement="bottom-start"
-              >
-                <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-                  <span class="text">10项/页</span>
-                  <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-                </button>
-                <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                  <dao-dropdown-item style="margin-left: 10px">
-                    <span>15项/页</span>
-                  </dao-dropdown-item>
-                  <dao-dropdown-item style="margin-left: 10px">
-                    <span>20项/页</span>
-                  </dao-dropdown-item>
-                  <dao-dropdown-item style="margin-left: 10px">
-                    <span>25项/页</span>
-                  </dao-dropdown-item>
-                </dao-dropdown-menu>
-              </dao-dropdown>
-            </span> -->
             <el-pagination
+              v-if="total"
               :page-sizes="[10, 15, 20, 25]"
               :page-size="100"
-              layout="sizes"
+              :current-page.sync="currentPage"
+              layout="sizes, prev, pager, next"
               style="padding-top: 5px;"
               @size-change="changeSize"
+              @current-change="handleCurrentChange"
+              :total="total"
             >
             </el-pagination>
           </div>

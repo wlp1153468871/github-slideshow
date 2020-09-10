@@ -94,7 +94,7 @@
         </div>
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">实例信息</div>
-          <marked :text="instanceInfo.notes"></marked>
+          <marked :text="instanceInfo.notes" style="padding: 20px;"></marked>
         </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
