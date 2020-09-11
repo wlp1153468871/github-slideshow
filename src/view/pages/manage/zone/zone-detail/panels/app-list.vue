@@ -70,6 +70,7 @@
             class="dao-btn blue has-icon"
             style="margin-left: 10px;"
             @click="handleNewApplication"
+            v-if="$can('platform.zone.applications.create')"
           >
             <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
             <span class="text">导入应用模板</span>
@@ -78,6 +79,7 @@
             class="dao-btn blue has-icon"
             style="margin-left: 10px;"
             @click="synchronism"
+            v-if="$can('platform.zone.applications.sync')"
           >
             <svg class="icon"><use xlink:href="#icon_update"></use></svg>
             <span class="text">同步</span>
@@ -98,7 +100,7 @@
         </span>
       </div>
       <el-table
-        style="width: 100%; margin-top: 20px;"
+        style="width: 100%; margin-top: 15px;"
         :data="renderTable"
         v-loading="loading.zone"
       >
@@ -137,11 +139,15 @@
                       trigger="click"
                       :append-to-body="true"
                       placement="right-start"
+                      v-if="$can('platform.zone.applications.action')"
                     >
                       <svg class="icon">
                         <use :xlink:href="`#icon_more`"></use>
                       </svg>
-                      <dao-dropdown-menu slot="list" style="min-width: 120px;">
+                      <dao-dropdown-menu
+                        slot="list"
+                        style="min-width: 120px;"
+                      >
 <!--                            <dao-dropdown-item-->
 <!--                              @click="uploadChartVersion(scope.row.name, scope.row.version)"-->
 <!--                              style="margin-left: 10px" class="linkColor">-->
@@ -181,11 +187,15 @@
                 trigger="click"
                 :append-to-body="true"
                 placement="right-start"
+                v-if="$can('platform.zone.applications.action')"
               >
                 <svg class="icon">
                   <use :xlink:href="`#icon_more`"></use>
                 </svg>
-                <dao-dropdown-menu slot="list" style="min-width: 120px;">
+                <dao-dropdown-menu
+                  slot="list"
+                  style="min-width: 120px;"
+                >
                   <dao-dropdown-item
                     @click="handleNewChartVersion(scope.row.id, scope.row.zoneId)">
                     <span style="color: #000;">新增chart版本</span>
@@ -204,11 +214,15 @@
       <div class="footer">
         <div class="page">共 {{TableNum()}} 项</div>
         <el-pagination
+          v-if="total"
           :page-sizes="[10, 15, 20, 25]"
           :page-size="100"
-          layout="sizes"
+          :current-page.sync="currentPage"
+          layout="sizes, prev, pager, next"
           style="padding-top: 5px;"
           @size-change="changeSize"
+          @current-change="handleCurrentChange"
+          :total="total"
         >
         </el-pagination>
       </div>
@@ -275,6 +289,8 @@ export default {
       newChartVersionId: '', // 上传chart文件保存的ID
       newChartVersionZoneId: '', // 上传chart文件保存的ZoneID
       size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
@@ -282,6 +298,12 @@ export default {
     size: {
       handler(size) {
         this.renderTable = this.renderTableCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.renderTable = this.renderTableCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
       },
     },
   },
@@ -301,6 +323,7 @@ export default {
           this.tableData = res;
           this.renderTable = res.slice(0, 10);
           this.renderTableCopy = res;
+          this.total = res.length;
           this.renderTable.forEach(item => {
             const category = item.category.join('，');
             item.category = category;
@@ -512,6 +535,9 @@ export default {
     },
     changeSize(size) {
       this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

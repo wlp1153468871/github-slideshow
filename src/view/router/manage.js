@@ -68,7 +68,7 @@ export default [
       hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
-      code: 'platform.organization;platform.user;platform.rolePermission',
+      code: 'platform.organization;platform.user;platform.rolePermission;platform.applications',
       type: 'submenu',
     },
     children: [
@@ -79,7 +79,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization',
+          code: 'platform.organization;platform.applications',
           hidden: false,
         },
         children: [],
@@ -153,7 +153,7 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceInstance;platform.zone;platform.alert',
+      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications',
       type: 'submenu',
       // hidden: false,
     },
@@ -184,8 +184,9 @@ export default [
         name: 'manage.application',
         component: Application,
         meta: {
-          title: '应用管理',
+          title: '应用模板管理',
           icon: '#icon_service',
+          code: 'platform.applications',
           hidden: false,
         },
       },

@@ -29,10 +29,10 @@ export default {
           name: '全部',
         }, {
           id: 1,
-          name: '已上架',
+          name: '已启用',
         }, {
           id: 0,
-          name: '已下架',
+          name: '已禁用',
         },
       ],
       statuCat: '',
@@ -53,6 +53,8 @@ export default {
         appInfo: false,
       },
       size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
@@ -68,6 +70,12 @@ export default {
     size: {
       handler(size) {
         this.appInfo = this.appInfoCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.appInfo = this.appInfoCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
       },
     },
   },
@@ -104,7 +112,7 @@ export default {
         });
       });
       if (this.lineCode === 200) {
-        this.$noty.success('上架成功');
+        this.$noty.success('启用成功');
         this.lineCode = 0;
       }
     },
@@ -118,7 +126,7 @@ export default {
           this.getAllApp();
         });
       });
-      this.$noty.success('下架成功');
+      this.$noty.success('禁用成功');
     },
     selectChange(val) {
       const arr = [];
@@ -157,6 +165,7 @@ export default {
           if (res) {
             this.appInfo = res.slice(0, 10);
             this.appInfoCopy = res;
+            this.total = res.length;
           }
         })
         .then(() => {
@@ -198,10 +207,10 @@ export default {
         const obj = {};
         if (item.available === 1) {
           obj.id = item.available;
-          obj.name = '已上架';
+          obj.name = '已启用';
         } else {
           obj.id = item.available;
-          obj.name = '已下架';
+          obj.name = '已禁用';
         }
         if (this.status.filter(data => data.name === obj.name).length < 1) {
           this.status.push(obj);
@@ -228,6 +237,9 @@ export default {
     },
     changeSize(size) {
       this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

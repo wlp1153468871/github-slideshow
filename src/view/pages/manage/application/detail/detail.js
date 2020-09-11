@@ -65,6 +65,8 @@ export default {
         instance: false,
       },
       size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
@@ -90,11 +92,15 @@ export default {
         }
       },
     },
-    watch: {
-      size: {
-        handler(size) {
-          this.instances = this.instancesCopy.slice(0, size);
-        },
+    size: {
+      handler(size) {
+        this.instances = this.instancesCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.instances = this.instancesCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
       },
     },
   },
@@ -210,6 +216,7 @@ export default {
           if (res) {
             this.instances = res.slice(0, 10);
             this.instancesCopy = res;
+            this.total = res.length;
           }
         })
         .finally(() => {
@@ -244,7 +251,7 @@ export default {
       ServiceAdmin.availableOff(this.$route.params.id).then(res => {
         if (res) {
           this.getApp();
-          this.$noty.success('应用下架成功');
+          this.$noty.success('应用禁用成功');
         }
       });
     },
@@ -253,7 +260,7 @@ export default {
       ServiceAdmin.availableOn(this.$route.params.id).then(res => {
         if (res) {
           this.getApp();
-          this.$noty.success('应用上架成功');
+          this.$noty.success('应用启用成功');
         }
       });
     },
@@ -438,6 +445,9 @@ export default {
     // 分页
     changeSize(size) {
       this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

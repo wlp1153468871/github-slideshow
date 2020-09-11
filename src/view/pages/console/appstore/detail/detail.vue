@@ -202,8 +202,9 @@
                   </div>
                 </div>
               </div>
+              <div class="blank"></div>
               <div class="base-info" v-if="appInfo.content">
-                <div class="title" style="padding: 20px 0 20px 0px;">README</div>
+                <div class="title">README</div>
                 <marked :text="appInfo.content"></marked>
               </div>
             </el-tab-pane>
@@ -215,18 +216,11 @@
                 placeholder="搜索">
               </dao-input>
               <span style="float: right;" @click="fresh">
-                <!-- <el-button size="mini" style="margin-left: 10px;">
-                  <span>
-                    <svg class="icon">
-                      <use :xlink:href="`#icon_cw`"></use>
-                    </svg>
-                  </span>
-                </el-button> -->
                 <button class="dao-btn icon-btn" style="margin-left: 10px;">
                   <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
                 </button>
               </span>
-              <div style="margin-top: 20px;">
+              <div style="margin-top: 15px;">
                 <el-table
                   style="width: 100%;"
                   :data="instanceTable"
@@ -265,7 +259,11 @@
                           <svg class="icon">
                             <use :xlink:href="`#icon_more`"></use>
                           </svg>
-                          <dao-dropdown-menu slot="list" style="min-width: 120px;">
+                          <dao-dropdown-menu
+                            slot="list"
+                            style="min-width: 120px;"
+                            v-if="$can('appstoreApplications.appinstance')"
+                          >
                             <dao-dropdown-item @click="linktoForm(scope.row.id)">
                               <span>使用表单更新</span>
                             </dao-dropdown-item>
@@ -284,11 +282,15 @@
                 <div class="footer">
                   <div class="page">共 {{instanceNum()}} 项</div>
                   <el-pagination
+                    v-if="total"
                     :page-sizes="[10, 15, 20, 25]"
                     :page-size="100"
-                    layout="sizes"
+                    :current-page.sync="currentPage"
+                    layout="sizes, prev, pager, next"
                     style="padding-top: 5px;"
                     @size-change="changeSize"
+                    @current-change="handleCurrentChange"
+                    :total="total"
                   >
                   </el-pagination>
                 </div>
@@ -331,9 +333,14 @@
               <div class="right-desc">({{data.email}})</div>
             </div>
             <div class="right-name">官网链接</div>
-            <a :href="`${item.homeUrl}`" class="right-link">{{item.homeUrl}}</a>
-            <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
-            <!-- <button class="dao-btn delete-btn" @click="showDelete">删除版本</button> -->
+            <div class="right-link">
+              <a :href="`${item.homeUrl}`">{{item.homeUrl}}</a>
+            </div>
+            <button
+              class="dao-btn blue right-btn"
+              @click="showCreate"
+              v-if="$can('appstoreApplications.appinstance')">立即创建
+            </button>
             <dao-dialog
               :visible.sync="configCreate"
               :header="`创建实例 | ${item.chartName}`"

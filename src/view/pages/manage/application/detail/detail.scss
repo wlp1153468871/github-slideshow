@@ -19,14 +19,21 @@
     color: #595F69;
     border-bottom: 1px solid #D5DBE3;
   }
+  .el-tabs__header {
+    margin: 0 0 20px;
+    // background: #fff;
+  }
+  // .el-tabs {
+  //   background: #fff;
+  // }
   .detail-title {
     position: relative;
     height: 80px;
     background: #fff;
     border-bottom: 1px solid rgb(228,231,237);
     .icon-size {
-      width: 60px;
-      height: 60px;
+      width: 54px;
+      height: 54px;
       margin: 16px;
       border-radius: 4px;
     }
@@ -218,7 +225,6 @@
     float: right;
     width: 25%;
     min-height: 760px;
-    border-left: 1px solid rgb(228,231,237);
     overflow: hidden;
     // 跟随左边高度
     padding-bottom:9999px;
@@ -277,12 +283,16 @@
       color: #595F69;
     }
     .right-link {
+      width: 200px;
       height: 14px;
       line-height: 14px;
       margin: 10px 0 0 20px;
       font-family: SFProText-Regular,SFProText;
       color: #217EF2;
       font-weight: 400;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
   .project {

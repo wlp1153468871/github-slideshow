@@ -1,5 +1,5 @@
 <template>
-  <div id="appstore">
+  <div id="appstore" v-if="$can('appstoreAppinstances')">
     <div class="appstore-header">
       <div class="img-box">
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />

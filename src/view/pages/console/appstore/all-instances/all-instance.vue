@@ -1,5 +1,5 @@
 <template>
-  <div id="allInstances">
+  <div id="allInstances" v-if="$can('appstoreAppinstances.view')">
     <div class="header">实例列表</div>
     <dao-input
       search
@@ -16,6 +16,7 @@
     </span>
     <div class="table">
       <el-table
+        style="width: 100%;"
         :data="instances"
         v-loading="loading.instance"
       >
@@ -26,7 +27,16 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="所属应用" prop="appName"></el-table-column>
+        <el-table-column label="所属应用">
+          <template slot-scope="scope">
+            <div v-if="scope.row.available === '1'">
+              {{scope.row.appName}}
+            </div>
+            <div v-else>
+              {{scope.row.appName}}(已禁用)
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="Chart 版本" prop="chartVersion" width="150"></el-table-column>
         <el-table-column label="状态" width="150">
           <template slot-scope="scope">
@@ -45,35 +55,16 @@
       </el-table>
       <div class="footer">
         <div class="page">共 {{instanceNum()}} 项</div>
-        <!-- <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-          <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-start"
-          >
-            <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-              <span class="text">10项/页</span>
-              <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-            </button>
-            <dao-dropdown-menu slot="list" style="min-width: 120px;">
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>15项/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>20项/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>25项/页</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown>
-        </span> -->
         <el-pagination
+          v-if="total"
           :page-sizes="[10, 15, 20, 25]"
           :page-size="100"
-          layout="sizes"
+          :current-page.sync="currentPage"
+          layout="sizes, prev, pager, next"
           style="padding-top: 5px;"
           @size-change="changeSize"
+          @current-change="handleCurrentChange"
+          :total="total"
         >
         </el-pagination>
       </div>

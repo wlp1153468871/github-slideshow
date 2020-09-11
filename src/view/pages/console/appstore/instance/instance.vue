@@ -1,5 +1,8 @@
 <template>
-  <div id="servicedetail">
+  <div
+    id="servicedetail"
+    v-if="$can('appstoreApplications.insview') || $can('appstoreAppinstances.view')"
+  >
     <div class="header">
       <breadcrumb
         :links="[
@@ -35,7 +38,8 @@
           trigger="click"
           :append-to-body="true"
           placement="bottom-start"
-          v-if="appInfo.ownerId === user.id"
+          v-if="$can('appstoreApplications.appinstance') ||
+            $can('appstoreAppinstances.appinstance')"
         >
           <button class="dao-btn has-icons" style="width: 98px">
             <span class="text">更多操作</span>
@@ -94,7 +98,7 @@
         </div>
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">实例信息</div>
-          <marked :text="instanceInfo.notes"></marked>
+          <marked :text="instanceInfo.notes" style="padding: 20px;"></marked>
         </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
