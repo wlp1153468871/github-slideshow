@@ -73,7 +73,7 @@ $appItemWidth: 31.2%;
   background:rgba(255,255,255,1);
   box-shadow: 0px 1px 2px 0px rgba(228,231,237,0.5);
   border-radius:  6px;
-  border: 1px solid rgba(228,231,237,1);
+  border: 1px solid #CCD1D9;
   cursor: pointer;
   .icon {
     .icon-left {
@@ -166,6 +166,5 @@ $appItemWidth: 31.2%;
 .itme-container:hover {
   background-color: #F5F7FA;
   box-shadow: 0px 1px 2px 0px rgba(204, 209, 217, 0.5);
-  border-color: #CCD1D9;
 }
 </style>

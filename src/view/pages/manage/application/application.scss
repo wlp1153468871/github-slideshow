@@ -1,5 +1,11 @@
 #service {
   font-family: SFProText-Regular,SFProText;
+  .el-table{
+    tr.rowStyle {
+      background-color: #E8F1FC;
+    }
+  }
+
   .header {
     background: #D5DBE3;
     padding-left: 10px;

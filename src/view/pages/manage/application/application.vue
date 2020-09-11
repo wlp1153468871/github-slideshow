@@ -93,6 +93,7 @@
         v-loading="loading.appInfo"
         @select="selectChange"
         @selection-change="selectAll"
+        :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="应用名称">
@@ -162,4 +163,4 @@
 
 <script src="./application.js"></script>
 
-<style lang="scss" src="./application.scss" scoped></style>
+<style lang="scss" src="./application.scss"></style>

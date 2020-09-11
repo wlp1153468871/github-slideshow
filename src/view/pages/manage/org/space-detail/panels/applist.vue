@@ -84,12 +84,13 @@
         </button>
       </div>
     </div>
-    <div style="margin: 20px;">
+    <div style="margin: 15px;">
       <el-table
         style="width: 100%;"
         :data="tableData"
         v-loading="loading.appInfo"
         @selection-change="selectChange"
+        :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column label="应用名称" prop="name" width="200">
@@ -157,11 +158,15 @@
       <div class="footer">
         <div class="page">共 {{appNumber}} 项</div>
         <el-pagination
+          v-if="total"
           :page-sizes="[10, 15, 20, 25]"
           :page-size="100"
-          layout="sizes"
+          :current-page.sync="currentPage"
+          layout="sizes, prev, pager, next"
           style="padding-top: 5px;"
           @size-change="changeSize"
+          @current-change="handleCurrentChange"
+          :total="total"
         >
         </el-pagination>
       </div>
@@ -225,11 +230,14 @@ export default {
         appInfo: false,
       },
       selectedArray: [], // 选中的数组
+      indexArr: [],
       onArr: '',
       offArr: '',
       haveOn: true,
       haveOff: true,
       size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
   computed: {
@@ -241,6 +249,12 @@ export default {
     size: {
       handler(size) {
         this.tableData = this.tableDataCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.tableData = this.tableDataCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
       },
     },
   },
@@ -258,6 +272,7 @@ export default {
         .then(res => {
           this.tableData = res.slice(0, 10);
           this.tableDataCopy = res;
+          this.total = res.length;
         })
         .finally(() => {
           this.loading.appInfo = false;
@@ -294,6 +309,7 @@ export default {
     selectChange(data) {
       this.onArr = [];
       this.offArr = [];
+      const indexArr = [];
       data.forEach(item => {
         if (item.space_available === '1') {
           this.offArr.push(item);
@@ -301,6 +317,9 @@ export default {
         if (item.space_available === '0') {
           this.onArr.push(item);
         }
+        this.tableData.forEach((val, index) => {
+          if (item.id === val.id) indexArr.push(index);
+        });
       });
       if (this.onArr.length !== 0) {
         this.haveOn = false;
@@ -313,6 +332,8 @@ export default {
         this.haveOff = true;
       }
       this.selectedArray = data;
+
+      this.indexArr = indexArr;
     },
     /**
      * 上架
@@ -355,13 +376,24 @@ export default {
     changeSize(size) {
       this.size = size;
     },
+    handleCurrentChange(page) {
+      this.currentPage = page;
+    },
+    rowStyle({ rowIndex }) {
+      return this.indexArr.includes(rowIndex) ? 'rowStyle' : '';
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .availableTemplate {
   background-color: #F1F3F6;
+  .el-table{
+    tr.rowStyle {
+      background-color: #E8F1FC;
+    }
+  }
   .template-head {
     display: flex;
     justify-content: space-between;

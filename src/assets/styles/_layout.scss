@@ -2,13 +2,14 @@
 
 .layout {
   height: 100%;
-  padding-top: $nav-height;
+  // padding-top: $nav-height;
 
   .layout-content {
     position: relative;
     background: $white-dark-lighter;
     margin-left: 200px;
-    min-height: 100%;
+    height: calc(100vh - #{$nav-height});;
+    overflow-y: auto;
     transition: 0.3s;
     z-index: 10;
 

@@ -15,6 +15,7 @@ export default {
       // 选择的状态
       selectStatus: [],
       selectedArr: [], // 选中时的数组
+      indexArr: [],
       zones: [
         {
           id: '',
@@ -78,6 +79,9 @@ export default {
           (currentPage) * this.size);
       },
     },
+    // selectedArr(data) {
+    //   this.selectedRow = []
+    // }
   },
 
   methods: {
@@ -141,12 +145,18 @@ export default {
     selectAll(val) {
       this.selectedArr = val;
       const arr = [];
+      const indexArr = [];
       val.forEach(item => {
         if (!arr.includes(item.available)) {
           arr.push(item.available);
         }
+        // 判断选择哪一行
+        this.appInfo.forEach((data, index) => {
+          if (item.id === data.id) indexArr.push(index);
+        });
       });
       this.selectStatus = arr;
+      this.indexArr = indexArr;
     },
     // 实例跳转
     rowClick(id) {
@@ -240,6 +250,9 @@ export default {
     },
     handleCurrentChange(page) {
       this.currentPage = page;
+    },
+    rowStyle({ rowIndex }) {
+      return this.indexArr.includes(rowIndex) ? 'rowStyle' : '';
     },
   },
 };
