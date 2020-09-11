@@ -158,19 +158,20 @@ export default {
           this.$route.params.instanceid)
         .then(res => {
           if (res) {
+            console.log(res);
             res.forEach(item => {
               const obj = {};
               const owner = {};
-              obj.name = item.statusRecord;
+              obj.name = item.actionDescription;
               obj.started_at = item.startedAt;
               obj.ended_at = item.endedAt;
-              obj.description = item.description;
-              if (item.status === 'deployed') {
+              obj.description = item.resultDetail.response;
+              if (item.resultDescription === 'deployed') {
                 obj.status = 'succeed';
               } else {
-                obj.status = item.status;
+                obj.status = item.resultDescription;
               }
-              owner.name = item.operator;
+              owner.name = item.userName;
               obj.owner = owner;
               this.operator.push(obj);
             });
