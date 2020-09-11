@@ -1,6 +1,8 @@
 <template>
   <div class="layout" :class="{ collapsed: isCollapse, hidden: !isSpaceView }">
-    <global-nav-bar></global-nav-bar>
+    <!-- <global-nav-bar></global-nav-bar> -->
+    <!-- DX HEADER -->
+    <dx-header :id-token="idToken" @logout="apLogout"></dx-header>
     <console-side-bar v-show="isSpaceView" @switch-section="switchSpace"> </console-side-bar>
     <template v-if="!isInitTenantView">
       <router-view class="layout-content"></router-view>

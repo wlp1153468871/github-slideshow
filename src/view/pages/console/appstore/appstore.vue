@@ -127,8 +127,6 @@ v-deep .el-tag {
 }
 
 #appstore {
-  background: #F1F3F6;
-  overflow: hidden;
   .appstore-header {
     height: 160px;
     background: #3D4655;

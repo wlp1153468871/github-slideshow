@@ -69,4 +69,10 @@ module.exports = {
       },
     },
   },
+  //  DX配置
+  configureWebpack: {
+    externals: {
+      DxHeader: 'DxHeader'
+    }
+  },
 };
