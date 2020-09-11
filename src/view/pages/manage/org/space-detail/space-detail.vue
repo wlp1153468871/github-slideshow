@@ -24,7 +24,11 @@
         <zone-panel :space-id="spaceId"> </zone-panel>
       </el-tab-pane>
 
-      <el-tab-pane :label="SIDE_BAR.LIST" :name="SIDE_BAR.LIST">
+      <el-tab-pane
+        :label="SIDE_BAR.LIST"
+        :name="SIDE_BAR.LIST"
+        v-if="$can('platform.applications.spaces')"
+      >
         <LIST :spaceId="spaceId" :orgId="orgId"></LIST>
       </el-tab-pane>
 

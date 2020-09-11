@@ -1,5 +1,5 @@
 <template>
-  <div id="service">
+  <div id="service" v-if="$can('platform.applications.view')">
     <div class="header">应用模板管理</div>
     <div class="box">
       <span class="title">可用区：</span>
@@ -70,12 +70,14 @@
         class="dao-btn"
         :disabled="selectStatus[0] === 1 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOnline"
+        v-if="$can('platform.applications.available')"
       >批量启用
       </button>
       <button
         class="dao-btn status"
         :disabled="selectStatus[0] === 0 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOff"
+        v-if="$can('platform.applications.available')"
       >批量禁用
       </button>
       <!-- <button

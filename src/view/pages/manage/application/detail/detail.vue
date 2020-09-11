@@ -1,5 +1,5 @@
 <template>
-  <div id="servicedetail1">
+  <div id="servicedetail1" v-if="$can('platform.applications.view')">
     <div class="detail-header">
       <breadcrumb
         :links="[
@@ -37,6 +37,7 @@
         :append-to-body="true"
         placement="bottom-start"
         class="more"
+        v-if="$can('platform.applications.available')"
       >
         <button class="dao-btn has-icons">
           <span class="text">更多操作</span>

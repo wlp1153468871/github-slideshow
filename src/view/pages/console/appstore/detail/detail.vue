@@ -259,7 +259,11 @@
                           <svg class="icon">
                             <use :xlink:href="`#icon_more`"></use>
                           </svg>
-                          <dao-dropdown-menu slot="list" style="min-width: 120px;">
+                          <dao-dropdown-menu
+                            slot="list"
+                            style="min-width: 120px;"
+                            v-if="$can('appstoreApplications.appinstance')"
+                          >
                             <dao-dropdown-item @click="linktoForm(scope.row.id)">
                               <span>使用表单更新</span>
                             </dao-dropdown-item>
@@ -332,7 +336,11 @@
             <div class="right-link">
               <a :href="`${item.homeUrl}`">{{item.homeUrl}}</a>
             </div>
-            <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
+            <button
+              class="dao-btn blue right-btn"
+              @click="showCreate"
+              v-if="$can('appstoreApplications.appinstance')">立即创建
+            </button>
             <dao-dialog
               :visible.sync="configCreate"
               :header="`创建实例 | ${item.chartName}`"

@@ -14,7 +14,11 @@
       </div>
 
       <el-tabs v-model="currentTab" class="zone-tab">
-        <el-tab-pane :label="TABS.APPLICATION" :name="TABS.APPLICATION">
+        <el-tab-pane
+          :label="TABS.APPLICATION"
+          :name="TABS.APPLICATION"
+          v-if="$can('platform.zone.applications.view')"
+        >
           <AppList :id="zone.id" @addApplication="addApplication"></AppList>
         </el-tab-pane>
         <el-tab-pane :label="TABS.BINDS" :name="TABS.BINDS">
