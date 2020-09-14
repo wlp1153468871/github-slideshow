@@ -16,7 +16,10 @@
           </dd>
           <dt>Secret:</dt>
           <dd>
-            <span>
+            <span v-if="routeName === 'manage.node.detail.pods.detail'">
+              {{ volume.secret.secretName }}
+            </span>
+            <span v-else>
               <router-link
                 :to="{
                   name: 'resource.secrets.detail',
@@ -147,6 +150,7 @@ export default {
   data() {
     return {
       secretsVersion: getPreferredVersion('secrets'),
+      routeName: this.$route.name,
     };
   },
 };

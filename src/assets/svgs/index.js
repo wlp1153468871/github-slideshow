@@ -64,6 +64,7 @@ import './icon_pvc.svg';
 import './icon_bell.svg';
 import './icon_deployment-config-logo.svg';
 import './icon_bell-logo.svg';
+import './icon_node-logo.svg';
 
 // home
 import './home/home-app.svg';

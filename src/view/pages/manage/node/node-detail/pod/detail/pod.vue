@@ -134,7 +134,7 @@
                   :container="term.containerName"
                   :status.sync="term.status"
                   :autofocus="true"
-                  :isManageView='false'
+                  :isManageView='true'
                 >
                 </container-terminal>
               </div>
@@ -152,6 +152,7 @@
             v-if="activeTab === TABS.REALTIME_LOG.name"
             :containers="containerTerminals"
             :pod="pod"
+            :isManageView='true'
           >
           </pod-log-panel>
         </el-tab-pane>
@@ -162,7 +163,7 @@
           :name="TABS.OFFLINE_LOG.name"
           lazy
         >
-          <pod-log-offline-panel v-if="activeTab === TABS.OFFLINE_LOG.name" :pod="pod">
+          <pod-log-offline-panel v-if="activeTab === TABS.OFFLINE_LOG.name" :pod="pod" :isManageView='true'>
           </pod-log-offline-panel>
         </el-tab-pane>
 
@@ -171,17 +172,18 @@
             v-if="activeTab === TABS.ENV.name"
             :initEnvs="pod.spec.containers"
             :editable="false"
+            :isManageView='true'
             lazy
           >
           </env-editor>
         </el-tab-pane>
 
-        <el-tab-pane :label="TABS.EVENT.label" :name="TABS.EVENT.name" lazy>
-          <events-table v-if="activeTab === TABS.EVENT.name" :events="events"> </events-table>
+        <el-tab-pane :label="TABS.EVENT.label" :name="TABS.EVENT.name" :isManageView='true' lazy>
+          <events-table v-if="activeTab === TABS.EVENT.name" :events="events" :isManageView='true'> </events-table>
         </el-tab-pane>
 
         <el-tab-pane :label="TABS.TERMINAL_HISTORY.label" :name="TABS.TERMINAL_HISTORY.name" lazy>
-          <terminal-history-panel v-if="activeTab === TABS.TERMINAL_HISTORY.name" :pod="pod">
+          <terminal-history-panel v-if="activeTab === TABS.TERMINAL_HISTORY.name" :pod="pod" :isManageView='true'>
           </terminal-history-panel>
         </el-tab-pane>
         <el-tab-pane
@@ -190,7 +192,7 @@
           :name="TABS.MONITOR.name"
           lazy
         >
-          <monitor-panel v-if="activeTab === TABS.MONITOR.name"> </monitor-panel>
+          <monitor-panel v-if="activeTab === TABS.MONITOR.name" :isManageView='true'> </monitor-panel>
         </el-tab-pane>
       </el-tabs>
     </template>
@@ -202,6 +204,7 @@
       :visible="dialogs.saveFile"
       :pod-template="pod"
       :container="selectedTerminalContainer"
+      :isManageView='true'
       @close="dialogs.saveFile = false"
     >
     </file-save-in-container>

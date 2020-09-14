@@ -218,7 +218,7 @@ export const getters = {
     throw new Error(`没有查找到ID为 [${id}] 的Service`);
   },
 
-  gerResourceForHeader: state => (kind, name) => {
+  getResourceForHeader: state => (kind, name) => {
     const resource = getValue(state.apiResource, kind);
     if (resource) {
       let links;
