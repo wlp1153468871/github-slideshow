@@ -6,6 +6,7 @@
 
   .layout-content {
     position: relative;
+    top: 40px;
     background: $white-dark-lighter;
     margin-left: 200px;
     height: calc(100vh - #{$nav-height});;

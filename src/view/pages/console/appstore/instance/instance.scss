@@ -26,6 +26,12 @@
   .el-tabs .el-tab-pane{
     overflow: hidden;
   }
+  .dao-dropdown-menu {
+    background: red !important;
+    .deleteHover {
+      background-color: black;
+    }
+  }
   .detail-title {
     position: relative;
     height: 80px;

@@ -79,6 +79,16 @@
           </template>
         </dao-setting-section>
         <dao-setting-section>
+          <template slot="label">供应商</template>
+          <template slot="content">
+            <dao-input
+              style="width: 100%"
+              v-model="name"
+              block
+              placeholder="请填写供应商"></dao-input>
+          </template>
+        </dao-setting-section>
+        <dao-setting-section>
           <template slot="label">是否认证</template>
           <template slot="content">
             <el-radio-group v-model="daoAuth">
