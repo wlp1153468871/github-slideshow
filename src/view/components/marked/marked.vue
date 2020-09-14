@@ -37,7 +37,7 @@ export default {
       return Promise.all([
         import(/* webpackChunkName: "marked" */ /* webpackMode: "lazy" */ 'marked'),
         import(/* webpackChunkName: "highlight.js" */ /* webpackMode: "lazy" */ 'highlight.js'),
-        import(/* webpackChunkName: "showdown" */ /* webpackMode: "lazy" */ 'github-markdown-css'),
+        import(/* webpackChunkName: "github-markdown-css" */ /* webpackMode: "lazy" */ 'github-markdown-css'),
       ]).then(res => {
         marked = res[0].default;
         const hljs = res[1].default;

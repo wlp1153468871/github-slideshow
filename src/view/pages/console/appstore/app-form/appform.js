@@ -109,40 +109,44 @@ export default {
     },
     // 以form创建
     createForm() {
-      this.loading = true;
-      AppStoreService
-        .createForm(this.zone.id, this.space.id, this.$route.params.appid,
-          this.chartName, this.$route.params.version, this.instanceName, this.table)
-        .then(res => {
-          if (res.status === 'deployed') {
-            this.$router.push({
-              name: 'appstore.detail',
-              params: {
-                Id: this.$route.params.appid,
-              },
-              query: {
-                activeName: this.$route.query.activeName,
-              },
-            });
-            this.$noty.success('实例创建成功');
-          } else if (res.status === 'timeOut') {
-            this.$router.push({
-              name: 'appstore.detail',
-              params: {
-                Id: this.$route.params.appid,
-              },
-              query: {
-                activeName: this.$route.query.activeName,
-              },
-            });
-            this.$noty.warning('实例创建超时');
-          } else {
-            this.$noty.error('实例创建失败');
-          }
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      if (this.instanceName.length) {
+        this.loading = true;
+        AppStoreService
+          .createForm(this.zone.id, this.space.id, this.$route.params.appid,
+            this.chartName, this.$route.params.version, this.instanceName, this.table)
+          .then(res => {
+            if (res.status === 'deployed') {
+              this.$router.push({
+                name: 'appstore.detail',
+                params: {
+                  Id: this.$route.params.appid,
+                },
+                query: {
+                  activeName: this.$route.query.activeName,
+                },
+              });
+              this.$noty.success('实例创建成功');
+            } else if (res.status === 'timeOut') {
+              this.$router.push({
+                name: 'appstore.detail',
+                params: {
+                  Id: this.$route.params.appid,
+                },
+                query: {
+                  activeName: this.$route.query.activeName,
+                },
+              });
+              this.$noty.warning('实例创建超时');
+            } else {
+              this.$noty.error('实例创建失败');
+            }
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        this.$noty.error('实例名称为空');
+      }
     },
     // 获取一个实例
     getInstanceOne() {

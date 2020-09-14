@@ -1,5 +1,7 @@
 import CatalogService from '@/core/services/catalog.service';
 import SyncServiceDialog from '@/view/pages/dialogs/zone/sync-service';
+import NodePanel from '@/view/pages/manage/node/node-list/node-list.vue';
+
 // panels
 import ManagePanel from './panels/manage';
 import OverviewPanel from './panels/overview';
@@ -11,6 +13,7 @@ export default {
   name: 'ZoneDetail',
   components: {
     ManagePanel,
+    NodePanel,
     OverviewPanel,
     SyncServiceDialog,
     AppList,
@@ -25,6 +28,7 @@ export default {
     const TABS = {
       BINDS: '服务管理',
       APPLICATION: '应用模板管理',
+      NODE: '节点管理',
       OVERVIEW: '设置',
     };
     return {

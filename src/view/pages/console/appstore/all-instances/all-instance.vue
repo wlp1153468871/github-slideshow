@@ -1,6 +1,6 @@
 <template>
   <div id="allInstances" v-if="$can('appstoreAppinstances.view')">
-    <div class="header">实例列表</div>
+    <div class="layout-content-header">实例列表</div>
     <dao-input
       search
       v-model="key"

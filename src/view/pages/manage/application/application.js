@@ -9,13 +9,13 @@ export default {
       select: 1,
       // 应用
       appInfo: [],
-
       appInfoCopy: [],
       appNum: '',
       // 选择的状态
       selectStatus: [],
       selectedArr: [], // 选中时的数组
       indexArr: [],
+      isForbidden: false,
       zones: [
         {
           id: '',
@@ -23,7 +23,6 @@ export default {
         },
       ],
       zoneCat: '',
-
       status: [
         {
           id: '',
@@ -37,7 +36,6 @@ export default {
         },
       ],
       statuCat: '',
-
       appType: [
         {
           id: '',
@@ -125,12 +123,7 @@ export default {
      * @param val
      */
     handleOff() {
-      this.selectedArr.forEach(item => {
-        ServiceAdmin.availableOff(item.id).then(() => {
-          this.getAllApp();
-        });
-      });
-      this.$noty.success('禁用成功');
+      this.isForbidden = true;
     },
     selectChange(val) {
       const arr = [];
@@ -173,7 +166,8 @@ export default {
       ServiceAdmin.getAllApp(this.zoneCat, this.statuCat, this.appTypeCat)
         .then(res => {
           if (res) {
-            this.appInfo = res.slice(0, 10);
+            this.appInfo = res.slice((this.currentPage - 1) * this.size,
+              (this.currentPage) * this.size);
             this.appInfoCopy = res;
             this.total = res.length;
           }
@@ -238,7 +232,8 @@ export default {
     },
     // 搜索
     search(val) {
-      this.appInfo = this.appInfoCopy.filter(item => item.name.includes(val));
+      this.appInfo = this.appInfoCopy.filter(item => item.name.includes(val))
+        .slice((this.currentPage - 1) * this.size, (this.currentPage) * this.size);
     },
     // 刷新
     fresh() {
@@ -253,6 +248,18 @@ export default {
     },
     rowStyle({ rowIndex }) {
       return this.indexArr.includes(rowIndex) ? 'rowStyle' : '';
+    },
+    forbidden() {
+      this.isForbidden = false;
+      this.selectedArr.forEach(item => {
+        ServiceAdmin.availableOff(item.id).then(() => {
+          this.getAllApp();
+        });
+      });
+      this.$noty.success('禁用成功');
+    },
+    cancel() {
+      this.isForbidden = false;
     },
   },
 };

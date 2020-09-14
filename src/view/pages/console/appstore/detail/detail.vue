@@ -270,8 +270,11 @@
                             <dao-dropdown-item @click="linktoYamlForm(scope.row.id)">
                               <span>使用 YAML 更新</span>
                             </dao-dropdown-item>
-                            <dao-dropdown-item @click="deleteInstance(scope.row.id)">
-                              <span style="color: red;">删除</span>
+                            <dao-dropdown-item
+                              @click="deleteInstance(scope.row.id)"
+                              class="deleteHover"
+                            >
+                              <span class="delete">删除</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
                         </dao-dropdown>

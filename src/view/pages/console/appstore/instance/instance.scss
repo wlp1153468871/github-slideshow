@@ -6,6 +6,17 @@
 ::v-deep .el_tabs .el-tab-pane{
   margin: 0 0 20px 20px;
 }
+.dao-dropdown-menu {
+  .delete {
+    color: #E1342B;
+  }
+  .deleteHover:hover {
+    background-color: #E1342B !important;
+    .delete {
+      color: #fff;
+    }
+  }
+}
 #servicedetail {
   background: #F1F3F6;
   .header-text {
@@ -25,12 +36,6 @@
   }
   .el-tabs .el-tab-pane{
     overflow: hidden;
-  }
-  .dao-dropdown-menu {
-    background: red !important;
-    .deleteHover {
-      background-color: black;
-    }
   }
   .detail-title {
     position: relative;

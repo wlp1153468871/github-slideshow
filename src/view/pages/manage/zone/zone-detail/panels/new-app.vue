@@ -24,6 +24,9 @@
         <dao-setting-section>
           <template slot="label">chart文件</template>
           <template slot="content">
+            <div class="content-text">支持zip, gzip, tgz, tar格式的压缩文件上传</div>
+          </template>
+          <template slot="content">
             <el-upload
               class="upload-demo"
               ref="uploadChart"
@@ -83,8 +86,9 @@
           <template slot="content">
             <dao-input
               style="width: 100%"
-              v-model="name"
+              v-model="provider"
               block
+              required
               placeholder="请填写供应商"></dao-input>
           </template>
         </dao-setting-section>
@@ -162,7 +166,9 @@
               class="dao-control"
               type="text"
               rows="2"
-              placeholder="请填写内容" v-model="description">
+              placeholder="请填写内容"
+              required
+              v-model="description">
             </textarea>
           </template>
         </dao-setting-section>
@@ -212,6 +218,7 @@ export default {
       description: '', // 描述,
       pictureId: '', // 上传图标的id
       daoAuth: false, // 是否上传
+      provider: '',
       fileType: ['image/png'],
       chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar', 'application/gzip', 'application/x-gzip'],
       chartList: [],
@@ -344,6 +351,7 @@ export default {
       }
       const formData = {
         name: this.name,
+        provider: this.provider,
         pictureId: this.pictureId,
         appType: this.appType,
         category: this.category,
@@ -430,7 +438,7 @@ export default {
     width: 100%;
   }
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
 .new-app {
   /*min-height: 100vh;*/
   min-height: 915px;
@@ -452,11 +460,18 @@ export default {
       padding: 20px;
     }
   }
+
   .newApp-box {
     box-sizing: border-box;
     width: 80%;
     background-color: #fff;
     margin: 20px auto 60px auto;
+    .dao-setting-label {
+      &::before{
+        content: '* ';
+        color: red;
+      }
+    }
     .base-info {
       width: 100%;
       margin-left: 20px;

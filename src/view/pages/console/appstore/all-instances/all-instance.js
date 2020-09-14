@@ -99,7 +99,8 @@ export default {
       this.searchInstance();
     }, 300),
     searchInstance() {
-      this.instances = this.instancesCopy.filter(item => item.name.includes(this.key));
+      this.instances = this.instancesCopy.filter(item => item.name.includes(this.key))
+        .slice((this.currentPage - 1) * this.size, (this.currentPage) * this.size);
     },
 
     // 刷新

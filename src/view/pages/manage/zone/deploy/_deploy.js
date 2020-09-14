@@ -76,6 +76,7 @@ export default {
       ZoneService.createZone(this.zoneModel)
         .then(zone => {
           this.zoneInstance = zone;
+          this.instanceError = null;
         })
         .catch(err => {
           this.instanceError = err;
@@ -93,6 +94,7 @@ export default {
       ZoneService.updateZone(this.zoneId, model)
         .then(zone => {
           this.zoneInstance = zone;
+          this.instanceError = null;
         })
         .catch(err => {
           this.instanceError = err;

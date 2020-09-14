@@ -35,6 +35,7 @@
             <logo-placeholder v-if="!serviceModel.logo_url"></logo-placeholder>
           </div>
           <file-upload
+            v-if="$can('platform.serviceInstance.update')"
             class="dao-btn blue has-icon"
             extensions="gif,jpg,jpeg,png,webp,svg"
             accept="image/*"

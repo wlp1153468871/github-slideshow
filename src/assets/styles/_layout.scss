@@ -3,17 +3,18 @@
 .layout {
   height: 100%;
   // padding-top: $nav-height;
-
+  overflow: hidden;
   .layout-content {
     position: relative;
-    top: 40px;
     background: $white-dark-lighter;
     margin-left: 200px;
     height: calc(100vh - #{$nav-height});;
     overflow-y: auto;
     transition: 0.3s;
     z-index: 10;
-
+    &.manage-content{
+      top: 40px;
+    }
     .dao-nav-menu {
       position: fixed;
       left: 0;
@@ -21,6 +22,7 @@
       z-index: 10;
     }
   }
+
 
   &.collapsed {
     .dao-nav-menu {

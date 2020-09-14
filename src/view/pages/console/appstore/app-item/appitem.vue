@@ -60,9 +60,6 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-
-</style>
 <style lang="scss" scoped>
 $appItemWidth: 31.2%;
 .itme-container {

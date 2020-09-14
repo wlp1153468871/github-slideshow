@@ -80,6 +80,23 @@
         v-if="$can('platform.applications.available')"
       >批量禁用
       </button>
+      <dao-dialog
+        :visible.sync="isForbidden"
+        header="确认是否禁用"
+      >
+        <div class="body">
+          <div>禁用后应用模板在已添加的项目组将不可见</div>
+          <div>但不会删除底层实例，是否禁用？</div>
+        </div>
+        <div slot="footer">
+          <button
+            class="dao-btn blue"
+            @click="forbidden"
+            v-if="$can('platform.applications.available')">禁用
+          </button>
+          <button class="dao-btn" @click="cancel">取消</button>
+        </div>
+      </dao-dialog>
       <!-- <button
         class="dao-btn red status"
         @click="deleteApplication"

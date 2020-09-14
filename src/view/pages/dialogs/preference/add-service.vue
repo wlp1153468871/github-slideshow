@@ -39,7 +39,7 @@ export default {
   extends: dialog('添加服务'),
 
   props: {
-    services: { type: Array, default: () => [] },
+    services: [Object, Array],
     usedServices: { type: Array, default: () => [] },
   },
 
@@ -51,7 +51,7 @@ export default {
 
   computed: {
     serviceOptions() {
-      return differenceBy(this.services, this.usedServices, 'id').filter(
+      return differenceBy(this.services.data, this.usedServices, 'id').filter(
         service => service.available === 'available',
       );
     },

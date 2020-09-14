@@ -24,9 +24,20 @@
   margin: 0 !important;
 }
 
+.dao-dropdown-menu {
+  .delete {
+    color: #E1342B;
+  }
+  .deleteHover:hover {
+    background-color: #E1342B !important;
+    .delete {
+      color: #fff;
+    }
+  }
+}
+
 #appdetail {
   background: #F1F3F6;
-  overflow: hidden;
   .detail-header {
     padding-left: 10px;
     height: 32px;
