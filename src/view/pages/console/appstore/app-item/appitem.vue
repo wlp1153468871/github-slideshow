@@ -18,7 +18,7 @@
       <dao-tooltip
         :content="`${itemData.description}`"
         placement="bottom"
-        v-if="itemData.description.length > 70"
+        v-if="itemData.description.length > 90"
       >
         <div class="item-desc">
           {{ itemData.description }}
@@ -31,12 +31,12 @@
         {{ itemData.provider }}
       </div>
       <dao-tooltip
-        content="DaoCloud 认证"
+        :content="`${itemData.provider} 认证`"
         placement="bottom"
         class="daocloud-lay"
         v-if="itemData.daoAuth"
       >
-        <img src="@/assets/images/daocloud-auth.png" alt="daocloud" class="daocloud"/>
+        <img src="@/assets/images/logo-auth.png" alt="daocloud" class="daocloud"/>
       </dao-tooltip>
     </div>
   </div>

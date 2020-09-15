@@ -22,9 +22,15 @@ export default {
       //  立即执行handle方法
       immediate: true,
       handler(text) {
-        this.getMarked().then(() => {
-          this.markdownHtml = marked(text);
-        });
+        if (text) {
+          this.getMarked().then(() => {
+            this.markdownHtml = marked(text);
+          });
+        } else {
+          this.getMarked().then(() => {
+            this.markdownHtml = marked('空');
+          });
+        }
       },
     },
   },

@@ -157,8 +157,9 @@
                         <dao-dropdown-item
                           @click="deleteChartVersion(scope.row.appId,
                           scope.row.chartName, scope.row.version)"
+                          class="deleteHover"
                         >
-                          <span style="color: red;">删除</span>
+                          <span class="delete">删除</span>
                         </dao-dropdown-item>
                       </dao-dropdown-menu>
                     </dao-dropdown>
@@ -202,8 +203,9 @@
                   </dao-dropdown-item>
                   <dao-dropdown-item
                     @click="handleClick(scope.row.id, scope.row.zoneId)"
+                    class="deleteHover"
                   >
-                    <span style="color: red;">删除</span>
+                    <span class="delete">删除</span>
                   </dao-dropdown-item>
                 </dao-dropdown-menu>
               </dao-dropdown>

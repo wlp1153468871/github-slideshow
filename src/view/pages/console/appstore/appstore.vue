@@ -86,12 +86,6 @@
     </div>
 
     <div class="store-item-container" v-if="applications.length">
-      <!-- <div class="title">我的创建</div>
-      <div class="store-item">
-        <div v-for="appItem in applications" :key="appItem.id">
-          <AppItem :itemData="appItem"></AppItem>
-        </div>
-      </div> -->
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
@@ -100,7 +94,7 @@
               <AppItem
                 :itemData="appItem"
                 v-if="appItem.category.includes(item.name)"
-                >
+              >
               </AppItem>
             </div>
           </div>

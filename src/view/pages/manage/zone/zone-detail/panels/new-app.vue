@@ -15,7 +15,7 @@
         </div>
       </dao-dialog>
     </div>
-    <!--    chartw文件-->
+    <!--    chart文件-->
     <div class="newApp-box chart-file" id="chart-file">
       <dao-setting-layout>
         <template slot="layout-title">
@@ -45,7 +45,7 @@
         </dao-setting-section>
       </dao-setting-layout>
     </div>
-    <div class="newApp-box">
+    <div class="newApp-box box-layout">
       <dao-setting-layout>
         <template slot="layout-title">
           <div class="base-info">基本信息</div>
@@ -119,9 +119,6 @@
         <dao-setting-section>
           <template slot="label">分类</template>
           <template slot="content">
-            <svg class="icon" @click="addCategory">
-              <use :xlink:href="`#icon_plus-circled`"></use>
-            </svg>
             <el-select
               class="category-style"
               v-model="category"
@@ -135,6 +132,14 @@
                 :label="item.name">
               </el-option>
             </el-select>
+          </template>
+          <template slot="content">
+            <div class="svg-icon">
+              <svg @click="addCategory" class="icon">
+                <use :xlink:href="`#icon_plus-circled`"></use>
+              </svg>
+              <span class="add-cate">添加分类</span>
+            </div>
           </template>
         </dao-setting-section>
 <!--        新增分类弹窗-->
@@ -460,12 +465,16 @@ export default {
       padding: 20px;
     }
   }
-
+  .box-layout {
+    padding-bottom: 100px;
+  }
   .newApp-box {
     box-sizing: border-box;
     width: 80%;
-    background-color: #fff;
     margin: 20px auto 60px auto;
+    .daox-setting-layout {
+      background: #fff;
+    }
     .dao-setting-label {
       &::before{
         content: '* ';
@@ -488,7 +497,6 @@ export default {
   }
   #chart-file {
     margin-top: 70px;
-    /*margin-bottom: 70px;*/
   }
   .footer {
     height: 55px;
@@ -507,14 +515,24 @@ export default {
   .category-style {
     width: 95%;
     display: inline-block;
-    /*border: 1px solid #E4E7ED;*/
   }
-  .icon {
-    display: inline-block;
-    margin-top: 16px!important;
-    margin-right: 10px;
-    cursor: pointer;
+  .svg-icon {
+    width: 90px;
+    svg {
+      fill: #3289F7;
+    }
+    .icon {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .add-cate {
+      padding: 20px 0 0 6px;
+      padding-left: 6px;
+      color: #3289F7;
+    }
   }
+
   .inputWidth {
     width: 100%;
   }
