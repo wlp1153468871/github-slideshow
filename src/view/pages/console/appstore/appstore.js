@@ -48,6 +48,7 @@ export default {
       handler() {
         if (this.key === '') {
           this.applications = this.appCopy;
+          this.filterData(this.applications);
         } else {
           this.updateKey();
         }
@@ -64,30 +65,17 @@ export default {
     },
     checkedApp: {
       handler() {
-        if (this.checkedApp.length) {
-          this.applications = this.applications.filter(item =>
-            item.appType.includes(this.checkedApp[0]));
-        } else {
-          this.applications = this.appCopy;
-        }
+        this.checked();
       },
     },
     checkedPro: {
       handler() {
-        if (this.checkedPro.length) {
-          this.applications = this.applications.filter(item =>
-            item.provider.includes(this.checkedPro[0]));
-        } else {
-          this.applications = this.appCopy;
-        }
+        this.checked();
       },
     },
   },
 
   methods: {
-    linkToApp() {
-      this.$router.push({ name: 'appstore.app' });
-    },
     init() {
       this.getApplications();
     },
@@ -109,31 +97,36 @@ export default {
     }, 300),
     searchApp() {
       this.applications = this.appCopy.filter(item => item.name.includes(this.key));
+      this.filterData(this.applications);
     },
     // 刷新
     fresh() {
       this.key = '';
       this.applications = this.appCopy;
+      this.filterData(this.applications);
+      this.clearAll();
     },
 
     // list
     getApplications() {
-      AppStoreService.zoneList(this.zone.id, this.space.id).then(res => {
-        if (res) {
-          this.applications = res;
-          this.appCopy = res;
-          this.getCategory();
-        }
-      }).then(() => {
-        this.applications.forEach(res => {
-          if (this.appType.indexOf(res.appType) === -1 && res.appType) {
-            this.appType.push(res.appType);
+      AppStoreService.zoneList(this.zone.id, this.space.id)
+        .then(res => {
+          if (res) {
+            this.applications = res;
+            this.appCopy = res;
+            this.getCategory();
           }
-          if (this.provider.indexOf(res.provider) === -1 && res.provider) {
-            this.provider.push(res.provider);
-          }
+        })
+        .then(() => {
+          this.applications.forEach(res => {
+            if (this.appType.indexOf(res.appType) === -1 && res.appType) {
+              this.appType.push(res.appType);
+            }
+            if (this.provider.indexOf(res.provider) === -1 && res.provider) {
+              this.provider.push(res.provider);
+            }
+          });
         });
-      });
     },
     // 数据清洗
     getCategory() {
@@ -152,8 +145,35 @@ export default {
         }
       });
     },
-    isTitle(show) {
-      console.log(show);
+    // 数据过滤
+    filterData(data) {
+      this.categories.forEach(cate => {
+        const arr = data.filter(item =>
+          item.category.includes(cate.name));
+        if (arr.length > 0) {
+          cate.isShow = true;
+        } else {
+          cate.isShow = false;
+        }
+      });
+    },
+    // 筛选
+    checked() {
+      if (!this.checkedPro.length && !this.checkedApp.length) {
+        this.applications = this.appCopy;
+        this.filterData(this.applications);
+        return;
+      }
+      if (this.checkedApp.length) {
+        this.applications = this.applications.filter(item =>
+          item.appType.includes(this.checkedApp[0]));
+        this.filterData(this.applications);
+      }
+      if (this.checkedPro.length) {
+        this.applications = this.applications.filter(item =>
+          item.provider.includes(this.checkedPro[0]));
+        this.filterData(this.applications);
+      }
     },
   },
 };
