@@ -43,9 +43,6 @@ export default {
     // 初始化
     this.init();
   },
-  // updated() {
-  //   this.isActive();
-  // },
   watch: {
     key: {
       handler() {
@@ -154,6 +151,9 @@ export default {
           res.forEach(item => this.categories.push(item));
         }
       });
+    },
+    isTitle(show) {
+      console.log(show);
     },
   },
 };
