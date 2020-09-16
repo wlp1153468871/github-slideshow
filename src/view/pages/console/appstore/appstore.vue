@@ -5,7 +5,7 @@
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
       <div class="header-title">服务市场</div>
-      <div class="header-desc">欢迎来到 DaoCloud 服务市场，我们的平台提供了来自不同企业的更多的应用和 Chart 模版，
+      <div class="header-desc">欢迎来到 gCloud 服务市场，我们的平台提供了来自不同企业的更多的应用和 Chart 模版，
         并支持多终端访问，自建应用，让客户享受安全，便捷，快速的服务。</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;margin-top: 20px">
@@ -86,12 +86,6 @@
     </div>
 
     <div class="store-item-container" v-if="applications.length">
-      <!-- <div class="title">我的创建</div>
-      <div class="store-item">
-        <div v-for="appItem in applications" :key="appItem.id">
-          <AppItem :itemData="appItem"></AppItem>
-        </div>
-      </div> -->
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
@@ -100,7 +94,7 @@
               <AppItem
                 :itemData="appItem"
                 v-if="appItem.category.includes(item.name)"
-                >
+              >
               </AppItem>
             </div>
           </div>

@@ -100,5 +100,12 @@ export default {
         timer: 2000,
       });
     },
+    // apLogout() {
+    //   this.$store.dispatch('logout').then(() => {
+    //     this.$router.push({
+    //       name: 'login',
+    //     });
+    //   });
+    // },
   },
 };

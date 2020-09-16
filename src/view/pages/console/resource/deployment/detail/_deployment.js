@@ -205,6 +205,8 @@ export default {
             this.$noty.success('创建审批成功');
           } else {
             this.$noty.success('更新成功');
+            this.getDeployment();
+            this.$refs.historyPanel.loadHistory();
           }
         })
         .finally(() => {

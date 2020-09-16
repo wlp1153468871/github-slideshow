@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 54">
+  <title>Icon_Node</title>
+  <rect width="54" height="54" rx="2" ry="2" fill="#9ba3af"/>
+  <path d="M40,13H14a1,1,0,0,0-1,1v6a1,1,0,0,0,1,1H40a1,1,0,0,0,1-1V14A1,1,0,0,0,40,13ZM18,18H16V16h2Zm9.5.5h-1v-1h1Zm0-2h-1v-1h1Zm2,2h-1v-1h1Zm0-2h-1v-1h1Zm2,2h-1v-1h1Zm0-2h-1v-1h1Zm2,2h-1v-1h1Zm0-2h-1v-1h1Zm2,2h-1v-1h1Zm0-2h-1v-1h1Zm2,2h-1v-1h1ZM40,33a1,1,0,0,1,1,1h0v6a1,1,0,0,1-1,1H14a1,1,0,0,1-1-1h0V34a1,1,0,0,1,1-1H40ZM27.5,37.5h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1ZM18,36H16v2h2Zm9.5-.5h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1ZM40,23a1,1,0,0,1,1,1h0v6a1,1,0,0,1-1,1H14a1,1,0,0,1-1-1h0V24a1,1,0,0,1,1-1H40ZM27.5,27.5h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1ZM18,26H16v2h2Zm9.5-.5h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm2,0h-1v1h1Zm0-10v1h-1v-1Z" fill="#fff"/>
+</svg>

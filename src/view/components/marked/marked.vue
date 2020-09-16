@@ -22,9 +22,15 @@ export default {
       //  立即执行handle方法
       immediate: true,
       handler(text) {
-        this.getMarked().then(() => {
-          this.markdownHtml = marked(text);
-        });
+        if (text) {
+          this.getMarked().then(() => {
+            this.markdownHtml = marked(text);
+          });
+        } else {
+          this.getMarked().then(() => {
+            this.markdownHtml = marked('空');
+          });
+        }
       },
     },
   },
@@ -37,7 +43,7 @@ export default {
       return Promise.all([
         import(/* webpackChunkName: "marked" */ /* webpackMode: "lazy" */ 'marked'),
         import(/* webpackChunkName: "highlight.js" */ /* webpackMode: "lazy" */ 'highlight.js'),
-        import(/* webpackChunkName: "showdown" */ /* webpackMode: "lazy" */ 'github-markdown-css'),
+        import(/* webpackChunkName: "github-markdown-css" */ /* webpackMode: "lazy" */ 'github-markdown-css'),
       ]).then(res => {
         marked = res[0].default;
         const hljs = res[1].default;

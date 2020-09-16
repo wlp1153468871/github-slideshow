@@ -98,6 +98,7 @@
 <script>
 import ConfigMapService from '@/core/services/config-map.service';
 import SecretService from '@/core/services/secret.service';
+import NodeService from '@/core/services/node.service';
 import { mapState } from 'vuex';
 import envTr from './env-tr.vue';
 import formTr from './form-tr.vue';
@@ -138,6 +139,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isManageView: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
@@ -169,12 +174,28 @@ export default {
 
   methods: {
     listSecrets() {
+      if (this.isManageView) {
+        return NodeService.listSecret(
+          this.$route.params.namespace,
+          this.$route.params.zone,
+        ).then(res => {
+          this.secrets = res.items || [];
+        });
+      }
       return SecretService.listSecret(this.space.id, this.zone.id).then(res => {
         this.secrets = res.items || [];
       });
     },
 
     listConfigMaps() {
+      if (this.isManageView) {
+        return NodeService.listConfigMap(
+          this.$route.params.namespace,
+          this.$route.params.zone,
+        ).then(res => {
+          this.configMaps = res.items || [];
+        });
+      }
       return ConfigMapService.listConfigMap(this.space.id, this.zone.id).then(res => {
         this.configMaps = res.items || [];
       });

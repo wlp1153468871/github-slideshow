@@ -131,5 +131,5 @@
 
 <script src="./appform.js"></script>
 
-<style lang="scss" src="./appform.scss" scoped></style>
+<style lang="scss" src="./appform.scss"></style>
 

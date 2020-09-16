@@ -52,8 +52,8 @@
             <dao-dropdown-item @click="linktoYamlForm()">
               <span>使用YAML更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="deleteInstance()">
-              <span style="color: red;">删除</span>
+            <dao-dropdown-item @click="deleteInstance()" class="deleteHover">
+              <span class="delete">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
         </dao-dropdown>

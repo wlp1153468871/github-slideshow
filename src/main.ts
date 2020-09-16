@@ -30,6 +30,7 @@ import VueDaoDialog from '@/view/plugins/vue-dialog';
 import JsYaml from '@/view/plugins/js-yaml';
 import DayJS from '@/view/plugins/dayjs';
 import CaslPlugin from '@/view/plugins/casl';
+import throttleClick from '@/view/plugins/throttleClick';
 
 // 3rd part style
 import 'dao-style-vue/styles/dao-style.css';
@@ -46,6 +47,7 @@ preloaderFinished();
 
 Vue.use(DayJS);
 Vue.use(CaslPlugin);
+Vue.use(throttleClick);
 Vue.use(DaoStyle);
 Vue.use(VeeValidate, validationConfig());
 Vue.use(VueTada);

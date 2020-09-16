@@ -31,6 +31,9 @@
           >
           </manage-panel>
         </el-tab-pane>
+         <el-tab-pane :label="TABS.NODE" :name="TABS.NODE">
+          <node-panel :hideZoneSelect="'true'" :zone='zone'></node-panel>
+        </el-tab-pane>
         <el-tab-pane :label="TABS.OVERVIEW" :name="TABS.OVERVIEW">
           <overview-panel :zone="zone" @syncService="syncService" @update="updateZone">
           </overview-panel>

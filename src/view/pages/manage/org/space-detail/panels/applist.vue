@@ -48,20 +48,31 @@
             </dao-option>
           </dao-select>
         </div>
-        <div style="margin-left: 10px">
-          <button
-            class="dao-btn"
-            :disabled="offArr.length !== 0 || haveOn"
-            @click="handleOn">批量上架
-          </button>
-        </div>
-        <div style="margin-left: 10px">
-          <button
-            class="dao-btn"
-            :disabled="onArr.length !== 0 || haveOff"
-            @click="handleOff">批量下架
-          </button>
-        </div>
+        <button
+          class="dao-btn"
+          style="margin-left: 10px"
+          :disabled="offArr.length !== 0 || haveOn"
+          @click="handleOn">批量上架
+        </button>
+        <button
+          class="dao-btn"
+          style="margin-left: 10px"
+          :disabled="onArr.length !== 0 || haveOff"
+          @click="handleOff">批量下架
+        </button>
+        <dao-dialog
+          :visible.sync="isForbidden"
+          header="确认是否下架"
+        >
+          <div class="body">
+            <div>禁用后应用模板在已添加的项目组将不可见</div>
+            <div>但不会删除底层实例，是否下架？</div>
+          </div>
+          <div slot="footer">
+            <button class="dao-btn blue" @click="forbidden">下架</button>
+            <button class="dao-btn" @click="cancel">取消</button>
+          </div>
+        </dao-dialog>
       </div>
       <div class="search">
         <dao-input
@@ -93,16 +104,16 @@
         :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称" prop="name" width="200">
+        <el-table-column label="应用名称" prop="name">
           <!-- <template slot-scope="scope">
             <div style="color: #217EF2;">
               {{ scope.row.name }}
             </div>
           </template> -->
         </el-table-column>
-        <el-table-column label="可用区" prop="zoneName" width="200"></el-table-column>
-        <el-table-column label="供应商" prop="provider" width="150"></el-table-column>
-        <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
+        <el-table-column label="可用区" prop="zoneName"></el-table-column>
+        <el-table-column label="供应商" prop="provider"></el-table-column>
+        <el-table-column label="创建者" prop="ownerName"></el-table-column>
         <el-table-column label="状态" width="100">
           <template slot-scope="scope">
             <div v-if="scope.row.space_available === '1'">
@@ -119,14 +130,14 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="类型" prop="appType" width="100"></el-table-column>
-        <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
+        <el-table-column label="类型" prop="appType"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion"></el-table-column>
         <el-table-column label="分类">
           <template slot-scope="scope">
             <span>{{scope.row.category.join('，')}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="date" width="200">
+        <el-table-column label="创建时间" prop="date">
           <template slot-scope="scope">
             {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>
@@ -235,6 +246,7 @@ export default {
       offArr: '',
       haveOn: true,
       haveOff: true,
+      isForbidden: false,
       size: 10,
       currentPage: 1,
       total: 0,
@@ -270,7 +282,8 @@ export default {
       this.loading.appInfo = true;
       OrgService.getSpaceAllAppList(this.orgId, this.spaceId, this.status, this.zone, this.type)
         .then(res => {
-          this.tableData = res.slice(0, 10);
+          this.tableData = res.slice((this.currentPage - 1) * this.size,
+            (this.currentPage) * this.size);
           this.tableDataCopy = res;
           this.total = res.length;
         })
@@ -352,21 +365,15 @@ export default {
      * 下架
      */
     handleOff() {
-      if (this.selectedArray.length !== 0) {
-        this.selectedArray.forEach(item => {
-          OrgService.offApplication(this.orgId, this.spaceId, item.id).then(() => {
-            this.getSpaceAllAppList();
-          });
-        });
-        this.$noty.success('下架成功');
-      }
+      this.isForbidden = true;
     },
     handleChange() {
       this.getSpaceAllAppList();
     },
     // 搜索
     search(val) {
-      this.tableData = this.tableDataCopy.filter(item => item.name.includes(val));
+      this.tableData = this.tableDataCopy.filter(item => item.name.includes(val))
+        .slice((this.currentPage - 1) * this.size, (this.currentPage) * this.size);
     },
     // 刷新
     fresh() {
@@ -381,6 +388,21 @@ export default {
     },
     rowStyle({ rowIndex }) {
       return this.indexArr.includes(rowIndex) ? 'rowStyle' : '';
+    },
+    // 确认禁用
+    forbidden() {
+      this.isForbidden = false;
+      if (this.selectedArray.length !== 0) {
+        this.selectedArray.forEach(item => {
+          OrgService.offApplication(this.orgId, this.spaceId, item.id).then(() => {
+            this.getSpaceAllAppList();
+          });
+        });
+        this.$noty.success('下架成功');
+      }
+    },
+    cancel() {
+      this.isForbidden = false;
     },
   },
 };
@@ -402,6 +424,9 @@ export default {
     .screen {
       display: flex;
       justify-content: flex-start;
+      .body {
+        padding: 20px;
+      }
     }
   }
   .footer {

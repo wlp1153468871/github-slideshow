@@ -134,6 +134,7 @@
                   :container="term.containerName"
                   :status.sync="term.status"
                   :autofocus="true"
+                  :isManageView='false'
                 >
                 </container-terminal>
               </div>

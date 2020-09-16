@@ -81,14 +81,6 @@ export default {
     addSsoDialog,
   },
 
-  created() {
-    if (this.$can('platform.settings.third-party')) {
-      this.loadSSOInfo();
-    } else {
-      this.$noty.error('您暂无SSO设置权限');
-    }
-  },
-
   data() {
     return {
       rows: [],

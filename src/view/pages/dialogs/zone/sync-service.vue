@@ -30,9 +30,13 @@
       <p class="hint-title">{{ type === 'catalog' ? '服务同步已完成' : 'Broker同步已完成' }}</p>
       <p class="hint-desc">
         你现在可以前往
-        <span @click="$emit('close')" class="router-link">
-          可用区列表
-        </span>
+        <router-link
+          :to="{
+            name: 'manage.service.list',
+          }"
+        >
+          服务管理
+        </router-link>
         查看已同步的服务
       </p>
     </div>
