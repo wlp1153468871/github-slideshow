@@ -67,6 +67,11 @@ export default {
         to: { name: 'manage.preference.appearance' },
         hidden: assets,
       },
+      APPSTORE: {
+        name: '应用商店设置',
+        to: { name: 'manage.preference.appstore' },
+        hidden: assets,
+      },
       HELP: {
         name: '帮助信息设置',
         to: { name: 'manage.preference.help-info-config' },
