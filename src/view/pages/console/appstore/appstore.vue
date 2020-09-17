@@ -195,8 +195,14 @@ v-deep .el-tag {
     .type-layout:hover {
       background: rgba(56, 144, 255, 0.1);;
     }
+    .el-checkbox__input {
+      padding-left: 10px;
+    }
     .el-checkbox__label {
-      padding-left: 15px;
+      padding-left: 5px;
+    }
+    .el-checkbox-group{
+      margin-bottom: 20px;
     }
   }
   .title {

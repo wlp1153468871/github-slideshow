@@ -106,6 +106,7 @@ export default {
     },
     apLogout() {
       this.$store.dispatch('logout').then(() => {
+        StorageCache.clear();
         this.$router.push({
           name: 'login',
         });

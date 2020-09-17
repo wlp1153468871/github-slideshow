@@ -45,9 +45,6 @@ export default {
       // chart信息
       applicationInfos: '',
       chart: '',
-      // 项目组
-      orginization: [],
-      orginizationCopy: [],
       // 实例
       instances: [],
       instancesCopy: [],
@@ -83,15 +80,6 @@ export default {
         });
       },
     },
-    select: {
-      handler() {
-        if (this.select) {
-          this.getAvaOrganizations();
-        } else {
-          this.getUnavaOrganizations();
-        }
-      },
-    },
     size: {
       handler(size) {
         this.instances = this.instancesCopy.slice(0, size);
@@ -108,7 +96,6 @@ export default {
   created() {
     this.getApp();
     // 默认上线状态
-    this.getAvaOrganizations();
     this.getCategory();
     this.getInstances();
   },
@@ -156,54 +143,6 @@ export default {
       ServiceAdmin.getCategory().then(res => {
         if (res) {
           this.categories = res;
-        }
-      });
-    },
-    // 已上架项目组列表
-    getAvaOrganizations() {
-      this.loading.onLine = true;
-      ServiceAdmin.getAvaOrganizations(this.$route.params.id)
-        .then(res => {
-          if (res) {
-            this.orginization = res;
-            this.orginizationCopy = res;
-          }
-          this.organizationNum();
-        })
-        .finally(() => {
-          this.loading.onLine = false;
-        });
-    },
-    // 已下架项目组列表
-    getUnavaOrganizations() {
-      this.loading.onLine = true;
-      ServiceAdmin.getUnavaOrganizations(this.$route.params.id)
-        .then(res => {
-          if (res) {
-            this.orginization = res;
-            this.orginizationCopy = res;
-          }
-          this.organizationNum();
-        })
-        .finally(() => {
-          this.loading.onLine = false;
-        });
-    },
-    // 下架一个项目组app
-    unavaOrgApp(id) {
-      ServiceAdmin.unavaOrgApp(id, this.$route.params.id).then(res => {
-        if (res) {
-          this.getAvaOrganizations();
-          this.$noty.success('下架成功');
-        }
-      });
-    },
-    // 上架一个项目在app
-    avaOrgApp(id) {
-      ServiceAdmin.avaOrgApp(id, this.$route.params.id).then(res => {
-        if (res) {
-          this.getUnavaOrganizations();
-          this.$noty.success('上架成功');
         }
       });
     },
@@ -264,18 +203,6 @@ export default {
         }
       });
     },
-    // 批量下架
-    manyUnava() {
-      this.selectItem.forEach(item => {
-        this.unavaOrgApp(item.id);
-      });
-    },
-    // 批量上架
-    manyAva() {
-      this.selectItem.forEach(item => {
-        this.avaOrgApp(item.id);
-      });
-    },
     //  删除应用
     deleteApplication() {
       ServiceAdmin.deleteApplication(this.$route.params.id, this.appInfo.zoneId).then(res => {
@@ -286,10 +213,6 @@ export default {
           });
         }
       });
-    },
-    // 项目组数
-    organizationNum() {
-      return this.orginization.length;
     },
     selectChange(val) {
       const arr = [];
@@ -311,16 +234,6 @@ export default {
         }
       });
       this.selectStatus = arr;
-    },
-
-    // 搜索
-    search(val) {
-      this.orginization = this.orginizationCopy.filter(item => item.name.includes(val));
-    },
-    // 刷新
-    fresh() {
-      this.key = '';
-      this.orginization = this.orginizationCopy;
     },
 
     // 上传文件之前

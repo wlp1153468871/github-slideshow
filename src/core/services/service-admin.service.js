@@ -40,39 +40,6 @@ class ServiceAdmin {
     return this.api.get(`/appstore/applications/${app_id}/application_infos`);
   }
 
-  /**
-   * 获取app下已上架的项目组列表
-   * @param {String} app_id
-   */
-  async getAvaOrganizations(app_id) {
-    return this.api.get(`/appstore/applications/${app_id}/available/spaces`);
-  }
-
-  /**
-   * 获取app下已下架的项目组列表
-   * @param {String} app_id
-   */
-  async getUnavaOrganizations(app_id) {
-    return this.api.get(`/appstore/applications/${app_id}/unavailable/spaces`);
-  }
-
-  /**
-   * 下架应用给一个项目组
-   * @param {String} space_id 项目组id
-   * @param {String} app_id
-   */
-  async unavaOrgApp(space_id, app_id) {
-    return this.api.patch(`/appstore/space/${space_id}/applications/${app_id}/unavailable`);
-  }
-
-  /**
-   * 上架应用给一个项目组
-   * @param {String} space_id 项目组id
-   * @param {String} app_id
-   */
-  async avaOrgApp(space_id, app_id) {
-    return this.api.patch(`/appstore/space/${space_id}/applications/${app_id}/available`);
-  }
 
   /**
    * 获取应用下的实例列表

@@ -2,6 +2,32 @@
 import { mapState, mapGetters } from 'vuex';
 import { first } from 'lodash';
 import ManageMenus from '@/view/router/manage.js';
+import AuthService from '@/core/services/auth.service';
+
+let DxHeader = {};
+
+if (window.DxHeader) {
+  ({ DxHeader } = window.DxHeader);
+} else {
+  console.log('DxHeader init……');
+  const headerScript = document.getElementById('__DX_HEADER__');
+  DxHeader = () => new Promise((resolve, rehect) => {
+    // 处理在执行过程中已经加载好的情况
+    if (window.DxHeader) {
+      console.log('dx0:', '已加载完成');
+      resolve(window.DxHeader.DxHeader);
+      return;
+    }
+    headerScript.onload = () => {
+      console.log('dx1:', '加载太慢了');
+      resolve(window.DxHeader.DxHeader);
+    };
+    headerScript.onerror = () => {
+      console.log('dx2:', '加载出错');
+      rehect(window.DxHeader.DxHeader);
+    };
+  });
+}
 
 export default {
   name: 'ManageContainer',
@@ -11,12 +37,21 @@ export default {
     };
   },
 
+  // DX全局导航栏组件注册
+  components: {
+    DxHeader,
+  },
+
   computed: {
     ...mapState(['isCollapse']),
     ...mapGetters(['pages']),
 
     showSideMenu() {
       return !this.$route.path.includes('/deploy/') && !this.$route.path.includes('/newapp/');
+    },
+
+    idToken() {
+      return AuthService.getIdToken();
     },
   },
   mounted() {
@@ -37,6 +72,14 @@ export default {
           }
         });
       return result;
+    },
+    apLogout() {
+      this.$store.dispatch('logout').then(() => {
+        StorageCache.clear();
+        this.$router.push({
+          name: 'login',
+        });
+      });
     },
   },
 };

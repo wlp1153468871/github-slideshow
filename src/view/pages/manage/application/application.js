@@ -200,7 +200,7 @@ export default {
       };
       this.zones.push(obj);
       ServiceAdmin.getZone().then(res => {
-        if (res) {
+        if (Array.isArray(res)) {
           res.forEach(item => this.zones.push(item));
         }
       });
