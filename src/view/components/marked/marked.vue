@@ -94,6 +94,8 @@ export default {
       border: 1px solid  #E4E7ED;
       color: #666;
       height: 30px;
+      word-wrap: break-word;
+      word-break: break-all;
     }
     table thead th
     {
