@@ -3,6 +3,7 @@ import { mapGetters, mapState } from 'vuex';
 import OrgService from '@/core/services/org.service';
 import SpaceService from '@/core/services/space.service';
 import ZoneService from '@/core/services/zone.service';
+import AuthService from '@/core/services/auth.service';
 
 let DxHeader = {};
 
@@ -90,6 +91,10 @@ export default {
         !this.$route.path.includes('appstore/app')
       );
     },
+
+    idToken() {
+      return AuthService.getIdToken();
+    },
   },
 
   methods: {
@@ -100,12 +105,12 @@ export default {
         timer: 2000,
       });
     },
-    // apLogout() {
-    //   this.$store.dispatch('logout').then(() => {
-    //     this.$router.push({
-    //       name: 'login',
-    //     });
-    //   });
-    // },
+    apLogout() {
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push({
+          name: 'login',
+        });
+      });
+    },
   },
 };

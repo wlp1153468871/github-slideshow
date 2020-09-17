@@ -45,7 +45,6 @@ export default {
         .then(zones => {
           this.rows = zones;
           // this.rows = zones.data;
-          console.log(zones);
           this.total = zones.total;
         })
         .finally(() => {

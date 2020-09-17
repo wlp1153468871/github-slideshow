@@ -74,6 +74,20 @@ class StorageCache {
   getZone() {
     return this.store.get(LS_KYES.ZONE);
   }
+
+  // set token with Vue.ls
+  saveIdToken(token) {
+    Vue.ls.set(LS_KYES.TOKEN, token, 7 * 24 * 60 * 60 * 1000);
+  }
+
+  // dx token
+  getIdToken() {
+    return Vue.ls.get(LS_KYES.IDTOKEN);
+  }
+
+  removeIdToken() {
+    Vue.ls.remove(LS_KYES.IDTOKEN);
+  }
 }
 
 export default new StorageCache();

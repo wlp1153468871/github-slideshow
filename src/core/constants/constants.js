@@ -34,6 +34,8 @@ export const LS_KYES = {
   USER: 'SrvUser',
   // token 信息
   TOKEN: 'AuthToken',
+  // dx token
+  IDTOKEN: 'Id_Token',
   // 租户信息
   TENANT: 'USER_TENANT',
   // last select zone

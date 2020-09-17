@@ -56,7 +56,7 @@
     </div>
     <div class="store-server-type">
       <span class="type-text">服务类型</span>
-      <el-checkbox-group v-model="checkedApp" class="option-blank">
+      <el-checkbox-group v-model="checkedApp" class="option-blank" :max="max">
         <el-checkbox
           style="color:#3d444f"
           v-for="(item, index) in appType"
