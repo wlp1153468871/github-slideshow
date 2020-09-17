@@ -57,8 +57,8 @@ const Preference = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/preference/preference.vue');
 const Appearance = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appearance/appearance.vue');
-const AppStore = () =>
-  import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
+// const AppStore = () =>
+//  import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
 const SSO = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/sso/sso.vue');
 const HelpInfoConfig = () =>
@@ -344,16 +344,16 @@ export default [
           activeMenu: 'manage.preference',
         },
       },
-      {
-        path: 'appstore',
-        name: 'manage.preference.appstore',
-        component: AppStore,
-        meta: {
-          hidden: true,
-          code: 'platform.settings',
-          activeMenu: 'manage.preference',
-        },
-      },
+      // {
+      //   path: 'appstore',
+      //   name: 'manage.preference.appstore',
+      //   component: AppStore,
+      //   meta: {
+      //     hidden: true,
+      //     code: 'platform.settings',
+      //     activeMenu: 'manage.preference',
+      //   },
+      // },
       {
         path: 'sso',
         name: 'manage.preference.sso',

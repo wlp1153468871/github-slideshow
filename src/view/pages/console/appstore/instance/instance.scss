@@ -19,14 +19,10 @@
 }
 #servicedetail {
   background: #F1F3F6;
-  .header-text {
-    font-size: 14px;
-    font-weight: 400;
-    color: #595F69;
-  }
   .header {
     padding-left: 10px;
     height: 32px;
+    background: #fff;
     line-height: 32px;
     font-size: 14px;
     font-family: SFProText-Regular,SFProText;
@@ -96,7 +92,6 @@
   }
   .container1 {
     float: left;
-    // width: 720px;
     width: 70.5%;
     height: 100%;
     background: #fff;
@@ -109,6 +104,14 @@
       font-weight: 600;
       color: #3D444F;
       border-bottom: 1px solid #E3E7EE;
+    }
+    .blank {
+      background: #fbfcfc;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: normal;
+      color: #9ba3af;
     }
     .title1-desc {
       // height: 48px;

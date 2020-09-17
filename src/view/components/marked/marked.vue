@@ -26,10 +26,6 @@ export default {
           this.getMarked().then(() => {
             this.markdownHtml = marked(text);
           });
-        } else {
-          this.getMarked().then(() => {
-            this.markdownHtml = marked('空');
-          });
         }
       },
     },
@@ -69,7 +65,7 @@ export default {
 
 <style lang="scss">
   .marked-body {
-    padding: 0 20px 20px 0;
+    padding: 0 20px 20px 10px;
     h1 {
       color: #3d444f;
     }

@@ -42,7 +42,7 @@
     padding-left: 10px;
     height: 32px;
     line-height: 32px;
-    background: #E6E9EF;
+    background: #fff;
     font-size: 14px;
     font-family: SFProText-Regular,SFProText;
     font-weight: 400;
@@ -55,6 +55,9 @@
     background: #fff;
     .el_tab_box{
       background: #F1F3F6 !important;
+      .el-tabs__header {
+        border-radius: 4px;
+      }
       .el-tabs__content{
         background-color: #fff;
       }
@@ -112,8 +115,7 @@
     overflow: hidden;
     width: 100%;
     border-bottom: 1px solid #E4E7ED;
-    // padding-bottom: 15px;
-    // padding-left: 20px;
+    border-radius: 4px;
     padding: 20px 0 15px 20px;
     .title {
       border-bottom: 1px solid #E4E7ED;

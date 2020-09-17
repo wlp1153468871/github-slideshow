@@ -63,7 +63,7 @@
 <style lang="scss" scoped>
   .page-manage {
     .break-navBar {
-      background: #D5DBE3;
+      background: #FFF;
       padding-left: 10px;
       height: 32px;
       line-height: 32px;

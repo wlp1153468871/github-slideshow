@@ -98,7 +98,8 @@
         </div>
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">实例信息</div>
-          <marked :text="instanceInfo.notes" style="padding: 20px;"></marked>
+          <marked :text="instanceInfo.notes" style="padding: 20px;" v-if="instanceInfo.notes"></marked>
+          <div v-else class="blank">列表为空</div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
