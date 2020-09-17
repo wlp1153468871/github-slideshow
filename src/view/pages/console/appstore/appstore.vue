@@ -21,10 +21,6 @@
             :label="item.name">
           </dao-option>
         </dao-select>
-        <!-- <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
-          <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
-          <span class="text">新建应用</span>
-        </button> -->
         <div class="screen" v-if="checkedApp.length || checkedPro.length">筛选器:
           <el-tag
             v-for="tag in checkedApp"
@@ -60,7 +56,7 @@
     </div>
     <div class="store-server-type">
       <span class="type-text">服务类型</span>
-      <el-checkbox-group v-model="checkedApp" class="option-blank">
+      <el-checkbox-group v-model="checkedApp" class="option-blank" :max="max">
         <el-checkbox
           style="color:#3d444f"
           v-for="(item, index) in appType"
@@ -115,7 +111,7 @@
 
 <script src="./appstore.js"></script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 v-deep .el-tag {
   background: #E4E7ED;
 }
@@ -198,6 +194,9 @@ v-deep .el-tag {
     }
     .type-layout:hover {
       background: rgba(56, 144, 255, 0.1);;
+    }
+    .el-checkbox__label {
+      padding-left: 15px;
     }
   }
   .title {

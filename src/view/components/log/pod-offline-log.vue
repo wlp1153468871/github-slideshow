@@ -211,10 +211,10 @@ export default {
 
       if (this.isManageView) {
         NodeService.listPodLogs(
+          this.zoneId,
           this.namespace,
           this.podName,
           this.logOptions.container,
-          this.zoneId,
           query,
         )
           .then(podLogs => {
@@ -257,7 +257,7 @@ export default {
 
     getSearchQuery() {
       const query = {
-        zone: this.zone.id,
+        zone: this.zone.id || this.zoneId,
         container_name: this.logOptions.container,
       };
       const { daterange, keyword } = this.filters;

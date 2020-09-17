@@ -45,9 +45,11 @@
 
 export default {
   name: 'appitem',
+
   props: {
     itemData: Object,
   },
+
   methods: {
     linkToDetail() {
       this.$router.push({

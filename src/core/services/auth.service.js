@@ -81,6 +81,19 @@ class AuthService {
     const token = this.getToken();
     return !isEmpty(token);
   }
+
+  getIdToken() {
+    return StorageCache.getIdToken();
+  }
+
+  setIdToken(token) {
+    return StorageCache.saveIdToken(token);
+  }
+
+  isDxAuthed() {
+    const token = this.getIdToken();
+    return !isEmpty(token);
+  }
 }
 
 export default new AuthService();
