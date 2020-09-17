@@ -1,7 +1,20 @@
 <template>
   <div>
     <div class="layout-content-header">
-      可用区设置
+      可用区管理
+    </div>
+    <div class="search-style"
+         style="width: 97%;margin: 20px auto;display: flex;justify-content: space-between">
+      <button
+        v-if="$can('platform.zone.create')"
+        class="dao-btn has-icon blue"
+        @click="deployZone"
+      >
+        <svg class="icon">
+          <use xlink:href="#icon_plus-circled"></use>
+        </svg>
+        <span class="text">创建可用区</span>
+      </button>
     </div>
     <div class="dao-view-main">
       <z-table
@@ -14,18 +27,6 @@
         :filter-method="filterMethod"
         style="width: 100%;"
       >
-        <template #operation>
-          <button
-            v-if="$can('platform.zone.create')"
-            class="dao-btn has-icon blue"
-            @click="deployZone"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon_plus-circled"></use>
-            </svg>
-            <span class="text">创建可用区</span>
-          </button>
-        </template>
         <el-table-column prop="name" sortable label="可用区">
           <template slot-scope="{ row: zone }">
             <router-link
@@ -104,3 +105,9 @@
 </template>
 
 <script src="./zone-list.js"></script>
+<style scoped>
+  .search-style {
+    width: 90%;
+    margin: 20px auto;
+  }
+</style>

@@ -28,6 +28,7 @@ export default {
         succeed: 'success',
         failed: 'error',
         started: 'text-primary',
+        timeOut: 'warning',
       },
     };
   },
@@ -87,6 +88,9 @@ export default {
     }
     &.error {
       color: #f1483f;
+    }
+    &.warning {
+      color: rgb(190, 163, 10);
     }
     &.text-primary {
       color: $blue !important;

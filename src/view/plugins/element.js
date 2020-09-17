@@ -33,6 +33,12 @@ import {
   Tree,
   Divider,
   Alert,
+  Upload,
+  Steps,
+  Step,
+  Breadcrumb,
+  BreadcrumbItem,
+  Tag,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
@@ -70,3 +76,10 @@ Vue.use(Card);
 Vue.use(Tree);
 Vue.use(Divider);
 Vue.use(Alert);
+Vue.use(Upload);
+Vue.use(Steps);
+Vue.use(Step);
+Vue.use(Breadcrumb);
+Vue.use(BreadcrumbItem);
+Vue.use(Tag);
+

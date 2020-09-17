@@ -38,6 +38,7 @@ export default {
         succeed: 'success',
         failed: 'error',
         started: 'text-primary',
+        timeOut: 'warning',
       },
     };
   },

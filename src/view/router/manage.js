@@ -1,5 +1,7 @@
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
 import RouteView from '@/view/layout/route-view';
+import NoSideContainer from '@/view/pages/console/form-container/container.vue';
+import ZoneNewApp from '@/view/pages/manage/zone/zone-detail/panels/new-app.vue';
 
 const QuotaField = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/quota/quota-field/quota-field.vue');
@@ -39,6 +41,14 @@ const AuthContainer = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/container.vue');
 const AuthRoles = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/roles.vue');
+const Application = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
+const CreateApp = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/app/app.vue');
+const ApplicationDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
+const AdminInstance = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/instance/instance.vue');
 
 // preference
 const HomeSetting = () =>
@@ -54,6 +64,7 @@ const HelpInfoConfig = () =>
 const DeployZone = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/deploy/deploy.vue');
 
+
 export default [
   {
     path: '/manage',
@@ -63,7 +74,7 @@ export default [
       hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
-      code: 'platform.organization;platform.user;platform.rolePermission',
+      code: 'platform.organization;platform.user;platform.rolePermission;platform.applications',
       type: 'submenu',
     },
     children: [
@@ -74,7 +85,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization',
+          code: 'platform.organization;platform.applications',
           hidden: false,
         },
         children: [],
@@ -148,8 +159,9 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceInstance;platform.zone;platform.alert',
+      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications',
       type: 'submenu',
+      // hidden: false,
     },
     children: [
       {
@@ -172,6 +184,36 @@ export default [
           hidden: true,
         },
       },
+      // 应用管理
+      {
+        path: 'application',
+        name: 'manage.application',
+        component: Application,
+        meta: {
+          title: '应用模板管理',
+          icon: '#icon_service',
+          code: 'platform.applications',
+          hidden: false,
+        },
+      },
+      {
+        path: 'application/detail/:id',
+        name: 'application.detail',
+        component: ApplicationDetail,
+        meta: {
+          activeMenu: 'manage.application.detail',
+          hidden: true,
+        },
+      },
+      {
+        path: 'application/:appid/instance/:instanceid',
+        name: 'application.instance',
+        component: AdminInstance,
+        meta: {
+          activeMenu: 'manage.application.instance',
+          hidden: true,
+        },
+      },
       {
         path: 'zone',
         name: 'manage.zone.list',
@@ -188,7 +230,10 @@ export default [
         name: 'manage.zone.detail',
         component: ZoneDetail,
         meta: {
-          activeMenu: 'manage.zone.list',
+          // icon: '#icon_globe-alt',
+          // title: '可用区详情',
+          // code: 'platform.zone',
+          // activeMenu: 'manage.zone.list',
           hidden: true,
         },
       },
@@ -230,6 +275,38 @@ export default [
           title: '告警指标',
           code: 'platform.alert',
           hidden: false,
+        },
+      },
+    ],
+  },
+  // 无左侧导航栏
+  {
+    path: 'zone',
+    redirect: {
+      name: 'manage.zone.newapp',
+    },
+    component: NoSideContainer,
+    meta: {
+      hidden: true,
+    },
+    // ZoneNewApp
+    children: [
+      {
+        path: 'newapp/:id',
+        name: 'manage.zone.newapp',
+        component: ZoneNewApp,
+        meta: {
+          activeMenu: 'manage.zone.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'newapp/application/app',
+        name: 'application.app',
+        component: CreateApp,
+        meta: {
+          activeMenu: 'manage.application',
+          hidden: true,
         },
       },
     ],

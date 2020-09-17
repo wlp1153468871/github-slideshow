@@ -43,7 +43,8 @@ export default {
       this.loadings.zone = true;
       return ZoneService.getZonesByList(page, pageSize, q)
         .then(zones => {
-          this.rows = zones.data;
+          this.rows = zones;
+          // this.rows = zones.data;
           this.total = zones.total;
         })
         .finally(() => {

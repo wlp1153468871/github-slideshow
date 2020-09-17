@@ -78,6 +78,8 @@ import { REFRESH_COUNT } from '@/core/constants/constants';
 import AuthService from '@/core/services/auth.service';
 import loginBackground from '@/assets/images/login-bg.jpg';
 
+import LoadJs from '@/core/lib/loadjs';
+
 export default {
   name: 'Login',
 
@@ -121,7 +123,15 @@ export default {
       ssoToken: this.$route.query.sso_token,
       identityProviderId: this.$route.query.identity_provider_id,
     });
+
     if (this.sso.ssoToken && this.sso.identityProviderId) {
+      // dx
+      const dxHeaderBaseUrl = this.$route.query.dx_header_url;
+      if (dxHeaderBaseUrl) {
+        AuthService.setIdToken(this.$route.query.id_token);
+        // <script async id="__DX_HEADER__" src="http://gcloud-auth-dev.geniusafc.com/header/DxHeader.umd.min.js">
+        LoadJs(`${dxHeaderBaseUrl}/header/DxHeader.umd.min.js`, '__DX_HEADER__');
+      }
       this.autoLogin();
     }
   },

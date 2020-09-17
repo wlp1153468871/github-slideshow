@@ -1,0 +1,144 @@
+import store from '../store';
+import api from './api';
+
+class ZoneAdmin {
+  // api = APIService;
+
+  constructor() {
+    this.api = api;
+  }
+
+  get zoneId() {
+    return store.getters.zoneId;
+  }
+  /** s
+   * 列出所有可用区
+   * @param {String}
+   */
+  getzoneList() {
+    return this.api.get('/appstore/zones');
+  }
+
+  /**
+   * 获取所有分类
+   */
+  getCategoryList() {
+    return this.api.get('/appstore/applications/categories');
+  }
+
+  /**
+   * 列出选定可用区下所有的app
+   */
+  getSelectedZone(zoneId, appType) {
+    return this.api.get(`/appstore/zones/${zoneId}/applications`, {
+      appType,
+    });
+  }
+
+  /**
+   * 下架应用
+   */
+  availableOff(app_id) {
+    return this.api.patch(`/appstore/applications/${app_id}/unavailable`);
+  }
+
+  /**
+   * 上架应用
+   */
+  availableOn(app_id) {
+    return this.api.patch(`/appstore/applications/${app_id}/available`);
+  }
+
+  /**
+   * 删除应用
+   */
+  async deleteApplication(id, zoneId) {
+    return this.api.delete(`/appstore/zone/${zoneId}/applications/${id}`);
+  }
+
+  /**
+   * 创建新全局应用
+   */
+  createApplication(zoneId, data) {
+    return this.api.post(`/appstore/zones/${zoneId}/applications`, data);
+  }
+
+  /**
+   * 上传chart新版本
+   */
+  createChart(zoneId, chart) {
+    return this.api.post(`/appstore/zones/${zoneId}/chart`, chart);
+  }
+
+  /**
+   * 可用区的chart仓库信息
+   */
+  getChartInformation(id) {
+    return this.api.get(`/appstore/zones/${id}/chart_repo`);
+  }
+
+  /**
+   * 列出选定可用区下的chart列表
+   */
+  getChartList(id) {
+    return this.api.get(`/appstore/zones/${id}/chart_repo/charts`);
+  }
+
+  /**
+   * 仓库里一个chart的版本列表(废弃)
+   */
+  // getChartVersionList(zoneId, chart_name) {
+  //   return this.api.get(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}`);
+  // }
+
+  /**
+   * 获取charts（版本）列表
+   */
+  getChartVersionList(app_id) {
+    return this.api.get(`/appstore/applications/${app_id}/application_infos`);
+  }
+
+  /**
+   * 删除chart版本
+   */
+  deleteChartVersion(zoneId, app_id, name, version) {
+    return this.api.delete(`/appstore/zones/${zoneId}/applications/${app_id}/charts/${name}/${version}`);
+  }
+
+  /**
+   * 下载对应的chart
+   */
+  uploadChart(zoneId, chart_name, version) {
+    return this.api.get(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}/${version}/download`);
+  }
+
+  /**
+   * 删除chart所有版本
+   */
+  deleteChartAll(zoneId, chart_name) {
+    return this.api.delete(`/appstore/zones/${zoneId}/chart_repo/charts/${chart_name}`);
+  }
+
+  /**
+   * 新增分类接口
+   */
+  addCategory(category_name) {
+    return this.api.post(`/appstore/applications/categories/${category_name}`);
+  }
+
+  /**
+   * 同步本平台与harbor的chart版本
+   */
+  syncHarborChart(zone_id) {
+    return this.api.post(`/appstore/zones/${zone_id}/sync_chart`);
+  }
+
+  /**
+   * 上传chart新版本
+   */
+  uploadNewChartVersion(zone_id, app_id, data) {
+    return this.api.post(`/appstore/zones/${zone_id}/applications/${app_id}/application_infos`, data);
+  }
+}
+
+export default new ZoneAdmin();
