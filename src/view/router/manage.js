@@ -57,6 +57,8 @@ const Preference = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/preference/preference.vue');
 const Appearance = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appearance/appearance.vue');
+const AppStore = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
 const SSO = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/sso/sso.vue');
 const HelpInfoConfig = () =>
@@ -201,7 +203,7 @@ export default [
         name: 'application.detail',
         component: ApplicationDetail,
         meta: {
-          activeMenu: 'manage.application.detail',
+          activeMenu: 'manage.application',
           hidden: true,
         },
       },
@@ -210,7 +212,7 @@ export default [
         name: 'application.instance',
         component: AdminInstance,
         meta: {
-          activeMenu: 'manage.application.instance',
+          activeMenu: 'manage.application',
           hidden: true,
         },
       },
@@ -230,10 +232,7 @@ export default [
         name: 'manage.zone.detail',
         component: ZoneDetail,
         meta: {
-          // icon: '#icon_globe-alt',
-          // title: '可用区详情',
-          // code: 'platform.zone',
-          // activeMenu: 'manage.zone.list',
+          activeMenu: 'manage.zone.list',
           hidden: true,
         },
       },
@@ -339,6 +338,16 @@ export default [
         path: 'appearance',
         name: 'manage.preference.appearance',
         component: Appearance,
+        meta: {
+          hidden: true,
+          code: 'platform.settings',
+          activeMenu: 'manage.preference',
+        },
+      },
+      {
+        path: 'appstore',
+        name: 'manage.preference.appstore',
+        component: AppStore,
         meta: {
           hidden: true,
           code: 'platform.settings',

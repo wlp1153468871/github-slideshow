@@ -77,7 +77,7 @@ class StorageCache {
 
   // set token with Vue.ls
   saveIdToken(token) {
-    Vue.ls.set(LS_KYES.TOKEN, token, 7 * 24 * 60 * 60 * 1000);
+    Vue.ls.set(LS_KYES.IDTOKEN, token, 7 * 24 * 60 * 60 * 1000);
   }
 
   // dx token
