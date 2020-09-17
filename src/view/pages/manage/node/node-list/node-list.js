@@ -53,7 +53,7 @@ export default {
       this.loadings.node = true;
       return ZoneService.getZones()
         .then(zones => {
-          this.zoneList = zones.filter(item => { return item.available; });
+          this.zoneList = zones.data.filter(item => { return item.available; });
           if (this.currentZone) {
             this.currentZone = this.currentZone;
           } else {

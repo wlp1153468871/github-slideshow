@@ -28,7 +28,7 @@
               </dao-dropdown-item>
               <dao-dropdown-item
                 v-if="$can('secret.delete')"
-                :is-disabled="!objrefs.length"
+                :is-disabled="objrefs.length"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >

@@ -110,11 +110,9 @@ class NodeService {
     });
   }
 
-  listPodLogs(namespace: string, podName: string, containerName: string, zoneId: string, query = {}) {
-    return this.api.get(`/namespaces/${namespace}/pods/${podName}/offlog`,
-    {
+  listPodLogs(zoneId: string, namespace: string, podName: string, containerName: string, query = {}) {
+    return this.api.get(`/namespaces/${namespace}/pods/${podName}/offlog`, {
       zone: zoneId,
-      container_name: containerName,
       ...query,
     });
   }
