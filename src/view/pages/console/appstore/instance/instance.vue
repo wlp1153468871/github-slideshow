@@ -20,10 +20,8 @@
       <div class="title-name">{{instanceInfo.name}}</div>
       <div class="title-desc">
         状态:
-        <div class="title-desc-name">
-          <svg class="icon" :class="stateClass">
-            <use :xlink:href="`#icon_status-dot-small`"></use>
-          </svg>
+        <div :class="stateClass"></div>
+        <div class="title-desc-name" style="margin-left: 5px;">
           {{instanceInfo.status | ops_status }}
         </div>
         <div class="title1">类型:</div>

@@ -364,7 +364,7 @@ export default {
     },
     // 数量
     TableNum() {
-      return this.renderTable.length;
+      return this.renderTableCopy.length;
     },
     /**
        * 状态搜索

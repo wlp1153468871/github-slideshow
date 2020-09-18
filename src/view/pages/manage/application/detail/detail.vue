@@ -16,15 +16,17 @@
       <div class="title-desc">
         状态:
         <div class="title-desc-name" v-if="appInfo.available">
-          <svg class="icon" style="color: #25D473">
+          <!-- <svg class="icon" style="color: #25D473">
             <use :xlink:href="`#icon_status-dot-small`"></use>
-          </svg>
+          </svg> -->
+          <div class="success"></div>
           <span>已启用</span>
         </div>
         <div class="title-desc-name" v-else>
-          <svg class="icon" style="color: #CCD1D9">
+          <!-- <svg class="icon" style="color: #CCD1D9">
             <use :xlink:href="`#icon_status-dot-small`"></use>
-          </svg>
+          </svg> -->
+          <div class="error"></div>
           <span>已禁用</span>
         </div>
         <div class="title1">创建于：</div>
