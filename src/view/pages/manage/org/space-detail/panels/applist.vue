@@ -254,7 +254,7 @@ export default {
   },
   computed: {
     appNumber() {
-      return this.tableData.length;
+      return this.tableDataCopy.length;
     },
   },
   watch: {

@@ -99,6 +99,7 @@ export default {
       loadings: {
         login: false,
       },
+      laodingMask: '',
     };
   },
 
@@ -125,8 +126,7 @@ export default {
     });
 
     if (this.sso.ssoToken && this.sso.identityProviderId) {
-      console.log(222);
-      this.$loading({
+      this.laodingMask = this.$loading({
         lock: true,
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)',
@@ -184,7 +184,7 @@ export default {
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
-      this.$loading.close();
+      this.laodingMask.close();
       this.toConsolePage();
     },
 
