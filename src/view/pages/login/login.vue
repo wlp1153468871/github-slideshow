@@ -183,6 +183,7 @@ export default {
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
+      this.loadingMask.close();
       this.toConsolePage();
     },
 
@@ -192,7 +193,6 @@ export default {
           name: 'console.gateway',
         },
         () => {
-          this.loadingMask.close();
           this.loadings.login = false;
         },
       );
