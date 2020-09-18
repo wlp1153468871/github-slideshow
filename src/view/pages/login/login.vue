@@ -4,7 +4,7 @@
     <div class="section-logo">
       <logo-container :target="'login'" :inverse="true"></logo-container>
     </div>
-    <div class="login-container" :class="{ shake: !loginFail }">
+    <div class="login-container" :class="{ shake: !loginFail }" v-if="!sso.ssoToken" v-loading="loadings.login">
       <h2 class="title">
         {{ title }}
       </h2>
@@ -99,7 +99,6 @@ export default {
       loadings: {
         login: false,
       },
-      loadingMask: '',
     };
   },
 
@@ -126,11 +125,6 @@ export default {
     });
 
     if (this.sso.ssoToken && this.sso.identityProviderId) {
-      this.loadingMask = this.$loading({
-        lock: true,
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)',
-      });
       // dx
       const dxHeaderBaseUrl = this.$route.query.dx_header_url;
       if (dxHeaderBaseUrl) {
@@ -179,11 +173,11 @@ export default {
     },
 
     loginSuccess() {
+      console.log(2222);
       this.$noty.success('登录成功');
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
-      this.loadingMask.close();
       this.toConsolePage();
     },
 

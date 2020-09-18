@@ -361,7 +361,7 @@ export default {
     },
     // 获取实例数
     instanceNum() {
-      return this.instanceTable.length;
+      return this.instanceTableCopy.length;
     },
     // 上传文件之前
     beforeUpload(file) {
