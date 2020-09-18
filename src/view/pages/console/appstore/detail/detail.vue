@@ -233,7 +233,7 @@
                       </div>
                     </template>
                   </el-table-column>
-                  <el-table-column label="状态">
+                  <el-table-column label="状态" width="80">
                     <template slot-scope="scope">
                       <svg class="icon" :class="stateClass(scope.row.status)">
                         <use :xlink:href="`#icon_status-dot-small`"></use>

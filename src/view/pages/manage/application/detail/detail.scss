@@ -56,6 +56,24 @@
         display: inline-block;
         font-weight: 400;
         color: #3D444F;
+        .success {
+          margin: 0px 5px 2px;
+          display: inline-block;
+          background: #25D473;
+          border: 1px solid #22C36A;
+          border-radius: 50%;
+          width: 6px;
+          height: 6px;
+        }
+        .error {
+          margin: 0px 5px 2px;
+          display: inline-block;
+          background: #F25A52;
+          border: 1px solid #F1483F;
+          border-radius: 50%;
+          width: 6px;
+          height: 6px;
+        }
       }
       .title1 {
         margin-left: 10px;

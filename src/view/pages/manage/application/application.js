@@ -77,9 +77,6 @@ export default {
           (currentPage) * this.size);
       },
     },
-    // selectedArr(data) {
-    //   this.selectedRow = []
-    // }
   },
 
   methods: {
@@ -189,7 +186,7 @@ export default {
       this.getAllApp();
     },
     appNumber() {
-      return this.appInfo.length;
+      return this.appInfoCopy.length;
     },
     // 所有的可用区
     getZone() {

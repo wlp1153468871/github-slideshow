@@ -484,7 +484,7 @@ export default {
     .base-info {
       width: 100%;
       margin-left: 20px;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 16px;
       padding: 10px 0px;
     }

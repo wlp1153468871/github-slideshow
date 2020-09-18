@@ -79,7 +79,7 @@ export default {
     },
     // 实例数
     instanceNum() {
-      return this.instances.length;
+      return this.instancesCopy.length;
     },
 
     // 实例跳转
