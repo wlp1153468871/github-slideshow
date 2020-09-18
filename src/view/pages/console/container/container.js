@@ -106,11 +106,9 @@ export default {
     },
     apLogout() {
       this.$store.dispatch('logout').then(() => {
-        console.log(1111);
         this.$router.push({
           name: 'login',
         });
-        // StorageCache.clear();
       });
     },
   },

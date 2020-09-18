@@ -125,6 +125,11 @@ export default {
     });
 
     if (this.sso.ssoToken && this.sso.identityProviderId) {
+      // const loading = this.$loading({
+      //   lock: true,
+      //   spinner: 'el-icon-loading',
+      //   background: 'rgba(0, 0, 0, 0.7)',
+      // });
       // dx
       const dxHeaderBaseUrl = this.$route.query.dx_header_url;
       if (dxHeaderBaseUrl) {
