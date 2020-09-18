@@ -4,7 +4,7 @@
     <div class="section-logo">
       <logo-container :target="'login'" :inverse="true"></logo-container>
     </div>
-    <div class="login-container" :class="{ shake: !loginFail }" v-if="!sso.ssoToken" v-loading="loadings.login">
+    <div class="login-container" :class="{ shake: !loginFail }" v-loading="loadings.login">
       <h2 class="title">
         {{ title }}
       </h2>
@@ -126,6 +126,7 @@ export default {
 
     if (this.sso.ssoToken && this.sso.identityProviderId) {
       // dx
+      this.loadings.login = true;
       const dxHeaderBaseUrl = this.$route.query.dx_header_url;
       if (dxHeaderBaseUrl) {
         AuthService.setIdToken(this.$route.query.id_token);
@@ -173,7 +174,6 @@ export default {
     },
 
     loginSuccess() {
-      console.log(2222);
       this.$noty.success('登录成功');
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
