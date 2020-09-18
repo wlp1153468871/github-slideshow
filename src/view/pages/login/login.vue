@@ -99,7 +99,7 @@ export default {
       loadings: {
         login: false,
       },
-      laodingMask: '',
+      loadingMask: '',
     };
   },
 
@@ -126,7 +126,7 @@ export default {
     });
 
     if (this.sso.ssoToken && this.sso.identityProviderId) {
-      this.laodingMask = this.$loading({
+      this.loadingMask = this.$loading({
         lock: true,
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)',
@@ -179,12 +179,10 @@ export default {
     },
 
     loginSuccess() {
-      console.log(333);
       this.$noty.success('登录成功');
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
-      this.laodingMask.close();
       this.toConsolePage();
     },
 
@@ -194,6 +192,7 @@ export default {
           name: 'console.gateway',
         },
         () => {
+          this.loadingMask.close();
           this.loadings.login = false;
         },
       );
