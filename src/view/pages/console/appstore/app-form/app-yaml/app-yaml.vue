@@ -299,7 +299,7 @@ export default {
           }
         })
         .finally(() => {
-          this.loading = false;
+          loading.close();
         });
     },
     cancerForm() {

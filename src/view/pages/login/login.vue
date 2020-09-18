@@ -125,11 +125,12 @@ export default {
     });
 
     if (this.sso.ssoToken && this.sso.identityProviderId) {
-      // const loading = this.$loading({
-      //   lock: true,
-      //   spinner: 'el-icon-loading',
-      //   background: 'rgba(0, 0, 0, 0.7)',
-      // });
+      console.log(222);
+      this.$loading({
+        lock: true,
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+      });
       // dx
       const dxHeaderBaseUrl = this.$route.query.dx_header_url;
       if (dxHeaderBaseUrl) {
@@ -178,10 +179,12 @@ export default {
     },
 
     loginSuccess() {
+      console.log(333);
       this.$noty.success('登录成功');
       const nowTime = new Date();
       nowTime.setSeconds(nowTime.getSeconds() + REFRESH_COUNT);
       this.$ls.set('refreshTime', nowTime.toString());
+      this.$loading.close();
       this.toConsolePage();
     },
 
