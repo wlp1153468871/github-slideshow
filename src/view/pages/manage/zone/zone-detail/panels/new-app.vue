@@ -124,6 +124,7 @@
               v-model="category"
               placeholder="选择分类"
               @change="handleCategory"
+              style="height: 32px;"
               :multiple="true">
               <el-option
                 v-for="item in classification"
