@@ -360,9 +360,10 @@ export const actions = {
   },
 
   logout({ dispatch }) {
-    return AuthService.logout().then(({ logout_url: url }) => {
-      dispatch('clearCache', url);
-    });
+    // return AuthService.logout().then(({ logout_url: url }) => {
+    //   dispatch('clearCache', url);
+    // });
+    dispatch('clearCache');
   },
 
   clearCache({ commit }, url) {
