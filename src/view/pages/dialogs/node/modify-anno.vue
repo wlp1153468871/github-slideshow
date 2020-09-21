@@ -39,7 +39,13 @@ export default {
           {
             type: 'input',
             name: 'annotation',
-            validate(_old) {
+            validate(_old, _new) {
+              const tmp = _.countBy(_new, 'annotation');
+
+              if (tmp[_old.annotation] > 1) {
+                return '键不可以重复';
+              }
+
               const reg = new RegExp('^([A-Za-z0-9][-A-Za-z0-9_./]*)?[A-Za-z0-9]$');
               if (!_old.annotation) {
                 return '键不能为空';
