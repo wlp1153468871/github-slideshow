@@ -62,6 +62,13 @@ export default {
           {
             type: 'input',
             name: 'value',
+            validate(_old) {
+              const reg = new RegExp('^([A-Za-z0-9][-A-Za-z0-9_./]*)?[A-Za-z0-9]$');
+              if (_old.value && !reg.exec(_old.value)) {
+                return '包含非法字符';
+              }
+              return true;
+            },
           },
         ],
       },
