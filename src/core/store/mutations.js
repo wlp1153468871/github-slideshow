@@ -51,6 +51,7 @@ export const state = {
   defaultActiveMenu: 'console.dashboard',
   chargingEnable: false,
   helpURLDict: {},
+  simpleInfo: '',
   loadings: {
     initTenantView: false,
     alarmListView: false,
@@ -587,6 +588,7 @@ export const actions = {
   loadSystemSettings({ commit }) {
     return SystemService.getSystemSettings().then(param => {
       commit(types.LOAD_SYSTEM_SETTINGS_SUCCESS, { param });
+      commit(types.LOAD_SYSTEM_INFO_SUCCESS, param.simpleInfo);
     });
   },
 
@@ -765,6 +767,11 @@ export const mutations = {
   [types.LOAD_SYSTEM_SETTINGS_SUCCESS](state, { param }) {
     state.helpURLDict = mergeDefaultHelpUrls(getValue(param, 'helpURLDict'));
   },
+
+  [types.LOAD_SYSTEM_INFO_SUCCESS](state, param) {
+    state.simpleInfo = param;
+  },
+
 
   [types.SET_DEFAULT_ACTIVE_MENU](state, menu) {
     state.defaultActiveMenu = menu;

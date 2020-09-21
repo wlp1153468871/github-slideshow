@@ -5,8 +5,7 @@
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
       <div class="header-title">服务市场</div>
-      <div class="header-desc">欢迎来到 gCloud 服务市场，我们的平台提供了来自不同企业的更多的应用和 Chart 模版，
-        并支持多终端访问，自建应用，让客户享受安全，便捷，快速的服务。</div>
+      <div class="header-desc">{{simpleInfo}}</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;margin-top: 20px">
       <div class="dao-view-content">

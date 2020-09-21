@@ -36,7 +36,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['space', 'zone', 'user']),
+    ...mapState(['space', 'zone', 'user', 'simpleInfo']),
   },
 
   created() {

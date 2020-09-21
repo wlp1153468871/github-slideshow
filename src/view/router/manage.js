@@ -43,8 +43,6 @@ const AuthRoles = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/roles.vue');
 const Application = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
-const CreateApp = () =>
-  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/app/app.vue');
 const ApplicationDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
 const AdminInstance = () =>
@@ -57,8 +55,8 @@ const Preference = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/preference/preference.vue');
 const Appearance = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appearance/appearance.vue');
-// const AppStore = () =>
-//  import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
+const AppStore = () =>
+ import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
 const SSO = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/sso/sso.vue');
 const HelpInfoConfig = () =>
@@ -299,15 +297,6 @@ export default [
           hidden: true,
         },
       },
-      {
-        path: 'newapp/application/app',
-        name: 'application.app',
-        component: CreateApp,
-        meta: {
-          activeMenu: 'manage.application',
-          hidden: true,
-        },
-      },
     ],
   },
   {
@@ -344,16 +333,16 @@ export default [
           activeMenu: 'manage.preference',
         },
       },
-      // {
-      //   path: 'appstore',
-      //   name: 'manage.preference.appstore',
-      //   component: AppStore,
-      //   meta: {
-      //     hidden: true,
-      //     code: 'platform.settings',
-      //     activeMenu: 'manage.preference',
-      //   },
-      // },
+      {
+        path: 'appstore',
+        name: 'manage.preference.appstore',
+        component: AppStore,
+        meta: {
+          hidden: true,
+          code: 'platform.settings',
+          activeMenu: 'manage.preference',
+        },
+      },
       {
         path: 'sso',
         name: 'manage.preference.sso',
