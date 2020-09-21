@@ -47,6 +47,9 @@ export default {
               if (!reg.exec(_old.annotation)) {
                 return '包含非法字符';
               }
+              if (_old.annotation.length > 63) {
+                return '值不能超过63个字符';
+              }
               return true;
             },
           },
