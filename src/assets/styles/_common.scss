@@ -342,3 +342,8 @@ ul.text-red {
 .el-input--suffix .el-input__inner {
   line-height: 32px !important;
 }
+
+.el-pagination__total {
+  position: absolute;
+  left: 20px;
+}

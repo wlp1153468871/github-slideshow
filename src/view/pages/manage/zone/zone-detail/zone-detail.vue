@@ -49,3 +49,8 @@
 </template>
 
 <script src="./zone-detail.js"></script>
+<style>
+  .zone-tab .dao-view-main{
+    margin: 0 !important;
+  }
+</style>
