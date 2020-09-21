@@ -28,7 +28,7 @@ export default {
       if (Array.isArray(this.data)) {
         value = this.data[0][label];
       }
-      value = this.data[label];
+      value = this.data[0][label];
       return `${label}:${value || '<空>'}`;
     },
   },
