@@ -6,7 +6,7 @@
     <global-nav-bar v-else></global-nav-bar>
     <console-side-bar v-show="isSpaceView" @switch-section="switchSpace"> </console-side-bar>
     <template v-if="!isInitTenantView">
-      <router-view class="layout-content"></router-view>
+      <router-view :class="idToken ? 'dx-layout-content' : 'layout-content'"></router-view>
     </template>
     <circle-loading v-else position="space-view"></circle-loading>
   </div>
