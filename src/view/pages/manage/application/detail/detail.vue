@@ -16,16 +16,10 @@
       <div class="title-desc">
         状态:
         <div class="title-desc-name" v-if="appInfo.available">
-          <!-- <svg class="icon" style="color: #25D473">
-            <use :xlink:href="`#icon_status-dot-small`"></use>
-          </svg> -->
           <div class="success"></div>
           <span>已启用</span>
         </div>
         <div class="title-desc-name" v-else>
-          <!-- <svg class="icon" style="color: #CCD1D9">
-            <use :xlink:href="`#icon_status-dot-small`"></use>
-          </svg> -->
           <div class="error"></div>
           <span>已禁用</span>
         </div>
@@ -49,9 +43,6 @@
           <dao-dropdown-item @click="editInfo">
             <span>编辑基本信息</span>
           </dao-dropdown-item>
-          <!-- <dao-dropdown-item @click="addEdition">
-            <span>添加版本</span>
-          </dao-dropdown-item> -->
           <dao-dropdown-item
             v-if="appInfo.available"
             @click="availableOff"
@@ -61,9 +52,6 @@
           <dao-dropdown-item v-else @click="availableOn">
             <span>启用应用</span>
           </dao-dropdown-item>
-          <!-- <dao-dropdown-item>
-            <span style="color: red;" @click="deleteApplication">删除</span>
-          </dao-dropdown-item> -->
         </dao-dropdown-menu>
       </dao-dropdown>
     </div>
@@ -203,97 +191,99 @@
     </dao-dialog>
     <el-tabs v-model="activeName" style="position:relative;">
       <el-tab-pane label="概览" name="first">
-        <div class="lay-left">
-          <div class="border-box">
-            <div class="title">基本信息</div>
-            <div class="appdesc">
-              <div class="desc-title">服务描述</div>
-              <div class="desc-text">{{appInfo.description}}</div>
-            </div>
-            <div class="app">
-              <div class="app-title">服务信息</div>
-              <div class="app-box">
-                <div class="text-name">
-                  服务类型
-                  <div class="text-desc">{{appInfo.appType}}</div>
+        <div class="content_box">
+          <div class="lay-left">
+            <div class="border-box">
+              <div class="title">基本信息</div>
+              <div class="appdesc">
+                <div class="desc-title">服务描述</div>
+                <div class="desc-text">{{appInfo.description}}</div>
+              </div>
+              <div class="app">
+                <div class="app-title">服务信息</div>
+                <div class="app-box">
+                  <div class="text-name">
+                    服务类型
+                    <div class="text-desc">{{appInfo.appType}}</div>
+                  </div>
+                  <div class="text-name">
+                    分类
+                    <div class="text-desc">
+                      <template>
+                        <span
+                          class="str"
+                          v-for="(item, index) in appInfo.category"
+                          :key="index">
+                          {{item}}
+                        </span>
+                      </template>
+                    </div>
+                  </div>
                 </div>
-                <div class="text-name">
-                  分类
-                  <div class="text-desc">
-                    <template>
-                      <span
-                        class="str"
-                        v-for="(item, index) in appInfo.category"
-                        :key="index">
-                        {{item}}
-                      </span>
-                    </template>
+                <div class="app-box">
+                  <div class="text-name">
+                    供应商
+                    <div class="text-desc">{{appInfo.provider}}</div>
+                  </div>
+                  <div class="text-name">
+                    版本数
+                    <div class="text-desc">{{appInfo.numVersion}}</div>
+                  </div>
+                </div>
+                <div class="app-box">
+                  <div class="text-name">
+                    可用区
+                    <div class="text-desc">{{appInfo.zoneName}}</div>
+                  </div>
+                  <div class="text-name">
+                    Chart 仓库
+                    <div class="text-desc">{{appInfo.chartRepo}}</div>
                   </div>
                 </div>
               </div>
-              <div class="app-box">
-                <div class="text-name">
-                  供应商
-                  <div class="text-desc">{{appInfo.provider}}</div>
-                </div>
-                <div class="text-name">
-                  版本数
-                  <div class="text-desc">{{appInfo.numVersion}}</div>
-                </div>
-              </div>
-              <div class="app-box">
-                <div class="text-name">
-                  可用区
-                  <div class="text-desc">{{appInfo.zoneName}}</div>
-                </div>
-                <div class="text-name">
-                  Chart 仓库
-                  <div class="text-desc">{{appInfo.chartRepo}}</div>
-                </div>
-              </div>
+            </div>
+            <div class="border-box reademe" v-if="appInfo.content">
+              <div class="title name">README</div>
+              <marked :text="appInfo.content"></marked>
             </div>
           </div>
-          <div class="border-box reademe" v-if="appInfo.content">
-            <div class="title name">README</div>
-            <marked :text="appInfo.content"></marked>
-          </div>
-        </div>
-        <div class="lay-right">
-          <div v-if="applicationInfos.length < 1" class="no-version">
-            <div class="center">
-              <div class="no">暂无版本</div>
-              <div class="add">立即添加</div>
+          <div class="lay-right">
+            <div v-if="applicationInfos.length < 1" class="no-version">
+              <div class="center">
+                <div class="no">暂无版本</div>
+                <div class="add">立即添加</div>
+              </div>
             </div>
-          </div>
-          <div v-for="(item, index) in applicationInfos" :key="index" v-else>
-            <div v-if="chart === item.version">
-              <div class="right-type">版本:</div>
-              <dao-select
-                v-model="chart"
-                size="sm"
-                class="right-select"
-              >
-                <dao-option
-                  v-for="item in applicationInfos"
-                  :key="item.version"
-                  :value="item.version"
-                  :label="item.version">
-                </dao-option>
-              </dao-select>
-              <div class="right-name">名称</div>
-              <div class="right-desc">{{item.chartName}}</div>
-              <div v-if="`${item.appVersion }`">
-                <div class="right-name">App版本</div>
-                <div class="right-desc">{{item.appVersion}}</div>
-              </div>
-              <div class="right-name">维护者</div>
-              <div v-for="(data, key) in item.supplier" :key="key">
-                <div class="right-desc">{{data.name}}</div>
-                <div class="right-desc">({{data.email}})</div>
-              </div>
-              <div class="right-name">官网链接</div>
-              <div class="right-link">
-                <a :href="`${item.homeUrl}`">{{item.homeUrl}}</a>
+            <div v-for="(item, index) in applicationInfos" :key="index" v-else>
+              <div v-if="chart === item.version">
+                <div class="right-type">版本:</div>
+                <dao-select
+                  v-model="chart"
+                  size="sm"
+                  class="right-select"
+                >
+                  <dao-option
+                    v-for="item in applicationInfos"
+                    :key="item.version"
+                    :value="item.version"
+                    :label="item.version">
+                  </dao-option>
+                </dao-select>
+                <div class="right-name">名称</div>
+                <div class="right-desc">{{item.chartName}}</div>
+                <div v-if="`${item.appVersion }`">
+                  <div class="right-name">App版本</div>
+                  <div class="right-desc">{{item.appVersion}}</div>
+                </div>
+                <div class="right-name">维护者</div>
+                <div v-for="(data, key) in item.supplier" :key="key">
+                  <div class="right-desc">{{data.name}}</div>
+                  <div class="right-desc">({{data.email}})</div>
+                </div>
+                <div class="right-name">官网链接</div>
+                <div class="right-link">
+                  <a :href="`${item.homeUrl}`">{{item.homeUrl}}</a>
+                </div>
               </div>
             </div>
           </div>
@@ -319,14 +309,6 @@
             v-loading="loading.instance"
           >
             <el-table-column label="实例名" prop="name">
-              <!-- <template slot-scope="scope">
-                <div
-                  style="color: #217EF2;cursor: pointer;"
-                  @click="linkInstance(scope.row.appId, scope.row.id)"
-                >
-                  {{ scope.row.name }}
-                </div>
-              </template> -->
             </el-table-column>
             <el-table-column label="Chart 版本" prop="chartVersion"></el-table-column>
             <el-table-column label="租户/项目组">
