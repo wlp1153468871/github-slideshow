@@ -42,8 +42,13 @@ export default {
             type: 'input',
             name: 'taint',
             default: 'node-role.kubernetes.io/master:NoSchedule',
-            validate(row) {
-              if (row.taint === '') return '污点不能为空';
+            validate(_old, _new) {
+              const tmp = _.countBy(_new, 'taint');
+
+              if (tmp[_old.taint] > 1) {
+                return '键不可以重复';
+              }
+              if (_old.taint === '') return '污点不能为空';
               return true;
             },
           },
