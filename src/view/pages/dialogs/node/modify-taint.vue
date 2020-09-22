@@ -48,6 +48,9 @@ export default {
               if (tmp[_old.taint] > 1) {
                 return '键不可以重复';
               }
+              if (_old.taint.length > 63) {
+                return '值不能超过63个字符';
+              }
               if (_old.taint === '') return '污点不能为空';
               return true;
             },

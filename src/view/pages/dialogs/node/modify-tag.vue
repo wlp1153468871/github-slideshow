@@ -55,6 +55,9 @@ export default {
               if (!reg.exec(_old.label)) {
                 return '键不能包含非法字符';
               }
+              if (_old.label.length > 63) {
+                return '值不能超过63个字符';
+              }
               return true;
             },
           },
