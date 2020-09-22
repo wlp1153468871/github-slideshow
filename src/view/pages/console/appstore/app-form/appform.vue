@@ -2,7 +2,7 @@
   <div class="app-form">
     <div class="layout-content-header form-header">
       <span @click="cancerForm">
-        <svg class="icon" style="color: #217EF2;">
+        <svg class="icon" style="color: #217EF2;cursor: pointer;">
           <use :xlink:href="`#icon_close`"></use>
         </svg>
       </span>
@@ -50,41 +50,6 @@
             <div class="dao-setting-content">{{this.$route.params.version}}</div>
           </div>
         </div>
-      <!-- <div class="dao-setting-section">
-        <div class="dao-setting-item">
-          <div class="dao-setting-label dao-name">租户和项目组</div>
-          <div class="dao-setting-content">
-            <div class="box">
-              <div class="dao-title">租户</div>
-              <dao-select
-                v-model="select1"
-                class="dao-option"
-                size="sm">
-                <dao-option
-                  v-for="item in zones"
-                  :key="item.value"
-                  :value="item.index"
-                  :label="item.value">
-                </dao-option>
-              </dao-select>
-            </div>
-            <div class="box">
-              <div class="dao-title">项目组</div>
-              <dao-select
-                v-model="select2"
-                class="dao-option"
-                size="sm">
-                <dao-option
-                  v-for="item in project"
-                  :key="item.value"
-                  :value="item.index"
-                  :label="item.value">
-                </dao-option>
-              </dao-select>
-            </div>
-          </div>
-        </div>
-      </div> -->
       </dao-setting-layout>
       <div class="parameter">
         <div class="header">
