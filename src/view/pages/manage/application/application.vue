@@ -46,10 +46,6 @@
           :label="item.name">
         </dao-option>
       </dao-select>
-      <!-- <button class="dao-btn blue has-icon"  @click="createApp">
-        <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
-        <span class="text" >导入应用模板</span>
-      </button> -->
       <span style="float: right;">
         <dao-input
           search
@@ -65,7 +61,6 @@
       </span>
     </div>
     <div class="select">
-      <!-- <span class="number">已选择 {{selectedArr.length}} 项</span> -->
       <button
         class="dao-btn"
         :disabled="selectStatus[0] === 1 || selectStatus.length === 2 || selectStatus.length  < 1"
@@ -97,11 +92,6 @@
           <button class="dao-btn" @click="cancel">取消</button>
         </div>
       </dao-dialog>
-      <!-- <button
-        class="dao-btn red status"
-        @click="deleteApplication"
-        :disabled="selectedArr.length < 1">批量删除
-      </button> -->
     </div>
     <div style="margin: 15px;">
       <el-table
@@ -113,7 +103,7 @@
         :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称">
+        <el-table-column label="应用名称" sortable>
           <template slot-scope="scope">
             <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
@@ -140,7 +130,7 @@
           </template>
         </el-table-column>
         <el-table-column label="类型" prop="appType" width="100"></el-table-column>
-        <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion" width="100" sortable></el-table-column>
         <el-table-column label="分类">
           <template slot-scope="scope">
             <span
@@ -152,7 +142,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="date">
+        <el-table-column label="创建时间" prop="date" sortable>
           <template slot-scope="scope">
             {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>

@@ -104,13 +104,7 @@
         :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称" prop="name">
-          <!-- <template slot-scope="scope">
-            <div style="color: #217EF2;">
-              {{ scope.row.name }}
-            </div>
-          </template> -->
-        </el-table-column>
+        <el-table-column label="应用名称" prop="name" sortable></el-table-column>
         <el-table-column label="可用区" prop="zoneName"></el-table-column>
         <el-table-column label="供应商" prop="provider"></el-table-column>
         <el-table-column label="创建者" prop="ownerName"></el-table-column>
@@ -131,13 +125,13 @@
           </template>
         </el-table-column>
         <el-table-column label="类型" prop="appType"></el-table-column>
-        <el-table-column label="版本数" prop="numVersion"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion" sortable></el-table-column>
         <el-table-column label="分类">
           <template slot-scope="scope">
             <span>{{scope.row.category.join('，')}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="date">
+        <el-table-column label="创建时间" prop="date" sortable>
           <template slot-scope="scope">
             {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>
