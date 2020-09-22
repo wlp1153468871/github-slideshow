@@ -16,12 +16,7 @@ export default {
       selectedArr: [], // 选中时的数组
       indexArr: [],
       isForbidden: false,
-      zones: [
-        {
-          id: '',
-          name: '全部',
-        },
-      ],
+      zones: [],
       zoneCat: '',
       status: [
         {
@@ -197,8 +192,8 @@ export default {
       };
       this.zones.push(obj);
       ServiceAdmin.getZone().then(res => {
-        if (Array.isArray(res)) {
-          res.forEach(item => this.zones.push(item));
+        if (Array.isArray(res.data)) {
+          res.data.forEach(item => this.zones.push(item));
         }
       });
     },

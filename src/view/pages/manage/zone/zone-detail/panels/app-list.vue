@@ -106,15 +106,15 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <!-- {{scope.row[scope.row.name]}} -->
             <el-table class="in-table"
               style="width: 100%;"
               :data="scope.row[scope.row.name]"
               :header-cell-style="{background:'#fff'}"
             >
-              <el-table-column label="Chart 版本" prop="version" width="200">
+              <el-table-column label="Chart 版本" prop="version" width="200" sortable>
               </el-table-column>
-              <el-table-column label="APP版本" prop="appVersion" width="200"></el-table-column>
+              <el-table-column label="APP版本" prop="appVersion" width="200" sortable>
+              </el-table-column>
               <el-table-column label="维护者">
                 <template slot-scope="scope">
                   <div v-if="`${scope.row.supplier}` === 'null'"></div>
@@ -127,7 +127,7 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column label="创建时间" prop="date">
+              <el-table-column label="创建时间" prop="date" sortable>
                 <template slot-scope="scope">
                   {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
                 </template>
@@ -148,12 +148,6 @@
                         slot="list"
                         style="min-width: 120px;"
                       >
-<!--                            <dao-dropdown-item-->
-<!--                              @click="uploadChartVersion(scope.row.name, scope.row.version)"-->
-<!--                              style="margin-left: 10px" class="linkColor">-->
-<!--                              <a ref="upload"-->
-<!--                                 style="width: 100%;display: inline-block;">下载</a>-->
-<!--                            </dao-dropdown-item>-->
                         <dao-dropdown-item
                           @click="deleteChartVersion(scope.row.appId,
                           scope.row.chartName, scope.row.version)"
@@ -169,14 +163,14 @@
             </el-table>
           </template>
         </el-table-column>
-        <el-table-column label="应用名称" prop="name">
+        <el-table-column label="应用名称" prop="name" sortable>
         </el-table-column>
         <el-table-column label="供应商" prop="provider" width="100"></el-table-column>
         <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
         <el-table-column label="类型" prop="appType"></el-table-column>
-        <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion" width="100" sortable></el-table-column>
         <el-table-column label="分类" prop="category"></el-table-column>
-        <el-table-column label="创建时间">
+        <el-table-column label="创建时间" prop="data" sortable>
           <template slot-scope="scope">
             {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
           </template>
@@ -326,8 +320,8 @@ export default {
           this.renderTable = res.slice(0, 10);
           this.renderTableCopy = res;
           this.total = res.length;
-          this.renderTable.forEach(item => {
-            const category = item.category.join('，');
+          this.renderTableCopy.forEach(item => {
+            const category = item.category.join('、');
             item.category = category;
           });
           this.changeExpand();

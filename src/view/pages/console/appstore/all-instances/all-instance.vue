@@ -20,7 +20,7 @@
         :data="instances"
         v-loading="loading.instance"
       >
-        <el-table-column label="实例名称" width="250">
+        <el-table-column label="实例名称" width="250" prop="name" sortable>
           <template slot-scope="scope">
             <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
@@ -37,7 +37,8 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Chart 版本" prop="chartVersion" width="150"></el-table-column>
+        <el-table-column label="Chart 版本" prop="chartVersion" width="150" sortable>
+        </el-table-column>
         <el-table-column label="状态" width="150">
           <template slot-scope="scope">
             <svg class="icon" :class="stateClass(scope.row.status)">
@@ -47,7 +48,7 @@
           </template>
         </el-table-column>
         <el-table-column label="创建者" prop="ownerName"></el-table-column>
-        <el-table-column label="创建时间" >
+        <el-table-column label="创建时间" prop="createdAt" sortable>
           <template slot-scope="scope">
             {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>

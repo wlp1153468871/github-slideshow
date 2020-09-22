@@ -124,7 +124,6 @@
               v-model="category"
               placeholder="选择分类"
               @change="handleCategory"
-              style="height: 32px;"
               :multiple="true">
               <el-option
                 v-for="item in classification"
@@ -446,7 +445,6 @@ export default {
 </style>
 <style lang="scss">
 .new-app {
-  /*min-height: 100vh;*/
   min-height: 915px;
   background-color: #F1F3F6;
   border: 1px solid #F1F3F6;
@@ -467,12 +465,12 @@ export default {
     }
   }
   .box-layout {
-    padding-bottom: 100px;
+    padding-bottom: 40px;
   }
   .newApp-box {
     box-sizing: border-box;
     width: 80%;
-    margin: 20px auto 60px auto;
+    margin: 20px auto 40px auto;
     .daox-setting-layout {
       background: #fff;
     }
@@ -516,6 +514,13 @@ export default {
   .category-style {
     width: 95%;
     display: inline-block;
+    .el-input {
+      width: 970px;
+      height: 32px !important;
+      .el-input__inner {
+        height: 32px !important;
+      }
+    }
   }
   .svg-icon {
     width: 90px;

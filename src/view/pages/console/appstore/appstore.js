@@ -164,13 +164,22 @@ export default {
         this.filterData(this.applications);
         return;
       }
-      if (this.checkedApp.length) {
+      if (this.checkedPro.length && this.checkedApp.length) {
         this.applications = this.applications.filter(item =>
           item.appType.includes(this.checkedApp[0]));
-        this.filterData(this.applications);
-      }
-      if (this.checkedPro.length) {
         this.applications = this.applications.filter(item =>
+          item.provider.includes(this.checkedPro[0]));
+        this.filterData(this.applications);
+        return;
+      }
+      if (this.checkedApp.length && !this.checkedPro.length) {
+        this.applications = this.appCopy.filter(item =>
+          item.appType.includes(this.checkedApp[0]));
+        this.filterData(this.applications);
+        return;
+      }
+      if (this.checkedPro.length && !this.checkedApp.length) {
+        this.applications = this.appCopy.filter(item =>
           item.provider.includes(this.checkedPro[0]));
         this.filterData(this.applications);
       }
