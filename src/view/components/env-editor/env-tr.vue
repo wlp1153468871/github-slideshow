@@ -195,7 +195,7 @@ export default {
       if (value.value != null) {
         return 'Normal';
       }
-      if (value.valueFrom.configMapKeyRef) {
+      if (value.valueFrom && value.valueFrom.configMapKeyRef) {
         return 'Config Map';
       }
       return 'Secret';
