@@ -5,6 +5,7 @@
     </div>
     <div class="dao-view-main">
       <x-table
+        :class="!showNodeTitle ? 'node-table' : ''"
         v-if="$can('platform.node.get')"
         :showRefresh="$can('platform.node.update')"
         :loading="loadings.node"
@@ -165,8 +166,14 @@
 </template>
 
 <script src="./node-list.js"></script>
-<style scoped>
-  .label-input {
-    margin-right: 10px;
+<style lang='scss'>
+  .node-table {
+    .label-input {
+      margin-right: 10px;
+    }
+    .table-toolbar .el-input {
+      position: absolute;
+      left: 20px;
+    }
   }
 </style>

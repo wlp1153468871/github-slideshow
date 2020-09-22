@@ -21,6 +21,7 @@
       <div class="table-toolbar-right">
         <div style="display: flex; justify-content: center; align-items: center;">
           <el-input
+            class="node-pods-input"
             style="width: 200px;"
             size="small"
             v-model="filterKey"
@@ -139,7 +140,6 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      hide-on-single-page
       background
       :disabled="loading"
       :page-sizes="[10, 30, 50]"
@@ -271,8 +271,12 @@ export default {
       }
     }
   }
-  .el-pagination__total {
+  .el-pagination__total,
+  .node-pods-input {
     left: 240px !important;
+  }
+  .node-pods-input {
+    position: absolute;
   }
 }
 </style>
