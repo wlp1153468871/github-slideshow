@@ -116,7 +116,7 @@
         <el-table-column label="创建者" prop="ownerName"></el-table-column>
         <el-table-column label="状态" width="100">
           <template slot-scope="scope">
-            <div v-if="scope.row.space_available === '1'">
+            <div v-if="scope.row.spaceAvailable === '1'">
               <svg class="icon" style="color: #25D473">
                 <use :xlink:href="`#icon_status-dot-small`"></use>
               </svg>
@@ -242,8 +242,8 @@ export default {
       },
       selectedArray: [], // 选中的数组
       indexArr: [],
-      onArr: '',
-      offArr: '',
+      onArr: [],
+      offArr: [],
       haveOn: true,
       haveOff: true,
       isForbidden: false,
@@ -324,10 +324,10 @@ export default {
       this.offArr = [];
       const indexArr = [];
       data.forEach(item => {
-        if (item.space_available === '1') {
+        if (item.spaceAvailable === '1') {
           this.offArr.push(item);
         }
-        if (item.space_available === '0') {
+        if (item.spaceAvailable === '0') {
           this.onArr.push(item);
         }
         this.tableData.forEach((val, index) => {
