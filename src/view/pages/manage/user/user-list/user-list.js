@@ -58,7 +58,7 @@ export default {
       this.loadings.users = true;
       return UserService.getUsers()
         .then(users => {
-          users = this.filtersRows(orderBy(users, 'username'));
+          users = this.filtersRows(orderBy(users.data, 'username'));
           this.users = users;
           this.rows = users;
         })
