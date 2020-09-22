@@ -2,7 +2,7 @@
     <div class="event-page">
         <div class="dao-setting-layout">
             <div class="dao-setting-section">
-              <timeline empty-title="未找到结果" v-if="node">
+              <timeline empty-title="暂无数据" v-if="node">
                 <timeline-item
                   v-for="(action, index) in sortEvents(node.items)"
                   :key="index"
