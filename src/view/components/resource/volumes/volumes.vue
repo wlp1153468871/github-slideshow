@@ -115,14 +115,19 @@
           </dd>
           <dt>Config Map:</dt>
           <dd>
-            <router-link
-              :to="{
+             <span v-if="routeName === 'manage.node.detail.pods.detail'">
+              {{ volume.configMap.name }}
+            </span>
+            <span v-else>
+               <router-link
+                 :to="{
                 name: 'resource.configmaps.detail',
                 params: { name: volume.configMap.name },
               }"
-            >
+               >
               {{ volume.configMap.name }}
             </router-link>
+            </span>
           </dd>
           <div v-for="item in volume.configMap.items" :key="item.key">
             <dt>Key to File:</dt>
