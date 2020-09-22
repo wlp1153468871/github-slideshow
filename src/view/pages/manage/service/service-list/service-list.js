@@ -38,7 +38,7 @@ export default {
       this.loadings.maps = true;
       return ServiceService.getServices()
         .then(list => {
-          this.rows = list;
+          this.rows = list.data;
         })
         .finally(() => {
           this.loadings.maps = false;

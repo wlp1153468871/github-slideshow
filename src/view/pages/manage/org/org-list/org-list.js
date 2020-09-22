@@ -38,7 +38,7 @@ export default {
       this.loadings.orgs = true;
       OrgService.getOrgs()
         .then(orgs => {
-          this.rows = orgs;
+          this.rows = orgs.data;
         })
         .finally(() => {
           this.loadings.orgs = false;
