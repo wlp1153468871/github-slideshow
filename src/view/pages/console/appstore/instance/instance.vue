@@ -1,12 +1,14 @@
 <template>
-  <div id="servicedetail">
-    <div class="layout-content-header">
+  <div
+    id="servicedetail"
+    v-if="$can('appstoreApplications.insview') || $can('appstoreAppinstances.view')"
+  >
+    <div class="header">
       <breadcrumb
         :links="[
-          { text: '应用', route: { path: '/console/appstore/view' } },
+          { text: '服务', route: { path: '/console/appstore/view' } },
           { text: `实例详情(${instanceInfo.name})` },
         ]"
-        class="header-text"
       >
       </breadcrumb>
     </div>
@@ -18,17 +20,15 @@
       <div class="title-name">{{instanceInfo.name}}</div>
       <div class="title-desc">
         状态:
-        <div class="title-desc-name">
-          <svg class="icon" :class="stateClass">
-            <use :xlink:href="`#icon_status-dot-small`"></use>
-          </svg>
+        <div :class="stateClass"></div>
+        <div class="title-desc-name" style="margin-left: 5px;">
           {{instanceInfo.status | ops_status }}
         </div>
         <div class="title1">类型:</div>
         <div class="title-desc-name">{{appInfo.appType}}</div>
         <div class="title1">创建于:</div>
         <div class="title-desc-name">
-          {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ instanceInfo.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
         </div>
       </div>
       <span class="dao-btn-group select-btn">
@@ -36,21 +36,22 @@
           trigger="click"
           :append-to-body="true"
           placement="bottom-start"
-          v-if="appInfo.ownerId === user.id"
+          v-if="$can('appstoreApplications.appinstance') ||
+            $can('appstoreAppinstances.appinstance')"
         >
           <button class="dao-btn has-icons" style="width: 98px">
             <span class="text">更多操作</span>
             <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
           </button>
           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item style="margin-left: 10px" @click="linktoForm()">
+            <dao-dropdown-item @click="linktoForm()">
               <span>使用表单更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px" @click="linktoYamlForm()">
+            <dao-dropdown-item @click="linktoYamlForm()">
               <span>使用YAML更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item style="margin-left: 10px" @click="deleteInstance()">
-              <span style="color: red;">删除</span>
+            <dao-dropdown-item @click="deleteInstance()" class="deleteHover">
+              <span class="delete">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
         </dao-dropdown>
@@ -94,12 +95,10 @@
           </daox-info-table>
         </div>
         <div class="container1" style="margin-top: 20px;">
-          <div class="c-title">记录</div>
-          <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down>
+          <div class="c-title">实例信息</div>
+          <marked :text="instanceInfo.notes" style="padding: 20px;" v-if="instanceInfo.notes"></marked>
+          <div v-else class="blank">列表为空</div>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="操作记录" name="second">
-        <job-panel :jobs="operator"> </job-panel>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
         <deployment-panel :deployments="resources.Deployment"></deployment-panel>
@@ -120,6 +119,9 @@
       </el-tab-pane>
       <el-tab-pane label="PVC" name="eighth">
         <pvc-table :pvcs="resources.PersistentVolumeClaim" :loading="loading.resources"></pvc-table>
+      </el-tab-pane>
+      <el-tab-pane label="操作记录" name="second">
+        <job-panel :jobs="operator"></job-panel>
       </el-tab-pane>
     </el-tabs>
   </div>

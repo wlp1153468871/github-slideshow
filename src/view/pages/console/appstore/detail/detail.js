@@ -1,8 +1,9 @@
 import { mapState } from 'vuex';
 import { debounce } from 'lodash';
 
-import MarkDown from '@/view/components/markdown/markdown.vue';
 import AppStoreService from '@/core/services/appstore.service';
+
+import Marked from '@/view/components/marked/marked.vue';
 
 export default {
   name: 'AppStoreDetail',
@@ -52,11 +53,15 @@ export default {
       loading: {
         instanceTable: false,
       },
+      isDestory: true,
+      size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
   components: {
-    MarkDown,
+    Marked,
   },
 
   computed: {
@@ -90,12 +95,24 @@ export default {
         });
       },
     },
+    size: {
+      handler(size) {
+        this.instanceTable = this.instanceTableCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.instanceTable = this.instanceTableCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
+      },
+    },
   },
 
   methods: {
     stateClass(status) {
       return this.stateMap[status] || '';
     },
+
     // 获取应用信息
     async getApp() {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
@@ -165,8 +182,9 @@ export default {
       AppStoreService.getInstances(this.zone.id, this.space.id, this.$route.params.Id)
         .then(res => {
           if (res) {
-            this.instanceTable = res;
+            this.instanceTable = res.slice(0, 10);
             this.instanceTableCopy = res;
+            this.total = res.length;
             this.instanceNum();
           }
         })
@@ -177,10 +195,14 @@ export default {
     // 删除某个实例
     deleteInstance(instanceId) {
       AppStoreService.deleteInstance(this.zone.id, this.space.id, this.$route.params.Id, instanceId)
-        .then(() => {
-          this.$noty.success('实例删除成功');
-          this.getInstances();
-          this.instanceNum();
+        .then(res => {
+          if (res) {
+            this.$noty.success('实例删除成功');
+            this.getInstances();
+            this.instanceNum();
+          } else {
+            this.$noty.error('实例删除失败');
+          }
         });
     },
     changeShow() {
@@ -212,14 +234,16 @@ export default {
         },
       });
     },
-    // 创建实例，跳转
-    creatExample() {
+    destoryDialog() {
       if (this.selectState === 1) {
         this.$router.push({
           name: 'appstore.form',
           params: {
             appid: this.appInfo.id,
             version: this.chart,
+          },
+          query: {
+            activeName: this.activeName,
           },
         });
       } else if (this.selectState === 2) {
@@ -229,10 +253,40 @@ export default {
             appid: this.appInfo.id,
             version: this.chart,
           },
+          query: {
+            activeName: this.activeName,
+          },
         });
-      } else {
-        this.$noty.warning('请选择创建方式');
       }
+    },
+    // 创建实例，跳转
+    creatExample() {
+      if (this.selectState === 0) {
+        this.$noty.warning('请选择创建方式');
+      } else {
+        this.configCreate = false;
+      }
+      // if (this.selectState === 1) {
+      //   this.configCreate = false;
+      //   this.$router.push({
+      //     name: 'appstore.form',
+      //     params: {
+      //       appid: this.appInfo.id,
+      //       version: this.chart,
+      //     },
+      //   });
+      // } else if (this.selectState === 2) {
+      //   this.configCreate = false;
+      //   this.$router.push({
+      //     name: 'appstore.yamlform',
+      //     params: {
+      //       appid: this.appInfo.id,
+      //       version: this.chart,
+      //     },
+      //   });
+      // } else {
+      //   this.$noty.warning('请选择创建方式');
+      // }
     },
     // 删除chart版本
     deleteChart(version) {
@@ -259,13 +313,14 @@ export default {
       this.searchInstance();
     }, 300),
     searchInstance() {
-      this.instanceTable = this.instanceTableCopy.filter(item => item.name.includes(this.key));
+      this.instanceTable = this.instanceTableCopy.filter(item => item.name.includes(this.key))
+        .slice((this.currentPage - 1) * this.size, (this.currentPage) * this.size);
     },
 
     // 刷新
     fresh() {
       this.key = '';
-      this.instanceTable = this.instanceTableCopy;
+      this.getInstances();
     },
     // 立即创建
     showCreate() {
@@ -276,6 +331,7 @@ export default {
       this.configDelete = true;
     },
     closeCreate() {
+      this.selectState = 0;
       this.configCreate = false;
     },
     closeDelete() {
@@ -305,7 +361,7 @@ export default {
     },
     // 获取实例数
     instanceNum() {
-      return this.instanceTable.length;
+      return this.instanceTableCopy.length;
     },
     // 上传文件之前
     beforeUpload(file) {
@@ -376,6 +432,12 @@ export default {
           this.removeFile();
           this.$noty.error(err);
         });
+    },
+    changeSize(size) {
+      this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

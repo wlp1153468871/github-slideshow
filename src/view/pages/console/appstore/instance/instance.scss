@@ -6,12 +6,29 @@
 ::v-deep .el_tabs .el-tab-pane{
   margin: 0 0 20px 20px;
 }
+.dao-dropdown-menu {
+  .delete {
+    color: #E1342B;
+  }
+  .deleteHover:hover {
+    background-color: #E1342B !important;
+    .delete {
+      color: #fff;
+    }
+  }
+}
 #servicedetail {
   background: #F1F3F6;
-  .header-text {
+  .header {
+    padding-left: 10px;
+    height: 32px;
+    background: #fff;
+    line-height: 32px;
     font-size: 14px;
+    font-family: SFProText-Regular,SFProText;
     font-weight: 400;
     color: #595F69;
+    border-bottom: 1px solid #D5DBE3;
   }
   .el-tabs .el-tab-pane{
     overflow: hidden;
@@ -49,21 +66,39 @@
         display: inline-block;
         font-weight: 400;
         color: #3D444F;
-        .success {
-          color: #22c36a;
-        }
-        .error {
-          color: #f1483f;
-        }
-        .warning {
-          color: rgb(190, 163, 10);
-        }
       }
       .title1 {
         margin-left: 10px;
         display: inline-block;
         font-weight: 400;
         color: #9BA3AF;
+      }
+      .success {
+        margin-left: 5px;
+        display: inline-block;
+        background: #25D473;
+        border: 1px solid #22C36A;
+        border-radius: 50%;
+        width: 6px;
+        height: 6px;
+      }
+      .error {
+        margin: 0 0 2px 5px;
+        display: inline-block;
+        background: #F25A52;
+        border: 1px solid #F1483F;
+        border-radius: 50%;
+        width: 6px;
+        height: 6px;
+      }
+      .warning {
+        margin-left: 5px;
+        display: inline-block;
+        background: #F8BA3F;
+        border: 1px solid #F7B32B;
+        border-radius: 50%;
+        width: 6px;
+        height: 6px;
       }
     }
     .select-btn {
@@ -75,7 +110,6 @@
   }
   .container1 {
     float: left;
-    // width: 720px;
     width: 70.5%;
     height: 100%;
     background: #fff;
@@ -88,6 +122,14 @@
       font-weight: 600;
       color: #3D444F;
       border-bottom: 1px solid #E3E7EE;
+    }
+    .blank {
+      background: #fbfcfc;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: normal;
+      color: #9ba3af;
     }
     .title1-desc {
       // height: 48px;
@@ -104,7 +146,7 @@
       .info-title {
         font-size: 14px;
         font-family: PingFangSC-Medium,PingFang SC;
-        font-weight: 500;
+        font-weight: bold;
         color: rgba(61,68,79,1);
       }
       .info-desc {
@@ -122,7 +164,7 @@
       .info-title {
         font-size: 14px;
         font-family: PingFangSC-Medium,PingFang SC;
-        font-weight: 500;
+        font-weight: bold;
         color: rgba(61,68,79,1);
       }
       .info-desc {
@@ -211,6 +253,32 @@
       font-family: PingFangSC-Regular,PingFang SC;
       font-weight: 400;
       color: #9BA3AF;
+    }
+  }
+  .mark-down {
+    h1 {
+      color: #3d444f;
+    }
+    h2 {
+      color: #3d444f;
+    }
+  
+    h3 {
+      color: #3d444f;
+    }
+  
+    p {
+      color: #595f69;
+    }
+
+    pre code {
+      white-space: pre;
+      overflow: hidden;  /*超出部分隐藏*/ 
+      white-space: break-spaces; /*文本溢出用"..."表示*/
+      text-overflow: ellipsis;
+    }
+    pre {
+      background: rgb(248,248,248);
     }
   }
 }

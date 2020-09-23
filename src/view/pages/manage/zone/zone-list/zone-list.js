@@ -17,10 +17,11 @@ export default {
         zone: false,
       },
       isCreating: false,
-      filterMethod: (data, filterKey) => data.name.toLowerCase().includes(filterKey),
+      filterMethod: this.filterZones,
       other: {
         status: (_, item) => (!item.available ? 'STOPED' : 'SUCCESS'),
       },
+      total: 0,
     };
   },
 
@@ -38,15 +39,26 @@ export default {
       return status ? '显示' : '隐藏';
     },
 
-    loadZones() {
+    loadZones(page, pageSize, q) {
       this.loadings.zone = true;
-      return ZoneService.getZones()
+      return ZoneService.getZonesByList(page, pageSize, q)
         .then(zones => {
-          this.rows = zones;
+          // this.rows = zones;
+          this.rows = zones.data;
+          this.total = zones.total;
         })
         .finally(() => {
           this.loadings.zone = false;
         });
+    },
+
+    filterZones(filterKey, pageSize) {
+      if (pageSize) {
+        this.loadZones(1, pageSize, filterKey);
+      }
+    },
+    switchPage(page, pageSize, filterKey) {
+      this.loadZones(page, pageSize, filterKey);
     },
 
     deployZone() {

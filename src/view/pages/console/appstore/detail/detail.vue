@@ -1,12 +1,11 @@
 <template>
   <div id="appdetail">
-    <div class="layout-content-header detail-header">
+    <div class="detail-header">
       <breadcrumb
         :links="[
-          { text: '应用', route: { path: '/console/appstore/view' } },
-          { text: `应用详情(${appInfo.name})` },
+          { text: '服务', route: { path: '/console/appstore/view' } },
+          { text: `服务详情(${appInfo.name})` },
         ]"
-        class="header-text"
       >
       </breadcrumb>
     </div>
@@ -15,7 +14,7 @@
         <div class="left-header">
           <div style="padding: 20px;">
             <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
-            <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
+            <img src="@/assets/images/card-Default.png" class="icon-size" v-else/>
             <div class="header-text">{{appInfo.name}}</div>
           </div>
           <dao-dialog
@@ -157,11 +156,11 @@
               <div class="base-info">
                 <div class="title">基本信息</div>
                 <div class="desc">
-                  <div class="desc-title">应用描述</div>
+                  <div class="desc-title">服务描述</div>
                   <div class="desc-text">{{appInfo.description}}</div>
                 </div>
                 <div class="app">
-                  <div class="app-title">应用信息</div>
+                  <div class="app-title">服务信息</div>
                   <div class="app-box">
                     <div class="text-name">
                       服务类型
@@ -203,9 +202,10 @@
                   </div>
                 </div>
               </div>
+              <div class="blank"></div>
               <div class="base-info" v-if="appInfo.content">
-                <div class="title" style="padding: 20px 0 20px 0px;">README</div>
-                <mark-down style="padding: 20px;" :text="`${appInfo.content}`"></mark-down>
+                <div class="title">README</div>
+                <marked :text="appInfo.content"></marked>
               </div>
             </el-tab-pane>
             <el-tab-pane label="实例" name="second">
@@ -216,28 +216,24 @@
                 placeholder="搜索">
               </dao-input>
               <span style="float: right;" @click="fresh">
-                <el-button size="mini" style="margin-left: 10px;">
-                  <span>
-                    <svg class="icon">
-                      <use :xlink:href="`#icon_cw`"></use>
-                    </svg>
-                  </span>
-                </el-button>
+                <button class="dao-btn icon-btn" style="margin-left: 10px;">
+                  <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
+                </button>
               </span>
-              <div style="margin-top: 20px;">
+              <div style="margin-top: 15px;">
                 <el-table
                   style="width: 100%;"
                   :data="instanceTable"
                   v-loading="loading.instanceTable"
                 >
-                  <el-table-column label="实例名称">
+                  <el-table-column label="实例名称" prop="name" sortable>
                     <template slot-scope="scope">
                       <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
                         {{ scope.row.name }}
                       </div>
                     </template>
                   </el-table-column>
-                  <el-table-column label="状态">
+                  <el-table-column label="状态" width="80">
                     <template slot-scope="scope">
                       <svg class="icon" :class="stateClass(scope.row.status)">
                         <use :xlink:href="`#icon_status-dot-small`"></use>
@@ -245,11 +241,11 @@
                       <span>{{ scope.row.status | ops_status }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="Chart 版本" prop="chartVersion"></el-table-column>
+                  <el-table-column label="Chart 版本" prop="chartVersion" sortable></el-table-column>
                   <el-table-column label="创建者" prop="ownerName"></el-table-column>
-                  <el-table-column label="创建时间">
+                  <el-table-column label="创建时间" prop="createdAt" sortable>
                     <template slot-scope="scope">
-                      {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+                      {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
                     </template>
                   </el-table-column>
                   <el-table-column  label="操作" width="60">
@@ -263,24 +259,22 @@
                           <svg class="icon">
                             <use :xlink:href="`#icon_more`"></use>
                           </svg>
-                          <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                            <dao-dropdown-item
-                              style="margin-left: 10px"
-                              @click="linktoForm(scope.row.id)"
-                            >
+                          <dao-dropdown-menu
+                            slot="list"
+                            style="min-width: 120px;"
+                            v-if="$can('appstoreApplications.appinstance')"
+                          >
+                            <dao-dropdown-item @click="linktoForm(scope.row.id)">
                               <span>使用表单更新</span>
                             </dao-dropdown-item>
-                            <dao-dropdown-item
-                              style="margin-left: 10px"
-                              @click="linktoYamlForm(scope.row.id)"
-                            >
-                              <span>使用YAML更新</span>
+                            <dao-dropdown-item @click="linktoYamlForm(scope.row.id)">
+                              <span>使用 YAML 更新</span>
                             </dao-dropdown-item>
                             <dao-dropdown-item
-                              style="margin-left: 10px"
                               @click="deleteInstance(scope.row.id)"
+                              class="deleteHover"
                             >
-                              <span style="color: red;">删除</span>
+                              <span class="delete">删除</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
                         </dao-dropdown>
@@ -290,29 +284,18 @@
                 </el-table>
                 <div class="footer">
                   <div class="page">共 {{instanceNum()}} 项</div>
-                  <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-                    <dao-dropdown
-                      trigger="click"
-                      :append-to-body="true"
-                      placement="bottom-start"
-                    >
-                      <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-                        <span class="text">10项/页</span>
-                        <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-                      </button>
-                      <dao-dropdown-menu slot="list" style="min-width: 120px;">
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span>15项/页</span>
-                        </dao-dropdown-item>
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span>20项/页</span>
-                        </dao-dropdown-item>
-                        <dao-dropdown-item style="margin-left: 10px">
-                          <span>25项/页</span>
-                        </dao-dropdown-item>
-                      </dao-dropdown-menu>
-                    </dao-dropdown>
-                  </span>
+                  <el-pagination
+                    v-if="total"
+                    :page-sizes="[10, 15, 20, 25]"
+                    :page-size="100"
+                    :current-page.sync="currentPage"
+                    layout="sizes, prev, pager, next"
+                    style="padding-top: 5px;"
+                    @size-change="changeSize"
+                    @current-change="handleCurrentChange"
+                    :total="total"
+                  >
+                  </el-pagination>
                 </div>
               </div>
             </el-tab-pane>
@@ -353,12 +336,18 @@
               <div class="right-desc">({{data.email}})</div>
             </div>
             <div class="right-name">官网链接</div>
-            <a :href="`${item.homeUrl}`" class="right-link">{{item.homeUrl}}</a>
-            <button class="dao-btn blue right-btn" @click="showCreate">立即创建</button>
-            <!-- <button class="dao-btn delete-btn" @click="showDelete">删除版本</button> -->
+            <div class="right-link">
+              <a :href="`${item.homeUrl}`">{{item.homeUrl}}</a>
+            </div>
+            <button
+              class="dao-btn blue right-btn"
+              @click="showCreate"
+              v-if="$can('appstoreApplications.appinstance')">立即创建
+            </button>
             <dao-dialog
               :visible.sync="configCreate"
               :header="`创建实例 | ${item.chartName}`"
+              @before-close="destoryDialog"
             >
               <div class="dao-setting-layout">
                 <div class="dao-setting-section" style="padding: 20px;">
@@ -430,4 +419,4 @@
 
 <script src="./detail.js"></script>
 
-<style lang="scss" src="./detail.scss" scoped></style>
+<style lang="scss" src="./detail.scss"></style>

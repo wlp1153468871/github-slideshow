@@ -29,6 +29,12 @@ const ZoneList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-list/zone-list.vue');
 const ZoneDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-detail/zone-detail.vue');
+const NodeList = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-list/node-list.vue');
+const NodeDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-detail/node-detail.vue');
+const PodsDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-detail/pod/detail/pod.vue');
 const AlarmMetricsList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/alarm/alarm-metrics/alarm-metrics.vue');
 const AuthContainer = () =>
@@ -37,8 +43,6 @@ const AuthRoles = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/roles.vue');
 const Application = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
-const CreateApp = () =>
-  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/app/app.vue');
 const ApplicationDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
 const AdminInstance = () =>
@@ -51,6 +55,8 @@ const Preference = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/preference/preference.vue');
 const Appearance = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appearance/appearance.vue');
+const AppStore = () =>
+ import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
 const SSO = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/sso/sso.vue');
 const HelpInfoConfig = () =>
@@ -68,7 +74,7 @@ export default [
       hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
-      code: 'platform.organization;platform.user;platform.rolePermission',
+      code: 'platform.organization;platform.user;platform.rolePermission;platform.applications',
       type: 'submenu',
     },
     children: [
@@ -79,7 +85,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization',
+          code: 'platform.organization;platform.applications',
           hidden: false,
         },
         children: [],
@@ -153,7 +159,7 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceInstance;platform.zone;platform.alert',
+      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications',
       type: 'submenu',
       // hidden: false,
     },
@@ -184,8 +190,9 @@ export default [
         name: 'manage.application',
         component: Application,
         meta: {
-          title: '应用管理',
+          title: '应用模板管理',
           icon: '#icon_service',
+          code: 'platform.applications',
           hidden: false,
         },
       },
@@ -194,7 +201,7 @@ export default [
         name: 'application.detail',
         component: ApplicationDetail,
         meta: {
-          activeMenu: 'manage.application.detail',
+          activeMenu: 'manage.application',
           hidden: true,
         },
       },
@@ -203,7 +210,7 @@ export default [
         name: 'application.instance',
         component: AdminInstance,
         meta: {
-          activeMenu: 'manage.application.instance',
+          activeMenu: 'manage.application',
           hidden: true,
         },
       },
@@ -223,10 +230,36 @@ export default [
         name: 'manage.zone.detail',
         component: ZoneDetail,
         meta: {
-          // icon: '#icon_globe-alt',
-          // title: '可用区详情',
-          // code: 'platform.zone',
-          // activeMenu: 'manage.zone.list',
+          activeMenu: 'manage.zone.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'node',
+        name: 'manage.node.list',
+        component: NodeList,
+        meta: {
+          icon: '#icon_node',
+          title: '节点管理',
+          code: 'platform.node',
+          hidden: false,
+        },
+      },
+      {
+        path: 'zone/:zone/node/:node',
+        name: 'manage.node.detail',
+        component: NodeDetail,
+        meta: {
+          activeMenu: 'manage.node.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'zone/:zone/node/:node/pods/:podName',
+        name: 'manage.node.detail.pods.detail',
+        component: PodsDetail,
+        meta: {
+          activeMenu: 'manage.node.list',
           hidden: true,
         },
       },
@@ -264,15 +297,6 @@ export default [
           hidden: true,
         },
       },
-      {
-        path: 'newapp/application/app',
-        name: 'application.app',
-        component: CreateApp,
-        meta: {
-          activeMenu: 'manage.application',
-          hidden: true,
-        },
-      },
     ],
   },
   {
@@ -303,6 +327,16 @@ export default [
         path: 'appearance',
         name: 'manage.preference.appearance',
         component: Appearance,
+        meta: {
+          hidden: true,
+          code: 'platform.settings',
+          activeMenu: 'manage.preference',
+        },
+      },
+      {
+        path: 'appstore',
+        name: 'manage.preference.appstore',
+        component: AppStore,
         meta: {
           hidden: true,
           code: 'platform.settings',

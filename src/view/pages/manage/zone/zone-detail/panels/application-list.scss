@@ -1,5 +1,28 @@
+.dao-dropdown-menu {
+  .delete {
+    color: #E1342B;
+  }
+  .deleteHover:hover {
+    background-color: #E1342B !important;
+    .delete {
+      color: #fff;
+    }
+  }
+}
+.el-table {
+  .expanded {
+    background: #217EF2;
+    color: #fff;
+  }
+  .expanded:hover {
+    background: #217EF2;
+    color: #000;
+  }
+}
 #zone {
-  //min-width: 1100px;
+  .el-table__expanded-cell {
+    padding: 20px;
+  }
   .zone-header {
     box-shadow: 0px -1px 0px 0px rgba(228,231,237,1);
     font-size: 14px;
@@ -7,10 +30,6 @@
     font-weight: 400;
     color: rgba(89,95,105,1);
     border-bottom: 1px solid rgb(228,231,237);
-  }
-  .app-list {
-    display: flex;
-    justify-content: space-between;
   }
   .footer {
     height: 40px;
@@ -22,7 +41,7 @@
       float: left;
       height: 14px;
       line-height: 14px;
-      padding: 10px 0 0 10px;
+      padding: 12px 0 0 10px;
       font-size: 14px;
       font-family: PingFangSC-Regular,PingFang SC;
       font-weight: 400;
@@ -66,9 +85,6 @@
         padding-left: 5px;
       }
     }
-  }
-  .search {
-    //padding: 20px 0 15px 0;
   }
   .chart-search {
     display: flex;

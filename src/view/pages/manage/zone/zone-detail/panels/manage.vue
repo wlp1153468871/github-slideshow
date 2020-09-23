@@ -5,7 +5,15 @@
         <img :src="emptyImg" alt="暂无服务同步" />
         <p class="hint-title">暂无任何服务</p>
         <p class="hint-desc">
-          您刚初始化一个可用区, 点击 同步服务, 我们将自动获取该k8集群下的 所有 broker 及其 服务
+          点击【同步服务目录】按钮，系统将会自动同步当前集群上已经安装好的所有Broker 服务，同步成功的服务可在
+          <router-link
+          :to="{
+            name: 'manage.service.list',
+          }"
+        >
+          服务管理
+        </router-link>
+          页面中进行查看和管理。
         </p>
         <button class="dao-btn blue" @click="$emit('syncService', 'catalog')">
           <span class="text">同步服务目录</span>
@@ -24,6 +32,7 @@
             </svg>
             <span class="text">添加 Broker</span>
           </button>
+          <div v-if="!$can('platform.serviceBroker.create')"></div>
           <div>
             <dao-input v-model="keyword" search placeholder="请输入搜索内容"> </dao-input>
             <button class="dao-btn white refresh-btn" @click="$emit('refresh')">
@@ -68,7 +77,7 @@
           </div>
         </div>
         <div class="empty-state-message" v-else>
-          <p class="hint-title">{{ keyword ? '搜索结果为空' : '当前可用区没有broker接入' }}</p>
+          <p class="hint-title">{{ keyword ? '搜索结果为空' : '当前可用区还没有Broker服务接入，如需使用请点击【添加 Broker】按钮进行添加' }}</p>
         </div>
       </div>
     </template>

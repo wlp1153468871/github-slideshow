@@ -19,9 +19,14 @@ class OrgService {
   setLocalOrg(org) {
     return StorageCache.setOrg(org);
   }
-
-  getOrgs() {
-    return this.api.get('/organizations');
+  /**
+   * 根据关键词获取用户列表
+   * @param {Number} page 分页指定页数
+   * @param {Number} pageSize 待获取数据量
+   * @param {String} q 搜索关键词
+   */
+  getOrgs(page, pageSize, q) {
+    return this.api.get('/organizations', { page: page || 1, pageSize: pageSize || 10, q });
   }
 
   getOrg(orgId) {

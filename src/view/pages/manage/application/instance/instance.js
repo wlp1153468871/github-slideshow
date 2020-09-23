@@ -4,7 +4,7 @@ import ServiceAdmin from '@/core/services/service-admin.service';
 
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
-import MarkDown from '@/view/components/markdown/markdown.vue';
+import Marked from '@/view/components/marked/marked.vue';
 
 import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
@@ -45,7 +45,6 @@ export default {
   },
 
   components: {
-    MarkDown,
     DeploymentPanel,
     ServicePanel,
     IngressPanel,
@@ -53,6 +52,7 @@ export default {
     ConfigPanel,
     PvcTable,
     JobPanel,
+    Marked,
   },
 
   computed: {
@@ -65,7 +65,6 @@ export default {
     this.getInstance();
     this.getApp();
     this.getOperator();
-    this.getResources();
   },
 
   methods: {
@@ -79,6 +78,11 @@ export default {
         .then(res => {
           if (res) {
             this.instanceInfo = res;
+          }
+        })
+        .then(() => {
+          if (this.instanceInfo.status !== 'failed') {
+            this.getResources();
           }
         });
     },
@@ -103,6 +107,7 @@ export default {
               obj.name = item.statusRecord;
               obj.started_at = item.startedAt;
               obj.ended_at = item.endedAt;
+              obj.description = item.description;
               if (item.status === 'deployed') {
                 obj.status = 'succeed';
               } else {
@@ -115,6 +120,7 @@ export default {
           }
         });
     },
+    //  拉取资源
     getResources() {
       this.loading.resources = true;
       ServiceAdmin.getResources(this.$route.params.appid, this.$route.params.instanceid)

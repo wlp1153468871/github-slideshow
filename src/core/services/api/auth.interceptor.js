@@ -63,19 +63,73 @@ export default {
       config.headers.Authorization = `Bearer ${AuthService.getToken()}`;
     }
     if (!config.headers.AuthorizationScope) {
-      if (store.state.isManageView) {
+      const { url } = config;
+      if (/spaces\//.test(url)) {
+        /* 包含`spaces/`且不包含`?zoneId` */
+        if (!config.params || (config.params && !Object.keys(config.params).some(key => key === 'zoneId'))) {
+          const regex = /(?<=spaces\/)(.*?)(?=\/)/;
+          const result = url.match(regex);
+          if (result) {
+            config.headers.AuthorizationScope = JSON.stringify({
+              space_id: result[0],
+            });
+          }
+          /* 包含`spaces/` || 包含 `?zoneId` */
+        } else if (config.params && Object.keys(config.params).some(key => key === 'zoneId')) {
+          if (store.getters.spaceId || store.getters.zoneId) {
+            config.headers.AuthorizationScope = JSON.stringify({
+              space_id: store.getters.spaceId,
+              zone_id: config.params.zoneId,
+            });
+          }
+        }/* 包含`instances/` */
+      } else if (/instances\//.test(url)) {
+        if (store.getters.spaceId || store.getters.zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+            zone_id: store.getters.zoneId,
+          });
+        }/* 包含`zones/`且不包含`?spaceId` */
+      } else if (/zones\//.test(url) && (config.params && !Object.keys(config.params).some(key => key === 'spaceId'))) {
         config.headers.AuthorizationScope = JSON.stringify({
           platform_id: 'dsp',
         });
-      } else {
-        const { spaceId, orgId, zoneId } = store.getters;
-        if (spaceId || orgId || zoneId) {
+      } else if (/zones\//.test(url) && (config.params && Object.keys(config.params).some(key => key === 'spaceId'))) {
+        if (store.getters.spaceId || store.getters.zoneId) {
           config.headers.AuthorizationScope = JSON.stringify({
-            space_id: spaceId,
-            organization_id: orgId,
-            zone_id: zoneId,
+            space_id: config.params.spaceId,
+            zone_id: store.getters.zoneId,
           });
         }
+      } else if (/authorizations\//.test(url)) {
+        config.headers.AuthorizationScope = JSON.stringify({
+          platform_id: 'dsp',
+        });
+      } else if (/organizations\//.test(url)) {
+        const regex = /(?<=organizations\/)(.*?)(?=\/)/;
+        const result = url.match(regex);
+        if (result) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            organization_id: result[0],
+          });
+        }
+        // 特殊处理url,请求路径未符合权限约定
+      } else if (/quota\/approval\//.test(url)) {
+        if (store.getters.orgId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            platform_id: store.getters.orgId,
+          });
+        }
+      } else if (/user\/approvals\//.test(url)) {
+        if (store.getters.spaceId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+          });
+        }
+      } else if (store.state.isManageView) { // 管理视图下的操作
+        config.headers.AuthorizationScope = JSON.stringify({
+          platform_id: 'dsp',
+        });
       }
     }
     saveRefreshTime();
@@ -100,7 +154,7 @@ export default {
     const { response = {} } = error;
     if (response.status === 502) {
       notifyErrorResponse({}, '后端出问题了, 请联系管理员');
-    } else if (response.status === 401 && response.data.message === 'token has expired') {
+    } else if (response.status === 401 && response.data.message === '令牌已过期') {
       const nowTime = new Date();
       const refreshTime = new Date(Date.parse(Vue.ls.get('refreshTime')));
       // 在用户操作的活跃期内

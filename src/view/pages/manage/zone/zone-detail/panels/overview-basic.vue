@@ -36,46 +36,6 @@
           </template>
         </dao-setting-item>
       </dao-setting-section>
-      <dao-setting-section>
-        <dao-setting-item>
-          <template #label
-          >地址</template
-          >
-          <template #content>
-            {{ zone.area_name }}
-          </template>
-        </dao-setting-item>
-      </dao-setting-section>
-      <dao-setting-section>
-        <dao-setting-item>
-          <template #label
-          >仓库名称</template
-          >
-          <template #content>
-            {{ zone.area_name }}
-          </template>
-        </dao-setting-item>
-      </dao-setting-section>
-      <dao-setting-section>
-        <dao-setting-item>
-          <template #label
-          >账户</template
-          >
-          <template #content>
-            {{ zone.area_name }}
-          </template>
-        </dao-setting-item>
-      </dao-setting-section>
-      <dao-setting-section>
-        <dao-setting-item>
-          <template #label
-          >密码</template
-          >
-          <template #content>
-            {{ zone.area_name }}
-          </template>
-        </dao-setting-item>
-      </dao-setting-section>
     </dao-setting-layout>
 
     <dao-setting-layout>
@@ -234,6 +194,17 @@
       <dao-setting-section>
         <dao-setting-item>
           <template #label
+            >镜像仓库名称</template
+          >
+          <template #content>
+            {{ zone.registry.chart_repo }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label
             >镜像仓库类型</template
           >
           <template #content>
@@ -271,6 +242,18 @@
           >
           <template #content>
             {{ zone.registry.password }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label
+            >Chart 激活状态</template
+          >
+          <template #content>
+            <div v-if="zone.registry.enable_chart">已激活</div>
+            <div v-else>未激活</div>
           </template>
         </dao-setting-item>
       </dao-setting-section>

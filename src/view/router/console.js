@@ -398,7 +398,7 @@ export default [
     meta: {
       title: '服务市场',
       icon: '#icon_store',
-      // code: 'appstore',
+      code: 'appstore',
       hidden: false,
     },
     children: [
@@ -409,7 +409,7 @@ export default [
         meta: {
           title: '服务目录',
           icon: '#icon_store',
-          // code: 'appstore',
+          code: 'appstoreApplications',
           hidden: false,
           public: true,
         },
@@ -422,7 +422,7 @@ export default [
         meta: {
           title: '服务实例',
           icon: '#icon_container',
-          // code: 'appstore',
+          code: 'appstoreAppinstances',
           hidden: false,
           public: true,
         },

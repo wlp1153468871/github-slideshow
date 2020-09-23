@@ -1,12 +1,11 @@
 <template>
-  <div id="appstore">
+  <div id="appstore" v-if="$can('appstoreAppinstances')">
     <div class="appstore-header">
       <div class="img-box">
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
       <div class="header-title">服务市场</div>
-      <div class="header-desc">欢迎来到 DaoCloud 服务市场，我们的平台提供了来自不同企业的更多的应用和 chart 模版，
-        并支持多终端访问，自建应用，让客户享受安全，便捷，快速的服务。</div>
+      <div class="header-desc">{{simpleInfo}}</div>
     </div>
     <div class="dao-view-main" style="margin-bottom: 20px;margin-top: 20px">
       <div class="dao-view-content">
@@ -21,10 +20,6 @@
             :label="item.name">
           </dao-option>
         </dao-select>
-        <!-- <button class="dao-btn blue has-icon" style="margin-left: 20px" @click="linkToApp">
-          <svg class="icon"><use xlink:href="#icon_upload"></use></svg>
-          <span class="text">新建应用</span>
-        </button> -->
         <div class="screen" v-if="checkedApp.length || checkedPro.length">筛选器:
           <el-tag
             v-for="tag in checkedApp"
@@ -60,7 +55,7 @@
     </div>
     <div class="store-server-type">
       <span class="type-text">服务类型</span>
-      <el-checkbox-group v-model="checkedApp">
+      <el-checkbox-group v-model="checkedApp" class="option-blank" :max="max">
         <el-checkbox
           style="color:#3d444f"
           v-for="(item, index) in appType"
@@ -73,7 +68,7 @@
       <span class="type-text">
         供应商
       </span>
-      <el-checkbox-group v-model="checkedPro">
+      <el-checkbox-group v-model="checkedPro" :max="max">
         <el-checkbox
           style="color:#3d444f"
           v-for="(item, index) in provider"
@@ -86,12 +81,6 @@
     </div>
 
     <div class="store-item-container" v-if="applications.length">
-      <!-- <div class="title">我的创建</div>
-      <div class="store-item">
-        <div v-for="appItem in applications" :key="appItem.id">
-          <AppItem :itemData="appItem"></AppItem>
-        </div>
-      </div> -->
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
@@ -100,7 +89,7 @@
               <AppItem
                 :itemData="appItem"
                 v-if="appItem.category.includes(item.name)"
-                >
+              >
               </AppItem>
             </div>
           </div>
@@ -121,13 +110,12 @@
 
 <script src="./appstore.js"></script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 v-deep .el-tag {
   background: #E4E7ED;
 }
+
 #appstore {
-  background: #F1F3F6;
-  overflow: hidden;
   .appstore-header {
     height: 160px;
     background: #3D4655;
@@ -186,7 +174,7 @@ v-deep .el-tag {
   .store-server-type {
     float: left;
     overflow: hidden;
-    width: 240px;
+    width: 200px;
     .type-text {
       width:180px;
       height:12px;
@@ -196,9 +184,24 @@ v-deep .el-tag {
       color:rgba(155,163,175,1);
       line-height:12px;
     }
+    .option-blank {
+      margin-bottom: 8px;
+    }
     .type-layout {
       margin: 0 0 0 30px;
       width: 100%;
+    }
+    .type-layout:hover {
+      background: rgba(56, 144, 255, 0.1);;
+    }
+    .el-checkbox__input {
+      padding-left: 10px;
+    }
+    .el-checkbox__label {
+      padding-left: 5px;
+    }
+    .el-checkbox-group{
+      margin-bottom: 20px;
     }
   }
   .title {

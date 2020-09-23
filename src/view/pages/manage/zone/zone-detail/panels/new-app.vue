@@ -6,6 +6,7 @@
       <dao-dialog
         :visible.sync="visibleForm"
         header="确认是否放弃编辑"
+        @before-close="destoryDialog"
       >
         <div class="body">确认是否放弃当前编辑，放弃后不可撤销。</div>
         <div slot="footer">
@@ -14,7 +15,7 @@
         </div>
       </dao-dialog>
     </div>
-    <!--    chartw文件-->
+    <!--    chart文件-->
     <div class="newApp-box chart-file" id="chart-file">
       <dao-setting-layout>
         <template slot="layout-title">
@@ -22,6 +23,9 @@
         </template>
         <dao-setting-section>
           <template slot="label">chart文件</template>
+          <template slot="content">
+            <div class="content-text">支持zip, gzip, tgz, tar格式的压缩文件上传</div>
+          </template>
           <template slot="content">
             <el-upload
               class="upload-demo"
@@ -41,7 +45,7 @@
         </dao-setting-section>
       </dao-setting-layout>
     </div>
-    <div class="newApp-box">
+    <div class="newApp-box box-layout">
       <dao-setting-layout>
         <template slot="layout-title">
           <div class="base-info">基本信息</div>
@@ -78,6 +82,17 @@
           </template>
         </dao-setting-section>
         <dao-setting-section>
+          <template slot="label">供应商</template>
+          <template slot="content">
+            <dao-input
+              style="width: 100%"
+              v-model="provider"
+              block
+              required
+              placeholder="请填写供应商"></dao-input>
+          </template>
+        </dao-setting-section>
+        <dao-setting-section>
           <template slot="label">是否认证</template>
           <template slot="content">
             <el-radio-group v-model="daoAuth">
@@ -104,9 +119,6 @@
         <dao-setting-section>
           <template slot="label">分类</template>
           <template slot="content">
-            <svg class="icon" @click="addCategory">
-              <use :xlink:href="`#icon_plus-circled`"></use>
-            </svg>
             <el-select
               class="category-style"
               v-model="category"
@@ -120,6 +132,14 @@
                 :label="item.name">
               </el-option>
             </el-select>
+          </template>
+          <template slot="content">
+            <div class="svg-icon">
+              <svg @click="addCategory" class="icon">
+                <use :xlink:href="`#icon_plus-circled`"></use>
+              </svg>
+              <span class="add-cate">添加分类</span>
+            </div>
           </template>
         </dao-setting-section>
 <!--        新增分类弹窗-->
@@ -151,7 +171,9 @@
               class="dao-control"
               type="text"
               rows="2"
-              placeholder="请填写内容" v-model="description">
+              placeholder="请填写内容"
+              required
+              v-model="description">
             </textarea>
           </template>
         </dao-setting-section>
@@ -201,8 +223,9 @@ export default {
       description: '', // 描述,
       pictureId: '', // 上传图标的id
       daoAuth: false, // 是否上传
+      provider: '',
       fileType: ['image/png'],
-      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar'],
+      chartType: ['application/zip', 'application/x-zip', 'application/x-compressed', 'application/x-tar', 'application/gzip', 'application/x-gzip'],
       chartList: [],
       showAddCategory: false, // 控制新增分类按钮
       // 弹窗所需数据
@@ -216,6 +239,7 @@ export default {
       categoryName: '', // 新增分类名称
       version: '', // 版本
       visibleForm: false,
+      giveup: false,
     };
   },
   created() {
@@ -266,6 +290,11 @@ export default {
     cancer() {
       this.visibleForm = true;
     },
+    destoryDialog() {
+      if (this.giveup) {
+        this.$router.back();
+      }
+    },
     giveUp() {
       if (this.chartList.length !== 0) {
         this.removeFileChart();
@@ -276,7 +305,8 @@ export default {
       if (this.chartList.length) {
         this.removeFileChart();
       }
-      this.$router.back();
+      this.giveup = true;
+      this.visibleForm = false;
     },
     /**
      * 文件上传之前的回调函数
@@ -306,7 +336,7 @@ export default {
      * 删除chart文件
      */
     removeFileChart() {
-      ZoneAdminService.deleteChartVersion(this.id, this.name, this.version).then(() => {
+      ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version).then(() => {
         this.chartList = [];
         this.name = '';
         this.description = '';
@@ -326,10 +356,12 @@ export default {
       }
       const formData = {
         name: this.name,
+        provider: this.provider,
         pictureId: this.pictureId,
         appType: this.appType,
         category: this.category,
         description: this.description,
+        daoAuth: this.daoAuth,
       };
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {
@@ -365,7 +397,9 @@ export default {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择正确的压缩格式文件');
       } else {
+        this.chartList = [];
         this.chartList = [...this.chartList, file];
+        this.isDisabled = false;
       }
       return true;
     },
@@ -409,9 +443,8 @@ export default {
     width: 100%;
   }
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
 .new-app {
-  /*min-height: 100vh;*/
   min-height: 915px;
   background-color: #F1F3F6;
   border: 1px solid #F1F3F6;
@@ -431,15 +464,26 @@ export default {
       padding: 20px;
     }
   }
+  .box-layout {
+    padding-bottom: 40px;
+  }
   .newApp-box {
     box-sizing: border-box;
     width: 80%;
-    background-color: #fff;
-    margin: 20px auto 60px auto;
+    margin: 20px auto 40px auto;
+    .daox-setting-layout {
+      background: #fff;
+    }
+    .dao-setting-label {
+      &::before{
+        content: '* ';
+        color: red;
+      }
+    }
     .base-info {
       width: 100%;
       margin-left: 20px;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 16px;
       padding: 10px 0px;
     }
@@ -452,7 +496,6 @@ export default {
   }
   #chart-file {
     margin-top: 70px;
-    /*margin-bottom: 70px;*/
   }
   .footer {
     height: 55px;
@@ -471,14 +514,31 @@ export default {
   .category-style {
     width: 95%;
     display: inline-block;
-    /*border: 1px solid #E4E7ED;*/
+    .el-input {
+      width: 970px;
+      height: 32px !important;
+      .el-input__inner {
+        height: 32px !important;
+      }
+    }
   }
-  .icon {
-    display: inline-block;
-    margin-top: 16px!important;
-    margin-right: 10px;
-    cursor: pointer;
+  .svg-icon {
+    width: 90px;
+    svg {
+      fill: #3289F7;
+    }
+    .icon {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .add-cate {
+      padding: 20px 0 0 6px;
+      padding-left: 6px;
+      color: #3289F7;
+    }
   }
+
   .inputWidth {
     width: 100%;
   }

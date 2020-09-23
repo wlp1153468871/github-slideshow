@@ -20,6 +20,9 @@ export default {
         failed: 'error',
         timeOut: 'warning',
       },
+      size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
 
@@ -41,6 +44,17 @@ export default {
         }
       },
     },
+    size: {
+      handler(size) {
+        this.instances = this.instancesCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.instances = this.instancesCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
+      },
+    },
   },
 
   methods: {
@@ -53,8 +67,9 @@ export default {
       AppStoreService.getAllInstances(this.zone.id, this.space.id)
         .then(res => {
           if (res) {
-            this.instances = res;
+            this.instances = res.slice(0, 10);
             this.instancesCopy = res;
+            this.total = res.length;
             this.instanceNum();
           }
         })
@@ -64,7 +79,7 @@ export default {
     },
     // 实例数
     instanceNum() {
-      return this.instances.length;
+      return this.instancesCopy.length;
     },
 
     // 实例跳转
@@ -84,13 +99,20 @@ export default {
       this.searchInstance();
     }, 300),
     searchInstance() {
-      this.instances = this.instancesCopy.filter(item => item.name.includes(this.key));
+      this.instances = this.instancesCopy.filter(item => item.name.includes(this.key))
+        .slice((this.currentPage - 1) * this.size, (this.currentPage) * this.size);
     },
 
     // 刷新
     fresh() {
       this.key = '';
-      this.instances = this.instancesCopy;
+      this.getAllInstances();
+    },
+    changeSize(size) {
+      this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
   },
 };

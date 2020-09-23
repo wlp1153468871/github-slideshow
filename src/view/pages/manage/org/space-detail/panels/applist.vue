@@ -48,55 +48,69 @@
             </dao-option>
           </dao-select>
         </div>
-        <div style="margin-left: 10px">
-          <button class="dao-btn"
-                  :disabled="offArr.length !== 0 || haveOn"
-                  @click="handleOn">批量上架</button>
-        </div>
-        <div style="margin-left: 10px">
-          <button class="dao-btn"
-                  :disabled="onArr.length !== 0 || haveOff"
-                  @click="handleOff">批量下架</button>
-        </div>
+        <button
+          class="dao-btn"
+          style="margin-left: 10px"
+          :disabled="offArr.length !== 0 || haveOn"
+          @click="handleOn">批量上架
+        </button>
+        <button
+          class="dao-btn"
+          style="margin-left: 10px"
+          :disabled="onArr.length !== 0 || haveOff"
+          @click="handleOff">批量下架
+        </button>
+        <dao-dialog
+          :visible.sync="isForbidden"
+          header="确认是否下架"
+        >
+          <div class="body">
+            <div>禁用后应用模板在已添加的项目组将不可见</div>
+            <div>但不会删除底层实例，是否下架？</div>
+          </div>
+          <div slot="footer">
+            <button class="dao-btn blue" @click="forbidden">下架</button>
+            <button class="dao-btn" @click="cancel">取消</button>
+          </div>
+        </dao-dialog>
       </div>
       <div class="search">
         <dao-input
           search
           placeholder="搜索"
           style="width: 200px; height: 32px;"
-          v-model="search"
+          v-model="key"
+          @change="search"
         >
         </dao-input>
-        <el-button size="mini" style="margin-left: 10px;">
-              <span>
-                <svg class="icon">
-                  <use :xlink:href="`#icon_cw`"></use>
-                </svg>
-              </span>
-        </el-button>
+        <!-- <el-button size="mini" style="margin-left: 10px;">
+          <span>
+            <svg class="icon">
+              <use :xlink:href="`#icon_cw`"></use>
+            </svg>
+          </span>
+        </el-button> -->
+        <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh">
+          <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
+        </button>
       </div>
     </div>
-    <div style="margin: 20px;">
+    <div style="margin: 15px;">
       <el-table
         style="width: 100%;"
         :data="tableData"
         v-loading="loading.appInfo"
         @selection-change="selectChange"
+        :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称" width="200">
-          <template slot-scope="scope">
-            <div style="color: #217EF2;">
-              {{ scope.row.name }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="可用区" prop="zoneName" width="200"></el-table-column>
-        <el-table-column label="供应商" prop="provider" width="150"></el-table-column>
-        <el-table-column label="创建者" prop="ownerName" width="100"></el-table-column>
+        <el-table-column label="应用名称" prop="name" sortable></el-table-column>
+        <el-table-column label="可用区" prop="zoneName"></el-table-column>
+        <el-table-column label="供应商" prop="provider"></el-table-column>
+        <el-table-column label="创建者" prop="ownerName"></el-table-column>
         <el-table-column label="状态" width="100">
           <template slot-scope="scope">
-            <div v-if="scope.row.space_available === '1'">
+            <div v-if="scope.row.spaceAvailable === '1'">
               <svg class="icon" style="color: #25D473">
                 <use :xlink:href="`#icon_status-dot-small`"></use>
               </svg>
@@ -110,16 +124,16 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="类型" prop="appType" width="100"></el-table-column>
-        <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
+        <el-table-column label="类型" prop="appType"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion" sortable></el-table-column>
         <el-table-column label="分类">
           <template slot-scope="scope">
             <span>{{scope.row.category.join('，')}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="date" width="200">
+        <el-table-column label="创建时间" prop="date" sortable>
           <template slot-scope="scope">
-            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+            {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>
         </el-table-column>
 <!--        <el-table-column  label="操作">-->
@@ -148,29 +162,18 @@
       </el-table>
       <div class="footer">
         <div class="page">共 {{appNumber}} 项</div>
-        <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-          <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-start"
-          >
-            <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-              <span class="text">10条/页</span>
-              <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-            </button>
-            <dao-dropdown-menu slot="list" style="min-width: 120px;">
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>15条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>20条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>25条/页</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown>
-        </span>
+        <el-pagination
+          v-if="total"
+          :page-sizes="[10, 15, 20, 25]"
+          :page-size="100"
+          :current-page.sync="currentPage"
+          layout="sizes, prev, pager, next"
+          style="padding-top: 5px;"
+          @size-change="changeSize"
+          @current-change="handleCurrentChange"
+          :total="total"
+        >
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -225,21 +228,40 @@ export default {
         name: 'Broker',
         id: 'Broker',
       }],
-      search: '', // 搜索
+      key: '', // 搜索
       tableData: [], // 表格数据
+      tableDataCopy: [],
       loading: { // 加载圈圈
         appInfo: false,
       },
       selectedArray: [], // 选中的数组
-      onArr: '',
-      offArr: '',
+      indexArr: [],
+      onArr: [],
+      offArr: [],
       haveOn: true,
       haveOff: true,
+      isForbidden: false,
+      size: 10,
+      currentPage: 1,
+      total: 0,
     };
   },
   computed: {
     appNumber() {
-      return this.tableData.length;
+      return this.tableDataCopy.length;
+    },
+  },
+  watch: {
+    size: {
+      handler(size) {
+        this.tableData = this.tableDataCopy.slice(0, size);
+      },
+    },
+    currentPage: {
+      handler(currentPage) {
+        this.tableData = this.tableDataCopy.slice((currentPage - 1) * this.size,
+          (currentPage) * this.size);
+      },
     },
   },
   created() {
@@ -254,9 +276,12 @@ export default {
       this.loading.appInfo = true;
       OrgService.getSpaceAllAppList(this.orgId, this.spaceId, this.status, this.zone, this.type)
         .then(res => {
-          console.log(res);
-          this.tableData = res;
-        }).finally(() => {
+          this.tableData = res.slice((this.currentPage - 1) * this.size,
+            (this.currentPage) * this.size);
+          this.tableDataCopy = res;
+          this.total = res.length;
+        })
+        .finally(() => {
           this.loading.appInfo = false;
         });
     },
@@ -289,17 +314,19 @@ export default {
      * 改变选择
      */
     selectChange(data) {
-      console.log('选择改变');
-      console.log(data);
       this.onArr = [];
       this.offArr = [];
+      const indexArr = [];
       data.forEach(item => {
-        if (item.space_available === '1') {
+        if (item.spaceAvailable === '1') {
           this.offArr.push(item);
         }
-        if (item.space_available === '0') {
+        if (item.spaceAvailable === '0') {
           this.onArr.push(item);
         }
+        this.tableData.forEach((val, index) => {
+          if (item.id === val.id) indexArr.push(index);
+        });
       });
       if (this.onArr.length !== 0) {
         this.haveOn = false;
@@ -312,6 +339,8 @@ export default {
         this.haveOff = true;
       }
       this.selectedArray = data;
+
+      this.indexArr = indexArr;
     },
     /**
      * 上架
@@ -319,42 +348,68 @@ export default {
     handleOn() {
       if (this.selectedArray.length !== 0) {
         this.selectedArray.forEach(item => {
-          OrgService.OnApplication(this.orgId, this.spaceId, item.id).then(res => {
-            console.log(res);
-            this.$noty.success('上架成功');
+          OrgService.OnApplication(this.orgId, this.spaceId, item.id).then(() => {
             this.getSpaceAllAppList();
           });
         });
+        this.$noty.success('上架成功');
       }
     },
     /**
      * 下架
      */
     handleOff() {
+      this.isForbidden = true;
+    },
+    handleChange() {
+      this.getSpaceAllAppList();
+    },
+    // 搜索
+    search(val) {
+      this.tableData = this.tableDataCopy.filter(item => item.name.includes(val))
+        .slice((this.currentPage - 1) * this.size, (this.currentPage) * this.size);
+    },
+    // 刷新
+    fresh() {
+      this.key = '';
+      this.getSpaceAllAppList();
+    },
+    changeSize(size) {
+      this.size = size;
+    },
+    handleCurrentChange(page) {
+      this.currentPage = page;
+    },
+    rowStyle({ rowIndex }) {
+      return this.indexArr.includes(rowIndex) ? 'rowStyle' : '';
+    },
+    // 确认禁用
+    forbidden() {
+      this.isForbidden = false;
       if (this.selectedArray.length !== 0) {
         this.selectedArray.forEach(item => {
-          OrgService.offApplication(this.orgId, this.spaceId, item.id).then(res => {
-            console.log(res);
-            this.$noty.success('下架成功');
+          OrgService.offApplication(this.orgId, this.spaceId, item.id).then(() => {
             this.getSpaceAllAppList();
           });
         });
+        this.$noty.success('下架成功');
       }
     },
-    /**
-     * 搜索
-     */
-    handleChange(val) {
-      console.log(typeof val);
-      this.getSpaceAllAppList();
+    cancel() {
+      this.isForbidden = false;
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .availableTemplate {
   background-color: #F1F3F6;
+  .el-table{
+    tr.rowStyle {
+      background-color: #E8F1FC;
+    }
+  }
   .template-head {
     display: flex;
     justify-content: space-between;
@@ -362,7 +417,10 @@ export default {
     /*min-width: 1110px;*/
     .screen {
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
+      .body {
+        padding: 20px;
+      }
     }
   }
   .footer {
@@ -375,7 +433,7 @@ export default {
       float: left;
       height: 14px;
       line-height: 14px;
-      padding: 10px 0 0 10px;
+      padding: 12px 0 0 10px;
       font-size: 14px;
       font-family: PingFangSC-Regular,PingFang SC;
       font-weight: 400;

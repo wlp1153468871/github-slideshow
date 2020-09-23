@@ -3,23 +3,22 @@
   <div class="page-manage" v-if="showAdd">
     <circle-loading v-if="loading"></circle-loading>
     <template v-else>
-<!--      <div class="layout-content-header bg-white" style="color: #000000">-->
-<!--        <breadcrumb-->
-<!--          :links="[-->
-<!--            { text: '可用区管理', route: { name: 'manage.zone.list' } },-->
-<!--            { text: zone.name },-->
-<!--          ]"-->
-<!--        >-->
-<!--        </breadcrumb>-->
       <div class="break-navBar">
-        <el-breadcrumb class="breadcrumb" separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ name: 'manage.zone.list' }">可用区管理</el-breadcrumb-item>
-          <el-breadcrumb-item>可用区详情</el-breadcrumb-item>
-        </el-breadcrumb>
+        <breadcrumb
+          :links="[
+            { text: '可用区管理 ', route: {  name: 'manage.zone.list' } },
+            { text: '可用区详情' },
+          ]"
+        >
+        </breadcrumb>
       </div>
 
       <el-tabs v-model="currentTab" class="zone-tab">
-        <el-tab-pane :label="TABS.APPLICATION" :name="TABS.APPLICATION">
+        <el-tab-pane
+          :label="TABS.APPLICATION"
+          :name="TABS.APPLICATION"
+          v-if="$can('platform.zone.applications.view')"
+        >
           <AppList :id="zone.id" @addApplication="addApplication"></AppList>
         </el-tab-pane>
         <el-tab-pane :label="TABS.BINDS" :name="TABS.BINDS">
@@ -31,6 +30,9 @@
             @syncService="syncService"
           >
           </manage-panel>
+        </el-tab-pane>
+         <el-tab-pane :label="TABS.NODE" :name="TABS.NODE">
+          <node-panel :hideZoneSelect="'true'" :zone='zone'></node-panel>
         </el-tab-pane>
         <el-tab-pane :label="TABS.OVERVIEW" :name="TABS.OVERVIEW">
           <overview-panel :zone="zone" @syncService="syncService" @update="updateZone">
@@ -58,29 +60,26 @@
 </template>
 
 <script src="./zone-detail.js"></script>
-<style lang="scss">
-  .page-manage {
-    .breadcrumb {
-      .el-breadcrumb__inner .is-link{
-        font-weight: normal;
-      }
-    }
-  }
-</style>
 <style lang="scss" scoped>
   .page-manage {
     .break-navBar {
+      background: #FFF;
+      padding-left: 10px;
       height: 32px;
       line-height: 32px;
       font-size: 14px;
+      font-family: SFProText-Regular,SFProText;
+      font-weight: 400;
+      color: #595F69;
+      border-bottom: 1px solid #D5DBE3;
     }
-    .breadcrumb {
+    /* .breadcrumb {
       height: 32px;
       line-height: 32px;
       font-size: 14px;
       margin-left: 20px;
       color: #595F69;
-    }
+    } */
   }
 </style>
 

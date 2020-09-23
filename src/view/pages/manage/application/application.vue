@@ -1,6 +1,6 @@
 <template>
-  <div id="service">
-    <div class="header">应用模板管理</div>
+  <div id="service" v-if="$can('platform.applications.view')">
+    <div class="layout-content-header">应用模板管理</div>
     <div class="box">
       <span class="title">可用区：</span>
       <dao-select
@@ -46,10 +46,6 @@
           :label="item.name">
         </dao-option>
       </dao-select>
-      <button class="dao-btn blue has-icon"  @click="createApp">
-        <svg class="icon"><use xlink:href="#icon_plus-circled"></use></svg>
-        <span class="text" >导入应用模板</span>
-      </button>
       <span style="float: right;">
         <dao-input
           search
@@ -65,35 +61,49 @@
       </span>
     </div>
     <div class="select">
-      <span class="number">已选择 {{selectedArr.length}} 项</span>
       <button
-        class="dao-btn status"
+        class="dao-btn"
         :disabled="selectStatus[0] === 1 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOnline"
-      >批量上架
+        v-if="$can('platform.applications.available')"
+      >批量启用
       </button>
       <button
         class="dao-btn status"
         :disabled="selectStatus[0] === 0 || selectStatus.length === 2 || selectStatus.length  < 1"
         @click="handleOff"
-      >批量下架
+        v-if="$can('platform.applications.available')"
+      >批量禁用
       </button>
-      <button
-        class="dao-btn red status"
-        @click="deleteApplication"
-        :disabled="selectedArr.length < 1">批量删除
-      </button>
+      <dao-dialog
+        :visible.sync="isForbidden"
+        header="确认是否禁用"
+      >
+        <div class="body">
+          <div>禁用后应用模板在已添加的项目组将不可见</div>
+          <div>但不会删除底层实例，是否禁用？</div>
+        </div>
+        <div slot="footer">
+          <button
+            class="dao-btn blue"
+            @click="forbidden"
+            v-if="$can('platform.applications.available')">禁用
+          </button>
+          <button class="dao-btn" @click="cancel">取消</button>
+        </div>
+      </dao-dialog>
     </div>
-    <div style="margin: 20px;">
+    <div style="margin: 15px;">
       <el-table
         style="width: 100%;"
         :data="appInfo"
         v-loading="loading.appInfo"
         @select="selectChange"
         @selection-change="selectAll"
+        :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称">
+        <el-table-column label="应用名称" sortable>
           <template slot-scope="scope">
             <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
@@ -109,18 +119,18 @@
               <svg class="icon" style="color: #25D473">
                 <use :xlink:href="`#icon_status-dot-small`"></use>
               </svg>
-              <span>已上架</span>
+              <span>已启用</span>
             </div>
             <div v-else>
               <svg class="icon" style="color: #CCD1D9">
                 <use :xlink:href="`#icon_status-dot-small`"></use>
               </svg>
-              <span>已下架</span>
+              <span>已禁用</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="类型" prop="appType" width="100"></el-table-column>
-        <el-table-column label="版本数" prop="numVersion" width="80"></el-table-column>
+        <el-table-column label="版本数" prop="numVersion" width="100" sortable></el-table-column>
         <el-table-column label="分类">
           <template slot-scope="scope">
             <span
@@ -132,37 +142,27 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="date">
+        <el-table-column label="创建时间" prop="date" sortable>
           <template slot-scope="scope">
-            {{ scope.row.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+            {{ scope.row.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
           </template>
         </el-table-column>
       </el-table>
       <div class="footer">
-        <div class="page">共 {{appNumber()}} 项</div>
-        <span class="dao-btn-group" style="padding: 6px 10px 0 0; float: right;">
-          <dao-dropdown
-            trigger="click"
-            :append-to-body="true"
-            placement="bottom-start"
-          >
-            <button class="dao-btn has-icons" style="width: 92px;height: 28px;">
-              <span class="text">10条/页</span>
-              <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
-            </button>
-            <dao-dropdown-menu slot="list" style="min-width: 120px;">
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>15条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>20条/页</span>
-              </dao-dropdown-item>
-              <dao-dropdown-item style="margin-left: 10px">
-                <span>25条/页</span>
-              </dao-dropdown-item>
-            </dao-dropdown-menu>
-          </dao-dropdown>
-        </span>
+        <div class="page" v-if="selectedArr.length">已选择 {{selectedArr.length}} 项</div>
+        <div class="page" v-else>共 {{appNumber()}} 项</div>
+        <el-pagination
+          v-if="total"
+          :page-sizes="[10, 15, 20, 25]"
+          :page-size="100"
+          :current-page.sync="currentPage"
+          layout="sizes, prev, pager, next"
+          style="padding-top: 5px;"
+          @size-change="changeSize"
+          @current-change="handleCurrentChange"
+          :total="total"
+        >
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -170,4 +170,4 @@
 
 <script src="./application.js"></script>
 
-<style lang="scss" src="./application.scss" scoped></style>
+<style lang="scss" src="./application.scss"></style>

@@ -8,10 +8,15 @@
 }
 #servicedetail {
   background: #F1F3F6;
-  .header-text {
+  .header {
+    padding-left: 10px;
+    height: 32px;
+    line-height: 32px;
     font-size: 14px;
+    font-family: SFProText-Regular,SFProText;
     font-weight: 400;
     color: #595F69;
+    border-bottom: 1px solid #D5DBE3;
   }
   .el-tabs .el-tab-pane{
     overflow: hidden;
@@ -95,7 +100,7 @@
       .info-title {
         font-size: 14px;
         font-family: PingFangSC-Medium,PingFang SC;
-        font-weight: 500;
+        font-weight: bold;
         color: rgba(61,68,79,1);
       }
       .info-desc {
@@ -113,7 +118,7 @@
       .info-title {
         font-size: 14px;
         font-family: PingFangSC-Medium,PingFang SC;
-        font-weight: 500;
+        font-weight: bold;
         color: rgba(61,68,79,1);
       }
       .info-desc {

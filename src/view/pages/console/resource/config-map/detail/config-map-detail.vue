@@ -37,7 +37,8 @@
               </dao-dropdown-item>
 
               <dao-dropdown-item
-                v-if="$can('configMap.delete') && !objrefs.length"
+                v-if="$can('configMap.delete')"
+                :is-disabled="objrefs.length"
                 @click="removeConfirm"
                 class="dao-dropdown-item-red dao-dropdown-item-hover-red"
               >

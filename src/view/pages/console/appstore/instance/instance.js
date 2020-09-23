@@ -5,7 +5,7 @@ import AppStoreService from '@/core/services/appstore.service';
 
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import PvcTable from '@/view/components/resource/pvc-table/pvc-table';
-import MarkDown from '@/view/components/markdown/markdown.vue';
+import Marked from '@/view/components/marked/marked.vue';
 
 import DeploymentPanel from '@/view/pages/console/app/detail/panels/deployment';
 import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
@@ -47,7 +47,6 @@ export default {
   },
 
   components: {
-    MarkDown,
     DeploymentPanel,
     ServicePanel,
     IngressPanel,
@@ -55,6 +54,7 @@ export default {
     ConfigPanel,
     PvcTable,
     JobPanel,
+    Marked,
   },
 
   computed: {
@@ -70,7 +70,6 @@ export default {
     this.getInstanceOne();
     this.getApp();
     this.getOperator();
-    this.getResource();
   },
 
   methods: {
@@ -110,14 +109,20 @@ export default {
       AppStoreService
         .deleteInstance(this.zone.id, this.space.id,
           this.$route.params.appid, this.$route.params.instanceid)
-        .then(() => {
-          this.$noty.success('实例删除成功');
-          this.$router.push({
-            name: 'appstore.detail',
-            params: {
-              Id: this.$route.params.appid,
-            },
-          });
+        .then(res => {
+          if (res) {
+            this.$noty.success('实例删除成功');
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+            });
+          } else {
+            this.$noty.error('实例删除失败');
+            this.getOperator();
+            this.getInstanceOne();
+          }
         });
     },
     // 获取实例详情
@@ -128,6 +133,11 @@ export default {
         .then(res => {
           if (res) {
             this.instanceInfo = res;
+          }
+        })
+        .then(() => {
+          if (this.instanceInfo.status !== 'failed') {
+            this.getResource();
           }
         });
     },
@@ -148,18 +158,20 @@ export default {
           this.$route.params.instanceid)
         .then(res => {
           if (res) {
+            console.log(res);
             res.forEach(item => {
               const obj = {};
               const owner = {};
-              obj.name = item.statusRecord;
+              obj.name = item.actionDescription;
               obj.started_at = item.startedAt;
               obj.ended_at = item.endedAt;
-              if (item.status === 'deployed') {
+              obj.description = item.resultDetail.response;
+              if (item.resultDescription === 'deployed') {
                 obj.status = 'succeed';
               } else {
-                obj.status = item.status;
+                obj.status = item.resultDescription;
               }
-              owner.name = item.operator;
+              owner.name = item.userName;
               obj.owner = owner;
               this.operator.push(obj);
             });
@@ -173,7 +185,6 @@ export default {
         .getResource(this.zone.id, this.space.id, this.$route.params.appid,
           this.$route.params.instanceid)
         .then(res => {
-          console.log(res);
           if (res) {
             this.resources = groupBy(res, 'kind');
           }

@@ -9,24 +9,24 @@
     font-family: SFProText-Regular,SFProText;
     font-weight: 400;
     color: #595F69;
+    border-bottom: 1px solid #D5DBE3;
   }
   .search {
-    padding: 20px 0 20px 20px;
+    padding: 20px 0 15px 20px;
   }
   .fresh {
     float: right;
-    padding: 20px 20px 20px 0;
+    padding: 20px 20px 15px 0;
   }
   .table {
-    margin: 0 20px 20px;
     .success {
-      color: #22c36a;
+      color: #25D473;
     }
     .error {
-      color: #f1483f;
+      color: #F25A52;;
     }
     .warning {
-      color: rgb(190, 163, 10);
+      color: #F8BA3F;
     }
   }
   .footer {
@@ -39,7 +39,7 @@
       float: left;
       height: 14px;
       line-height: 14px;
-      padding: 10px 0 0 10px;
+      padding: 12px 0 0 10px;
       font-size: 14px;
       font-family: PingFangSC-Regular,PingFang SC;
       font-weight: 400;

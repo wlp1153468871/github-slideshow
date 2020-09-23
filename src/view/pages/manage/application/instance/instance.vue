@@ -1,12 +1,11 @@
 <template>
   <div id="servicedetail">
-    <div class="layout-content-header">
+    <div class="header">
       <breadcrumb
         :links="[
           { text: '应用模板管理', route: { name: 'manage.application' } },
           { text: `实例详情(${instanceInfo.name})` },
         ]"
-        class="header-text"
       >
       </breadcrumb>
     </div>
@@ -28,7 +27,7 @@
         <div class="title-desc-name">{{appInfo.appType}}</div>
         <div class="title1">创建于:</div>
         <div class="title-desc-name">
-          {{ instanceInfo.createdAt | unix_date('YYYY/MM/DD HH:mm:ss') }}
+          {{ instanceInfo.createdAt | unix_date('YYYY-MM-DD HH:mm:ss') }}
         </div>
       </div>
     </div>
@@ -70,12 +69,9 @@
           </daox-info-table>
         </div>
         <div class="container1" style="margin-top: 20px;">
-          <div class="c-title">记录</div>
-          <mark-down style="padding: 20px;" :text="`${instanceInfo.notes}`"></mark-down>
+          <div class="c-title">Notes</div>
+          <marked :text="instanceInfo.notes"></marked>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="操作记录" name="second">
-        <job-panel :jobs="operator"></job-panel>
       </el-tab-pane>
       <el-tab-pane label="Deployment" name="thrid">
         <deployment-panel :deployments="resources.Deployment"></deployment-panel>
@@ -96,6 +92,9 @@
       </el-tab-pane>
       <el-tab-pane label="PVC" name="eighth">
         <pvc-table :pvcs="resources.PersistentVolumeClaim" :loading="loading.resources"></pvc-table>
+      </el-tab-pane>
+      <el-tab-pane label="操作记录" name="second">
+        <job-panel :jobs="operator"></job-panel>
       </el-tab-pane>
     </el-tabs>
   </div>

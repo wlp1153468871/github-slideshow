@@ -5,7 +5,11 @@
       <resource-header :resource="resource"></resource-header>
       <div class="dao-view-main">
         <div class="dao-view-content">
-          <x-table :loading="loadings.table" :data="deployments">
+          <x-table
+            :loading="loadings.table"
+            :data="deployments"
+            :filter-method="filterMethod"
+            @refresh="getDeployments">
             <template #operation>
               <button
                 class="dao-btn blue has-icon"

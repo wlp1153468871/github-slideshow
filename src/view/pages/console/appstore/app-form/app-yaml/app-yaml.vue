@@ -2,7 +2,7 @@
   <div class="app-yamlform">
     <div class="layout-content-header form-header">
       <span @click="cancerForm">
-        <svg class="icon" style="color: #217EF2;">
+        <svg class="icon" style="color: #217EF2;cursor: pointer;">
           <use :xlink:href="`#icon_close`"></use>
         </svg>
       </span>
@@ -40,41 +40,6 @@
             <div class="dao-setting-content">{{this.$route.params.version}}</div>
           </div>
         </div>
-        <!-- <div class="dao-setting-section">
-          <div class="dao-setting-item">
-            <div class="dao-setting-label dao-name">租户和项目组</div>
-            <div class="dao-setting-content">
-              <div class="box">
-                <div class="dao-title">租户</div>
-                <dao-select
-                  v-model="select1"
-                  class="dao-option"
-                  size="sm">
-                  <dao-option
-                    v-for="item in tenant"
-                    :key="item.value"
-                    :value="item.index"
-                    :label="item.value">
-                  </dao-option>
-                </dao-select>
-              </div>
-              <div class="box">
-                <div class="dao-title">项目组</div>
-                <dao-select
-                  v-model="select2"
-                  class="dao-option"
-                  size="sm">
-                  <dao-option
-                    v-for="item in project"
-                    :key="item.value"
-                    :value="item.index"
-                    :label="item.value">
-                  </dao-option>
-                </dao-select>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </dao-setting-layout>
       <dao-setting-layout class="yaml">
         <div class="dao-setting-section">
@@ -97,7 +62,8 @@
     <dao-dialog
       :visible.sync="config.visible"
       header="确认是否放弃编辑"
-      :footer="config.footer">
+      @before-close="destoryDialog"
+    >
       <div class="dialog_body">确认是否放弃当前编辑，放弃后不可撤销。</div>
       <div slot="footer">
         <button class="dao-btn red" @click="giveUp">
@@ -147,6 +113,7 @@ export default {
       yaml: {
         data: '',
       },
+      giveup: false,
     };
   },
 
@@ -202,25 +169,49 @@ export default {
     },
     // 创建yaml实例
     createYmal() {
-      const loading = this.$loading({
-        lock: true,
-        text: '正在拼命创建中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)',
-      });
-      AppStoreService
-        .createYmal(this.zone.id, this.space.id, this.$route.params.appid,
-          this.chartName, this.$route.params.version, this.instanceName, this.yaml)
-        .then(res => {
-          if (res) {
-            loading.close();
-            this.$noty.success('实例创建成功');
-            this.$router.go(-1);
-          }
-        })
-        .catch(() => {
-          this.loading = false;
+      if (this.instanceName.length) {
+        const loading = this.$loading({
+          lock: true,
+          text: '正在拼命创建中',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)',
         });
+        AppStoreService
+          .createYmal(this.zone.id, this.space.id, this.$route.params.appid,
+            this.chartName, this.$route.params.version, this.instanceName, this.yaml)
+          .then(res => {
+            if (res.status === 'deployed') {
+              this.$router.push({
+                name: 'appstore.detail',
+                params: {
+                  Id: this.$route.params.appid,
+                },
+                query: {
+                  activeName: this.$route.query.activeName,
+                },
+              });
+              this.$noty.success('实例创建成功');
+            } else if (res.status === 'timeOut') {
+              this.$router.push({
+                name: 'appstore.detail',
+                params: {
+                  Id: this.$route.params.appid,
+                },
+                query: {
+                  activeName: this.$route.query.activeName,
+                },
+              });
+              this.$noty.warning('实例创建超时');
+            } else {
+              this.$noty.error('实例创建失败');
+            }
+          })
+          .finally(() => {
+            loading.close();
+          });
+      } else {
+        this.$noty.error('实例名称为空');
+      }
     },
     // 获取一个实例
     getInstanceOne() {
@@ -248,11 +239,32 @@ export default {
           if (res) {
             loading.close();
             this.$noty.success('实例更新成功');
-            this.$router.go(-1);
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: this.$route.query.activeName,
+              },
+            });
+          } else if (res.status === 'timeOut') {
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: this.$route.query.activeName,
+              },
+            });
+            this.$noty.warning('实例更新超时');
+          } else {
+            this.$noty.error('实例更新失败');
           }
         })
-        .catch(() => {
-          this.loading = false;
+        .finally(() => {
+          loading.close();
         });
     },
     cancerForm() {
@@ -261,8 +273,22 @@ export default {
     close() {
       this.config.visible = false;
     },
+    destoryDialog() {
+      if (this.giveup) {
+        this.$router.push({
+          name: 'appstore.detail',
+          params: {
+            Id: this.$route.params.appid,
+          },
+          query: {
+            activeName: this.$route.query.activeName,
+          },
+        });
+      }
+    },
     giveUp() {
-      this.$router.go(-1);
+      this.giveup = true;
+      this.config.visible = false;
     },
   },
 };
@@ -287,7 +313,6 @@ export default {
     width: 100%;
     height: 52px;
     position: fixed;
-    top: 56px;
     left: 0;
     z-index: 9;
     .form-title {
@@ -347,7 +372,7 @@ export default {
       color: #3D444F;
     }
     .code-mirror {
-      margin: 0 20px 20px 0;
+      margin: 0 20px 50px 0;
     }
   }
   .footer-lay {

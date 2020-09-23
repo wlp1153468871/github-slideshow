@@ -19,7 +19,7 @@ class AppStoreService {
    * @param {String} spaceId 租户ID
    */
   async zoneList(zone_id, space_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications`);
   }
 
   /**
@@ -29,7 +29,7 @@ class AppStoreService {
    * @param {Array} data
    */
   async create(zone_id, space_id, data) {
-    return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications`, data);
+    return this.api.post(`/appstore/zones/${zone_id}/spaces/${space_id}/applications`, data);
   }
 
   /**
@@ -65,7 +65,7 @@ class AppStoreService {
    * @param {Array} data
    */
   async uploadFile(zone_id, space_id, app_id, data) {
-    return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/application_infos`, data);
+    return this.api.post(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/application_infos`, data);
   }
 
   /**
@@ -74,7 +74,7 @@ class AppStoreService {
    * @param {String} spaceId 租户ID
    */
   async getCategory(zone_id, space_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/categories`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/categories`);
   }
 
   /**
@@ -84,7 +84,7 @@ class AppStoreService {
    * @param {String} app_id 应用ID
    */
   async deleteApp(zone_id, space_id, app_id) {
-    return this.api.delete(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}`);
+    return this.api.delete(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}`);
   }
 
   /**
@@ -94,7 +94,7 @@ class AppStoreService {
    * @param {String} app_id 应用ID
    */
   async getApp(zone_id, space_id, app_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}`);
   }
 
   /**
@@ -104,7 +104,7 @@ class AppStoreService {
    * @param {String} app_id 应用ID
    */
   async getCharts(zone_id, space_id, app_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/application_infos`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/application_infos`);
   }
 
   /**
@@ -114,7 +114,7 @@ class AppStoreService {
    * @param {String} app_id 应用ID
    */
   async updateApp(zone_id, space_id, app_id, data) {
-    return this.api.patch(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}`, data);
+    return this.api.patch(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}`, data);
   }
 
   /**
@@ -124,7 +124,7 @@ class AppStoreService {
    * @param {String} app_id 应用ID
    */
   async getInstances(zone_id, space_id, app_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances`);
   }
 
   /**
@@ -135,7 +135,7 @@ class AppStoreService {
    * @param {String} instance_id 实例ID
    */
   async deleteInstance(zone_id, space_id, app_id, instance_id) {
-    return this.api.delete(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}`);
+    return this.api.delete(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}`);
   }
 
   /**
@@ -146,7 +146,7 @@ class AppStoreService {
    * @param {String} instance_id 实例ID
    */
   async getInstanceOne(zone_id, space_id, app_id, instance_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}`);
   }
 
   /**
@@ -158,7 +158,7 @@ class AppStoreService {
    * @param {String} version chart版本
    */
   async getYaml(zone_id, space_id, app_id, chart_name, version) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/yaml`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/${chart_name}/${version}/instances/yaml`);
   }
 
   /**
@@ -169,7 +169,7 @@ class AppStoreService {
    * @param {String} instance_id 实例名
    */
   async getNewYaml(zone_id, space_id, app_id, instance_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/yaml`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}/yaml`);
   }
 
   /**
@@ -182,7 +182,7 @@ class AppStoreService {
    * @param {String} instance_name 实例名
    */
   async createYmal(zone_id, space_id, app_id, chart_name, version, instance_name, data) {
-    return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/${instance_name}/yaml`, data);
+    return this.api.post(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/${chart_name}/${version}/instances/${instance_name}/yaml`, data);
   }
 
   /**
@@ -193,7 +193,7 @@ class AppStoreService {
    * @param {String} instance_id 实例ID
    */
   async updateYaml(zone_id, space_id, app_id, instance_id, data) {
-    return this.api.put(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/yaml`, data);
+    return this.api.put(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}/yaml`, data);
   }
 
   /**
@@ -204,7 +204,7 @@ class AppStoreService {
    * @param {String} instance_id 实例名
    */
   async getNewForm(zone_id, space_id, app_id, instance_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/form`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}/form`);
   }
 
   /**
@@ -215,7 +215,7 @@ class AppStoreService {
    * @param {String} instance_id 实例ID
    */
   async updateForm(zone_id, space_id, app_id, instance_id, data) {
-    return this.api.put(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/form`, data);
+    return this.api.put(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}/form`, data);
   }
 
   /**
@@ -227,7 +227,7 @@ class AppStoreService {
    * @param {String} version chart版本
    */
   async getForm(zone_id, space_id, app_id, chart_name, version) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/form`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/${chart_name}/${version}/instances/form`);
   }
 
   /**
@@ -240,7 +240,7 @@ class AppStoreService {
    * @param {String} instance_name 实例名
    */
   async createForm(zone_id, space_id, app_id, chart_name, version, instance_name, data) {
-    return this.api.post(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/${chart_name}/${version}/instances/${instance_name}/form`, data);
+    return this.api.post(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/${chart_name}/${version}/instances/${instance_name}/form`, data);
   }
 
   /**
@@ -251,7 +251,7 @@ class AppStoreService {
    * @param {String} instance_id 实例ID
    */
   async getOperator(zone_id, space_id, app_id, instance_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/ops_log`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}/ops_log`);
   }
 
   /**
@@ -260,7 +260,7 @@ class AppStoreService {
    * @param {String} spaceId 租户ID
   */
   async getAllInstances(zone_id, space_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/appinstances`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/appinstances`);
   }
 
   /**
@@ -271,7 +271,7 @@ class AppStoreService {
    * @param {String} instance_id 实例ID
    */
   async getResource(zone_id, space_id, app_id, instance_id) {
-    return this.api.get(`/zones/${zone_id}/spaces/${space_id}/appstore/applications/${app_id}/instances/${instance_id}/resource`);
+    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}/resource`);
   }
 }
 
