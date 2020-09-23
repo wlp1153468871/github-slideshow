@@ -406,7 +406,7 @@ export default {
         font-weight: 900;
       }
       .highlight {
-        color: #318dff;
+        color: #FFD100;
       }
     }
   }
