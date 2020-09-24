@@ -187,7 +187,6 @@
           </terminal-history-panel>
         </el-tab-pane>
         <el-tab-pane
-          v-if="$can('space.monitor.view')"
           :label="TABS.MONITOR.label"
           :name="TABS.MONITOR.name"
           lazy
