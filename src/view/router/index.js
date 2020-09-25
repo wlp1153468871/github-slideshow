@@ -10,6 +10,8 @@ import ManageContainer from '@/view/pages/manage/container/container.vue';
 import Home from '@/view/pages/home/home.vue';
 // login
 import Login from '@/view/pages/login/login.vue';
+// console
+import Console from '@/view/pages/exception/console.vue';
 
 import store from '@/core/store';
 import OrgService from '@/core/services/org.service';
@@ -127,6 +129,12 @@ const router = new Router({
     {
       path: '*',
       component: () => import(/* webpackChunkName: "fail" */ '@/view/pages/exception/404.vue'),
+    },
+
+    {
+      path: '/console/console',
+      name: 'console',
+      component: Console,
     },
   ],
 });

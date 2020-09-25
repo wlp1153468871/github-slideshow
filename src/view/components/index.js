@@ -58,6 +58,7 @@ import { PercentCircle, PieChart, ProgressDount } from './charts';
 import SpaceZone from './space-zone/space-zone';
 import Marked from './marked/marked';
 import ZTable from './x-table/z-table';
+import AppstoreTable from './appstore_table/appstore_table';
 
 const components = {
   ...Daox,
@@ -123,6 +124,7 @@ const components = {
   SpaceZone,
   Marked,
   ZTable,
+  AppstoreTable,
 };
 
 function install(Vue) {
