@@ -250,8 +250,11 @@ class AppStoreService {
    * @param {String} app_id 应用ID
    * @param {String} instance_id 实例ID
    */
-  async getOperator(zone_id, space_id, app_id, instance_id) {
-    return this.api.get(`/appstore/zones/${zone_id}/spaces/${space_id}/applications/${app_id}/instances/${instance_id}/ops_log`);
+  async getOperator(zone_id, space_id, instance_id) {
+    return this.api.get(`/zones/${zone_id}/space/${space_id}/opslog`, {
+      resourceId: instance_id,
+      resourceType: 'app_instance',
+    });
   }
 
   /**
