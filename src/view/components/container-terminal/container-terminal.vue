@@ -114,7 +114,7 @@ export default {
       if (e.keyCode === 13) {
         this.keyWords.pop();
         if (this.isManageView) {
-          NodeService.getPodRealTimeLogssessionId(
+          NodeService.executePodsCmd(
             this.namespace,
             this.podName,
             this.container,
