@@ -87,11 +87,12 @@ class NodeService {
     });
   }
 
-  executePodsCmd(namespace: string, podName: string, containerName: string, zoneId: string) {
+  executePodsCmd(namespace: string, podName: string, containerName: string, zoneId: string, query: object,) {
     return this.api.post(`/namespaces/${namespace}/pods/${podName}/containers/${containerName}/cmd`,
-    {
-      zone: zoneId,
-    });
+      query,
+      {
+        params: { zone: zoneId },
+      },);
   }
 
   getPodShell(namespace: string, podName: string, containerName: string, zoneId: string) {
