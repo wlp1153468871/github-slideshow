@@ -32,6 +32,11 @@
           </overview-panel>
         </el-tab-pane>
 
+        <!--控制台-->
+        <!-- <el-tab-pane :label="TABS.CONSOLE" :name="TABS.CONSOLE">
+          <console :pods="resources.Pod"></console>
+        </el-tab-pane> -->
+
         <!-- 实时日志 -->
         <el-tab-pane lazy :label="TABS.LOG" :name="TABS.LOG" v-if="$can('pod.container.get')">
           <log-panel

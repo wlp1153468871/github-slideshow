@@ -42,6 +42,7 @@ export default {
       this.loadings.zone = true;
       return ZoneService.getZones()
         .then(zones => {
+          // this.rows = zones;
           this.rows = zones.data;
         })
         .finally(() => {

@@ -62,6 +62,10 @@ export default {
         name: '外观定制',
         to: { name: 'manage.preference.appearance' },
       },
+      APPSTORE: {
+        name: '应用商店定制',
+        to: { name: 'manage.preference.appstore' },
+      },
       HELP: {
         name: '帮助信息设置',
         to: { name: 'manage.preference.help-info-config' },

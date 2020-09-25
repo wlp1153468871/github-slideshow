@@ -126,6 +126,7 @@ export default {
   data() {
     return {
       productName: '',
+      productInfo: '',
       loginPicture: [],
       navPicture: [],
       favicon: [],

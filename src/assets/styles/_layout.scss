@@ -2,16 +2,17 @@
 
 .layout {
   height: 100%;
-  padding-top: $nav-height;
-
+  // padding-top: $nav-height;
+  overflow: hidden;
   .layout-content {
     position: relative;
+    top: 40px;
     background: $white-dark-lighter;
     margin-left: 200px;
-    min-height: 100%;
+    height: calc(100vh - #{$nav-height});;
+    overflow-y: auto;
     transition: 0.3s;
     z-index: 10;
-
     .dao-nav-menu {
       position: fixed;
       left: 0;
@@ -19,6 +20,24 @@
       z-index: 10;
     }
   }
+
+  .dx-layout-content {
+    position: relative;
+    top: 0;
+    background: $white-dark-lighter;
+    margin-left: 200px;
+    height: calc(100vh - #{$nav-height});;
+    overflow-y: auto;
+    transition: 0.3s;
+    z-index: 10;
+    .dao-nav-menu {
+      position: fixed;
+      left: 0;
+      top: $nav-height;
+      z-index: 10;
+    }
+  }
+
 
   &.collapsed {
     .dao-nav-menu {

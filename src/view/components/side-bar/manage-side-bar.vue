@@ -49,6 +49,12 @@
             </svg>
             <span>服务管理</span>
           </el-menu-item>
+          <el-menu-item index="manage.application" :route="{ name: 'manage.application' }">
+            <svg class="icon">
+              <use xlink:href="#icon_service"></use>
+            </svg>
+            <span>应用模板管理</span>
+          </el-menu-item>
           <el-menu-item index="manage.zone.list" :route="{ name: 'manage.zone.list' }">
             <svg class="icon">
               <use xlink:href="#icon_globe-alt"></use>

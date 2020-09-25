@@ -1,7 +1,7 @@
 <template>
-  <div class="page-manage">
+  <div>
+  <div class="page-manage" v-if="showAdd">
     <circle-loading v-if="loading"></circle-loading>
-
     <template v-else>
       <div class="layout-content-header bg-white">
         <breadcrumb
@@ -24,7 +24,14 @@
           >
           </manage-panel>
         </el-tab-pane>
-         <el-tab-pane :label="TABS.NODE" :name="TABS.NODE">
+        <el-tab-pane
+          :label="TABS.APPLICATION"
+          :name="TABS.APPLICATION"
+          v-if="$can('platform.zone.applications.view')"
+        >
+          <AppList :id="zone.id" @addApplication="addApplication"></AppList>
+        </el-tab-pane>
+        <el-tab-pane :label="TABS.NODE" :name="TABS.NODE">
           <node-panel :hideZoneSelect="'true'" :zone='zone'></node-panel>
         </el-tab-pane>
         <el-tab-pane :label="TABS.OVERVIEW" :name="TABS.OVERVIEW">
@@ -45,6 +52,10 @@
     >
     </sync-service-dialog>
     <!--dialog end-->
+  </div>
+    <div v-if="!showAdd">
+      <newApp></newApp>
+    </div>
   </div>
 </template>
 

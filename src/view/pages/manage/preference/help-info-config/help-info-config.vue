@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { cloneDeep, isEmpty } from 'lodash';
 import SystemService from '@/core/services/system.service';
 
@@ -40,6 +41,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(['simpleInfo']),
     helpURLDictIsEmpty() {
       return isEmpty(this.helpURLDict);
     },
@@ -58,6 +60,7 @@ export default {
         .then(() => {
           return SystemService.updateSystemSettings({
             helpURLDict: this.helpURLDict,
+            simpleInfo: this.simpleInfo,
           });
         })
         .then(() => {

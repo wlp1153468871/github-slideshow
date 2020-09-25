@@ -37,7 +37,7 @@ export default {
     display: inline-block;
   }
   & > li + li:before {
-    content: '/';
+    content: '>';
     padding: 0 5px;
     color: $black-dark;
     font-weight: 500;

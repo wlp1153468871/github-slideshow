@@ -24,6 +24,14 @@
         <zone-panel :space-id="spaceId"> </zone-panel>
       </el-tab-pane>
 
+      <el-tab-pane
+        :label="SIDE_BAR.LIST"
+        :name="SIDE_BAR.LIST"
+        v-if="$can('platform.applications.spaces')"
+      >
+        <LIST :spaceId="spaceId" :orgId="orgId"></LIST>
+      </el-tab-pane>
+
       <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
         <overview-panel :org-id="orgId" :space="space" :space-id="spaceId" @save="updateSpace">
         </overview-panel>
