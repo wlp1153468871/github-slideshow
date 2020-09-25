@@ -134,7 +134,7 @@
         </div>
       </div>
       <template slot="footer">
-        <button class="dao-btn blue" v-throttleClick @click="onSave()">
+        <button class="dao-btn blue" @click="onSave()">
           保存
         </button>
       </template>
@@ -208,7 +208,7 @@ export default {
 
   props: {
     subCatalogs: { type: Array, default: () => [] },
-    services: [Array, Object],
+    services: { type: Array, default: () => [] },
   },
 
   data() {

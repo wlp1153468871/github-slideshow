@@ -18,13 +18,14 @@ export default {
       loadings: {
         maps: false,
       },
-      filterMethod: this.filterService,
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey) ||
+        data.short_description.toLowerCase().includes(filterKey),
       other: {
         status: (_, item) => {
           return item.available === SERVICE_STATUS.AVAILABLE ? 'SUCCESS' : 'STOPED';
         },
       },
-      total: 0,
     };
   },
   methods: {
@@ -33,22 +34,15 @@ export default {
       return filters(status, 'service_status');
     },
 
-    loadService(page, pageSize, q) {
+    loadService() {
       this.loadings.maps = true;
-      return ServiceService.getServices(page, pageSize, q)
+      return ServiceService.getServices()
         .then(list => {
           this.rows = list.data;
-          this.total = list.total;
         })
         .finally(() => {
           this.loadings.maps = false;
         });
-    },
-    filterService(filterKey, pageSize) {
-      this.loadService(1, pageSize, filterKey);
-    },
-    switchPage(page, pageSize, filterKey) {
-      this.loadService(page, pageSize, filterKey);
     },
   },
 };

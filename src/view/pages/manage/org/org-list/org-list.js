@@ -23,8 +23,9 @@ export default {
       dialogConfigs: {
         addOrg: { visible: false },
       },
-      filterMethod: this.filterOrgs,
-      total: 0,
+      filterMethod: (data, filterKey) =>
+        data.name.toLowerCase().includes(filterKey) ||
+        data.short_name.toLowerCase().includes(filterKey),
     };
   },
   watch: {
@@ -33,23 +34,17 @@ export default {
     },
   },
   methods: {
-    loadOrgs(page, pageSize, q) {
+    loadOrgs() {
       this.loadings.orgs = true;
-      OrgService.getOrgs(page, pageSize, q)
+      OrgService.getOrgs()
         .then(orgs => {
           this.rows = orgs.data;
-          this.total = orgs.total;
         })
         .finally(() => {
           this.loadings.orgs = false;
         });
     },
-    filterOrgs(filterKey, pageSize) {
-      this.loadOrgs(1, pageSize, filterKey);
-    },
-    switchPage(page, pageSize, filterKey) {
-      this.loadOrgs(page, pageSize, filterKey);
-    },
+
     addOrgDialog() {
       this.dialogConfigs.addOrg.visible = true;
     },

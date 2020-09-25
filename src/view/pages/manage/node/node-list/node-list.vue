@@ -5,6 +5,7 @@
     </div>
     <div class="dao-view-main">
       <x-table
+        :class="!showNodeTitle ? 'node-table' : ''"
         v-if="$can('platform.node.get')"
         :showRefresh="$can('platform.node.update')"
         :loading="loadings.node"
@@ -44,7 +45,12 @@
         </el-table-column>
         <el-table-column prop="conditions" label="状态" width="150px">
           <template slot-scope="{ row: node }">
-            <x-table-status :row="node" :other="other" :text="`${checkCondition(node.k8sNodeStatus.conditions)}${node.spec.unschedulable ? '，暂停调度': ''}`">
+            <x-table-status
+              :row="node"
+              :other="other"
+              :text="`${
+              checkCondition(node.k8sNodeStatus.conditions)}
+              ${node.spec.unschedulable ?'，暂停调度': ''}`">
             </x-table-status>
           </template>
         </el-table-column>
@@ -154,13 +160,20 @@
         </el-table-column>
       </x-table>
     </div>
-    <node-operation-dialog ref="NodeOperationDialog" @updatetNodeList='getZonesList'></node-operation-dialog>
+    <node-operation-dialog ref="NodeOperationDialog" @updatetNodeList='getZonesList'>
+    </node-operation-dialog>
   </div>
 </template>
 
 <script src="./node-list.js"></script>
-<style scoped>
-  .label-input {
-    margin-right: 10px;
+<style lang='scss'>
+  .node-table {
+    .label-input {
+      margin-right: 10px;
+    }
+    .table-toolbar .el-input {
+      position: absolute;
+      left: 20px;
+    }
   }
 </style>

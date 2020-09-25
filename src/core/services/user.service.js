@@ -24,12 +24,14 @@ class UserService {
 
   /**
    * 根据关键词获取用户列表
-   * @param {Number} page 分页指定页数
-   * @param {Number} pageSize 待获取数据量
    * @param {String} q 搜索关键词
    */
-  getUsers(page, pageSize, q) {
-    return this.api.get('/users', { page: page || 1, pageSize: pageSize || 10, q });
+  getUsers(q) {
+    let params;
+    if (q || q === '') {
+      params = { q };
+    }
+    return this.api.get('/users', params);
   }
 
   updateSelfPwd(userId, oldPwd, newPwd) {

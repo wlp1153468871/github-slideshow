@@ -182,8 +182,8 @@ export default {
     },
 
     loadAllUsers(q) {
-      UserService.getUsers(1, 10, q).then(users => {
-        this.allUsers = users.data;
+      UserService.getUsers(q).then(users => {
+        this.allUsers = users;
       });
     },
 

@@ -311,7 +311,7 @@ export default {
           }) || {};
         const { instanceCount: ingressCount = 0 } =
           find(instances, {
-            service_type: RESOURCE_TYPE.INGRESS,
+            service_type: RESOURCE_TYPE.ROUTE,
           }) || {};
 
         this.resources.push({

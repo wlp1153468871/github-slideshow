@@ -134,12 +134,7 @@ export default {
       this.loading = true;
       SpaceService.listSpaceServices(this.spaceId)
         .then((services = []) => {
-          this.services = [];
-          services.forEach(item => {
-            if (item.available === 'available') {
-              this.services.push(item);
-            }
-          });
+          this.services = services;
         })
         .finally(() => {
           this.loading = false;

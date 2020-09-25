@@ -3,7 +3,7 @@
     <div class="info-column">
       <!-- 基本信息 -->
       <daox-info-table title="基本信息" :list="basicInformations">
-        <template v-if="monitor" #self>
+        <template #self>
           <router-link
             :to="{
               name: 'console.monitor',
@@ -40,7 +40,6 @@ export default {
     instance: { type: Object, default: () => ({}) },
     status: { type: String, default: '' },
     events: { type: Array, default: () => [] },
-    monitor: { type: Boolean, default: () => false },
   },
 
   computed: {
@@ -63,7 +62,7 @@ export default {
         { name: '应用版本', value: version || '无' },
         { name: '创建者', value: owner.name },
         { name: '创建时间', value: unixDate(createdAt) },
-        { name: this.monitor === true ? '查看监控' : '', value: [] },
+        { name: '查看监控', value: [] },
       ];
     },
   },
