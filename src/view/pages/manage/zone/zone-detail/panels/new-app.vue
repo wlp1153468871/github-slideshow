@@ -16,168 +16,170 @@
       </dao-dialog>
     </div>
     <!--    chart文件-->
-    <div class="newApp-box chart-file" id="chart-file">
-      <dao-setting-layout>
-        <template slot="layout-title">
-          <div class="base-info">Chart文件</div>
-        </template>
-        <dao-setting-section>
-          <template slot="label">chart文件</template>
-          <template slot="content">
-            <div class="content-text">支持zip, gzip, tgz, tar格式的压缩文件上传</div>
+    <div class="newApp-box">
+      <div class="chart-file" id="chart-file">
+        <dao-setting-layout>
+          <template slot="layout-title">
+            <div class="base-info">Chart文件</div>
           </template>
-          <template slot="content">
-            <el-upload
-              class="upload-demo"
-              ref="uploadChart"
-              action="#"
-              :http-request="handleUploadChart"
-              :file-list="chartList"
-              accept="application/zip, application/x-compressed,
-              application/x-gzip, application/gzip, application/x-tar"
-              :limit="1"
-              :before-upload="beforeUploadChart"
-              :on-remove="removeFileChart"
-            >
-              <button class="dao-btn blue">上传chart</button>
-            </el-upload>
+          <dao-setting-section>
+            <template slot="label">chart文件</template>
+            <template slot="content">
+              <div class="content-text">支持zip, gzip, tgz, tar格式的压缩文件上传</div>
+            </template>
+            <template slot="content">
+              <el-upload
+                class="upload-demo"
+                ref="uploadChart"
+                action="#"
+                :http-request="handleUploadChart"
+                :file-list="chartList"
+                accept="application/zip, application/x-compressed,
+                application/x-gzip, application/gzip, application/x-tar"
+                :limit="1"
+                :before-upload="beforeUploadChart"
+                :on-remove="removeFileChart"
+              >
+                <button class="dao-btn blue">上传chart</button>
+              </el-upload>
+            </template>
+          </dao-setting-section>
+        </dao-setting-layout>
+      </div>
+      <div class="box-layout">
+        <dao-setting-layout>
+          <template slot="layout-title">
+            <div class="base-info">基本信息</div>
           </template>
-        </dao-setting-section>
-      </dao-setting-layout>
-    </div>
-    <div class="newApp-box box-layout">
-      <dao-setting-layout>
-        <template slot="layout-title">
-          <div class="base-info">基本信息</div>
-        </template>
-        <dao-setting-section>
-          <template slot="label">模板名称</template>
-          <template slot="content">
-            <dao-input
-              readonly
-              style="width: 100%"
-              v-model="name"
-              block
-              placeholder="请上传chart版本"></dao-input>
-          </template>
-        </dao-setting-section>
-        <dao-setting-section>
-          <template slot="label">模板图标</template>
-          <template slot="content">
-            <div class="content-text">建议大小120像素×120像素，支持PNG，文件小于1MB</div>
-          </template>
-          <template slot="content">
-            <el-upload
-              class="upload-demo"
-              ref="upload"
-              action="#"
-              :http-request="handleUpload"
-              :file-list="fileList"
-              accept="image/png"
-              :limit="1"
-              :before-upload="beforeUpload"
-              :on-remove="removeFile">
-              <button class="dao-btn blue">上传图标</button>
-            </el-upload>
-          </template>
-        </dao-setting-section>
-        <dao-setting-section>
-          <template slot="label">供应商</template>
-          <template slot="content">
-            <dao-input
-              style="width: 100%"
-              v-model="provider"
-              block
-              required
-              placeholder="请填写供应商"></dao-input>
-          </template>
-        </dao-setting-section>
-        <dao-setting-section>
-          <template slot="label">是否认证</template>
-          <template slot="content">
-            <el-radio-group v-model="daoAuth">
-              <el-radio :label="true">是</el-radio>
-              <el-radio :label="false">否</el-radio>
-            </el-radio-group>
-          </template>
-        </dao-setting-section>
-        <dao-setting-section>
-          <template slot="label">服务类型</template>
-          <template slot="content">
-            <dao-select
-              v-model="appType"
-              placeholder="选择服务类型">
-              <dao-option
-                v-for="item in options"
-                :key="item.value"
-                :value="item.value"
-                :label="item.text">
-              </dao-option>
-            </dao-select>
-          </template>
-        </dao-setting-section>
-        <dao-setting-section>
-          <template slot="label">分类</template>
-          <template slot="content">
-            <el-select
-              class="category-style"
-              v-model="category"
-              placeholder="选择分类"
-              @change="handleCategory"
-              :multiple="true">
-              <el-option
-                v-for="item in classification"
-                :key="item.id"
-                :value="item.id"
-                :label="item.name">
-              </el-option>
-            </el-select>
-          </template>
-          <template slot="content">
-            <div class="svg-icon">
-              <svg @click="addCategory" class="icon">
-                <use :xlink:href="`#icon_plus-circled`"></use>
-              </svg>
-              <span class="add-cate">添加分类</span>
+          <dao-setting-section>
+            <template slot="label">模板名称</template>
+            <template slot="content">
+              <dao-input
+                readonly
+                style="width: 100%"
+                v-model="name"
+                block
+                placeholder="请上传chart版本"></dao-input>
+            </template>
+          </dao-setting-section>
+          <dao-setting-section>
+            <template slot="label">模板图标</template>
+            <template slot="content">
+              <div class="content-text">建议大小120像素×120像素，支持PNG，文件小于1MB</div>
+            </template>
+            <template slot="content">
+              <el-upload
+                class="upload-demo"
+                ref="upload"
+                action="#"
+                :http-request="handleUpload"
+                :file-list="fileList"
+                accept="image/png"
+                :limit="1"
+                :before-upload="beforeUpload"
+                :on-remove="removeFile">
+                <button class="dao-btn blue">上传图标</button>
+              </el-upload>
+            </template>
+          </dao-setting-section>
+          <dao-setting-section>
+            <template slot="label">供应商</template>
+            <template slot="content">
+              <dao-input
+                style="width: 100%"
+                v-model="provider"
+                block
+                required
+                placeholder="请填写供应商"></dao-input>
+            </template>
+          </dao-setting-section>
+          <dao-setting-section>
+            <template slot="label">是否认证</template>
+            <template slot="content">
+              <el-radio-group v-model="daoAuth">
+                <el-radio :label="true">是</el-radio>
+                <el-radio :label="false">否</el-radio>
+              </el-radio-group>
+            </template>
+          </dao-setting-section>
+          <dao-setting-section>
+            <template slot="label">服务类型</template>
+            <template slot="content">
+              <dao-select
+                v-model="appType"
+                placeholder="选择服务类型">
+                <dao-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :value="item.value"
+                  :label="item.text">
+                </dao-option>
+              </dao-select>
+            </template>
+          </dao-setting-section>
+          <dao-setting-section>
+            <template slot="label">分类</template>
+            <template slot="content">
+              <el-select
+                class="category-style"
+                v-model="category"
+                placeholder="选择分类"
+                @change="handleCategory"
+                :multiple="true">
+                <el-option
+                  v-for="item in classification"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.name">
+                </el-option>
+              </el-select>
+            </template>
+            <template slot="content">
+              <div class="svg-icon">
+                <svg @click="addCategory" class="icon">
+                  <use :xlink:href="`#icon_plus-circled`"></use>
+                </svg>
+                <span class="add-cate">添加分类</span>
+              </div>
+            </template>
+          </dao-setting-section>
+    <!--        新增分类弹窗-->
+          <div v-if="config.showAddCategory">
+            <div class="dao-dialog demo2">
+              <dao-dialog
+                :visible.sync="config.showAddCategory"
+                :header="config.header"
+                @confirm="submit"
+                @cancel="cancel">
+                <dao-setting-layout>
+                  <dao-setting-section>
+                    <template slot="label">分类名称</template>
+                    <template slot="content">
+                      <dao-input
+                        v-model="categoryName"
+                        placeholder="请输入分类名称">
+                      </dao-input>
+                    </template>
+                  </dao-setting-section>
+                </dao-setting-layout>
+              </dao-dialog>
             </div>
-          </template>
-        </dao-setting-section>
-<!--        新增分类弹窗-->
-        <div v-if="config.showAddCategory">
-          <div class="dao-dialog demo2">
-            <dao-dialog
-              :visible.sync="config.showAddCategory"
-              :header="config.header"
-              @confirm="submit"
-              @cancel="cancel">
-              <dao-setting-layout>
-                <dao-setting-section>
-                  <template slot="label">分类名称</template>
-                  <template slot="content">
-                    <dao-input
-                      v-model="categoryName"
-                      placeholder="请输入分类名称">
-                    </dao-input>
-                  </template>
-                </dao-setting-section>
-              </dao-setting-layout>
-            </dao-dialog>
           </div>
-        </div>
-        <dao-setting-section>
-          <template slot="label">描述</template>
-          <template slot="content">
-            <textarea
-              class="dao-control"
-              type="text"
-              rows="2"
-              placeholder="请填写内容"
-              required
-              v-model="description">
-            </textarea>
-          </template>
-        </dao-setting-section>
-      </dao-setting-layout>
+          <dao-setting-section>
+            <template slot="label">描述</template>
+            <template slot="content">
+              <textarea
+                class="dao-control"
+                type="text"
+                rows="2"
+                placeholder="请填写内容"
+                required
+                v-model="description">
+              </textarea>
+            </template>
+          </dao-setting-section>
+        </dao-setting-layout>
+      </div>
     </div>
 <!--    底部取消-->
     <div class="footer">
@@ -431,19 +433,10 @@ export default {
 };
 </script>
 
-<style>
-  .newApp-box .dao-setting-layout {
-    border: none;
-    box-shadow: none;
-  }
-  .newApp-box .daox-setting-layout-header {
-    border-bottom: 1px solid #E3E7EE;
-  }
-  .newApp-box .dao-select {
-    width: 100%;
-  }
-</style>
 <style lang="scss">
+.newApp-box .dao-select {
+  width: 100%;
+}
 .new-app {
   min-height: 915px;
   background-color: #F1F3F6;
@@ -456,7 +449,6 @@ export default {
     font-weight: 700;
     font-size: 16px;
     z-index: 999;
-    /*top: -1px;*/
     span {
       margin-left: 20px;
     }
@@ -465,12 +457,14 @@ export default {
     }
   }
   .box-layout {
+    padding-top: 40px;
     padding-bottom: 40px;
   }
   .newApp-box {
     box-sizing: border-box;
     width: 80%;
     margin: 20px auto 40px auto;
+    padding-bottom: 150px;
     .daox-setting-layout {
       background: #fff;
     }
@@ -512,10 +506,9 @@ export default {
     }
   }
   .category-style {
-    width: 95%;
+    width: 100%;
     display: inline-block;
     .el-input {
-      width: 970px;
       height: 32px !important;
       .el-input__inner {
         height: 32px !important;
