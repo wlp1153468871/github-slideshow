@@ -433,7 +433,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.layout{
+  overflow: auto !important;
+}
 .newApp-box .dao-select {
   width: 100%;
 }

@@ -252,7 +252,7 @@ export default {
           if (item.highlight !== null) {
             const regex = new RegExp(this.filters.keyword, 'g');
             // eslint-disable-next-line no-underscore-dangle
-            const replaceStr = item._source.message.replace(regex, `<span class="highlight">${this.filters.keyword}</span>`)
+            const replaceStr = item._source.message.replace(regex, `<span class="highlight">${this.filters.keyword}</span>`);
             console.log(regex, replaceStr);
             return replaceStr;
           }

@@ -73,7 +73,7 @@
 
 <script>
 import { RESOURCE_TYPE } from '@/core/constants/resource';
-import { chunk, nth, includes, find, get as getValue, head, keys } from 'lodash';
+import { chunk, nth, find, get as getValue, head, keys } from 'lodash';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import PodService from '@/core/services/pod.service';
