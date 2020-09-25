@@ -8,8 +8,8 @@ class ServiceService {
     this.api = api;
   }
 
-  getServices(page: number, pageSize: number, q?: string) {
-    return this.api.get('/superservices', {page: page || 1, pageSize: pageSize || 10, q });
+  getServices() {
+    return this.api.get('/superservices');
   }
 
   getService(id: string) {
@@ -17,7 +17,7 @@ class ServiceService {
   }
 
   // TODO: change query api
-  getAvailableServices(type: boolean) {
+  getAvailableServices() {
     // @ts-ignore
     return this.getServices(1, -1, '').then(list => list.data.filter(x => x.available === 'available') );
   }

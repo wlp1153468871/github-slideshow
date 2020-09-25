@@ -112,7 +112,7 @@
 
     <div slot="footer">
       <button class="dao-btn ghost" @click="onClose">关闭</button>
-      <button class="dao-btn blue" :disabled="newPerLoading" @click="create">
+      <button class="dao-btn blue" @click="create">
         创建
       </button>
     </div>
@@ -143,7 +143,6 @@ export default {
       loading: false,
       selectedNode: null,
       currentNodeKey: '',
-      newPerLoading: false,
     };
   },
 
@@ -162,8 +161,7 @@ export default {
       return this.$route.params.scope === 'space';
     },
     isShowZoneNote() {
-      return this.$route.params.scope === 'zone.ocp' || this.$route.params.scope === 'zone.k8s'
-      || this.$route.params.scope === 'zone.dce';
+      return this.$route.params.scope === 'zone.ocp' || this.$route.params.scope === 'zone.k8s';
     },
   },
 
@@ -260,7 +258,6 @@ export default {
         const valid = await this.$validator.validateAll();
         if (!valid) return;
         this.loading = true;
-        this.newPerLoading = true;
         const { id: roleId } = await api.post('/authorizations/roles', {
           name: this.role.name,
           description: this.role.description,
@@ -282,7 +279,6 @@ export default {
         this.$noty.error('创建失败');
       } finally {
         this.loading = false;
-        this.newPerLoading = false;
       }
     },
   },

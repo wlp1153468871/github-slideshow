@@ -3,22 +3,17 @@
     <td class="dee-td">{{ env | valueType }}</td>
     <td class="dee-td" style="flex: 2;">
       <dao-input
-        icon-inside
         class="dee-input"
         type="text"
-        name='name'
         v-model="env.name"
         size="sm"
         :block="true"
+        :status="nameStatus"
         :placeholder="namePlaceholder"
         @change="onChange"
         @blur="onNameBlur"
         :disabled="!editable"
         ref="input"
-        data-vv-as='name'
-        :message="veeErrors.first('name')"
-        :status="veeErrors.has('name') ? 'error' : ''"
-        v-validate="'required|dns_1123_label'"
       ></dao-input>
     </td>
     <td class="dee-td" style="flex: 4;">
@@ -200,7 +195,7 @@ export default {
       if (value.value != null) {
         return 'Normal';
       }
-      if (value.valueFrom.configMapKeyRef) {
+      if (value.valueFrom && value.valueFrom.configMapKeyRef) {
         return 'Config Map';
       }
       return 'Secret';

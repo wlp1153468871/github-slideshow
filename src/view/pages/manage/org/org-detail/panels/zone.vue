@@ -1,6 +1,6 @@
 <template>
   <div v-if="$can('platform.organization.zone')">
-    <dao-table-view :rows="rows" :config="tConfig" @refresh="loadOrgZones">
+    <dao-table-view :rows="rows" :config="tConfig">
       <div slot="tool" class="dao-table-view-left-bar">
         <button class="dao-btn white has-icon" @click="openAddZoneDialog()">
           <svg class="icon">

@@ -211,10 +211,10 @@ export default {
 
       if (this.isManageView) {
         NodeService.listPodLogs(
-          this.zoneId,
           this.namespace,
           this.podName,
           this.logOptions.container,
+          this.zoneId,
           query,
         )
           .then(podLogs => {

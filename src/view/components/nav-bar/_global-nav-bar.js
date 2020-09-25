@@ -55,9 +55,6 @@ export default {
 
     isConsoleView() {
       // TODO(jerry) this part will update;
-      if (this.$route.path.startsWith('/console/deploy/form/applications')) {
-        return true;
-      }
       return (
         !this.$route.path.startsWith('/manage/') &&
         !this.$route.path.startsWith('/seeting/') &&

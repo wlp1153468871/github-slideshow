@@ -16,7 +16,7 @@ export default {
       SIDE_BAR: {
         MEBMBER: {
           id: 'mebmber',
-          canShow: this.$can('space.manage.users') || this.$can('organization.space.user'),
+          canShow: this.$can('space.manage.users') || this.$can('organization.space'),
           name: '成员',
         },
         ZONE: {

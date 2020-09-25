@@ -1,32 +1,29 @@
 <template>
   <div>
     <div class="layout-content-header">
-      可用区管理
-    </div>
-    <div class="search-style"
-         style="width: 97%;margin: 20px auto;display: flex;justify-content: space-between">
-      <button
-        v-if="$can('platform.zone.create')"
-        class="dao-btn has-icon blue"
-        @click="deployZone"
-      >
-        <svg class="icon">
-          <use xlink:href="#icon_plus-circled"></use>
-        </svg>
-        <span class="text">创建可用区</span>
-      </button>
+      可用区设置
     </div>
     <div class="dao-view-main">
-      <z-table
+      <x-table
         :showRefresh="$can('platform.zone.get')"
         :loading="loadings.zone"
         :data="rows"
-        :total="total"
-        @switch="switchPage"
         @refresh="loadZones"
         :filter-method="filterMethod"
         style="width: 100%;"
       >
+        <template #operation>
+          <button
+            v-if="$can('platform.zone.create')"
+            class="dao-btn has-icon blue"
+            @click="deployZone"
+          >
+            <svg class="icon">
+              <use xlink:href="#icon_plus-circled"></use>
+            </svg>
+            <span class="text">创建可用区</span>
+          </button>
+        </template>
         <el-table-column prop="name" sortable label="可用区">
           <template slot-scope="{ row: zone }">
             <router-link
@@ -39,7 +36,7 @@
             </router-link>
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="clusterUrl" label="集群地址">
+        <el-table-column prop="clusterUrl" label="集群地址">
           <template slot-scope="{ row: zone }">
             <a :href="zone.clusterUrl" target="_blank">
               {{ zone.clusterUrl }}
@@ -50,7 +47,7 @@
           <template slot-scope="{ row: zone }">
             {{ zone.es.esUrl || '-' }}
           </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column prop="available" label="状态">
           <template slot-scope="{ row: zone }">
             <!-- {{ zone.available  }} -->
@@ -99,15 +96,9 @@
             </el-dropdown>
           </template>
         </el-table-column>
-      </z-table>
+      </x-table>
     </div>
   </div>
 </template>
 
 <script src="./zone-list.js"></script>
-<style scoped>
-  .search-style {
-    width: 90%;
-    margin: 20px auto;
-  }
-</style>

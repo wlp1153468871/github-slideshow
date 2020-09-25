@@ -155,7 +155,7 @@ export default {
       const newTheme = new ThemeModel(
         this.productName,
         new AppPictureModel(
-          this.theme.appPicture.loginPicture,
+          this.theme.appPicture.navPicture,
           this.theme.appPicture.navPicture,
           this.theme.appPicture.favicon,
         ),

@@ -3,7 +3,7 @@
  * @param {String} name org and space short_name
  */
 function isNamespaceName(name) {
-  return /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(name);
+  return /^[a-z0-9]([-a-z0-9]*[a-z0-9])?([a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/.test(name);
 }
 
 export default isNamespaceName;

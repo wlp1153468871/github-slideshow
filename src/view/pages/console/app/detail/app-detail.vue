@@ -27,7 +27,6 @@
             :instance="instance"
             :events="events"
             :status="instance.status"
-            :monitor="instance.monitor"
             @goto-jobs-tab="gotoJobsTab"
           >
           </overview-panel>

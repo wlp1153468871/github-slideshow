@@ -165,7 +165,6 @@ export default {
       loading: false,
       selectedNode: null,
       currentNodeKey: '',
-      upPerLoading: false,
     };
   },
 
@@ -285,10 +284,7 @@ export default {
 
     async save() {
       try {
-        const valid = await this.$validator.validateAll();
-        if (!valid) return;
         this.loading = true;
-        this.upPerLoading = true;
         const permission = treeData2permission(cloneDeep(this.treeData));
         await Promise.all([
           api.put(
@@ -304,7 +300,6 @@ export default {
         this.$noty.error('更新失败');
       } finally {
         this.loading = false;
-        this.upPerLoading = false;
       }
     },
   },

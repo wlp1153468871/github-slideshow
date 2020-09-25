@@ -9,7 +9,7 @@
           <p class="delete-notice">
             删除应用需要谨慎操作，这是一个不可逆的操作。
           </p>
-          <button @click="removeConfirm()" class="dao-btn red" :disabled="disableDelete(instance)">
+          <button @click="removeConfirm()" class="dao-btn red">
             删除应用
           </button>
         </template>
@@ -21,7 +21,6 @@
 <script>
 import { RESOURCE_TYPE } from '@/core/constants/resource';
 import InstanceService from '@/core/services/instance.service';
-import isApprove from '@/core/utils/is-approve';
 
 export default {
   name: 'AdvancePanel',
@@ -76,10 +75,6 @@ export default {
           this.ensureRemove();
         }
       });
-    },
-
-    disableDelete(item) {
-      return isApprove(item.status);
     },
   },
 };

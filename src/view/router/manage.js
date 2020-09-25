@@ -159,7 +159,7 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications',
+      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications;platform.node',
       type: 'submenu',
       // hidden: false,
     },

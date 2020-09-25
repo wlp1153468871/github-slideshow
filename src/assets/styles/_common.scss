@@ -343,10 +343,7 @@ ul.text-red {
   line-height: 32px !important;
 }
 
-.required {
-  color: red;
-}
-
-.el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
-  right: 5px !important;
+.el-pagination__total {
+  position: absolute;
+  left: 20px;
 }

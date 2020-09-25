@@ -467,7 +467,7 @@ export default {
     box-sizing: border-box;
     width: 80%;
     margin: 20px auto 40px auto;
-    padding-bottom: 150px;
+    padding-bottom: 80px;
     .daox-setting-layout {
       background: #fff;
     }

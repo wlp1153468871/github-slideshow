@@ -84,7 +84,6 @@ export default {
       TABS,
       instance: {},
       yaml: '',
-      cloneYaml: '',
       dialogConfigs: {
         editYaml: { visible: false },
       },
@@ -192,15 +191,11 @@ export default {
       if (this.$can('serviceInstance.update')) {
         ApplicationService.getInstanceYaml(this.instanceId).then(yaml => {
           this.yaml = yaml;
-          this.cloneYaml = yaml;
         });
       }
     },
 
     onUpdateYaml(yaml) {
-      if (this.yaml === this.cloneYaml) {
-        return;
-      }
       this.loadings.updateByYaml = true;
       ApplicationService.updateInstanceYaml(this.instanceId, yaml)
         .then(() => {

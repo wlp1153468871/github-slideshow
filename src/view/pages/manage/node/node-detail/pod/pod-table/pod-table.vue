@@ -1,5 +1,5 @@
 <template>
-  <div class="pod-table">
+  <div class="node-pod-table">
     <div class="table-toolbar">
       <div class="table-toolbar-left">
         <template v-if="deleteable">
@@ -21,6 +21,7 @@
       <div class="table-toolbar-right">
         <div style="display: flex; justify-content: center; align-items: center;">
           <el-input
+            class="node-pods-input"
             style="width: 200px;"
             size="small"
             v-model="filterKey"
@@ -55,7 +56,11 @@
       </el-table-column>
       <el-table-column min-width="230px" prop="metadata.name" sortable label="容器组">
         <template slot-scope="{ row: pod }">
-          <router-link :to="{ name: 'manage.node.detail.pods.detail', params: { podName: pod.metadata.name, namespace: pod.metadata.namespace } }">
+          <router-link
+            :to="{
+            name: 'manage.node.detail.pods.detail',
+            params: { podName: pod.metadata.name,
+             namespace: pod.metadata.namespace } }">
             {{ pod.metadata.name }}
           </router-link>
           <span v-if="isDebugPod(pod)">
@@ -135,13 +140,12 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      hide-on-single-page
       background
       :disabled="loading"
       :page-sizes="[10, 30, 50]"
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
-      layout="sizes, prev, pager, next"
+      layout="total, sizes, prev, pager, next"
       :total="totalPages"
     >
     </el-pagination>
@@ -243,7 +247,7 @@ export default {
 </script>
 
 <style lang="scss">
-.pod-table {
+.node-pod-table {
   .selection-info {
     margin-left: 10px;
     font-size: 13px;
@@ -266,6 +270,13 @@ export default {
         color: #f1483f;
       }
     }
+  }
+  .el-pagination__total,
+  .node-pods-input {
+    left: 240px !important;
+  }
+  .node-pods-input {
+    position: absolute;
   }
 }
 </style>
