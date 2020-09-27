@@ -67,10 +67,6 @@ export default {
     ...mapState(['space', 'zone', 'isFullscreened']),
   },
 
-  created() {
-    console.log(this.pod, 'terminal');
-  },
-
   mounted() {
     window.onresize = () => {
       this.sizeTerminal();

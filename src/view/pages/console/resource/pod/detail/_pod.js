@@ -93,10 +93,8 @@ export default {
     getPod(initial = false) {
       const { podName } = this;
       return PodService.get({ podName }).then(pod => {
-        console.log(pod, 'get response')
-        this.pod = pod.originData; // 得到一个对象
-        if (initial) this.containerTerminals = this.makeTerminals(); // 得到一个数组
-        console.log(this.containerTerminals, 'containerTerminals')
+        this.pod = pod.originData;
+        if (initial) this.containerTerminals = this.makeTerminals();
         this.updateContainersYet(this.pod);
       });
     },
@@ -164,7 +162,6 @@ export default {
         const thisContainerStatus = find(this.pod.status.containerStatuses, {
           name: container.name,
         });
-        // console.log(thisContainerStatus, 'heyanfenthisContainerStatus'); // 一个对象
         const thisContainerState = this.getState(thisContainerStatus);
 
         terminals.push({
@@ -176,7 +173,6 @@ export default {
       });
 
       const currentlyVisible = head(terminals);
-      console.log(currentlyVisible, 'currentlyVisibleFirst');
       currentlyVisible.isVisible = true;
       currentlyVisible.isUsed = true;
 

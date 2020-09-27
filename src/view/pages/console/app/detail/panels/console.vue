@@ -96,7 +96,7 @@ export default {
       podName: this.pods[0].metadata.name,
       terminals: {},
       loading: true,
-      showConsole: true,
+      showConsole: false,
     };
   },
 
@@ -113,18 +113,17 @@ export default {
       },
       immediate: true,
     },
-    // terminals: {
-    //   handler(newVal) {
-    //     console.log(newVal, 'hello');
-    //     if (!newVal.isUsed) {
-    //       this.showConsole = true;
-    //     } else {
-    //       this.showConsole = false;
-    //     }
-    //   },
-    //   immediate: true,
-    //   deep: true,
-    // },
+    terminals: {
+      handler(newVal) {
+        if (!newVal.isUsed) {
+          this.showConsole = true;
+        } else {
+          this.showConsole = false;
+        }
+      },
+      // immediate: true,
+      deep: true,
+    },
   },
 
   computed: {
@@ -158,15 +157,13 @@ export default {
       return PodService.get({ podName }).then(pod => {
         this.pod = pod.originData;
         this.pod.status = pod.originData.status.phase;
-        // if (initial) this.containerTerminals = this.makeTerminals(); // 得到一个数组
-        // this.updateContainersYet(this.pod);
         this.terminals.containerName = pod.originData.spec.containers[0].name;
         this.terminals.isVisible = false;
         this.terminals.isUsed = true;
         this.terminals.containerState = '';
         this.terminals.status = pod.originData.status.phase;
         this.loading = false;
-        this.showConsole = false;
+        // this.showConsole = false;
       });
     },
     getState(containerStatus) {
@@ -189,11 +186,10 @@ export default {
      * @param newTerm
      */
     onTerminalSelectChange(newTerm) {
-      console.log(newTerm);
       // Make all terminals invisible (Because we don't have a pointer
       // to the terminal that is currently visible)
       this.podName = newTerm;
-      this.showConsole = true;
+      // this.showConsole = true;
       this.terminals = {
         isVisible: false,
         isUsed: false,
