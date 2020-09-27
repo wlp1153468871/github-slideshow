@@ -167,7 +167,7 @@ export default {
       this.loading = true;
 
       const query = {
-        zone: this.zone.id,
+        zone: this.zone.id || this.zoneId,
         current: currentpage,
         goto,
         ...this.getSearchQuery(),
@@ -178,7 +178,6 @@ export default {
           this.namespace,
           this.podName,
           this.logOptions.container,
-          this.zoneId,
           query,
         )
           .then(terminalHistories => {
