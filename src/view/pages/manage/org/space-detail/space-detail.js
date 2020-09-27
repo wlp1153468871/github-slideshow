@@ -45,7 +45,7 @@ export default {
 
     return {
       SIDE_BAR,
-      activeTab: SIDE_BAR.OVERVIEW,
+      activeTab: SIDE_BAR.USER,
       spaceId: '',
       orgId: '',
       space: { name: '' },

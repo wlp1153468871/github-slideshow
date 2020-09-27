@@ -6,13 +6,11 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <!-- 用户列表 -->
-        <z-table
+        <x-table
           :showRefresh="$can('platform.user.get')"
           :loading="loadings.users"
           :data="rows"
-          :total="total"
           @refresh="loadUsers"
-          @switch="switchPage"
           :filter-method="filterMethod"
           style="width: 100%;"
         >
@@ -126,7 +124,7 @@
               </el-dropdown>
             </template>
           </el-table-column>
-        </z-table>
+        </x-table>
       </div>
     </div>
 

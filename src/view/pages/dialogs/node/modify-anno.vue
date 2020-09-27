@@ -39,7 +39,13 @@ export default {
           {
             type: 'input',
             name: 'annotation',
-            validate(_old) {
+            validate(_old, _new) {
+              const tmp = _.countBy(_new, 'annotation');
+
+              if (tmp[_old.annotation] > 1) {
+                return '键不可以重复';
+              }
+
               const reg = new RegExp('^([A-Za-z0-9][-A-Za-z0-9_./]*)?[A-Za-z0-9]$');
               if (!_old.annotation) {
                 return '键不能为空';
@@ -47,12 +53,22 @@ export default {
               if (!reg.exec(_old.annotation)) {
                 return '包含非法字符';
               }
+              if (_old.annotation.length > 63) {
+                return '值不能超过63个字符';
+              }
               return true;
             },
           },
           {
             type: 'input',
             name: 'value',
+            validate(_old) {
+              const reg = new RegExp('^[A-Za-z0-9]([A-Za-z0-9]*[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9]*[A-Za-z0-9])?)*$');
+              if (_old.value && !reg.exec(_old.value)) {
+                return '包含非法字符';
+              }
+              return true;
+            },
           },
         ],
       },

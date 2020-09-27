@@ -74,13 +74,7 @@
               </x-table-status>
             </template>
           </el-table-column>
-          <el-table-column
-            fixed="right"
-            label=""
-            align="center"
-            header-align="center"
-            width="56"
-            v-if="$can('serviceInstance.delete')">
+          <el-table-column fixed="right" label="" align="center" header-align="center" width="56">
             <template slot-scope="{ row: instances }">
               <el-dropdown @command="handleOperate($event, instances)" trigger="click">
                 <span>
@@ -91,6 +85,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     class="dropdown-item-error"
+                    v-if="$can('serviceInstance.delete')"
                     icon="el-icon-delete"
                     :disabled="disableDelete(instances)"
                     command="delete"
@@ -133,7 +128,7 @@
                 v-model.trim="name"
                 @blur="checkIsDuplicateName()"
                 data-vv-as="应用名"
-                v-validate="'required|dns_1035_label|min:6|max:20'"
+                v-validate="'required|namespace_code|dns_1035_label|min:6|max:20'"
                 :message="veeErrors.first('name')"
                 :status="veeErrors.has('name') ? 'error' : ''"
               >

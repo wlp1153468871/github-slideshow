@@ -143,7 +143,6 @@ export default {
           this.$noty.success('成功修改用户信息');
         })
         .catch(() => {
-          this.loadUserInfo();
           this.$noty.error('修改用户信息失败，请稍后再试');
         });
     },

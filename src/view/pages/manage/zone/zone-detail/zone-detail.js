@@ -44,7 +44,7 @@ export default {
       syncType: 'catalog',
       isSyncing: false,
       selectedBroker: null,
-      currentTab: TABS.APPLICATION,
+      currentTab: TABS.BINDS,
       loading: true,
       showAdd: true, // 是否是新增应用页面
     };

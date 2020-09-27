@@ -6,7 +6,7 @@
     <div class="dao-view-main">
       <div class="dao-view-content">
         <x-table
-          :data="rows"
+          :data="tCurrentRows"
           :loading="loadings.approvalList"
           :filterMethod="filterMethod"
           @refresh="loadApprovalList"

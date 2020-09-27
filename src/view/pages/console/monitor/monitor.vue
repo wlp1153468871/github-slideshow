@@ -26,11 +26,7 @@ export default {
   name: 'Monitor',
 
   props: {},
-  created() {
-    if (!this.$can('space.monitor.view')) {
-      this.$noty.error('您当前无权查看监控，请打开可用区权限。');
-    }
-  },
+
   data() {
     return {
       resource: {
