@@ -91,7 +91,6 @@
               <span v-if="pod.spec.containers.length === 1">
                 <label>Container:</label>{{ pod.spec.containers[0].name }}
               </span>
-
               <el-select
                 v-else
                 @change="onTerminalSelectChange"
