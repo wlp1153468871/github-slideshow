@@ -17,63 +17,49 @@
       </div>
 
       <div class="container-detail">
-              <span v-if="pod.spec.containers.length === 1">
-                <label>Container:</label>{{ pod.spec.containers[0].name }}
-              </span>
+        <span v-if="pods.length === 1">
+          <label>Container:</label>{{ pods[0].metadata.name }}
+        </span>
 
-<!--        <el-select-->
-<!--          v-else-->
-<!--          @change="onTerminalSelectChange"-->
-<!--          size="small"-->
-<!--          filterable-->
-<!--          v-model="selectedTerminalContainer"-->
-<!--          value-key="containerName"-->
-<!--          placeholder="Container Name"-->
-<!--        >-->
-<!--          <el-option-->
-<!--            v-for="term in containerTerminals"-->
-<!--            :key="term.containerName"-->
-<!--            :label="term.containerName"-->
-<!--            :value="term"-->
-<!--          >-->
-<!--          </el-option>-->
-<!--        </el-select>-->
-
-<!--        <button-->
-<!--          v-if="pod.metadata.name"-->
-<!--          style="float: right;"-->
-<!--          class="dao-btn blue mini btn-sm"-->
-<!--          @click="dialogs.saveFile = true"-->
-<!--        >-->
-<!--          下载文件-->
-<!--        </button>-->
+        <el-select
+          v-else
+          @change="onTerminalSelectChange"
+          size="small"
+          filterable
+          v-model="selectedTerminalContainer"
+          value-key="containerName"
+          placeholder="Container Name"
+        >
+          <el-option
+            v-for="term in getPods"
+            :key="term.name"
+            :label="term.name"
+            :value="term.name"
+          >
+          </el-option>
+        </el-select>
       </div>
-
-<!--      <div-->
-<!--        v-if="activeTab === TABS.TERMINAL.name"-->
-<!--        class="container-terminal-wrapper"-->
-<!--        :class="{ disconnected: selectedTerminalContainer.status === 'disconnected' }"-->
-<!--      >-->
-<!--        <div v-for="(term, index) in containerTerminals" :key="index">-->
-<!--          <container-terminal-->
-<!--            v-if="term.isUsed"-->
-<!--            v-show="term.isVisible"-->
-<!--            :pod="pod"-->
-<!--            :container="term.containerName"-->
-<!--            :status.sync="term.status"-->
-<!--            :autofocus="true"-->
-<!--            :isManageView='false'-->
-<!--          >-->
-<!--          </container-terminal>-->
-<!--        </div>-->
-<!--      </div>-->
+<!--      容器-->
+      <div class="container-terminal-wrapper">
+        <div>
+          <div v-if="showConsole" class="showConsole">正在加载<h3 class="dot">...</h3></div>
+          <container-terminal
+            v-if="terminals.isUsed"
+            :pod="pod"
+            :container="terminals.containerName"
+            :status.sync="terminals.status"
+            :autofocus="true"
+          >
+          </container-terminal>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { RESOURCE_TYPE } from '@/core/constants/resource';
-import { chunk, nth, includes, find, get as getValue, head, keys } from 'lodash';
+import { get as getValue, head, keys } from 'lodash';
 import PodTable from '@/view/components/resource/pod-table/pod-table';
 import { POLL_INTERVAL } from '@/core/constants/constants';
 import PodService from '@/core/services/pod.service';
@@ -106,43 +92,53 @@ export default {
       noContainersYet: false,
       pod: {},
       containerTerminals: [],
-      selectedTerminalContainer: null,
+      selectedTerminalContainer: this.pods[0].metadata.name,
+      podName: this.pods[0].metadata.name,
+      terminals: {},
+      loading: true,
+      showConsole: true,
     };
   },
 
   created() {
-    this.loading = true;
-    this.getPod(true).finally(() => {
-      this.loading = false;
-      this.poll();
-    });
+    this.getPod();
+  },
+
+  watch: {
+    pods: {
+      handler(newVal) {
+        if (newVal.length === 0) {
+          this.noContainersYet = true;
+        }
+      },
+      immediate: true,
+    },
+    // terminals: {
+    //   handler(newVal) {
+    //     console.log(newVal, 'hello');
+    //     if (!newVal.isUsed) {
+    //       this.showConsole = true;
+    //     } else {
+    //       this.showConsole = false;
+    //     }
+    //   },
+    //   immediate: true,
+    //   deep: true,
+    // },
   },
 
   computed: {
-    deleteable() {
-      return this.$can('pod.delete') && this.canSelect;
-    },
-
-    podsFilteredByKey() {
-      const filterKey = this.filterKey.toLowerCase();
-      return this.pods.filter(pod => pod.metadata.name.toLowerCase().includes(filterKey));
-    },
-
-    paginaPods() {
-      return chunk(this.podsFilteredByKey, this.pageSize);
-    },
-
-    podsInCurrentPage() {
-      return nth(this.paginaPods, this.currentPage - 1);
-    },
-
-    totalPages() {
-      return this.podsFilteredByKey.length;
+    getPods() {
+      const arr = [];
+      this.pods.forEach(item => {
+        arr.push(item.metadata);
+      });
+      return arr;
     },
   },
 
   destroyed() {
-    this.unsetPolling();
+    clearTimeout(this.pollTimer);
   },
 
   methods: {
@@ -155,124 +151,54 @@ export default {
       }, POLL_INTERVAL);
     },
 
-    unsetPolling() {
-      clearTimeout(this.pollTimer);
-    },
-
-    getPod(initial = false) {
+    // 获取pod详情
+    getPod() {
+      this.loading = true;
       const { podName } = this;
       return PodService.get({ podName }).then(pod => {
         this.pod = pod.originData;
-        if (initial) this.containerTerminals = this.makeTerminals();
-        this.updateContainersYet(this.pod);
+        this.pod.status = pod.originData.status.phase;
+        // if (initial) this.containerTerminals = this.makeTerminals(); // 得到一个数组
+        // this.updateContainersYet(this.pod);
+        this.terminals.containerName = pod.originData.spec.containers[0].name;
+        this.terminals.isVisible = false;
+        this.terminals.isUsed = true;
+        this.terminals.containerState = '';
+        this.terminals.status = pod.originData.status.phase;
+        this.loading = false;
+        this.showConsole = false;
       });
     },
-
-    // handleTabClick(tab) {
-    //   const tabName = tab.name;
-    //   if (tabName === TABS.EVENT.name) {
-    //     this.getEvents();
-    //   }
-    // },
-
-    viewYaml() {
-      this.dialogs.view = true;
-    },
-
-    ensureRemove() {
-      this.$tada
-        .confirm({
-          title: `删除 ${this.podName}  `,
-          text: `您确定要删除Pod ${this.podName} 吗？`,
-        })
-        .then(ok => {
-          if (ok) {
-            this.removePod();
-          }
-        });
-    },
-
-    removePod() {
-      const { podName } = this;
-      PodService.delete({ podName }).then(() => {
-        this.$noty.success(`开始执行对 Pod ${this.podName} 的删除操作`);
-        this.goBack();
-      });
-    },
-
-    getEvents() {
-      const { podName } = this;
-      PodService.getEvents({ podName }).then(response => {
-        this.events = getValue(response, 'originData.items');
-      });
-    },
-
-    getContainersRunning(containerStatuses) {
-      let running = 0;
-      if (containerStatuses) {
-        containerStatuses.forEach(v => {
-          if (v.state && v.state.running) {
-            running += 1;
-          }
-        });
-      }
-      return running;
-    },
-
     getState(containerStatus) {
       const state = getValue(containerStatus, 'state', {});
       return head(keys(state));
     },
 
+    // 清洗数据
     makeTerminals() {
-      const terminals = [];
-
-      this.pod.spec.containers.forEach(container => {
-        const thisContainerStatus = find(this.pod.status.containerStatuses, {
-          name: container.name,
-        });
-        const thisContainerState = this.getState(thisContainerStatus);
-
-        terminals.push({
-          containerName: container.name,
-          isVisible: false,
-          isUsed: false,
-          containerState: thisContainerState,
-        });
-      });
-
-      const currentlyVisible = head(terminals);
-      currentlyVisible.isVisible = true;
-      currentlyVisible.isUsed = true;
-
-      this.selectedTerminalContainer = currentlyVisible;
-
-      return terminals;
+      this.terminals = {
+        containerName: this.pod.spec.containers[0].name,
+        isVisible: false,
+        isUsed: false,
+        containerState: '',
+        status: this.pod.status.phase,
+      };
     },
-
-    updateContainersYet(pod) {
-      this.noContainersYet = this.getContainersRunning(pod.status.containerStatuses) === 0;
-    },
-
-    updateTerminals(terminals) {
-      terminals.forEach(term => {
-        const thisContainerStatus = find(this.pod.status.containerStatuses, {
-          name: term.containerName,
-        });
-        term.containerState = this.getState(thisContainerStatus);
-      });
-    },
-
+    /**
+     * 多个pod组成的下拉列表改变时的回调函数
+     * @param newTerm
+     */
     onTerminalSelectChange(newTerm) {
+      console.log(newTerm);
       // Make all terminals invisible (Because we don't have a pointer
       // to the terminal that is currently visible)
-      this.containerTerminals.forEach(term => {
-        term.isVisible = false;
-      });
-
-      newTerm.isVisible = true;
-      newTerm.isUsed = true;
-      this.selectedTerminalContainer = newTerm;
+      this.podName = newTerm;
+      this.showConsole = true;
+      this.terminals = {
+        isVisible: false,
+        isUsed: false,
+      }
+      this.getPod();
     },
   },
 };
@@ -310,5 +236,30 @@ export default {
     label {
       font-weight: 600;
     }
+  }
+  .showConsole {
+    text-align: center;
+    font-size: 25px;
+    color: #318dff;
+    margin-top: 15%;
+  }
+  .dot {
+    display: inline-block;
+    height: 1em;
+    line-height: 1;
+    text-align: left;
+    vertical-align: -.25em;
+    overflow: hidden;
+  }
+  .dot::before {
+    display: block;
+    content: '...\A..\A.\A';
+    /* content: '......'; */
+    white-space: pre-wrap;
+    animation: dot 3s infinite step-start both;
+  }
+  @keyframes dot {
+    33% { transform: translateY(-2em); }
+    66% { transform: translateY(-1em); }
   }
 </style>

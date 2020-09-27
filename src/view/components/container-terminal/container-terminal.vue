@@ -67,6 +67,10 @@ export default {
     ...mapState(['space', 'zone', 'isFullscreened']),
   },
 
+  created() {
+    console.log(this.pod, 'terminal');
+  },
+
   mounted() {
     window.onresize = () => {
       this.sizeTerminal();
@@ -157,10 +161,12 @@ export default {
   },
 
   methods: {
+    // 鼠标按钮释放事件
     copySelectionToClipboard() {
       document.execCommand('Copy');
     },
 
+    // 按键事件
     keydown(event) {
       if (event.keyCode === 13) {
         return true;
