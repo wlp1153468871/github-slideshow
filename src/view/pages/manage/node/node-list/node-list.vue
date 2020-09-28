@@ -16,7 +16,7 @@
         style="width:100%"
       >
         <template #operation v-if='showNodeTitle'>
-          <label class="label-input">可用区</label>
+          <label class="label-input">可用区&nbsp;&nbsp;</label>
           <dao-select
             size="sm"
             v-model="currentZone"
