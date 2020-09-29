@@ -289,19 +289,19 @@
           <div slot="label">是否启用chart仓库</div>
           <div slot="content">
             <dao-radio-group>
-              <dao-radio :label="true" v-model="form.enable_chart">是</dao-radio>
-              <dao-radio :label="false" checked v-model="form.enable_chart">否</dao-radio>
+              <dao-radio :label="true" v-model="form.registry.enable_chart">是</dao-radio>
+              <dao-radio :label="false" v-model="form.registry.enable_chart">否</dao-radio>
             </dao-radio-group>
           </div>
         </dao-setting-item>
       </dao-setting-section>
       <dao-setting-section v-if="showChartRepo">
         <dao-setting-item>
-          <div slot="label">chart仓库名称</div>
+          <div slot="label">镜像仓库名称</div>
           <div slot="content">
             <dao-input
               :status="chartepotatus"
-              v-model="form.chart_repo"
+              v-model="form.registry.chart_repo"
               placeholder="请输入chart仓库名称">
             </dao-input>
           </div>
@@ -501,13 +501,15 @@ export default {
   watch: {
     form: {
       handler(newVal) {
-        if (newVal.enable_chart) {
+        if (newVal.registry.enable_chart) {
           this.showChartRepo = true;
         } else {
           this.showChartRepo = false;
+          this.form.registry.chart_repo = '';
         }
       },
       deep: true,
+      immediate: true,
     },
   },
   computed: {
@@ -520,7 +522,7 @@ export default {
       },
     },
     chartepotatus() {
-      if (this.form.chart_repo) {
+      if (this.form.registry.chart_repo !== '') {
         return '';
       }
       return 'error';

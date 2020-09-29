@@ -43,7 +43,7 @@ export default {
 <style scoped lang="scss">
 .overView {
   padding: 24px 20px;
-  background-color: #ffaa00;
+  /*background-color: #FBFCFD;*/
   min-width: 1080px;
   .overview-head {
     display: flex;
