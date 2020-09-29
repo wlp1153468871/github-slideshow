@@ -433,7 +433,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .layout{
   overflow: auto !important;
 }
@@ -477,6 +477,10 @@ export default {
         color: red;
       }
     }
+    /* .dao-setting-label::after {
+      content: '* ';
+      color: red;
+    } */
     .base-info {
       width: 100%;
       margin-left: 20px;
