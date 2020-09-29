@@ -1,6 +1,6 @@
 <template>
     <div class="partFirst">
-      <div ref="lineChart" style="width: 528px;height: 280px"></div>
+      <div class="lineChart" ref="lineChart" style="width: 528px;height: 280px"></div>
     </div>
 </template>
 
@@ -19,6 +19,11 @@ export default {
     lineChart.setOption({
       title: {
         text: '操作历史记录',
+        textStyle: {
+          color: '#3D444F',
+          fontFamily: '苹方-简 中粗体',
+          fontSize: 12,
+        },
       },
       xAxis: [
         {
@@ -48,6 +53,9 @@ export default {
 
 <style scoped lang="scss">
 .partFirst {
-
+  .lineChart {
+    border: 1px solid #E4E7ED;
+    background-color: #fff;
+  }
 }
 </style>
