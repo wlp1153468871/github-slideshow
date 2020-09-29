@@ -284,6 +284,29 @@
           </div>
         </dao-setting-item>
       </dao-setting-section>
+      <dao-setting-section>
+        <dao-setting-item>
+          <div slot="label">是否启用chart仓库</div>
+          <div slot="content">
+            <dao-radio-group>
+              <dao-radio :label="true" v-model="form.enable_chart">是</dao-radio>
+              <dao-radio :label="false" checked v-model="form.enable_chart">否</dao-radio>
+            </dao-radio-group>
+          </div>
+        </dao-setting-item>
+      </dao-setting-section>
+      <dao-setting-section v-if="showChartRepo">
+        <dao-setting-item>
+          <div slot="label">chart仓库名称</div>
+          <div slot="content">
+            <dao-input
+              :status="chartepotatus"
+              v-model="form.chart_repo"
+              placeholder="请输入chart仓库名称">
+            </dao-input>
+          </div>
+        </dao-setting-item>
+      </dao-setting-section>
 
       <template slot="footer">
         <div class="cluster-test">
@@ -389,6 +412,8 @@
 import { pick } from 'lodash';
 import { TEST_STATUS } from '@/core/constants/constants';
 import ZoneService from '@/core/services/zone.service';
+import DaoSettingSection from '../../../../../components/daox/setting-layout/setting-section';
+import DaoSettingItem from '../../../../../components/daox/setting-layout/setting-item';
 
 const REGISTRY_STATUS = {
   UNTEST: 'untest',
@@ -399,7 +424,7 @@ const REGISTRY_STATUS = {
 
 export default {
   name: 'config-panel',
-
+  components: { DaoSettingItem, DaoSettingSection },
   props: {
     value: { type: Object, default: () => ({}) },
     operationLabel: { type: String },
@@ -469,9 +494,22 @@ export default {
       routeValid: null,
       registryStatus: REGISTRY_STATUS.UNTEST,
       registryErrorMessage: '',
+      showChartRepo: false,
     };
   },
 
+  watch: {
+    form: {
+      handler(newVal) {
+        if (newVal.enable_chart) {
+          this.showChartRepo = true;
+        } else {
+          this.showChartRepo = false;
+        }
+      },
+      deep: true,
+    },
+  },
   computed: {
     form: {
       get() {
@@ -480,6 +518,12 @@ export default {
       set(val) {
         this.$emit('input', val);
       },
+    },
+    chartepotatus() {
+      if (this.form.chart_repo) {
+        return '';
+      }
+      return 'error';
     },
   },
 
@@ -630,7 +674,13 @@ export default {
       flex-shrink: 0;
     }
   }
-
+  .dao-radio-group {
+    display: flex;
+    justify-content: start;
+    div {
+      margin-right: 10px;
+    }
+  }
   .success-icon {
     fill: $green;
   }

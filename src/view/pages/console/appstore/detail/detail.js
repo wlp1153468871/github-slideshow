@@ -57,6 +57,7 @@ export default {
       size: 10,
       currentPage: 1,
       total: 0,
+      baseUrl: '', // 当前路径
     };
   },
 
@@ -70,7 +71,6 @@ export default {
 
   created() {
     this.activeName = this.$route.query.activeName || 'first';
-
     this.getApp();
     this.getCategory();
     this.getInstances();
@@ -109,6 +109,14 @@ export default {
   },
 
   methods: {
+    // 拼接url
+    getUrl(url) {
+      const local = window.location;
+      if (process.env.NODE_ENV === 'development') {
+        return `${process.env.VUE_APP_API_URL}/${url}`;
+      }
+      return `${local.origin}/${url}`;
+    },
     stateClass(status) {
       return this.stateMap[status] || '';
     },
