@@ -1,0 +1,114 @@
+<template>
+  <div class="informationBlock">
+    <div class="block-name">应用</div>
+    <div class="block-info" v-if="needType == 'number'">
+      <div class="blockInfo-num">
+        <p class="number">62</p>
+        <p class="text">全部应用数</p>
+      </div>
+      <div class="blockInfo-image" v-if="needImg">
+        <img src="@/assets/images/overview/stack-fill.png" alt="stack"/>
+      </div>
+    </div>
+    <div class="block-step" v-if="needType == 'step'">
+      <p class="step-text">使用率22%，共130个</p>
+      <dao-progress type="usage" :progress="0.22"></dao-progress>
+      <div class="step-direction">
+        <div><span class="deep-dot"></span>已使用28个</div>
+        <div><span class="shallow-dot"></span>可用101个</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'information',
+  props: {
+    needImg: {
+      type: Boolean,
+      default: false,
+    },
+    needType: {
+      type: String,
+      default: 'number',
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.informationBlock {
+  padding: 10px;
+  border: 1px solid #F1F3F6;
+  font-size: 12px;
+  background-color: #FFFFFF;
+  font-family: 苹方-简 常规体;
+  .block-name {
+    color: #3D444F;
+    font-weight: 600;
+    border-bottom: 2px solid #EDF0F5;
+    padding: 10px;
+  }
+  .block-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    .blockInfo-num {
+      .number {
+        color: #3D444F;
+        font-size: 40px;
+        font-weight: 600;
+      }
+      .text {
+        color: #9BA3AF;
+        font-family: 苹方-简 常规体;
+        font-size: 14px;
+      }
+    }
+    .blockInfo-image {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 4px solid #EDF0F5;
+      /*text-align: center;*/
+      /*vertical-align: middle;*/
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 21px;
+        height: 21px;
+      }
+    }
+  }
+  .block-step {
+    padding: 16px;
+    text-align: center;
+    .step-text {
+      font-size: 14px;
+      color: #3D444F;
+      margin-bottom: 10px;
+    }
+    .step-direction {
+      font-size: 12px;
+      color: #9BA3AF;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      .deep-dot, .shallow-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 5px;
+      }
+      .deep-dot {
+        background-color: #3890FF;
+      }
+      .shallow-dot {
+        background-color: #EBF3FF;
+      }
+    }
+  }
+}
+</style>

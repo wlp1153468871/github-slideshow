@@ -10,7 +10,7 @@
       </breadcrumb>
     </div>
     <div class="detail-title">
-      <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+      <img :src="getUrl(appInfo.pictureUrl)" class="icon-size" v-if="appInfo.pictureId"/>
       <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
       <div class="title-name">{{appInfo.name}}({{appInfo.zoneName}})</div>
       <div class="title-desc">

@@ -13,7 +13,8 @@
       <div class="left">
         <div class="left-header">
           <div style="padding: 20px;">
-            <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+            <img :src="getUrl(appInfo.pictureUrl)"
+                 class="icon-size" v-if="appInfo.pictureId"/>
             <img src="@/assets/images/card-Default.png" class="icon-size" v-else/>
             <div class="header-text">{{appInfo.name}}</div>
           </div>

@@ -2,7 +2,7 @@
   <div class="itme-container" @click="linkToDetail">
     <div class="icon">
       <span class="icon-left">
-        <img :src="`http://jizhidev.k8s01.ats${itemData.pictureUrl}`" class="icon-item" v-if="itemData.pictureId"/>
+        <img :src="getUrl(itemData.pictureUrl)" class="icon-item" v-if="itemData.pictureId"/>
         <img src="@/assets/images/card-Default.png" class="icon-item"  v-else/>
       </span>
       <div class="icon-right">
@@ -58,6 +58,14 @@ export default {
           Id: this.itemData.id,
         },
       });
+    },
+    // 拼接url
+    getUrl(url) {
+      const local = window.location;
+      if (process.env.NODE_ENV === 'development') {
+        return `${process.env.VUE_APP_API_URL}/${url}`;
+      }
+      return `${local.origin}/${url}`;
     },
   },
 };
