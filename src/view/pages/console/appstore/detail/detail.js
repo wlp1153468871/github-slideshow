@@ -113,9 +113,9 @@ export default {
     getUrl(url) {
       const local = window.location;
       if (process.env.NODE_ENV === 'development') {
-        return `${process.env.VUE_APP_API_URL}/${url}`;
+        return `${process.env.VUE_APP_API_URL}${url}`;
       }
-      return `${local.origin}/${url}`;
+      return `${local.origin}${url}`;
     },
     stateClass(status) {
       return this.stateMap[status] || '';
