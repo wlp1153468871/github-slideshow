@@ -155,6 +155,7 @@ export default {
       AppStoreService
         .getOperator(this.zone.id, this.space.id, this.$route.params.instanceid)
         .then(res => {
+          this.operator = [];
           if (res) {
             console.log(res);
             res.forEach(item => {

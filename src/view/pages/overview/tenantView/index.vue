@@ -16,7 +16,9 @@
         </dao-select>
       </div>
     </div>
-    <part-first></part-first>
+    <div class="partOne">
+      <part-first></part-first>
+    </div>
   </div>
 </template>
 
@@ -56,6 +58,9 @@ export default {
     .head-search {
       font-size: 14px;
     }
+  }
+  .partOne {
+    margin-top: 20px;
   }
 }
 </style>
