@@ -39,11 +39,11 @@ export default {
 
 <style scoped lang="scss">
 .informationBlock {
-  padding: 10px;
   border: 1px solid #F1F3F6;
   font-size: 12px;
   background-color: #FFFFFF;
   font-family: 苹方-简 常规体;
+  box-sizing: content-box;
   .block-name {
     color: #3D444F;
     font-weight: 600;
@@ -53,11 +53,11 @@ export default {
   .block-info {
     display: flex;
     justify-content: space-between;
-    padding: 16px;
+    padding: 0px 16px 15px 16px;
     .blockInfo-num {
       .number {
         color: #3D444F;
-        font-size: 40px;
+        font-size: 30px;
         font-weight: 600;
       }
       .text {
