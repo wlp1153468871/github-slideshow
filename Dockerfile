@@ -9,11 +9,13 @@ WORKDIR /app
 # copy both 'package.json' and 'package-lock.json' (if available)
 COPY .npmrc ./
 COPY package*.json ./
+COPY yarn.lock ./
 
 USER root
 
 # install project dependencies
-RUN npm ci
+# RUN npm ci
+RUN npm install
 
 COPY . /app/
 

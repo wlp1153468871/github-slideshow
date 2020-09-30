@@ -191,6 +191,17 @@
         >镜像仓库配置</template
       >
 
+      <dao-setting-section v-if="zone.registry.enable_chart">
+        <dao-setting-item>
+          <template #label
+            >镜像仓库名称</template
+          >
+          <template #content>
+            {{ zone.registry.chart_repo }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+
       <dao-setting-section>
         <dao-setting-item>
           <template #label
@@ -231,6 +242,18 @@
           >
           <template #content>
             {{ zone.registry.password }}
+          </template>
+        </dao-setting-item>
+      </dao-setting-section>
+
+      <dao-setting-section>
+        <dao-setting-item>
+          <template #label
+            >Chart 激活状态</template
+          >
+          <template #content>
+            <div v-if="zone.registry.enable_chart">已激活</div>
+            <div v-else>未激活</div>
           </template>
         </dao-setting-item>
       </dao-setting-section>

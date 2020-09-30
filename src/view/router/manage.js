@@ -1,5 +1,7 @@
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
 import RouteView from '@/view/layout/route-view';
+import NoSideContainer from '@/view/pages/console/form-container/container.vue';
+import ZoneNewApp from '@/view/pages/manage/zone/zone-detail/panels/new-app.vue';
 
 const QuotaField = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/quota/quota-field/quota-field.vue');
@@ -39,6 +41,12 @@ const AuthContainer = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/container.vue');
 const AuthRoles = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/roles.vue');
+const Application = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
+const ApplicationDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
+const AdminInstance = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/instance/instance.vue');
 
 // preference
 const HomeSetting = () =>
@@ -47,12 +55,15 @@ const Preference = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/preference/preference.vue');
 const Appearance = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appearance/appearance.vue');
+const AppStore = () =>
+ import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
 const SSO = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/sso/sso.vue');
 const HelpInfoConfig = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/help-info-config/help-info-config.vue');
 const DeployZone = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/deploy/deploy.vue');
+
 
 export default [
   {
@@ -63,7 +74,7 @@ export default [
       hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
-      code: 'platform.organization;platform.user;platform.rolePermission',
+      code: 'platform.organization;platform.user;platform.rolePermission;platform.applications',
       type: 'submenu',
     },
     children: [
@@ -74,7 +85,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization',
+          code: 'platform.organization;platform.applications',
           hidden: false,
         },
         children: [],
@@ -148,8 +159,9 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.node',
+      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications;platform.node',
       type: 'submenu',
+      // hidden: false,
     },
     children: [
       {
@@ -169,6 +181,36 @@ export default [
         component: ServiceDetail,
         meta: {
           activeMenu: 'manage.service.list',
+          hidden: true,
+        },
+      },
+      // 应用管理
+      {
+        path: 'application',
+        name: 'manage.application',
+        component: Application,
+        meta: {
+          title: '应用模板管理',
+          icon: '#icon_service',
+          code: 'platform.applications',
+          hidden: false,
+        },
+      },
+      {
+        path: 'application/detail/:id',
+        name: 'application.detail',
+        component: ApplicationDetail,
+        meta: {
+          activeMenu: 'manage.application',
+          hidden: true,
+        },
+      },
+      {
+        path: 'application/:appid/instance/:instanceid',
+        name: 'application.instance',
+        component: AdminInstance,
+        meta: {
+          activeMenu: 'manage.application',
           hidden: true,
         },
       },
@@ -234,6 +276,29 @@ export default [
       },
     ],
   },
+  // 无左侧导航栏
+  {
+    path: 'zone',
+    redirect: {
+      name: 'manage.zone.newapp',
+    },
+    component: NoSideContainer,
+    meta: {
+      hidden: true,
+    },
+    // ZoneNewApp
+    children: [
+      {
+        path: 'newapp/:id',
+        name: 'manage.zone.newapp',
+        component: ZoneNewApp,
+        meta: {
+          activeMenu: 'manage.zone.list',
+          hidden: true,
+        },
+      },
+    ],
+  },
   {
     path: 'setting',
     name: 'manage.preference',
@@ -262,6 +327,16 @@ export default [
         path: 'appearance',
         name: 'manage.preference.appearance',
         component: Appearance,
+        meta: {
+          hidden: true,
+          code: 'platform.settings',
+          activeMenu: 'manage.preference',
+        },
+      },
+      {
+        path: 'appstore',
+        name: 'manage.preference.appstore',
+        component: AppStore,
         meta: {
           hidden: true,
           code: 'platform.settings',

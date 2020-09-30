@@ -58,7 +58,7 @@
           <tbody>
             <tr class="log-line" v-for="(log, index) in currentLogs" :key="index">
               <td class="log-line-number" :data-line-number="index + 1"></td>
-              <td class="log-line-text">{{ log }}</td>
+              <td class="log-line-text"><span v-html="log">{{log}}</span></td>
             </tr>
           </tbody>
         </table>
@@ -248,8 +248,17 @@ export default {
         this.logs = [];
         this.currentLogs = [];
       } else {
-        // eslint-disable-next-line no-underscore-dangle
-        this.logs = logs.map(item => item._source.message);
+        this.logs = logs.map(item => {
+          if (item.highlight !== null) {
+            const regex = new RegExp(this.filters.keyword, 'g');
+            // eslint-disable-next-line no-underscore-dangle
+            const replaceStr = item._source.message.replace(regex, `<span class="highlight">${this.filters.keyword}</span>`);
+            console.log(regex, replaceStr);
+            return replaceStr;
+          }
+          // eslint-disable-next-line no-underscore-dangle
+          return item._source.message;
+        });
       }
       this.pagination = new Pagination(this.logs, this.limitLogs, 0);
       this.currentLogs = this.pagination.gotoPage(0);
@@ -395,6 +404,9 @@ export default {
         min-width: 0;
         line-height: 20px;
         font-weight: 900;
+      }
+      .highlight {
+        color: #FFD100;
       }
     }
   }

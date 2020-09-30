@@ -56,6 +56,8 @@ import OverflowTooltip from './overflow-tooltip/overflow-tooltip';
 import DAside from './aside';
 import { PercentCircle, PieChart, ProgressDount } from './charts';
 import SpaceZone from './space-zone/space-zone';
+import Marked from './marked/marked';
+import AppstoreTable from './appstore_table/appstore_table';
 
 const components = {
   ...Daox,
@@ -119,6 +121,8 @@ const components = {
   XTableStatus,
   OverflowTooltip,
   SpaceZone,
+  Marked,
+  AppstoreTable,
 };
 
 function install(Vue) {

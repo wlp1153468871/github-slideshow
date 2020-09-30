@@ -79,20 +79,18 @@ class NodeService {
     });
   }
 
-  ListTerminalHistories(namespace: string, podName: string, containerName: string, zoneId: string, query: object) {
+  ListTerminalHistories(namespace: string, podName: string, containerName: string, query: object) {
     return this.api.get(`/namespaces/${namespace}/pods/${podName}/containers/${containerName}/cmd`,
-    {
-      zone: zoneId,
       query,
-    });
+      );
   }
 
-  executePodsCmd(namespace: string, podName: string, containerName: string, zoneId: string, query: object,) {
+  executePodsCmd(namespace: string, podName: string, containerName: string, zoneId: string, query: object) {
     return this.api.post(`/namespaces/${namespace}/pods/${podName}/containers/${containerName}/cmd`,
       query,
       {
         params: { zone: zoneId },
-      },);
+      });
   }
 
   getPodShell(namespace: string, podName: string, containerName: string, zoneId: string) {

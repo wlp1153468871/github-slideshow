@@ -16,7 +16,7 @@ function dateFromFilter(begin, end, flat) {
     targetBegin = dayjs.unix(begin);
     targetEnd = end ? dayjs.unix(end) : dayjs();
   }
-  return targetEnd.from(targetBegin);
+  return targetEnd.from(targetBegin, true);
 }
 
 export default dateFromFilter;

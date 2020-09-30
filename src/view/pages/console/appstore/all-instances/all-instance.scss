@@ -1,0 +1,49 @@
+#allInstances {
+  background: #F1F3F6;
+  .header {
+    background: #D5DBE3;
+    padding-left: 10px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    font-family: SFProText-Regular,SFProText;
+    font-weight: 400;
+    color: #595F69;
+    border-bottom: 1px solid #D5DBE3;
+  }
+  .search {
+    padding: 20px 0 15px 20px;
+  }
+  .fresh {
+    float: right;
+    padding: 20px 20px 15px 0;
+  }
+  .table {
+    .success {
+      color: #25D473;
+    }
+    .error {
+      color: #F25A52;;
+    }
+    .warning {
+      color: #F8BA3F;
+    }
+  }
+  .footer {
+    height: 40px;
+    border-right: 1px solid #E4E7ED;
+    border-left: 1px solid #E4E7ED;
+    border-bottom: 1px solid #E4E7ED;
+    background: #fff;
+    .page {
+      float: left;
+      height: 14px;
+      line-height: 14px;
+      padding: 12px 0 0 10px;
+      font-size: 14px;
+      font-family: PingFangSC-Regular,PingFang SC;
+      font-weight: 400;
+      color: #9BA3AF;
+    }
+  }
+}
