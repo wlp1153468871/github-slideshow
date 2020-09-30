@@ -191,7 +191,7 @@
         >镜像仓库配置</template
       >
 
-      <dao-setting-section>
+      <dao-setting-section v-if="zone.registry.enable_chart">
         <dao-setting-item>
           <template #label
             >镜像仓库名称</template

@@ -109,20 +109,19 @@ export default {
       AppStoreService
         .deleteInstance(this.zone.id, this.space.id,
           this.$route.params.appid, this.$route.params.instanceid)
-        .then(res => {
-          if (res) {
-            this.$noty.success('实例删除成功');
-            this.$router.push({
-              name: 'appstore.detail',
-              params: {
-                Id: this.$route.params.appid,
-              },
-            });
-          } else {
-            this.$noty.error('实例删除失败');
-            this.getOperator();
-            this.getInstanceOne();
-          }
+        .then(() => {
+          this.$noty.success('实例删除成功');
+          this.$router.push({
+            name: 'appstore.detail',
+            params: {
+              Id: this.$route.params.appid,
+            },
+          });
+        })
+        .catch((err) => {
+          console.log(err)
+          this.getOperator();
+          this.getInstanceOne();
         });
     },
     // 获取实例详情
@@ -154,9 +153,9 @@ export default {
     // 获取操作
     getOperator() {
       AppStoreService
-        .getOperator(this.zone.id, this.space.id, this.$route.params.appid,
-          this.$route.params.instanceid)
+        .getOperator(this.zone.id, this.space.id, this.$route.params.instanceid)
         .then(res => {
+          this.operator = [];
           if (res) {
             console.log(res);
             res.forEach(item => {

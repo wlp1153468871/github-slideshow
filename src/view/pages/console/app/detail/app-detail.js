@@ -26,7 +26,7 @@ import Console from './panels/console';
 
 const TABS = {
   OVERVIEW: '总览',
-  // CONSOLE: '控制台',
+  CONSOLE: '控制台',
   LOG: '实时日志',
   OFFLINE_LOG: '离线日志',
   DEPLOYMENT: 'Deployment',

@@ -61,6 +61,10 @@ import ProductCheckout from '@/view/pages/console/product/checkout/checkout.vue'
 import Gateway from '@/view/pages/console/gateway/gateway';
 
 import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
+
+// import Dashboard from '@/view/pages/overview/tenantView/index.vue';
+// test
+// import Dashboard from '@/view/pages/overview/components/newsStep.vue';
 import Registry from '@/view/pages/console/registry/registry.vue';
 import RegistryTag from '@/view/pages/console/registry/detail/registryTag.vue';
 
