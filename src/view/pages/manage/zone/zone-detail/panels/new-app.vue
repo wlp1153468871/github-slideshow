@@ -369,11 +369,17 @@ export default {
       if (this.pictureId === '') {
         this.$noty.error('模板图标为必传');
         return;
+      } else if (this.provider === '') {
+        this.$noty.error('供应商不能为空');
+        return;
       } else if (this.appType === '') {
         this.$noty.error('服务类型不能为空');
         return;
       } else if (this.category.length === 0) {
         this.$noty.error('分类不能为空');
+        return;
+      } else if (this.description.length > 200) {
+        this.$noty.error('描述的字符长度不能大于200');
         return;
       }
       const formData = {
@@ -479,6 +485,9 @@ export default {
       font-weight: 600;
       font-size: 16px;
       margin-left: 15px;
+    }
+    .body {
+      padding: 20px;
     }
   }
   .newApp-box {
