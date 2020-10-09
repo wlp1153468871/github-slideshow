@@ -79,12 +79,10 @@ class NodeService {
     });
   }
 
-  ListTerminalHistories(namespace: string, podName: string, containerName: string, zoneId: string, query: object) {
+  ListTerminalHistories(namespace: string, podName: string, containerName: string, query: object) {
     return this.api.get(`/namespaces/${namespace}/pods/${podName}/containers/${containerName}/cmd`,
-    {
-      zone: zoneId,
       query,
-    });
+      );
   }
 
   executePodsCmd(namespace: string, podName: string, containerName: string, zoneId: string, query: object) {
