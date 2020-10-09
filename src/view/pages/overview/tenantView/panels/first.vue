@@ -2,14 +2,23 @@
     <div class="partFirst">
       <div class="blockInfo">
         <div class="application">
-          <information></information>
+          <information
+            :needType="infoObj.needType"
+            :needImg="infoObj.needImg"
+            :form="infoObj"></information>
         </div>
         <div class="other">
           <div class="other-work">
-            <information></information>
+            <information
+            :form="workObj"
+            :need-img="workObj.needImg"
+            :need-type="workObj.needType"></information>
           </div>
           <div class="other-container">
-            <information></information>
+            <information
+              :form="containerObj"
+              :need-img="containerObj.needImg"
+              :need-type="containerObj.needType"></information>
           </div>
         </div>
       </div>
@@ -27,7 +36,29 @@ export default {
   components: { Information },
   data() {
     return {
-
+      infoObj: {
+        name: '应用',
+        count: 62,
+        describe: '全部应用数',
+        // eslint-disable-next-line global-require
+        imgUrl: require('@/assets/images/overview/stack-fill.png'),
+        needType: 'number',
+        needImg: true,
+      },
+      workObj: {
+        name: '工作负载',
+        count: 24,
+        describe: '工作负载数',
+        number: 'number',
+        needImg: false,
+      },
+      containerObj: {
+        name: '容器组',
+        count: 16,
+        describe: '容器组数',
+        number: 'number',
+        needImg: false,
+      },
     };
   },
   mounted() {
