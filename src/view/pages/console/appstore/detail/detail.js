@@ -203,14 +203,10 @@ export default {
     // 删除某个实例
     deleteInstance(instanceId) {
       AppStoreService.deleteInstance(this.zone.id, this.space.id, this.$route.params.Id, instanceId)
-        .then(res => {
-          if (res) {
-            this.$noty.success('实例删除成功');
-            this.getInstances();
-            this.instanceNum();
-          } else {
-            this.$noty.error('实例删除失败');
-          }
+        .then(() => {
+          this.$noty.success('实例删除成功');
+          this.getInstances();
+          this.instanceNum();
         });
     },
     changeShow() {
