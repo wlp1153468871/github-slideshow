@@ -126,17 +126,6 @@ export default {
                 },
               });
               this.$noty.success('实例创建成功');
-            } else if (res.status === 'timeOut') {
-              this.$router.push({
-                name: 'appstore.detail',
-                params: {
-                  Id: this.$route.params.appid,
-                },
-                query: {
-                  activeName: this.$route.query.activeName,
-                },
-              });
-              this.$noty.warning('实例创建超时');
             } else {
               this.$noty.error('实例创建失败');
             }

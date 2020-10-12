@@ -16,7 +16,9 @@
         </dao-select>
       </div>
     </div>
-    <part-first></part-first>
+    <div class="partOne">
+      <part-first></part-first>
+    </div>
   </div>
 </template>
 
@@ -43,7 +45,7 @@ export default {
 <style scoped lang="scss">
 .overView {
   padding: 24px 20px;
-  background-color: #ffaa00;
+  /*background-color: #FBFCFD;*/
   min-width: 1080px;
   .overview-head {
     display: flex;
@@ -56,6 +58,9 @@ export default {
     .head-search {
       font-size: 14px;
     }
+  }
+  .partOne {
+    margin-top: 20px;
   }
 }
 </style>

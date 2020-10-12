@@ -1,13 +1,13 @@
 <template>
   <div class="informationBlock">
-    <div class="block-name">应用</div>
+    <div class="block-name">{{form.name}}</div>
     <div class="block-info" v-if="needType == 'number'">
       <div class="blockInfo-num">
-        <p class="number">62</p>
-        <p class="text">全部应用数</p>
+        <p class="number">{{form.count}}</p>
+        <p class="text">{{form.describe}}</p>
       </div>
       <div class="blockInfo-image" v-if="needImg">
-        <img src="@/assets/images/overview/stack-fill.png" alt="stack"/>
+        <img :src="form.imgUrl" alt="stack"/>
       </div>
     </div>
     <div class="block-step" v-if="needType == 'step'">
@@ -33,17 +33,32 @@ export default {
       type: String,
       default: 'number',
     },
+    form: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  data() {
+    return {
+    };
+  },
+  methods: {
+    getSrc() {
+      return import(this.form.imgUrl);
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
 .informationBlock {
-  padding: 10px;
   border: 1px solid #F1F3F6;
   font-size: 12px;
   background-color: #FFFFFF;
   font-family: 苹方-简 常规体;
+  box-sizing: content-box;
   .block-name {
     color: #3D444F;
     font-weight: 600;
@@ -53,11 +68,12 @@ export default {
   .block-info {
     display: flex;
     justify-content: space-between;
-    padding: 16px;
+    padding: 0px 16px 15px 16px;
+    align-items: center;
     .blockInfo-num {
       .number {
         color: #3D444F;
-        font-size: 40px;
+        font-size: 30px;
         font-weight: 600;
       }
       .text {

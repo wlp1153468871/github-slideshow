@@ -64,7 +64,8 @@ import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
 
 // import Dashboard from '@/view/pages/overview/tenantView/index.vue';
 // test
-// import Dashboard from '@/view/pages/overview/components/information.vue';
+// import Dashboard from '@/view/pages/overview/components/newsStep.vue';
+// import Dashboard from '@/view/pages/overview/components/steps.vue';
 import Registry from '@/view/pages/console/registry/registry.vue';
 import RegistryTag from '@/view/pages/console/registry/detail/registryTag.vue';
 

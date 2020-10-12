@@ -1,8 +1,9 @@
 <template>
   <div class="new-app">
+    <!--头部展示-->
     <div class="newApp-nav">
-      <span style="color: #217EF2;font-size: 25px;cursor: pointer" @click="cancer">×</span>
-      <span>新建应用模板</span>
+      <span class="cancel" @click="cancer">×</span>
+      <span class="nav-model">新建应用模板</span>
       <dao-dialog
         :visible.sync="visibleForm"
         header="确认是否放弃编辑"
@@ -19,11 +20,14 @@
     <div class="newApp-box">
       <div class="chart-file" id="chart-file">
         <dao-setting-layout>
-          <template slot="layout-title">
-            <div class="base-info">Chart文件</div>
-          </template>
+          <div class="base-info">Chart文件</div>
+<!--          <template slot="layout-title">-->
+<!--            <div class="base-info">Chart文件</div>-->
+<!--          </template>-->
           <dao-setting-section>
-            <template slot="label">chart文件</template>
+            <template slot="label">
+              <span class="chartName-rule">*</span>
+              chart文件</template>
             <template slot="content">
               <div class="content-text">支持zip, gzip, tgz, tar格式的压缩文件上传</div>
             </template>
@@ -48,11 +52,14 @@
       </div>
       <div class="box-layout">
         <dao-setting-layout>
-          <template slot="layout-title">
-            <div class="base-info">基本信息</div>
-          </template>
+          <div class="base-info">基本信息</div>
+<!--          <template slot="layout-title">-->
+<!--            <div class="base-info">基本信息</div>-->
+<!--          </template>-->
           <dao-setting-section>
-            <template slot="label">模板名称</template>
+            <template slot="label">
+              <span class="chartName-rule">*</span>
+              模板名称</template>
             <template slot="content">
               <dao-input
                 readonly
@@ -63,7 +70,9 @@
             </template>
           </dao-setting-section>
           <dao-setting-section>
-            <template slot="label">模板图标</template>
+            <template slot="label">
+              <span class="chartName-rule">*</span>
+              模板图标</template>
             <template slot="content">
               <div class="content-text">建议大小120像素×120像素，支持PNG，文件小于1MB</div>
             </template>
@@ -83,7 +92,9 @@
             </template>
           </dao-setting-section>
           <dao-setting-section>
-            <template slot="label">供应商</template>
+            <template slot="label">
+              <span class="chartName-rule">*</span>
+              供应商</template>
             <template slot="content">
               <dao-input
                 style="width: 100%"
@@ -94,7 +105,9 @@
             </template>
           </dao-setting-section>
           <dao-setting-section>
-            <template slot="label">是否认证</template>
+            <template slot="label">
+              <span class="chartName-rule">*</span>
+              是否认证</template>
             <template slot="content">
               <el-radio-group v-model="daoAuth">
                 <el-radio :label="true">是</el-radio>
@@ -103,9 +116,13 @@
             </template>
           </dao-setting-section>
           <dao-setting-section>
-            <template slot="label">服务类型</template>
+            <template slot="label">
+              <span class="chartName-rule">*</span>
+              服务类型
+            </template>
             <template slot="content">
               <dao-select
+                class="category-style"
                 v-model="appType"
                 placeholder="选择服务类型">
                 <dao-option
@@ -118,7 +135,10 @@
             </template>
           </dao-setting-section>
           <dao-setting-section>
-            <template slot="label">分类</template>
+            <template slot="label">
+              <span class="chartName-rule">*</span>
+              分类
+            </template>
             <template slot="content">
               <el-select
                 class="category-style"
@@ -136,10 +156,10 @@
             </template>
             <template slot="content">
               <div class="svg-icon">
-                <svg @click="addCategory" class="icon">
+                <svg class="icon">
                   <use :xlink:href="`#icon_plus-circled`"></use>
                 </svg>
-                <span class="add-cate">添加分类</span>
+                <span @click="addCategory" class="add-cate">添加分类</span>
               </div>
             </template>
           </dao-setting-section>
@@ -182,7 +202,7 @@
       </div>
     </div>
 <!--    底部取消-->
-    <div class="footer">
+    <div class="newApp-footer">
       <div class="btn-style">
         <button class="dao-btn" @click="cancer">取消</button>
         <button class="dao-btn blue" @click="createApp">确认创建</button>
@@ -349,11 +369,17 @@ export default {
       if (this.pictureId === '') {
         this.$noty.error('模板图标为必传');
         return;
+      } else if (this.provider === '') {
+        this.$noty.error('供应商不能为空');
+        return;
       } else if (this.appType === '') {
         this.$noty.error('服务类型不能为空');
         return;
       } else if (this.category.length === 0) {
         this.$noty.error('分类不能为空');
+        return;
+      } else if (this.description.length > 200) {
+        this.$noty.error('描述的字符长度不能大于200');
         return;
       }
       const formData = {
@@ -433,114 +459,212 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.layout{
-  overflow: auto !important;
-}
-.newApp-box .dao-select {
-  width: 100%;
-}
+<style scoped lang="scss">
 .new-app {
-  min-height: 915px;
-  background-color: #F1F3F6;
-  border: 1px solid #F1F3F6;
+  display: flex;
+  justify-content: center;
   .newApp-nav {
     position: fixed;
     background-color: #fff;
-    line-height: 51px;
-    width: 100%;
-    font-weight: 700;
-    font-size: 16px;
+    left: 0px;
+    right: 0px;
     z-index: 999;
+
+    line-height: 50px;
+    border-bottom: 1px solid #CCD1D9;
+    .cancel {
+      color: #217EF2;
+      font-size: 25px;
+      cursor: pointer;
+    }
     span {
       margin-left: 20px;
+    }
+    .nav-model {
+      color: #3D444F;
+      font-weight: 600;
+      font-size: 16px;
+      margin-left: 15px;
     }
     .body {
       padding: 20px;
     }
   }
-  .box-layout {
-    padding-top: 40px;
-    padding-bottom: 40px;
-  }
   .newApp-box {
-    box-sizing: border-box;
-    width: 80%;
-    margin: 20px auto 40px auto;
-    padding-bottom: 80px;
-    .daox-setting-layout {
-      background: #fff;
+    width: 90%;
+    margin-top: 55px;
+    margin-bottom: 50px;
+    overflow: scroll;
+    overflow-style: auto;
+    .chart-file, .box-layout {
+      max-width: 960px;
+      margin: 0 auto;
     }
-    .dao-setting-label {
-      &::before{
-        content: '* ';
-        color: red;
+    .chart-file {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      .base-info {
+        line-height: 50px;
+        background-color: #fff;
+        border-bottom: 1px solid #E4E7ED;
+        color: #3D444F;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .chartName-rule {
+        color: #ff0000;
       }
     }
-    /* .dao-setting-label::after {
-      content: '* ';
-      color: red;
-    } */
-    .base-info {
-      width: 100%;
-      margin-left: 20px;
-      font-weight: 600;
-      font-size: 16px;
-      padding: 10px 0px;
+    .box-layout {
+      margin-bottom: 10px;
+      .base-info {
+        line-height: 50px;
+        background-color: #fff;
+        border-bottom: 1px solid #E4E7ED;
+        color: #3D444F;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .chartName-rule {
+        color: #ff0000;
+      }
+      .category-style, .dao-control {
+        width: 100%;
+      }
+      .add-cate {
+        cursor: pointer;
+      }
     }
   }
-  .content-text {
-    font-size: 12px;
+  .newApp-box::-webkit-scrollbar {
+    display: none;
   }
-  .dao-control {
-    width: 100%;
-  }
-  #chart-file {
-    margin-top: 70px;
-  }
-  .footer {
-    height: 55px;
-    background-color: #fff;
-    z-index: 999;
+  .newApp-footer {
     position: fixed;
-    bottom: 0;
-    width: 100%;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    background-color: #fff;
+
+    line-height: 50px;
+    z-index: 999;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
     .btn-style {
       margin-right: 30px;
     }
   }
-  .category-style {
-    width: 100%;
-    display: inline-block;
-    .el-input {
-      height: 32px !important;
-      .el-input__inner {
-        height: 32px !important;
-      }
-    }
-  }
-  .svg-icon {
-    width: 90px;
-    svg {
-      fill: #3289F7;
-    }
-    .icon {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-    }
-    .add-cate {
-      padding: 20px 0 0 6px;
-      padding-left: 6px;
-      color: #3289F7;
-    }
-  }
-
-  .inputWidth {
-    width: 100%;
-  }
 }
 </style>
+
+<!--<style lang="scss">-->
+<!--.layout{-->
+<!--  overflow: auto !important;-->
+<!--}-->
+<!--.newApp-box .dao-select {-->
+<!--  width: 100%;-->
+<!--}-->
+<!--.new-app {-->
+<!--  min-height: 915px;-->
+<!--  background-color: #F1F3F6;-->
+<!--  border: 1px solid #F1F3F6;-->
+<!--  .newApp-nav {-->
+<!--    position: fixed;-->
+<!--    background-color: #fff;-->
+<!--    line-height: 51px;-->
+<!--    width: 100%;-->
+<!--    font-weight: 700;-->
+<!--    font-size: 16px;-->
+<!--    z-index: 999;-->
+<!--    span {-->
+<!--      margin-left: 20px;-->
+<!--    }-->
+<!--    .body {-->
+<!--      padding: 20px;-->
+<!--    }-->
+<!--  }-->
+<!--  .box-layout {-->
+<!--    padding-top: 40px;-->
+<!--    padding-bottom: 40px;-->
+<!--  }-->
+<!--  .newApp-box {-->
+<!--    box-sizing: border-box;-->
+<!--    width: 80%;-->
+<!--    margin: 20px auto 40px auto;-->
+<!--    padding-bottom: 80px;-->
+<!--    .daox-setting-layout {-->
+<!--      background: #fff;-->
+<!--    }-->
+<!--    .dao-setting-label {-->
+<!--      &::before{-->
+<!--        content: '* ';-->
+<!--        color: red;-->
+<!--      }-->
+<!--    }-->
+<!--    /* .dao-setting-label::after {-->
+<!--      content: '* ';-->
+<!--      color: red;-->
+<!--    } */-->
+<!--    .base-info {-->
+<!--      width: 100%;-->
+<!--      margin-left: 20px;-->
+<!--      font-weight: 600;-->
+<!--      font-size: 16px;-->
+<!--      padding: 10px 0px;-->
+<!--    }-->
+<!--  }-->
+<!--  .content-text {-->
+<!--    font-size: 12px;-->
+<!--  }-->
+<!--  .dao-control {-->
+<!--    width: 100%;-->
+<!--  }-->
+<!--  #chart-file {-->
+<!--    margin-top: 70px;-->
+<!--  }-->
+<!--  .footer {-->
+<!--    height: 55px;-->
+<!--    background-color: #fff;-->
+<!--    z-index: 999;-->
+<!--    position: fixed;-->
+<!--    bottom: 0;-->
+<!--    width: 100%;-->
+<!--    display: flex;-->
+<!--    justify-content: flex-end;-->
+<!--    align-items: center;-->
+<!--    .btn-style {-->
+<!--      margin-right: 30px;-->
+<!--    }-->
+<!--  }-->
+<!--  .category-style {-->
+<!--    width: 100%;-->
+<!--    display: inline-block;-->
+<!--    .el-input {-->
+<!--      height: 32px !important;-->
+<!--      .el-input__inner {-->
+<!--        height: 32px !important;-->
+<!--      }-->
+<!--    }-->
+<!--  }-->
+<!--  .svg-icon {-->
+<!--    width: 90px;-->
+<!--    svg {-->
+<!--      fill: #3289F7;-->
+<!--    }-->
+<!--    .icon {-->
+<!--      width: 16px;-->
+<!--      height: 16px;-->
+<!--      cursor: pointer;-->
+<!--    }-->
+<!--    .add-cate {-->
+<!--      padding: 20px 0 0 6px;-->
+<!--      padding-left: 6px;-->
+<!--      color: #3289F7;-->
+<!--    }-->
+<!--  }-->
+
+<!--  .inputWidth {-->
+<!--    width: 100%;-->
+<!--  }-->
+<!--}-->
+<!--</style>-->

@@ -41,7 +41,6 @@
   }
   .el-tabs__header {
     margin: 0 0 20px;
-
   }
   .detail-title {
     position: relative;
@@ -254,6 +253,12 @@
       }
     }
   }
+  .dao-dialog-container {
+    .dao-name::before {
+      content: '* ';
+      color: red;
+    }
+  }
   .lay-right {
     float: left;
     width: 280px;
@@ -361,7 +366,6 @@
         margin-left:10px
       }
     }
-
   }
   .pic {
     width: 60px;
