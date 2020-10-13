@@ -141,6 +141,7 @@
                       :on-remove="removeFile">
                       <button class="dao-btn blue">上传chart</button>
                     </el-upload>
+                    <div>支持zip, gzip, tgz, tar格式的压缩文件上传</div>
                   </div>
                 </div>
               </div>
