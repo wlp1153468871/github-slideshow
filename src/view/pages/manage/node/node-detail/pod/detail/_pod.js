@@ -35,7 +35,7 @@ export default {
   },
 
   data() {
-    const { podName, namespace, zone: zoneId } = this.$route.params;
+    const { podName, namespace, zone: zoneId, node } = this.$route.params;
 
     return {
       TABS,
@@ -56,6 +56,7 @@ export default {
       podName,
       namespace,
       zoneId,
+      node,
       selectedTerminalContainer: null,
       terminalCols: 120,
       terminalRows: 100,
@@ -101,7 +102,7 @@ export default {
           logo: '#icon_node-logo',
           links: [
             { text: '节点管理', route: { name: 'manage.node.list' } },
-            { text: this.namespace, route: { name: 'manage.node.detail' } },
+            { text: this.node, route: { name: 'manage.node.detail' } },
             { text: this.pod.metadata.name },
           ],
         };
