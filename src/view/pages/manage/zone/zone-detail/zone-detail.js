@@ -21,6 +21,7 @@ export default {
     ChartList,
   },
   created() {
+    this.currentTab = this.TABS[this.$route.query.tab] || this.currentTab;
     this.loadCatalog();
   },
   data() {

@@ -118,8 +118,7 @@ export default {
             },
           });
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           this.getOperator();
           this.getInstanceOne();
         });
@@ -157,7 +156,6 @@ export default {
         .then(res => {
           this.operator = [];
           if (res) {
-            console.log(res);
             res.forEach(item => {
               const obj = {};
               const owner = {};

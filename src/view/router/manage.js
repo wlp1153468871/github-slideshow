@@ -85,7 +85,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization;platform.applications',
+          code: 'platform.organization',
           hidden: false,
         },
         children: [],
