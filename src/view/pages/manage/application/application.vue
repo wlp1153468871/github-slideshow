@@ -150,7 +150,7 @@
       </el-table>
       <div class="footer">
         <div class="page" v-if="selectedArr.length">已选择 {{selectedArr.length}} 项</div>
-        <div class="page" v-else>共 {{appNumber()}} 项</div>
+        <div class="page" v-else>共 {{appNumber()}} 条</div>
         <el-pagination
           v-if="total"
           :page-sizes="[10, 15, 20, 25]"

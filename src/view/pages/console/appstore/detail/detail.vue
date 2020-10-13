@@ -285,7 +285,7 @@
                   </el-table-column>
                 </el-table>
                 <div class="footer">
-                  <div class="page">共 {{instanceNum()}} 项</div>
+                  <div class="page">共 {{instanceNum()}} 条</div>
                   <el-pagination
                     v-if="total"
                     :page-sizes="[10, 15, 20, 25]"
