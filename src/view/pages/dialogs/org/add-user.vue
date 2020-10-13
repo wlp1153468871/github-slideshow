@@ -65,10 +65,6 @@ export default {
     };
   },
 
-  created() {
-    console.log(this.users, this.roles, '添加用户组件');
-  },
-
   computed: {
     options() {
       return this.users.map(user => ({

@@ -678,7 +678,7 @@ export default {
   }
   .dao-radio-group {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     div {
       margin-right: 10px;
     }

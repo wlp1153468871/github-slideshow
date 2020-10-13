@@ -189,7 +189,6 @@ export default {
     },
 
     openAddUserDialog() {
-      console.log('点击添加用户');
       this.dialogConfigs.addUser.visible = true;
     },
 

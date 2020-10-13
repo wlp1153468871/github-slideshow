@@ -1,7 +1,7 @@
 <template>
-  <dao-setting-layout>
+  <dao-setting-layout v-if="$can('platform.zone.sync')">
     <dao-setting-section>
-      <dao-setting-item>
+      <dao-setting-item >
         <div slot="label">同步可用区</div>
         <div slot="content">
           <p class="delete-notice">

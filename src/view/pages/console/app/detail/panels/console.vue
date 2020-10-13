@@ -193,7 +193,7 @@ export default {
       this.terminals = {
         isVisible: false,
         isUsed: false,
-      }
+      };
       this.getPod();
     },
   },
