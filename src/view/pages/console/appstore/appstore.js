@@ -105,10 +105,12 @@ export default {
       this.applications = this.appCopy;
       this.filterData(this.applications);
       this.clearAll();
+      // this.getApplications();
     },
 
     // list
     getApplications() {
+      this.applications = [];
       AppStoreService.zoneList(this.zone.id, this.space.id)
         .then(res => {
           if (res) {
