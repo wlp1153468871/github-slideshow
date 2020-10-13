@@ -102,10 +102,10 @@ export default {
     // 刷新
     fresh() {
       this.key = '';
-      this.applications = this.appCopy;
+      // this.applications = this.appCopy;
       this.filterData(this.applications);
       this.clearAll();
-      // this.getApplications();
+      this.getApplications();
     },
 
     // list
