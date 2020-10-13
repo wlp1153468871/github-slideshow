@@ -103,7 +103,7 @@
         :row-class-name="rowStyle"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column label="应用名称" sortable>
+        <el-table-column label="应用名称" prop="name" sortable>
           <template slot-scope="scope">
             <div style="color: #217EF2;cursor: pointer;" @click="rowClick(scope.row.id)">
               {{ scope.row.name }}
