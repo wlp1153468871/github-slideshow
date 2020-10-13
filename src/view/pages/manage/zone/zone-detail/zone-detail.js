@@ -83,6 +83,7 @@ export default {
 
     // 同步可用区下的broker以及service
     syncService(type, isSyncing) {
+      console.log(type ,isSyncing);
       this.syncType = type;
       this.isSyncing = isSyncing;
       this.dialogConfigs.syncService.visible = true;

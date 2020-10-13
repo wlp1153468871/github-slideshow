@@ -224,9 +224,6 @@ export default {
       }, {
         name: 'Helm Chart',
         id: 'Helm Chart',
-      }, {
-        name: 'Broker',
-        id: 'Broker',
       }],
       key: '', // 搜索
       tableData: [], // 表格数据
