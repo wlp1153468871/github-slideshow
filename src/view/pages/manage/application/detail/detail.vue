@@ -289,7 +289,7 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="实例" name="thrid" v-if="$can(platform.applications.appinstances)">
+      <el-tab-pane label="实例" name="thrid" v-if="$can('platform.applications.appinstances')">
         <dao-input
           search
           placeholder="搜索"
