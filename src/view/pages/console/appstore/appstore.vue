@@ -80,7 +80,7 @@
       </el-checkbox-group>
     </div>
 
-    <div class="store-item-container" v-if="applications.length">
+    <div class="store-item-container" v-if="applications.length" v-loading="loading">
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
@@ -116,6 +116,9 @@ v-deep .el-tag {
 }
 
 #appstore {
+  .el-loading-mask {
+    background: #f1f3f6;
+  }
   .appstore-header {
     height: 160px;
     background: #3D4655;
@@ -246,7 +249,6 @@ v-deep .el-tag {
         line-height: 18px;
       }
       .font2 {
-        /* margin-top: 15px; */
         padding: 15px 0 0 15px;
         height: 22px;
         font-size: 14px;
