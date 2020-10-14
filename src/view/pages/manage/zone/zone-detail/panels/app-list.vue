@@ -52,6 +52,21 @@
             </div>
           </dao-dialog>
         </div>
+        <div v-if="deleteApplication">
+          <dao-dialog
+            v-if="deleteApplication"
+            :visible.sync="deleteApplication"
+            header="删除应用模板">
+            <div class="body">
+              <div>确定删除此应用模板？</div>
+              <div>此操作为不可逆操作，请谨慎操作!</div>
+            </div>
+            <div slot="footer">
+              <button class="dao-btn blue" @click="sureApplication">确认</button>
+              <button class="dao-btn" @click="applicationCancel">取消</button>
+            </div>
+          </dao-dialog>
+        </div>
         <span>
           资源类型：
           <dao-select
@@ -240,6 +255,7 @@ export default {
   },
   data() {
     return {
+      deleteApplication: false,
       activeName: 'first',
       select: 1,
       status: null, // 状态
@@ -288,6 +304,10 @@ export default {
       size: 10,
       currentPage: 1,
       total: 0,
+      deleteId: '',
+      deleteZoneId: '',
+      chartVersion: {},
+      chartVersionFlag: false,
     };
   },
 
@@ -347,15 +367,12 @@ export default {
      * 删除chart版本
      */
     deleteChartVersion(app_id, name, version) {
-      ZoneAdminService.deleteChartVersion(this.id, app_id, name, version).then(() => {
-        this.getSelectZone();
-        this.$noty.success('删除成功');
-      }).catch(() => {
-        this.$message({
-          message: '删除失败',
-          type: 'warning',
-        });
-      });
+      this.chartVersion = {
+        app_id,
+        name,
+        version,
+      };
+      this.deleteApplication = true;
     },
     // 数量
     TableNum() {
@@ -409,10 +426,46 @@ export default {
        * 删除应用
        */
     handleClick(id, zoneId) {
-      ZoneAdminService.deleteApplication(id, zoneId).then(() => {
-        this.$noty.success('删除成功');
-        this.getSelectZone();
-      });
+      this.deleteApplication = true;
+      this.deleteId = id;
+      this.deleteZoneId = zoneId;
+    },
+    /**
+     * 确认删除
+     */
+    sureApplication() {
+      if (this.chartVersion.app_id) {
+        ZoneAdminService.deleteChartVersion(
+          this.id, this.chartVersion.app_id,
+          this.chartVersion.name,
+          this.chartVersion.version).then(() => {
+          this.getSelectZone();
+          this.$noty.success('删除成功');
+        }).catch(() => {
+          this.$message({
+            message: '删除失败',
+            type: 'warning',
+          });
+        })
+          .finally(() => {
+            this.chartVersion = {};
+          });
+      } else {
+        ZoneAdminService.deleteApplication(this.deleteId, this.deleteZoneId).then(() => {
+          this.$noty.success('删除成功');
+          this.getSelectZone();
+        });
+      }
+      this.deleteApplication = false;
+    },
+    /**
+     * 取消删除
+     */
+    applicationCancel() {
+      this.deleteId = '';
+      this.deleteZoneId = '';
+      this.chartVersion = {};
+      this.deleteApplication = false;
     },
     /**
      * 键盘弹起事件
@@ -478,25 +531,29 @@ export default {
      * 确认上传chart新版本-上传chart文件
      */
     handleUploadChart() {
-      const formData = new FormData();
-      this.chartList.forEach(file => {
-        formData.append('chart', file);
-      });
-      ZoneAdminService.uploadNewChartVersion(
-        this.newChartVersionZoneId, this.newChartVersionId, formData)
-        .then(res => {
-          if (res) {
-            this.$noty.success('上传chart成功');
-            this.cancelUpload();
-          }
-        })
-        .then(() => {
-          this.getSelectZone();
-        })
-        .catch(() => {
-          this.chartList = [];
-          this.removeFileChart();
+      if (this.chartList.length === 0) {
+        this.$noty.error('chart文件不能为空');
+      } else {
+        const formData = new FormData();
+        this.chartList.forEach(file => {
+          formData.append('chart', file);
         });
+        ZoneAdminService.uploadNewChartVersion(
+          this.newChartVersionZoneId, this.newChartVersionId, formData)
+          .then(res => {
+            if (res) {
+              this.$noty.success('上传chart成功');
+              this.cancelUpload();
+            }
+          })
+          .then(() => {
+            this.getSelectZone();
+          })
+          .catch(() => {
+            this.chartList = [];
+            this.removeFileChart();
+          });
+      }
     },
     // 上传chart文件之前
     beforeUploadChart(file) {
