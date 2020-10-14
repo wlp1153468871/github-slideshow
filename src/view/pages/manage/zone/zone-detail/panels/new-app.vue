@@ -270,6 +270,16 @@ export default {
   computed: {
     ...mapState(['space', 'zone', 'user']),
   },
+  // watch: {
+  //   provider: {
+  //     handler(value) {
+  //       if (value.length > 32) {
+  //         this.$noty.error('供应商字段不能超过32位');
+  //         this.provider = this.value.slice(0, 32);
+  //       }
+  //     },
+  //   },
+  // },*/
   methods: {
     /**
      * 新增分类按钮被点击
@@ -281,12 +291,19 @@ export default {
      * 新增分类提交
      */
     submit() {
-      ZoneAdminService.addCategory(this.categoryName).then(res => {
-        this.classification.push(res);
-        this.$noty.success('新增分类成功');
-      });
-      this.categoryName = '';
-      this.config.showAddCategory = false;
+      if (this.categoryName === '') {
+        this.$noty.error('分类名称不能为空');
+      } else if (this.categoryName.length > 32) {
+        this.categoryName = '';
+        this.$noty.error('分类名称长度不能超过32');
+      } else {
+        ZoneAdminService.addCategory(this.categoryName).then(res => {
+          this.classification.push(res);
+          this.$noty.success('新增分类成功');
+        });
+        this.categoryName = '';
+        this.config.showAddCategory = false;
+      }
     },
     /**
      * 取消新增
@@ -337,7 +354,6 @@ export default {
      */
     beforeUpload(file) {
       if (this.fileType.indexOf(file.type) < 0) {
-        console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {
@@ -366,11 +382,14 @@ export default {
       });
     },
     createApp() {
-      if (this.pictureId === '') {
+      if (this.chartList.length === 0) {
+        this.$noty.error('chart文件不能为空');
+        return;
+      } else if (this.pictureId === '') {
         this.$noty.error('模板图标为必传');
         return;
-      } else if (this.provider === '') {
-        this.$noty.error('供应商不能为空');
+      } else if (this.provider === '' || this.provider.length > 32) {
+        this.$noty.error('供应商不能为空且字符长度不能超过32位');
         return;
       } else if (this.appType === '') {
         this.$noty.error('服务类型不能为空');

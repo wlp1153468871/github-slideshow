@@ -92,7 +92,7 @@
                 <div>
                   <button
                     class="dao-btn red"
-                    @click="changeShow">
+                    @click="changeShow(0)">
                     删除
                   </button>
                 </div>

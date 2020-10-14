@@ -23,7 +23,12 @@
         </div>
       </div>
       <div class="lineChart" ref="lineChart" style="width: 50%;height: 280px"></div>
-      <div class="newsStep"></div>
+      <div class="newsStep">
+        <information
+        :form="stepsObj"
+        :need-img="stepsObj.needImg"
+        :need-type="stepsObj.needType"></information>
+      </div>
     </div>
 </template>
 
@@ -49,14 +54,19 @@ export default {
         name: '工作负载',
         count: 24,
         describe: '工作负载数',
-        number: 'number',
+        needType: 'number',
         needImg: false,
       },
       containerObj: {
         name: '容器组',
         count: 16,
         describe: '容器组数',
-        number: 'number',
+        needType: 'number',
+        needImg: false,
+      },
+      stepsObj: {
+        name: '审计日志',
+        needType: 'steps',
         needImg: false,
       },
     };
@@ -71,28 +81,56 @@ export default {
           fontFamily: '苹方-简 中粗体',
           fontSize: 12,
         },
+        top: 10,
+        left: 10,
       },
-      xAxis: [
-        {
-          type: 'category',
-          boundaryGap: false,
-          data: ['09:00', '09:15', '09:30', '09:45'],
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLine: {
+          lineStyle: {
+            color: '#CCD1D9FF',
+          },
         },
-      ],
-      yAxis: [
-        {
-          type: 'value',
+        // axisTick: {
+        //
+        // },
+        axisLabel: {
+          margin: 10,
+          color: '#9BA3AFFF',
         },
-      ],
+        data: ['10/8', '10/8', '10/9', '10/10', '10/11', '10/12', '10/13'],
+      },
+      yAxis: {
+        type: 'value',
+        splitLine: {
+          lineStyle: {
+            type: 'dotted',
+            color: '#E4E6EB',
+          },
+        },
+        axisLine: {
+          show: false,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLabel: {
+          margin: 10,
+          // lineHeight: 100,
+          color: '#9BA3AFFF',
+        },
+      },
       series: [
         {
           name: '邮件营销',
           type: 'line',
           stack: '总量',
           areaStyle: {},
-          data: [120, 132, 101, 134, 90, 230, 210],
+          data: [200, 132, 101, 134, 90, 230, 210],
         },
       ],
+      color: ['#3890FF', '#3890FF1A'],
     });
   },
 };
@@ -106,6 +144,7 @@ export default {
   .lineChart {
     border: 1px solid #E4E7ED;
     background-color: #fff;
+    border-radius: 4px;
   }
   .blockInfo {
     width: 23.5%;
@@ -116,6 +155,7 @@ export default {
       height: 132px;
       overflow: hidden;
       background-color: #fff;
+      border-radius: 4px;
     }
     .other {
       width: 100%;
@@ -131,7 +171,8 @@ export default {
   .newsStep {
     width: 23.5%;
     height: 100%;
-    background-color: #f0c2c0;
+    background-color: #fff;
+    border-radius: 4px;
   }
 }
 </style>

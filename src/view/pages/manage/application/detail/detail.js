@@ -184,14 +184,21 @@ export default {
     },
     //  更新应用
     updateApp() {
-      ServiceAdmin.updateApp(this.$route.params.id, this.form).then(res => {
-        if (res) {
-          this.$noty.success('修改成功');
-          this.editClose();
-          this.getApp();
-          this.isShow = true;
-        }
-      });
+      console.log(this.form.pictureId);
+      if (this.form.pictureId == 0) {
+        this.$noty.error('应用图标不能为空');
+      } else if (this.form.description.length > 200) {
+        this.$noty.error('描述字符长度不能大于200');
+      } else {
+        ServiceAdmin.updateApp(this.$route.params.id, this.form).then(res => {
+          if (res) {
+            this.$noty.success('修改成功');
+            this.editClose();
+            this.getApp();
+            this.isShow = true;
+          }
+        });
+      }
     },
     // 下架应用
     availableOff() {
@@ -307,7 +314,7 @@ export default {
             this.$noty.error(err);
           });
       } else {
-        this.form.pictureId = this.appInfo.pictureId;
+        // this.form.pictureId = this.appInfo.pictureId;
         this.updateApp();
       }
     },
@@ -347,11 +354,17 @@ export default {
         });
     },
 
-    changeShow() {
+    changeShow(val) {
+      console.log('删除');
+      this.fileList = [];
+      this.form.pictureId = val;
+      console.log(this.form.pictureId);
       this.isShow = !this.isShow;
     },
     editInfo() {
+      this.isShow = true;
       this.configEdit = true;
+      this.getApp();
     },
     editClose() {
       this.configEdit = false;

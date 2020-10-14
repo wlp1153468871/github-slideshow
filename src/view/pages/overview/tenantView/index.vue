@@ -19,16 +19,26 @@
     <div class="partOne">
       <part-first></part-first>
     </div>
+    <div class="partTow">
+      <part-second></part-second>
+    </div>
+    <div class="partThree">
+      <part-third></part-third>
+    </div>
   </div>
 </template>
 
 <script>
 import partFirst from './panels/first';
+import partSecond from './panels/second';
+import partThird from './panels/third';
 
 export default {
   name: 'index',
   components: {
     partFirst,
+    partSecond,
+    partThird,
   },
   data() {
     return {
@@ -59,8 +69,11 @@ export default {
       font-size: 14px;
     }
   }
-  .partOne {
+  .partOne, .partTow, .partThree {
     margin-top: 20px;
   }
+}
+.overView::-webkit-scrollbar {
+  display: none;
 }
 </style>

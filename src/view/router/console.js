@@ -66,6 +66,7 @@ import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
 // test
 // import Dashboard from '@/view/pages/overview/components/newsStep.vue';
 // import Dashboard from '@/view/pages/overview/components/steps.vue';
+// import Dashboard from '@/view/pages/overview/components/doughDemo.vue';
 import Registry from '@/view/pages/console/registry/registry.vue';
 import RegistryTag from '@/view/pages/console/registry/detail/registryTag.vue';
 
