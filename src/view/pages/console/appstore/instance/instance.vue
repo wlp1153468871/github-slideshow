@@ -14,7 +14,7 @@
     </div>
     <div class="detail-title">
       <span>
-        <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+        <img :src="getUrl(appInfo.pictureUrl)" class="icon-size" v-if="appInfo.pictureId"/>
         <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
       </span>
       <div class="title-name">{{instanceInfo.name}}</div>

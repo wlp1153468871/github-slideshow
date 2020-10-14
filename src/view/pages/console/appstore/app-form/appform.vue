@@ -31,12 +31,16 @@
         <div class="dao-setting-section">
           <div class="dao-setting-title title-text">基本信息</div>
         </div>
-        <div class="dao-setting-item" style="height: 42px;">
+        <div class="dao-setting-item" style="height: 48px;">
           <div class="dao-setting-label dao-name">实例名称</div>
           <div class="dao-setting-content">
             <div v-if="this.$route.query.instanceId">{{this.instanceName}}</div>
             <dao-input
               block
+              :status="status"
+              :message="errormMsg"
+              required
+              :maxlength="max"
               v-model="instanceName"
               style="width: 98%"
               placeholder="请输入内容"
