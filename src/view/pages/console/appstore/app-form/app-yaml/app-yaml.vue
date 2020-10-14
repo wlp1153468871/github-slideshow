@@ -20,13 +20,17 @@
         <div class="dao-setting-section">
           <div class="dao-setting-title title-text">基本信息</div>
         </div>
-        <div class="dao-setting-item" style="height: 42px;">
+        <div class="dao-setting-item" style="height: 48px;">
           <div class="dao-setting-label dao-name">实例名称</div>
           <div class="dao-setting-content">
             <div v-if="this.$route.query.instanceId">{{this.instanceName}}</div>
             <dao-input
               v-model="instanceName"
               block
+              :message="errormMsg"
+              required
+              :status="status"
+              :maxlength="max"
               style="width: 98%"
               placeholder="请输入内容"
               v-else
@@ -91,28 +95,17 @@ export default {
   },
   data() {
     return {
-      select1: 1,
-      select2: 2,
-      tenant: [
-        {
-          value: '默认租户',
-          index: 1,
-        },
-      ],
-      project: [
-        {
-          value: '默认项目组',
-          index: 2,
-        },
-      ],
       config: {
         visible: false,
       },
+      max: 32,
+      errormMsg: '',
       instanceName: '',
       chartName: '',
       yaml: {
         data: '',
       },
+      status: '',
       giveup: false,
     };
   },
@@ -121,11 +114,30 @@ export default {
     ...mapState(['space', 'zone']),
   },
 
+  watch: {
+    instanceName: {
+      handler(str) {
+        if (!this.check(str) && str.length) {
+          this.status = 'error';
+          this.errormMsg = '请输入以字母开头和结尾，由数字，字母，‘-’ 组成的合法字符串。';
+        } else {
+          this.errormMsg = '';
+          this.status = 'success';
+        }
+      },
+    },
+  },
+
   created() {
     this.getApp();
   },
 
   methods: {
+    // 检测
+    check(name) {
+      const reg = /^[a-z]([-a-z0-9]*[a-z0-9])?$/;
+      return reg.test(name);
+    },
     // 获取App
     getApp() {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.appid).then(res => {
@@ -169,7 +181,7 @@ export default {
     },
     // 创建yaml实例
     createYmal() {
-      if (this.instanceName.length) {
+      if (this.instanceName.length && this.status === 'success') {
         const loading = this.$loading({
           lock: true,
           text: '正在拼命创建中',
@@ -199,7 +211,7 @@ export default {
             loading.close();
           });
       } else {
-        this.$noty.error('实例名称为空');
+        this.$noty.error('实例名称有误');
       }
     },
     // 获取一个实例

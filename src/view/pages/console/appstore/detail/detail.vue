@@ -43,7 +43,7 @@
                     <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
                     <div v-show="isShow">
                       <img
-                        :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`"
+                        :src="getUrl(appInfo.pictureUrl)"
                         alt="应用图标"
                         class="pic"
                         v-if="appInfo.pictureId"/>
