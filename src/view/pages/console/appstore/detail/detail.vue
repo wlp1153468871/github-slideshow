@@ -141,6 +141,7 @@
                       :on-remove="removeFile">
                       <button class="dao-btn blue">上传chart</button>
                     </el-upload>
+                    <div>支持zip, gzip, tgz, tar格式的压缩文件上传</div>
                   </div>
                 </div>
               </div>
@@ -284,7 +285,7 @@
                   </el-table-column>
                 </el-table>
                 <div class="footer">
-                  <div class="page">共 {{instanceNum()}} 项</div>
+                  <div class="page">共 {{instanceNum()}} 条</div>
                   <el-pagination
                     v-if="total"
                     :page-sizes="[10, 15, 20, 25]"

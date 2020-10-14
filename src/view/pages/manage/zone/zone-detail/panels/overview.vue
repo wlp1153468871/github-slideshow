@@ -43,9 +43,11 @@ export default {
     SeniorPanel,
   },
   data() {
-    const TABS = {
+    const TABS = this.$can('platform.zone.sync') ? {
       BASIC: '基础设置',
       SENIOR: '高级设置',
+    } : {
+      BASIC: '基础设置',
     };
     return {
       TABS,

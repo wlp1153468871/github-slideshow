@@ -16,7 +16,8 @@
           <span>操作人：{{ job.owner.name }}&nbsp;&nbsp;&nbsp;</span>
           <span>{{ job.started_at | date_from }}&nbsp;&nbsp;&nbsp;</span>
           <span v-if="job.ended_at - job.started_at > 1">
-            耗时 {{ job.ended_at | date_from(job.started_at) }}
+            <!-- 耗时 {{ job.ended_at | date_from(job.started_at) }} -->
+            耗时 {{ timeDifference(job.started_at, job.ended_at) }}
           </span>
           <span v-else>耗时 1 秒内</span>
         </template>
@@ -34,6 +35,7 @@
 
 <script>
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
+import date_difference from '@/view/filters/date-difference.filter.js';
 
 export default {
   name: 'JobPanel',
@@ -61,6 +63,10 @@ export default {
     openErrorInfoDialog(job) {
       this.selectedInstanceInfo = job.description;
       this.dialogConfigs.errorInfo.visible = true;
+    },
+    // 计算时间差
+    timeDifference(a, b) {
+      return date_difference(a, b);
     },
   },
 };

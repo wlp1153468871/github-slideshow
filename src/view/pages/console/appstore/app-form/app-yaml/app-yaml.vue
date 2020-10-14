@@ -229,12 +229,10 @@ export default {
             loading.close();
             this.$noty.success('实例更新成功');
             this.$router.push({
-              name: 'appstore.detail',
+              name: 'appstore.instance',
               params: {
-                Id: this.$route.params.appid,
-              },
-              query: {
-                activeName: this.$route.query.activeName,
+                appid: this.$route.params.appid,
+                instanceid: this.$route.query.instanceId,
               },
             });
           } else if (res.status === 'timeOut') {

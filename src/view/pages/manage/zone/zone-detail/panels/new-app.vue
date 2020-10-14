@@ -331,7 +331,17 @@ export default {
     },
     destoryDialog() {
       if (this.giveup) {
-        this.$router.back();
+        // this.$router.back();
+        // console.log(this.$route.params.id);
+        this.$router.push({
+          name: 'manage.zone.detail',
+          params: {
+            zone: this.$route.params.id,
+          },
+          query: {
+            tab: 'APPLICATION',
+          },
+        });
       }
     },
     giveUp() {
@@ -514,7 +524,7 @@ export default {
     margin-top: 55px;
     margin-bottom: 50px;
     overflow: scroll;
-    overflow-style: auto;
+    /* overflow-style: auto; */
     .chart-file, .box-layout {
       max-width: 960px;
       margin: 0 auto;
