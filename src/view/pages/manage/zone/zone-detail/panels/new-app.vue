@@ -40,7 +40,6 @@
                 :file-list="chartList"
                 accept="application/zip, application/x-compressed,
                 application/x-gzip, application/gzip, application/x-tar"
-                :limit="1"
                 :before-upload="beforeUploadChart"
                 :on-remove="removeFileChart"
               >
@@ -192,7 +191,7 @@
                 class="dao-control"
                 type="text"
                 rows="2"
-                placeholder="请填写内容"
+                placeholder="请填写内容，字数限制为200字"
                 required
                 v-model="description">
               </textarea>
@@ -237,9 +236,6 @@ export default {
       classification: [{
         text: 'Helm Chart',
         value: 1,
-      }, {
-        text: 'Helm Chart',
-        value: 2,
       }],
       name: '', // 应用名称
       description: '', // 描述,
@@ -331,8 +327,6 @@ export default {
     },
     destoryDialog() {
       if (this.giveup) {
-        // this.$router.back();
-        // console.log(this.$route.params.id);
         this.$router.push({
           name: 'manage.zone.detail',
           params: {
@@ -449,6 +443,7 @@ export default {
      * chart文件上传之前的回调函数
      */
     beforeUploadChart(file) {
+      this.chartList = [];
       console.log(file, file.type, '文件类型');
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
@@ -465,6 +460,7 @@ export default {
      * chart文件上传回调函数
      */
     handleUploadChart() {
+      // this.chartList = [];
       const formData = new FormData();
       this.chartList.forEach(file => {
         formData.append('chart', file);
