@@ -1,5 +1,5 @@
 <template>
-    <div id="zone">
+    <div id="zone" v-if="$can('platform.zone.applications.view')">
       <div class="app-list">
         <div v-if="isSync">
           <dao-dialog
