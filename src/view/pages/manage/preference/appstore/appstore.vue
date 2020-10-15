@@ -72,7 +72,7 @@ export default {
           return this.$store.dispatch('loadSystemSettings');
         })
         .then(() => {
-          this.$noty.success('更新完成成功');
+          this.$noty.success('更新成功');
         });
     },
   },
