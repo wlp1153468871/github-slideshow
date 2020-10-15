@@ -50,7 +50,7 @@ export default {
   },
 
   created() {
-    if (this.$can('platform.settings.assets') && this.$can('platform.applications')) {
+    if (this.$can('platform.settings.assets')) {
       this.simpleStr = this.simpleInfo;
     } else {
       this.$noty.error('您暂无服务市场定制权限');
@@ -59,25 +59,21 @@ export default {
 
   methods: {
     updateSimpleInfo() {
-      if (this.$can('platform.applications')) {
-        new Promise(res => {
-          res();
-        })
-          .then(() => {
-            return SystemService.updateSystemSettings({
-              helpURLDict: this.helpURLDict,
-              simpleInfo: this.simpleStr,
-            });
-          })
-          .then(() => {
-            return this.$store.dispatch('loadSystemSettings');
-          })
-          .then(() => {
-            this.$noty.success('更新成功');
+      new Promise(res => {
+        res();
+      })
+        .then(() => {
+          return SystemService.updateSystemSettings({
+            helpURLDict: this.helpURLDict,
+            simpleInfo: this.simpleStr,
           });
-      } else {
-        this.$noty.error('您暂无服务市场定制权限');
-      }
+        })
+        .then(() => {
+          return this.$store.dispatch('loadSystemSettings');
+        })
+        .then(() => {
+          this.$noty.success('更新成功');
+        });
     },
   },
 };
