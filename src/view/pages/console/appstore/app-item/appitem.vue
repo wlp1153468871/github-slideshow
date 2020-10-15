@@ -71,7 +71,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$appItemWidth: 31.2%;
 .itme-container {
   position: relative;
   width: 260px;

@@ -44,13 +44,13 @@
             <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
           </button>
           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item @click="linktoForm()">
+            <dao-dropdown-item @click="linktoForm">
               <span>使用表单更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="linktoYamlForm()">
+            <dao-dropdown-item @click="linktoYamlForm">
               <span>使用YAML更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="deleteInstance()" class="deleteHover">
+            <dao-dropdown-item @click="deleteInstance" class="deleteHover">
               <span class="delete">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
