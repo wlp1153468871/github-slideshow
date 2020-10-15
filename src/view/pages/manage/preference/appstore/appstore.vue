@@ -50,30 +50,34 @@ export default {
   },
 
   created() {
-    if (this.$can('platform.settings.assets')) {
+    if (this.$can('platform.settings.assets') && this.$can('platform.applications')) {
       this.simpleStr = this.simpleInfo;
     } else {
-      this.$noty.error('您暂无外观设置权限');
+      this.$noty.error('您暂无服务市场定制权限');
     }
   },
 
   methods: {
     updateSimpleInfo() {
-      new Promise(res => {
-        res();
-      })
-        .then(() => {
-          return SystemService.updateSystemSettings({
-            helpURLDict: this.helpURLDict,
-            simpleInfo: this.simpleStr,
+      if (this.$can('platform.applications')) {
+        new Promise(res => {
+          res();
+        })
+          .then(() => {
+            return SystemService.updateSystemSettings({
+              helpURLDict: this.helpURLDict,
+              simpleInfo: this.simpleStr,
+            });
+          })
+          .then(() => {
+            return this.$store.dispatch('loadSystemSettings');
+          })
+          .then(() => {
+            this.$noty.success('更新成功');
           });
-        })
-        .then(() => {
-          return this.$store.dispatch('loadSystemSettings');
-        })
-        .then(() => {
-          this.$noty.success('更新成功');
-        });
+      } else {
+        this.$noty.error('您暂无服务市场定制权限');
+      }
     },
   },
 };

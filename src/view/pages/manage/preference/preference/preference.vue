@@ -13,8 +13,7 @@
               tag="li"
               :key="tab.name"
               :to="tab.to"
-              @click="content = tab"
-            >
+              @click="content = tab">
               <div>
                 {{ tab.name }}
                 <span class="icon">
@@ -63,8 +62,9 @@ export default {
         to: { name: 'manage.preference.appearance' },
       },
       APPSTORE: {
-        name: '应用商店定制',
+        name: '服务市场定制',
         to: { name: 'manage.preference.appstore' },
+        // code: $can('platform.applications'),
       },
       HELP: {
         name: '帮助信息设置',
