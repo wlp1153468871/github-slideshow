@@ -34,10 +34,22 @@
       </div>
     </div>
 <!--  rank  -->
-    <div class="instance-rank" v-if="needType == 'instanceRank'">
+    <div
+      :class="{ 'instance-rank': true, 'version-margin': form.needMargin || false }"
+      v-if="needType == 'instanceRank'">
       <div class="instance-info" v-for="(item, index) in instanceData" :key="index">
         <span>{{item.name}}</span>
-        <span style="color: #3D444F">{{item.count}}</span>
+        <span v-if="item.count" style="color: #3D444F">{{item.count}}</span>
+      </div>
+    </div>
+<!--  colonyInfo  -->
+    <div class="colony-info" v-if="needType == 'colonyInfo'">
+      <div class="instance-info" v-for="(item, index) in instanceData" :key="index">
+        <div>
+          <img class="colonyImg" :src="item.imgUrl" alt="图片"/>
+          <span>{{item.zhName}}</span>
+        </div>
+        <span style="color: #3D444F">{{item.des}}</span>
       </div>
     </div>
 <!--  pie  -->
@@ -65,7 +77,19 @@
 import echarts from 'echarts';
 import steps from './steps';
 
-
+const instanceData = [{
+  name: 'APIServe',
+  count: 12,
+}, {
+  name: 'APIServe',
+  count: 12,
+}, {
+  name: 'APIServe',
+  count: 12,
+}, {
+  name: 'APIServe',
+  count: 12,
+}];
 export default {
   name: 'information',
   props: {
@@ -114,29 +138,12 @@ export default {
         percent: '10%',
         count: 1,
       }],
-      instanceData: [{
-        name: 'APIServe',
-        count: 12,
-      }, {
-        name: 'APIServe',
-        count: 12,
-      }, {
-        name: 'APIServe',
-        count: 12,
-      }, {
-        name: 'APIServe',
-        count: 12,
-      }],
+      instanceData: this.form.instanceData || instanceData,
     };
   },
   mounted() {
     const myChart = echarts.init(this.$refs.myChart);
     const option = {
-      // legend: {
-      //   orient: 'vertical',
-      //   left: 10,
-      //   data: ['正常应用', '异常应用'],
-      // },
       series: [
         {
           type: 'pie',
@@ -291,6 +298,29 @@ export default {
       display: flex;
       justify-content: space-between;
     }
+  }
+  .colony-info {
+    border-top: 1px solid #EDF0F5;
+    .instance-info {
+      line-height: 29px;
+      padding: 0px 15px;
+      color: #9BA3AF;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      .colonyImg {
+        width: 14px;
+        height: 16px;
+        vertical-align: middle;
+        margin-right: 9px;
+      }
+    }
+  }
+  .version-margin {
+    margin-top: 47px;
+    color: #EDF0F5FF;
+    font-size: 14px;
+
   }
   .normal-rate {
     color: #9BA3AF;

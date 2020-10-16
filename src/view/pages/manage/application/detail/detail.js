@@ -252,7 +252,11 @@ export default {
 
     // 上传文件之前
     beforeUpload(file) {
-      if (this.fileType.indexOf(file.type) < 0) {
+      const baseSize = 1024 * 1024;
+      if (file.size > baseSize) {
+        this.$noty.warning('请上传文件小于1MB');
+        this.removeFile();
+      } else if (this.fileType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
