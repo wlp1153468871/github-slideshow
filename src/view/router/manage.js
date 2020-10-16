@@ -74,7 +74,7 @@ export default [
       hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
-      code: 'platform.organization;platform.user;platform.rolePermission;platform.applications',
+      code: 'platform.organization;platform.user;platform.rolePermission;',
       type: 'submenu',
     },
     children: [
@@ -85,7 +85,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization',
+          code: 'platform.organization;',
           hidden: false,
         },
         children: [],
