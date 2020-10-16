@@ -1,7 +1,7 @@
 <template>
   <div
     id="servicedetail"
-    v-if="$can('appstoreApplications.insview') || $can('appstoreAppinstances.view')"
+    v-if="$can('appstoreAppinstances.view')"
   >
     <div class="header">
       <breadcrumb
@@ -36,8 +36,7 @@
           trigger="click"
           :append-to-body="true"
           placement="bottom-start"
-          v-if="$can('appstoreApplications.appinstance') ||
-            $can('appstoreAppinstances.appinstance')"
+          v-if="$can('appstoreAppinstances.appinstance')"
         >
           <button class="dao-btn has-icons" style="width: 98px">
             <span class="text">更多操作</span>

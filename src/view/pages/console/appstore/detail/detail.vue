@@ -1,5 +1,5 @@
 <template>
-  <div id="appdetail">
+  <div id="appdetail" v-if="$can('appstoreApplications.appview')">
     <div class="detail-header">
       <breadcrumb
         :links="[
@@ -107,7 +107,7 @@
                 <marked :text="appInfo.content"></marked>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="实例" name="second">
+            <el-tab-pane label="实例" name="second" v-if="$can('appstoreApplications.insview')">
               <dao-input
                 search
                 @change="updateKey"
