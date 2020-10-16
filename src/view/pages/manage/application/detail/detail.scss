@@ -253,8 +253,8 @@
       }
     }
   }
-  .dao-dialog-container {
-    .dao-name::before {
+  .require {
+    &::before {
       content: '* ';
       color: red;
     }

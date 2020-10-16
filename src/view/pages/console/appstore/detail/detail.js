@@ -16,18 +16,15 @@ export default {
       // 实例列表
       instanceTable: [],
       instanceTableCopy: [],
-
       key: '',
       fileType: ['image/png'],
       fileList: [],
       chartType: ['application/zip', 'application/x-zip', 'application/x-compressed'],
       chartList: [],
       isDisabled: true,
-      isShow: true,
+      configAdd: false,
       // dialog弹窗
       configCreate: false,
-      configEdit: false,
-      configAdd: false,
       configDelete: false,
       // 应用信息
       appInfo: '',
@@ -36,15 +33,6 @@ export default {
       chart: '',
       // 总分类信息
       categories: [],
-      // 更新的info
-      form: {
-        available: 1,
-        category: [],
-        description: '',
-        name: '',
-        pictureId: '',
-      },
-      //  状态
       stateMap: {
         deployed: 'success',
         failed: 'error',
@@ -126,15 +114,6 @@ export default {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.Id).then(res => {
         if (res) {
           this.appInfo = res;
-          this.form.category = res.categoryId;
-
-          const length = `${res.name.split('-').length}`;
-          if (res.isGlobal || length < 2) {
-            this.form.name = res.name;
-          } else {
-            this.form.name = `${res.name.split('-')[1]}`;
-          }
-          this.form.description = res.description;
         }
         this.getCharts();
       });
@@ -178,9 +157,7 @@ export default {
         .then(res => {
           if (res) {
             this.$noty.success('修改成功');
-            this.editClose();
             this.getApp();
-            this.isShow = true;
           }
         });
     },
@@ -208,9 +185,6 @@ export default {
           this.getInstances();
           this.instanceNum();
         });
-    },
-    changeShow() {
-      this.isShow = !this.isShow;
     },
     // 更新表单
     linktoForm(id) {
@@ -270,27 +244,6 @@ export default {
       } else {
         this.configCreate = false;
       }
-      // if (this.selectState === 1) {
-      //   this.configCreate = false;
-      //   this.$router.push({
-      //     name: 'appstore.form',
-      //     params: {
-      //       appid: this.appInfo.id,
-      //       version: this.chart,
-      //     },
-      //   });
-      // } else if (this.selectState === 2) {
-      //   this.configCreate = false;
-      //   this.$router.push({
-      //     name: 'appstore.yamlform',
-      //     params: {
-      //       appid: this.appInfo.id,
-      //       version: this.chart,
-      //     },
-      //   });
-      // } else {
-      //   this.$noty.warning('请选择创建方式');
-      // }
     },
     // 删除chart版本
     deleteChart(version) {
@@ -350,13 +303,6 @@ export default {
       this.selectState = 2;
     },
 
-    editInfo() {
-      this.configEdit = true;
-    },
-    editClose() {
-      this.configEdit = false;
-    },
-
     addEdition() {
       this.configAdd = true;
     },
@@ -367,42 +313,10 @@ export default {
     instanceNum() {
       return this.instanceTableCopy.length;
     },
-    // 上传文件之前
-    beforeUpload(file) {
-      if (this.fileType.indexOf(file.type) < 0) {
-        console.log(`文件MIME: ${file.type}`);
-        this.$noty.warning('请选择.png格式文件');
-        this.removeFile();
-      } else {
-        this.fileList = [...this.fileList, file];
-        this.isDisabled = false;
-      }
-      return false;
-    },
 
     // 删除文件列表
     removeFile() {
       this.$refs.upload.clearFiles();
-    },
-
-    // 上传图片文件
-    handleUpload() {
-      this.isDisabled = true;
-      if (this.fileList.length) {
-        const file = this.fileList[0];
-        AppStoreService.uploadPic(file)
-          .then(res => {
-            this.form.pictureId = res.id;
-            this.updateApp();
-          })
-          .catch(err => {
-            this.removeFile();
-            this.$noty.error(err);
-          });
-      } else {
-        this.form.pictureId = this.appInfo.pictureId;
-        this.updateApp();
-      }
     },
 
     // 上传chart文件之前

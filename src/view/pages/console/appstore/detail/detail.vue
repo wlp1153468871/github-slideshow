@@ -1,5 +1,5 @@
 <template>
-  <div id="appdetail">
+  <div id="appdetail" v-if="$can('appstoreApplications.appview')">
     <div class="detail-header">
       <breadcrumb
         :links="[
@@ -14,113 +14,10 @@
         <div class="left-header">
           <div style="padding: 20px;">
             <img :src="getUrl(appInfo.pictureUrl)"
-                 class="icon-size" v-if="appInfo.pictureId"/>
+              class="icon-size" v-if="appInfo.pictureId"/>
             <img src="@/assets/images/card-Default.png" class="icon-size" v-else/>
             <div class="header-text">{{appInfo.name}}</div>
           </div>
-          <dao-dialog
-            :visible.sync="configEdit"
-            header="编辑基本信息">
-            <div class="dao-setting-layout">
-              <div class="dao-setting-section" style="padding: 20px;">
-                <div class="dao-setting-item">
-                  <div class="dao-setting-label dao-name">自定义应用名称</div>
-                  <div class="dao-setting-content">
-                    <dao-input
-                      v-model="form.name"
-                      block
-                      :disabled="appInfo.isGlobal"
-                      style="width: 98%"
-                      placeholder="请输入应用名称">
-                    </dao-input>
-                  </div>
-                </div>
-              </div>
-              <div class="dao-setting-section">
-                <div class="dao-setting-item">
-                  <div class="dao-setting-label dao-name">应用图标</div>
-                  <div class="dao-setting-content">
-                    <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
-                    <div v-show="isShow">
-                      <img
-                        :src="getUrl(appInfo.pictureUrl)"
-                        alt="应用图标"
-                        class="pic"
-                        v-if="appInfo.pictureId"/>
-                      <img
-                        src="@/assets/images/card-Default.png"
-                        class="pic"
-                        v-else/>
-                      <div>
-                        <button
-                          class="dao-btn red"
-                          @click="changeShow">
-                          删除
-                        </button>
-                      </div>
-                    </div>
-                    <el-upload
-                      v-show="!isShow"
-                      class="upload-demo"
-                      ref="upload"
-                      action="#"
-                      :http-request="handleUpload"
-                      :file-list="fileList"
-                      accept="image/png"
-                      :limit="1"
-                      :before-upload="beforeUpload"
-                      :on-remove="removeFile">
-                      <button class="dao-btn blue">上传图标</button>
-                    </el-upload>
-                  </div>
-                </div>
-              </div>
-              <div class="dao-setting-section">
-                <div class="dao-setting-item">
-                  <div class="dao-setting-label dao-name">分类</div>
-                  <div class="dao-setting-content">
-                    <el-select
-                      v-model="form.category"
-                      multiple
-                      default-first-option
-                      placeholder="选择分类"
-                      style="width: 98%;">
-                      <el-option
-                        v-for="item in categories"
-                        :key="item.name"
-                        :label="item.name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </div>
-                </div>
-              </div>
-              <div class="dao-setting-section">
-                <div class="dao-setting-item">
-                  <div class="dao-setting-label dao-name">描述</div>
-                  <div class="dao-setting-content">
-                    <textarea
-                      class="dao-control"
-                      type="text"
-                      placeholder="添加描述"
-                      rows="2"
-                      v-model="form.description"
-                      style="width: 98%; height:20px"
-                    >
-                    </textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div slot="footer">
-              <button class="dao-btn ghost" @click="editClose">
-                取消
-              </button>
-              <button class="dao-btn blue" @click="handleUpload">
-                确认
-              </button>
-            </div>
-          </dao-dialog>
           <dao-dialog
             :visible.sync="configAdd"
             header="添加版本">
@@ -210,7 +107,7 @@
                 <marked :text="appInfo.content"></marked>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="实例" name="second">
+            <el-tab-pane label="实例" name="second" v-if="$can('appstoreApplications.insview')">
               <dao-input
                 search
                 @change="updateKey"

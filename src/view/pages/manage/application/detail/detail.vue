@@ -62,7 +62,7 @@
       <div class="dao-setting-layout">
         <div class="dao-setting-section" style="padding: 20px;">
           <div class="dao-setting-item">
-            <div class="dao-setting-label dao-name">自定义应用名称</div>
+            <div class="dao-setting-label dao-name require">自定义应用名称</div>
             <div class="dao-setting-content">
               <dao-input
                 v-model="form.name"
@@ -76,7 +76,7 @@
         </div>
         <div class="dao-setting-section">
           <div class="dao-setting-item">
-            <div class="dao-setting-label dao-name">应用图标</div>
+            <div class="dao-setting-label dao-name require">应用图标</div>
             <div class="dao-setting-content">
               <div class="desc">建议大小120 像素 x 120 像素，支持 PNG，文件小于 1 MB</div>
               <div v-show="isShow">
@@ -115,7 +115,7 @@
         </div>
         <div class="dao-setting-section">
           <div class="dao-setting-item">
-            <div class="dao-setting-label dao-name">分类</div>
+            <div class="dao-setting-label dao-name require">分类</div>
             <div class="dao-setting-content">
               <el-select
                 v-model="form.category"

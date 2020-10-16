@@ -12,6 +12,8 @@ export default {
     this.$store.dispatch('loadTheme');
     this.$store.dispatch('loadSystemSettings');
     window.addEventListener('hashchange', this.onHashChange, false);
+    console.log(`DSP_VERSION: ${process.env.DSP_VERSION || 'unkown'}`);
+    console.log(`GIT_COMMIT_ID: ${process.env.GIT_COMMIT_ID || 'unkown'}`);
   },
   methods: {
     onHashChange() {

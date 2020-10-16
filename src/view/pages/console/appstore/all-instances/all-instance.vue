@@ -10,7 +10,7 @@
     >
     </dao-input>
     <span class="fresh" @click="fresh">
-      <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh()">
+      <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh">
         <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
       </button>
     </span>

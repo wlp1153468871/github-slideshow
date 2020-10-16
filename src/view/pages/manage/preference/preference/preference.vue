@@ -7,21 +7,23 @@
       <div class="dao-view-sidebar">
         <div class="dao-list-group-container">
           <ul class="dao-list-group">
-            <router-link
-              class="dao-list-item"
-              v-for="tab in TABS"
-              tag="li"
-              :key="tab.name"
-              :to="tab.to"
-              @click="content = tab"
-            >
-              <div>
-                {{ tab.name }}
-                <span class="icon">
-                  <svg><use xlink:href="#icon_caret-right"></use></svg>
-                </span>
-              </div>
-            </router-link>
+            <template v-for="tab in TABS">
+              <router-link
+                v-if="tab.code"
+                class="dao-list-item"
+                tag="li"
+                :key="tab.name"
+                :to="tab.to"
+                @click="content = tab">
+                <div>
+                  {{ tab.name }}
+                  <span class="icon">
+                    <svg><use xlink:href="#icon_caret-right"></use></svg>
+                  </span>
+                </div>
+              </router-link>
+            </template>
+
           </ul>
           <ul class="dao-list-group">
             <router-link
@@ -57,18 +59,22 @@ export default {
       HOME: {
         name: '首页编辑',
         to: { name: 'manage.preference.home' },
+        code: true,
       },
       APPEARANCE: {
         name: '外观定制',
         to: { name: 'manage.preference.appearance' },
+        code: true,
       },
       APPSTORE: {
-        name: '应用商店定制',
+        name: '服务市场定制',
         to: { name: 'manage.preference.appstore' },
+        code: this.$can('platform.applications'),
       },
       HELP: {
         name: '帮助信息设置',
         to: { name: 'manage.preference.help-info-config' },
+        code: true,
       },
     };
     const OTHERS = {
