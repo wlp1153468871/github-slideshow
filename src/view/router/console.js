@@ -61,8 +61,10 @@ import ProductCheckout from '@/view/pages/console/product/checkout/checkout.vue'
 import Gateway from '@/view/pages/console/gateway/gateway';
 
 import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
-
+// 项目组
 // import Dashboard from '@/view/pages/overview/tenantView/index.vue';
+// 管理员
+// import Dashboard from '@/view/pages/overview/adminView/index.vue';
 // test
 // import Dashboard from '@/view/pages/overview/components/newsStep.vue';
 // import Dashboard from '@/view/pages/overview/components/steps.vue';

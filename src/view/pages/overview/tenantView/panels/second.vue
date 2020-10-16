@@ -10,8 +10,8 @@
         <div class="memory">
           <information
             :form="memoryObj"
-            :need-type="cpuObj.needType"
-            :need-img="cpuObj.needImg"></information>
+            :need-type="memoryObj.needType"
+            :need-img="memoryObj.needImg"></information>
         </div>
       </div>
       <div class="topRate-cpu">

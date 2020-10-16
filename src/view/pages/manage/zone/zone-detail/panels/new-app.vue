@@ -363,7 +363,11 @@ export default {
      * @returns {boolean}
      */
     beforeUpload(file) {
-      if (this.fileType.indexOf(file.type) < 0) {
+      const baseSize = 1024 * 1024;
+      if (file.size > baseSize) {
+        this.$noty.warning('请上传文件小于1MB');
+        this.removeFile();
+      } else if (this.fileType.indexOf(file.type) < 0) {
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {
