@@ -2,7 +2,7 @@
   <div class="app-yamlform">
     <div class="layout-content-header form-header">
       <span @click="cancerForm">
-        <svg class="icon" style="color: #217EF2;cursor: pointer;">
+        <svg class="icon cancerIcon">
           <use :xlink:href="`#icon_close`"></use>
         </svg>
       </span>
@@ -321,6 +321,10 @@ export default {
       font-size: 16px;
       font-weight: 500;
       color: #3D444F;
+    }
+    .cancerIcon {
+      color: #217EF2;
+      cursor: pointer;
     }
   }
   .yaml_content_box{

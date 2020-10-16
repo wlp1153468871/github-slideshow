@@ -2,7 +2,7 @@
   <div class="app-form">
     <div class="layout-content-header form-header">
       <span @click="cancerForm">
-        <svg class="icon" style="color: #217EF2;cursor: pointer;">
+        <svg class="icon cancerIcon">
           <use :xlink:href="`#icon_close`"></use>
         </svg>
       </span>

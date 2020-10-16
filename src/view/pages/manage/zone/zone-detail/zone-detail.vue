@@ -27,7 +27,7 @@
         <el-tab-pane
           :label="TABS.APPLICATION"
           :name="TABS.APPLICATION"
-          v-if="$can('platform.zone.applications.view')"
+          v-if="$can('platform.applications')"
         >
           <AppList :id="zone.id" @addApplication="addApplication"></AppList>
         </el-tab-pane>

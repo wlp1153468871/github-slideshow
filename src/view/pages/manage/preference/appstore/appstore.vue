@@ -53,7 +53,7 @@ export default {
     if (this.$can('platform.settings.assets')) {
       this.simpleStr = this.simpleInfo;
     } else {
-      this.$noty.error('您暂无外观设置权限');
+      this.$noty.error('您暂无服务市场定制权限');
     }
   },
 
@@ -72,7 +72,7 @@ export default {
           return this.$store.dispatch('loadSystemSettings');
         })
         .then(() => {
-          this.$noty.success('更新完成成功');
+          this.$noty.success('更新成功');
         });
     },
   },
