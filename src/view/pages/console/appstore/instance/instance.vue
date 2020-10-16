@@ -1,7 +1,7 @@
 <template>
   <div
     id="servicedetail"
-    v-if="$can('appstoreApplications.insview') || $can('appstoreAppinstances.view')"
+    v-if="$can('appstoreAppinstances.view')"
   >
     <div class="header">
       <breadcrumb
@@ -14,7 +14,7 @@
     </div>
     <div class="detail-title">
       <span>
-        <img :src="`http://jizhidev.k8s01.ats${appInfo.pictureUrl}`" class="icon-size" v-if="appInfo.pictureId"/>
+        <img :src="getUrl(appInfo.pictureUrl)" class="icon-size" v-if="appInfo.pictureId"/>
         <img src="@/assets/images/card-Default.png" class="icon-size"  v-else/>
       </span>
       <div class="title-name">{{instanceInfo.name}}</div>
@@ -36,21 +36,20 @@
           trigger="click"
           :append-to-body="true"
           placement="bottom-start"
-          v-if="$can('appstoreApplications.appinstance') ||
-            $can('appstoreAppinstances.appinstance')"
+          v-if="$can('appstoreAppinstances.appinstance')"
         >
           <button class="dao-btn has-icons" style="width: 98px">
             <span class="text">更多操作</span>
             <svg class="icon"><use xlink:href="#icon_down-arrow"></use></svg>
           </button>
           <dao-dropdown-menu slot="list" style="min-width: 120px;">
-            <dao-dropdown-item @click="linktoForm()">
+            <dao-dropdown-item @click="linktoForm">
               <span>使用表单更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="linktoYamlForm()">
+            <dao-dropdown-item @click="linktoYamlForm">
               <span>使用YAML更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="deleteInstance()" class="deleteHover">
+            <dao-dropdown-item @click="deleteInstance" class="deleteHover">
               <span class="delete">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>

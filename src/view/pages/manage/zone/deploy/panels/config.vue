@@ -300,6 +300,8 @@
           <div slot="label">镜像仓库名称</div>
           <div slot="content">
             <dao-input
+              :maxlength="32"
+              message="请输入以字母开头和结尾，由数字，字母，‘-’ 组成的合法字符串。"
               :status="chartepotatus"
               v-model="form.registry.chart_repo"
               placeholder="请输入chart仓库名称">
@@ -522,7 +524,9 @@ export default {
       },
     },
     chartepotatus() {
-      if (this.form.registry.chart_repo !== '') {
+      const reg = /^[a-z]([-a-z0-9]*[a-z0-9])?$/;
+      const chartRepo = this.form.registry.chart_repo;
+      if (chartRepo !== '' && reg.test(chartRepo)) {
         return '';
       }
       return 'error';

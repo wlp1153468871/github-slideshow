@@ -184,7 +184,6 @@ export default {
     },
     //  更新应用
     updateApp() {
-      console.log(this.form.pictureId);
       if (this.form.pictureId == 0) {
         this.$noty.error('应用图标不能为空');
       } else if (this.form.description.length > 200) {
@@ -293,16 +292,15 @@ export default {
       });
     },
     //  实例
-    linkInstance(appid, instanceid) {
-      this.$router.push({
-        name: 'application.instance',
-        params: {
-          appid,
-          instanceid,
-        },
-      });
-      // console.log(appid, instanceid);
-    },
+    // linkInstance(appid, instanceid) {
+    //   this.$router.push({
+    //     name: 'application.instance',
+    //     params: {
+    //       appid,
+    //       instanceid,
+    //     },
+    //   });
+    // },
     // 上传图片文件
     handleUpload() {
       this.isDisabled = true;
@@ -359,10 +357,8 @@ export default {
     },
 
     changeShow(val) {
-      console.log('删除');
       this.fileList = [];
       this.form.pictureId = val;
-      console.log(this.form.pictureId);
       this.isShow = !this.isShow;
     },
     editInfo() {

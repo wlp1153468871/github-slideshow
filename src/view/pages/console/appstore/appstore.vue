@@ -1,5 +1,5 @@
 <template>
-  <div id="appstore" v-if="$can('appstoreAppinstances')">
+  <div id="appstore" v-if="$can('appstoreApplications')">
     <div class="appstore-header">
       <div class="img-box">
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
@@ -7,7 +7,7 @@
       <div class="header-title">服务市场</div>
       <div class="header-desc">{{simpleInfo}}</div>
     </div>
-    <div class="dao-view-main" style="margin-bottom: 20px;margin-top: 20px">
+    <div class="dao-view-main" style="margin: 20px;">
       <div class="dao-view-content">
         <dao-select
           v-model="category"
@@ -26,8 +26,8 @@
             :key="tag.name"
             closable
             type="info"
-            @close="handleClose1()"
-            style="margin-left: 10px;background-color:#E4E7ED;border: none;color: #3D444F;"
+            @close="handleClose1"
+            class="tag"
           >
             {{tag}}
           </el-tag>
@@ -36,12 +36,12 @@
             :key="tag.name"
             closable
             type="info"
-            @close="handleClose2()"
-            style="margin-left: 10px;background-color:#E4E7ED;border: none;color: #3D444F;"
+            @close="handleClose2"
+            class="tag"
           >
             {{tag}}
           </el-tag>
-          <span class="clear" @click="clearAll()">全部清除</span>
+          <span class="clear" @click="clearAll">全部清除</span>
         </div>
       </div>
       <dao-input
@@ -49,7 +49,7 @@
         v-model="key"
         placeholder="搜索">
       </dao-input>
-      <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh()">
+      <button class="dao-btn icon-btn" style="margin-left: 10px;" @click="fresh">
         <svg class="icon"><use xlink:href="#icon_cw"></use></svg>
       </button>
     </div>
@@ -80,7 +80,7 @@
       </el-checkbox-group>
     </div>
 
-    <div class="store-item-container" v-if="applications.length">
+    <div class="store-item-container" v-if="applications.length" v-loading="loading">
       <div v-for="(item, index) in categories" :key="index">
         <div v-if="item.name === category || category === '全部'">
           <div class="title" v-if="item.isShow">{{ item.name }}</div>
@@ -116,6 +116,9 @@ v-deep .el-tag {
 }
 
 #appstore {
+  .el-loading-mask {
+    background: #f1f3f6;
+  }
   .appstore-header {
     height: 160px;
     background: #3D4655;
@@ -164,6 +167,12 @@ v-deep .el-tag {
       font-weight: 400;
       color: #217EF2;
       cursor: pointer;
+    }
+    .tag {
+      margin-left: 10px;
+      background-color:#E4E7ED;
+      border: none;
+      color: #3D444F;
     }
   }
   .icon-container {
@@ -246,7 +255,6 @@ v-deep .el-tag {
         line-height: 18px;
       }
       .font2 {
-        /* margin-top: 15px; */
         padding: 15px 0 0 15px;
         height: 22px;
         font-size: 14px;

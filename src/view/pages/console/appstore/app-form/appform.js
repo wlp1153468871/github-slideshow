@@ -1,5 +1,4 @@
 import { mapState } from 'vuex';
-
 import AppStoreService from '@/core/services/appstore.service';
 
 export default {
@@ -7,28 +6,17 @@ export default {
 
   data() {
     return {
-      select1: 1,
-      select2: 2,
-      zones: [
-        {
-          value: '默认租户',
-          index: 1,
-        },
-      ],
-      project: [
-        {
-          value: '默认项目组',
-          index: 2,
-        },
-      ],
       config: {
         visible: false,
       },
       chartName: '',
       instanceName: '',
+      max: 32,
       table: [],
       loading: false,
       giveup: false,
+      status: '',
+      errormMsg: '',
     };
   },
 
@@ -36,10 +24,30 @@ export default {
     ...mapState(['space', 'zone']),
   },
 
+  watch: {
+    instanceName: {
+      handler(str) {
+        if (!this.check(str) && str.length) {
+          this.status = 'error';
+          this.errormMsg = '请输入以字母开头和结尾，由数字，字母，‘-’ 组成的合法字符串。';
+        } else {
+          this.errormMsg = '';
+          this.status = 'success';
+        }
+      },
+    },
+  },
+
   created() {
     this.getApp();
   },
+
   methods: {
+    // 检测
+    check(name) {
+      const reg = /^[a-z]([-a-z0-9]*[a-z0-9])?$/;
+      return reg.test(name);
+    },
     // 获取App
     getApp() {
       AppStoreService.getApp(this.zone.id, this.space.id, this.$route.params.appid).then(res => {
@@ -109,7 +117,7 @@ export default {
     },
     // 以form创建
     createForm() {
-      if (this.instanceName.length) {
+      if (this.instanceName.length && this.status === 'success') {
         this.loading = true;
         AppStoreService
           .createForm(this.zone.id, this.space.id, this.$route.params.appid,
@@ -134,7 +142,7 @@ export default {
             this.loading = false;
           });
       } else {
-        this.$noty.error('实例名称为空');
+        this.$noty.error('实例名称有误');
       }
     },
     // 获取一个实例
@@ -165,7 +173,7 @@ export default {
                   instanceid: this.$route.query.instanceId,
                 },
               });
-            } else if (res.status === 'timeOut') {
+            } else {
               this.$router.push({
                 name: 'appstore.detail',
                 params: {
@@ -175,10 +183,20 @@ export default {
                   activeName: this.$route.query.activeName,
                 },
               });
-              this.$noty.warning('实例更新超时');
-            } else {
-              this.$noty.error('实例更新失败');
             }
+          } else if (res.status === 'timeOut') {
+            this.$router.push({
+              name: 'appstore.detail',
+              params: {
+                Id: this.$route.params.appid,
+              },
+              query: {
+                activeName: this.$route.query.activeName,
+              },
+            });
+            this.$noty.warning('实例更新超时');
+          } else {
+            this.$noty.error('实例更新失败');
           }
         })
         .finally(() => {

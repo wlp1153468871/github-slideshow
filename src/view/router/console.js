@@ -421,7 +421,6 @@ export default [
           hidden: false,
           public: true,
         },
-
       },
       {
         path: 'instance',

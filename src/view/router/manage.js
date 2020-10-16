@@ -45,8 +45,8 @@ const Application = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
 const ApplicationDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
-const AdminInstance = () =>
-  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/instance/instance.vue');
+// const AdminInstance = () =>
+//   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/instance/instance.vue');
 
 // preference
 const HomeSetting = () =>
@@ -74,7 +74,7 @@ export default [
       hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
-      code: 'platform.organization;platform.user;platform.rolePermission;platform.applications',
+      code: 'platform.organization;platform.user;platform.rolePermission;',
       type: 'submenu',
     },
     children: [
@@ -85,7 +85,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization',
+          code: 'platform.organization;',
           hidden: false,
         },
         children: [],
@@ -205,15 +205,15 @@ export default [
           hidden: true,
         },
       },
-      {
-        path: 'application/:appid/instance/:instanceid',
-        name: 'application.instance',
-        component: AdminInstance,
-        meta: {
-          activeMenu: 'manage.application',
-          hidden: true,
-        },
-      },
+      // {
+      //   path: 'application/:appid/instance/:instanceid',
+      //   name: 'application.instance',
+      //   component: AdminInstance,
+      //   meta: {
+      //     activeMenu: 'manage.application',
+      //     hidden: true,
+      //   },
+      // },
       {
         path: 'zone',
         name: 'manage.zone.list',

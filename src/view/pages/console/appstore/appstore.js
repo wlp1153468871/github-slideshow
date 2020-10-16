@@ -32,6 +32,7 @@ export default {
       checkedPro: [],
       appCopy: '',
       max: 1,
+      loading: false,
     };
   },
 
@@ -101,11 +102,20 @@ export default {
     },
     // 刷新
     fresh() {
+      this.loading = true;
       this.key = '';
-      // this.applications = this.appCopy;
       this.filterData(this.applications);
       this.clearAll();
-      this.getApplications();
+      AppStoreService.zoneList(this.zone.id, this.space.id)
+        .then(res => {
+          if (res) {
+            this.applications = res;
+            this.appCopy = res;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     // list

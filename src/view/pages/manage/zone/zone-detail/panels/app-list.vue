@@ -1,5 +1,5 @@
 <template>
-    <div id="zone">
+    <div id="zone" v-if="$can('platform.zone.applications.view')">
       <div class="app-list">
         <div v-if="isSync">
           <dao-dialog
@@ -242,6 +242,7 @@
 </template>
 
 <script>
+import CatalogService from '@/core/services/catalog.service';
 import ZoneAdminService from '@/core/services/zone-admin.service';
 import newApp from './new-app';
 
@@ -308,6 +309,7 @@ export default {
       deleteZoneId: '',
       chartVersion: {},
       chartVersionFlag: false,
+      enableChart: false,
     };
   },
 
@@ -330,6 +332,23 @@ export default {
   },
 
   methods: {
+    loadCatelog() {
+      const AuthorizationScope = JSON.stringify({
+        platform_id: 'dsp',
+        zone_id: this.$route.params.zone,
+      });
+      const config = {
+        headers: {
+          AuthorizationScope,
+        },
+      };
+      CatalogService.getCatalog(this.$route.params.zone, config)
+        .then(data => {
+          if (data) {
+            this.enableChart = data.registry.enable_chart;
+          }
+        });
+    },
     /**
        * 请求可用区选中应用list
        */
@@ -346,6 +365,7 @@ export default {
             item.category = category;
           });
           this.changeExpand();
+          this.loadCatelog();
         })
         .finally(() => {
           this.loading.zone = false;
@@ -388,13 +408,16 @@ export default {
        * 新建一个应用按钮点击事件
        */
     handleNewApplication() {
-      this.$router.push({
-        name: 'manage.zone.newapp',
-        params: {
-          id: this.id,
-        },
-      });
-      // this.$emit('addApplication');
+      if (this.enableChart) {
+        this.$router.push({
+          name: 'manage.zone.newapp',
+          params: {
+            id: this.id,
+          },
+        });
+      } else {
+        this.$noty.error('chart仓库未激活，请前往设置激活');
+      }
     },
     /**
        * 下架应用
@@ -525,7 +548,11 @@ export default {
      * 点击同步按钮
      */
     synchronism() {
-      this.isSync = true;
+      if (this.enableChart) {
+        this.isSync = true;
+      } else {
+        this.$noty.error('chart仓库未激活，请前往设置激活');
+      }
     },
     /**
      * 确认上传chart新版本-上传chart文件
