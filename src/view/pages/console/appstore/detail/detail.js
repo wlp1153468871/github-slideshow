@@ -46,6 +46,8 @@ export default {
       currentPage: 1,
       total: 0,
       baseUrl: '', // 当前路径
+      deleteApplication: false,
+      instanceId: '',
     };
   },
 
@@ -178,8 +180,22 @@ export default {
         });
     },
     // 删除某个实例
-    deleteInstance(instanceId) {
-      AppStoreService.deleteInstance(this.zone.id, this.space.id, this.$route.params.Id, instanceId)
+    clickDelete(instanceId) {
+      this.instanceId = instanceId;
+      this.deleteApplication = true;
+    },
+    // 确认删除
+    sureApplication() {
+      this.deleteInstance();
+      this.deleteApplication = false;
+    },
+    // 取消删除
+    applicationCancel() {
+      this.deleteApplication = false;
+    },
+    deleteInstance() {
+      AppStoreService.deleteInstance(
+        this.zone.id, this.space.id, this.$route.params.Id, this.instanceId)
         .then(() => {
           this.$noty.success('实例删除成功');
           this.getInstances();
