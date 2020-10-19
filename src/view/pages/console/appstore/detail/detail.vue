@@ -161,7 +161,6 @@
                           <dao-dropdown-menu
                             slot="list"
                             style="min-width: 120px;"
-                            v-if="$can('appstoreApplications.appinstance')"
                           >
                             <dao-dropdown-item @click="linktoForm(scope.row.id)">
                               <span>使用表单更新</span>

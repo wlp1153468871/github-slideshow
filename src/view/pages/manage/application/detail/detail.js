@@ -184,7 +184,7 @@ export default {
     },
     //  更新应用
     updateApp() {
-      if (this.form.pictureId == 0) {
+      if (this.form.pictureId === 0) {
         this.$noty.error('应用图标不能为空');
       } else if (this.form.description.length > 200) {
         this.$noty.error('描述字符长度不能大于200');

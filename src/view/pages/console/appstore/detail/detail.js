@@ -179,38 +179,50 @@ export default {
     },
     // 删除某个实例
     deleteInstance(instanceId) {
-      AppStoreService.deleteInstance(this.zone.id, this.space.id, this.$route.params.Id, instanceId)
+      if (this.$can('appstoreApplications.appinstance')) {
+        AppStoreService.deleteInstance(this.zone.id, this.space.id, this.$route.params.Id, instanceId)
         .then(() => {
           this.$noty.success('实例删除成功');
           this.getInstances();
           this.instanceNum();
         });
+      } else {
+        this.$noty.error('暂无权限访问');
+      }
     },
     // 更新表单
     linktoForm(id) {
-      this.$router.push({
-        name: 'appstore.form',
-        params: {
-          appid: this.appInfo.id,
-          version: this.chart,
-        },
-        query: {
-          instanceId: id,
-        },
-      });
+      if (this.$can('appstoreApplications.appinstance')) {
+        this.$router.push({
+          name: 'appstore.form',
+          params: {
+            appid: this.appInfo.id,
+            version: this.chart,
+          },
+          query: {
+            instanceId: id,
+          },
+        });
+      } else {
+        this.$noty.error('暂无权限访问');
+      }
     },
     // 更新yaml
     linktoYamlForm(id) {
-      this.$router.push({
-        name: 'appstore.yamlform',
-        params: {
-          appid: this.appInfo.id,
-          version: this.chart,
-        },
-        query: {
-          instanceId: id,
-        },
-      });
+      if (this.$can('appstoreApplications.appinstance')) {
+        this.$router.push({
+          name: 'appstore.yamlform',
+          params: {
+            appid: this.appInfo.id,
+            version: this.chart,
+          },
+          query: {
+            instanceId: id,
+          },
+        });
+      } else {
+        this.$noty.error('暂无权限访问');
+      }
     },
     destoryDialog() {
       if (this.selectState === 1) {
@@ -256,13 +268,17 @@ export default {
     },
     // 实例跳转
     rowClick(id) {
-      this.$router.push({
-        name: 'appstore.instance',
-        params: {
-          appid: this.appInfo.id,
-          instanceid: id,
-        },
-      });
+      if (this.$can('appstoreAppinstances')) {
+        this.$router.push({
+          name: 'appstore.instance',
+          params: {
+            appid: this.appInfo.id,
+            instanceid: id,
+          },
+        });
+      } else {
+        this.$noty.error('无权限访问');
+      }
     },
 
     // 搜索实例
