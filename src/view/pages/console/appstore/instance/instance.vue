@@ -7,10 +7,26 @@
       <breadcrumb
         :links="[
           { text: '服务', route: { path: '/console/appstore/view' } },
+          { text: `服务详情(${appInfo.name})`, route: { path: `/console/appstore/detail/${appInfo.id}`} },
           { text: `实例详情(${instanceInfo.name})` },
         ]"
       >
       </breadcrumb>
+    </div>
+    <div v-if="deleteApplication">
+      <dao-dialog
+        v-if="deleteApplication"
+        :visible.sync="deleteApplication"
+        header="删除应用模板">
+        <div class="body">
+          <div>确定删除此应用模板？</div>
+          <div>此操作为不可逆操作，请谨慎操作!</div>
+        </div>
+        <div slot="footer">
+          <button class="dao-btn blue" @click="sureApplication">确认</button>
+          <button class="dao-btn" @click="applicationCancel">取消</button>
+        </div>
+      </dao-dialog>
     </div>
     <div class="detail-title">
       <span>
@@ -49,7 +65,7 @@
             <dao-dropdown-item @click="linktoYamlForm">
               <span>使用YAML更新</span>
             </dao-dropdown-item>
-            <dao-dropdown-item @click="deleteInstance" class="deleteHover">
+            <dao-dropdown-item @click="clickDelete" class="deleteHover">
               <span class="delete">删除</span>
             </dao-dropdown-item>
           </dao-dropdown-menu>
@@ -95,7 +111,8 @@
         </div>
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">实例信息</div>
-          <marked :text="instanceInfo.notes" style="padding: 20px;" v-if="instanceInfo.notes"></marked>
+          <marked :text="instanceInfo.notes" style="padding: 20px;" v-if="instanceInfo.notes">
+          </marked>
           <div v-else class="blank">列表为空</div>
         </div>
       </el-tab-pane>

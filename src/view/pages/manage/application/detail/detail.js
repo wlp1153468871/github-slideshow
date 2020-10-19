@@ -184,7 +184,7 @@ export default {
     },
     //  更新应用
     updateApp() {
-      if (this.form.pictureId == 0) {
+      if (this.form.pictureId === 0) {
         this.$noty.error('应用图标不能为空');
       } else if (this.form.description.length > 200) {
         this.$noty.error('描述字符长度不能大于200');
@@ -252,8 +252,12 @@ export default {
 
     // 上传文件之前
     beforeUpload(file) {
-      if (this.fileType.indexOf(file.type) < 0) {
-        console.log(`文件MIME: ${file.type}`);
+      this.fileList = [];
+      // eslint-disable-next-line
+      if (file.size > Math.pow(1024, 2)) {
+        this.removeFile();
+        this.$noty.warning('请选择小于1MB的图片');
+      } else if (this.fileType.indexOf(file.type) < 0) {
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {

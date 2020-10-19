@@ -12,6 +12,7 @@ import ServicePanel from '@/view/pages/console/app/detail/sections/service.vue';
 import IngressPanel from '@/view/pages/console/app/detail/panels/ingress';
 import ConfigPanel from '@/view/pages/console/app/detail/panels/config';
 import JobPanel from '@/view/pages/console/app/detail/panels/job';
+import fa from 'element-ui/src/locale/lang/fa';
 
 export default {
   name: 'AppStoreInstance',
@@ -43,6 +44,7 @@ export default {
         failed: 'error',
         timeOut: 'warning',
       },
+      deleteApplication: false,
     };
   },
 
@@ -105,23 +107,31 @@ export default {
       });
     },
     // 删除实例
+    clickDelete() {
+      console.log('点击删除');
+      this.deleteApplication = true;
+    },
     deleteInstance() {
       AppStoreService
         .deleteInstance(this.zone.id, this.space.id,
           this.$route.params.appid, this.$route.params.instanceid)
         .then(() => {
           this.$noty.success('实例删除成功');
-          this.$router.push({
-            name: 'appstore.detail',
-            params: {
-              Id: this.$route.params.appid,
-            },
-          });
+          this.$router.push({ name: 'console.instance.list' });
         })
         .catch(() => {
           this.getOperator();
           this.getInstanceOne();
         });
+    },
+    // 确认删除
+    sureApplication() {
+      this.deleteInstance();
+      this.deleteApplication = false;
+    },
+    // 取消删除
+    applicationCancel() {
+      this.deleteApplication = false;
     },
     // 获取实例详情
     getInstanceOne() {

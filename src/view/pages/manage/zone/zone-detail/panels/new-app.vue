@@ -83,7 +83,6 @@
                 :http-request="handleUpload"
                 :file-list="fileList"
                 accept="image/png"
-                :limit="1"
                 :before-upload="beforeUpload"
                 :on-remove="removeFile">
                 <button class="dao-btn blue">上传图标</button>
@@ -357,7 +356,12 @@ export default {
      * @returns {boolean}
      */
     beforeUpload(file) {
-      if (this.fileType.indexOf(file.type) < 0) {
+      this.fileList = [];
+      // eslint-disable-next-line
+      if (file.size > Math.pow(1024, 2)) {
+        this.removeFile();
+        this.$noty.warning('请选择小于1MB的图片');
+      } else if (this.fileType.indexOf(file.type) < 0) {
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {
@@ -377,13 +381,14 @@ export default {
     /**
      * 删除chart文件
      */
-    removeFileChart() {
-      ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version).then(() => {
-        this.chartList = [];
-        this.name = '';
-        this.description = '';
-        this.$noty.success('chart文件删除');
-      });
+    async removeFileChart() {
+      await ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version)
+        .then(() => {
+          this.chartList = [];
+          this.name = '';
+          this.description = '';
+          this.$noty.success('chart文件删除');
+        });
     },
     createApp() {
       if (this.chartList.length === 0) {
@@ -416,7 +421,15 @@ export default {
       };
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {
-          this.$router.back();
+          this.$router.push({
+            name: 'manage.zone.detail',
+            params: {
+              zone: this.$route.params.id,
+            },
+            query: {
+              tab: 'APPLICATION',
+            },
+          });
           this.$noty.success('创建成功');
         }
       });
@@ -442,8 +455,11 @@ export default {
     /**
      * chart文件上传之前的回调函数
      */
-    beforeUploadChart(file) {
-      this.chartList = [];
+    async beforeUploadChart(file) {
+      if (this.chartList.length) {
+        await this.removeFileChart();
+      }
+      // this.chartList = [];
       console.log(file, file.type, '文件类型');
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);

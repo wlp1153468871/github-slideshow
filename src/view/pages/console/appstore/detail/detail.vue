@@ -9,6 +9,21 @@
       >
       </breadcrumb>
     </div>
+    <div v-if="deleteApplication">
+      <dao-dialog
+        v-if="deleteApplication"
+        :visible.sync="deleteApplication"
+        header="删除应用模板">
+        <div class="body">
+          <div>确定删除此应用模板？</div>
+          <div>此操作为不可逆操作，请谨慎操作!</div>
+        </div>
+        <div slot="footer">
+          <button class="dao-btn blue" @click="sureApplication">确认</button>
+          <button class="dao-btn" @click="applicationCancel">取消</button>
+        </div>
+      </dao-dialog>
+    </div>
     <div class="content_box">
       <div class="left">
         <div class="left-header">
@@ -161,7 +176,6 @@
                           <dao-dropdown-menu
                             slot="list"
                             style="min-width: 120px;"
-                            v-if="$can('appstoreApplications.appinstance')"
                           >
                             <dao-dropdown-item @click="linktoForm(scope.row.id)">
                               <span>使用表单更新</span>
@@ -170,10 +184,10 @@
                               <span>使用 YAML 更新</span>
                             </dao-dropdown-item>
                             <dao-dropdown-item
-                              @click="deleteInstance(scope.row.id)"
+                              @click="clickDelete(scope.row.id)"
                               class="deleteHover"
                             >
-                              <span class="delete">删除</span>
+                              <span class="delete">删除111</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
                         </dao-dropdown>
