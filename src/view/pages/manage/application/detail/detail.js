@@ -252,6 +252,7 @@ export default {
 
     // 上传文件之前
     beforeUpload(file) {
+      this.fileList = [];
       if(file.size > Math.pow(1024, 2)) {
         this.removeFile();
         this.$noty.warning('请选择小于1MB的图片');

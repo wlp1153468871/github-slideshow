@@ -356,9 +356,6 @@ export default {
      * @returns {boolean}
      */
     beforeUpload(file) {
-      // if (this.fileList.length) {
-      //   await this.removeFileChart();
-      // }
       this.fileList = [];
       if(file.size > Math.pow(1024, 2)) {
         this.removeFile();
