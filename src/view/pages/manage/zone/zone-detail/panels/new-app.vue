@@ -357,7 +357,8 @@ export default {
      */
     beforeUpload(file) {
       this.fileList = [];
-      if(file.size > Math.pow(1024, 2)) {
+      // eslint-disable-next-line
+      if (file.size > Math.pow(1024, 2)) {
         this.removeFile();
         this.$noty.warning('请选择小于1MB的图片');
       } else if (this.fileType.indexOf(file.type) < 0) {
@@ -381,12 +382,13 @@ export default {
      * 删除chart文件
      */
     async removeFileChart() {
-      await ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version).then(() => {
-        this.chartList = [];
-        this.name = '';
-        this.description = '';
-        this.$noty.success('chart文件删除');
-      });
+      await ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version)
+        .then(() => {
+          this.chartList = [];
+          this.name = '';
+          this.description = '';
+          this.$noty.success('chart文件删除');
+        });
     },
     createApp() {
       if (this.chartList.length === 0) {
@@ -419,7 +421,15 @@ export default {
       };
       ZoneAdminService.createApplication(this.id, formData).then(res => {
         if (res) {
-          this.$router.back();
+          this.$router.push({
+            name: 'manage.zone.detail',
+            params: {
+              zone: this.$route.params.id,
+            },
+            query: {
+              tab: 'APPLICATION',
+            },
+          });
           this.$noty.success('创建成功');
         }
       });
