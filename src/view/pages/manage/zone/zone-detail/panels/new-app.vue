@@ -377,8 +377,8 @@ export default {
     /**
      * 删除chart文件
      */
-    removeFileChart() {
-      ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version).then(() => {
+    async removeFileChart() {
+      await ZoneAdminService.deleteChartVersion(this.id, undefined, this.name, this.version).then(() => {
         this.chartList = [];
         this.name = '';
         this.description = '';
@@ -442,8 +442,11 @@ export default {
     /**
      * chart文件上传之前的回调函数
      */
-    beforeUploadChart(file) {
-      this.chartList = [];
+    async beforeUploadChart(file) {
+      if (this.chartList.length) {
+        await this.removeFileChart();
+      }
+      // this.chartList = [];
       console.log(file, file.type, '文件类型');
       if (this.chartType.indexOf(file.type) < 0) {
         console.log(`文件MIME: ${file.type}`);
