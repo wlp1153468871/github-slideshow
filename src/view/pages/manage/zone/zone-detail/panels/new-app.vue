@@ -83,7 +83,6 @@
                 :http-request="handleUpload"
                 :file-list="fileList"
                 accept="image/png"
-                :limit="1"
                 :before-upload="beforeUpload"
                 :on-remove="removeFile">
                 <button class="dao-btn blue">上传图标</button>
@@ -357,7 +356,14 @@ export default {
      * @returns {boolean}
      */
     beforeUpload(file) {
-      if (this.fileType.indexOf(file.type) < 0) {
+      // if (this.fileList.length) {
+      //   await this.removeFileChart();
+      // }
+      this.fileList = [];
+      if(file.size > Math.pow(1024, 2)) {
+        this.removeFile();
+        this.$noty.warning('请选择小于1MB的图片');
+      } else if (this.fileType.indexOf(file.type) < 0) {
         this.$noty.warning('请选择.png格式文件');
         this.removeFile();
       } else {
