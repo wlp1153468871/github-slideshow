@@ -45,8 +45,6 @@ const Application = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
 const ApplicationDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
-// const AdminInstance = () =>
-//   import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/instance/instance.vue');
 
 // preference
 const HomeSetting = () =>

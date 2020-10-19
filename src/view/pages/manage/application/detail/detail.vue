@@ -105,7 +105,6 @@
                 :http-request="handleUpload"
                 :file-list="fileList"
                 accept="image/png"
-                :limit="1"
                 :before-upload="beforeUpload"
                 :on-remove="removeFile">
                 <button class="dao-btn blue">上传图标</button>

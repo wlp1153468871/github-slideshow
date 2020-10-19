@@ -7,6 +7,7 @@
       <breadcrumb
         :links="[
           { text: '服务', route: { path: '/console/appstore/view' } },
+          { text: `服务详情(${appInfo.name})`, route: { path: `/console/appstore/detail/${appInfo.id}`} },
           { text: `实例详情(${instanceInfo.name})` },
         ]"
       >
@@ -110,7 +111,8 @@
         </div>
         <div class="container1" style="margin-top: 20px;">
           <div class="c-title">实例信息</div>
-          <marked :text="instanceInfo.notes" style="padding: 20px;" v-if="instanceInfo.notes"></marked>
+          <marked :text="instanceInfo.notes" style="padding: 20px;" v-if="instanceInfo.notes">
+          </marked>
           <div v-else class="blank">列表为空</div>
         </div>
       </el-tab-pane>

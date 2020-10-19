@@ -117,12 +117,7 @@ export default {
           this.$route.params.appid, this.$route.params.instanceid)
         .then(() => {
           this.$noty.success('实例删除成功');
-          this.$router.push({
-            name: 'appstore.detail',
-            params: {
-              Id: this.$route.params.appid,
-            },
-          });
+          this.$router.push({ name: 'console.instance.list' });
         })
         .catch(() => {
           this.getOperator();
