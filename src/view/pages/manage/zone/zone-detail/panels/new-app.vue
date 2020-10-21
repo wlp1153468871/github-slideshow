@@ -153,11 +153,11 @@
               </el-select>
             </template>
             <template slot="content">
-              <div class="svg-icon">
-                <svg class="icon">
+              <div class="svg-icon" @click="addCategory">
+                <svg class="icon add-svg">
                   <use :xlink:href="`#icon_plus-circled`"></use>
                 </svg>
-                <span @click="addCategory" class="add-cate">添加分类</span>
+                <span class="add-cate">添加分类</span>
               </div>
             </template>
           </dao-setting-section>
@@ -572,7 +572,14 @@ export default {
       .category-style, .dao-control {
         width: 100%;
       }
+      .add-svg {
+        cursor: pointer;
+        color: #3890ff;
+        margin-bottom: 3px;
+        margin-right: 5px;
+      }
       .add-cate {
+        color: #3890ff;
         cursor: pointer;
       }
     }
