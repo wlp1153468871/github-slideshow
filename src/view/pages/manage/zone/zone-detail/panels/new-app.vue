@@ -574,12 +574,12 @@ export default {
       }
       .add-svg {
         cursor: pointer;
-        color: #3890ff;
+        color: #217EF2;
         margin-bottom: 3px;
-        margin-right: 5px;
+        margin-right: 6px;
       }
       .add-cate {
-        color: #3890ff;
+        color: #217EF2;
         cursor: pointer;
       }
     }
