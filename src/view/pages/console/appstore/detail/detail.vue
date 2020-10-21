@@ -187,7 +187,7 @@
                               @click="clickDelete(scope.row.id)"
                               class="deleteHover"
                             >
-                              <span class="delete">删除111</span>
+                              <span class="delete">删除</span>
                             </dao-dropdown-item>
                           </dao-dropdown-menu>
                         </dao-dropdown>
