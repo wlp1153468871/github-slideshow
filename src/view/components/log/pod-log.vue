@@ -282,7 +282,6 @@ export default {
           setTimeout(() => {
             this.logs = arr;
             this.keys = keyArr;
-            console.log(this.logs.length, arr.length);
           }, 300);
         };
       };
