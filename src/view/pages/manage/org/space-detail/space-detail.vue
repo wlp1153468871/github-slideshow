@@ -12,6 +12,11 @@
     </div>
 
     <el-tabs v-model="activeTab">
+      <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
+        <overview-panel :org-id="orgId" :space="space" :space-id="spaceId" @save="updateSpace">
+        </overview-panel>
+      </el-tab-pane>
+
       <el-tab-pane :label="SIDE_BAR.USER" :name="SIDE_BAR.USER">
         <user-panel :space-id="spaceId" :org-id="orgId"> </user-panel>
       </el-tab-pane>
@@ -32,10 +37,7 @@
         <LIST :spaceId="spaceId" :orgId="orgId"></LIST>
       </el-tab-pane>
 
-      <el-tab-pane :label="SIDE_BAR.OVERVIEW" :name="SIDE_BAR.OVERVIEW">
-        <overview-panel :org-id="orgId" :space="space" :space-id="spaceId" @save="updateSpace">
-        </overview-panel>
-      </el-tab-pane>
+
     </el-tabs>
   </div>
 </template>
