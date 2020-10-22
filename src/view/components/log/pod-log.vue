@@ -277,8 +277,13 @@ export default {
         this.ws.send(JSON.stringify({ Op: 'bind', SessionID: res.id }));
         this.worker = new LogWorker();
         this.worker.onmessage = ({ data }) => {
-          this.logs = Object.freeze([...this.logs, ...data.mapLogs]);
-          this.keys = union(this.keys, data.keys);
+          const arr = Object.freeze([...this.logs, ...data.mapLogs]).slice(-10000);
+          const keyArr = union(this.keys, data.keys).slice(-10000);
+          setTimeout(() => {
+            this.logs = arr;
+            this.keys = keyArr;
+            console.log(this.logs.length, arr.length);
+          }, 300);
         };
       };
 
