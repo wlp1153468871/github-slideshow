@@ -27,7 +27,7 @@ export default {
   methods: {
     getAllService() {
       ServiceService.getServices().then(services => {
-        this.services = services;
+        this.services = services.data;
       });
     },
   },
