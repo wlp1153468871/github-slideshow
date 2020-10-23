@@ -163,11 +163,11 @@ export default {
       }
 
       each(this.ingressMap, (ingress, key) => {
-        if (ingress.servicePort === port.name || ingress.servicePort === port.targetPort) {
-          this.portsByIngress[key] = this.portsByIngress[key] || [];
-          this.portsByIngress[key].push(port);
-          reachedByRoute = true;
-        }
+        // if (ingress.servicePort === port.name || ingress.servicePort === port.targetPort) {
+        this.portsByIngress[key] = this.portsByIngress[key] || [];
+        this.portsByIngress[key].push(port);
+        reachedByRoute = true;
+        // }
       });
 
       if (!reachedByRoute) {
