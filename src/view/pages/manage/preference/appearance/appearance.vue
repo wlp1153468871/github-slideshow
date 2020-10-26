@@ -20,7 +20,12 @@
             data-vv-as="产品名称"
           >
           </dao-input>
-          <button class="dao-btn blue" :disabled="!isValidForm" @click="updateProduceName">
+          <button
+            class="dao-btn blue"
+            :disabled="!isValidForm"
+            @click="updateProduceName"
+            v-throttleClick
+          >
             <span class="text">保存</span>
           </button>
         </div>
