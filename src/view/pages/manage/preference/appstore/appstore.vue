@@ -21,7 +21,12 @@
             data-vv-as="服务市场介绍"
           >
           </textarea>
-          <button class="dao-btn blue" :disabled="!isValidForm" @click="updateSimpleInfo">
+          <button
+            class="dao-btn blue"
+            :disabled="!isValidForm"
+            @click="updateSimpleInfo"
+            v-throttleClick
+          >
             <span class="text">保存</span>
           </button>
         </div>

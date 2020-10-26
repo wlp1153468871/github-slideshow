@@ -15,7 +15,7 @@
       </dao-setting-section>
 
       <dao-setting-section>
-        <button class="dao-btn blue" :disabled="loading" @click="onSave">
+        <button class="dao-btn blue" :disabled="loading" @click="onSave" v-throttleClick>
           <dao-spin v-if="loading" color="white"></dao-spin>
           保存
         </button>

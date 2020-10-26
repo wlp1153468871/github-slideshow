@@ -51,6 +51,7 @@
         v-if="$can('platform.organization.update')"
         class="dao-btn blue"
         :disabled="!isValidForm"
+        v-throttleClick
         @click="save()"
       >
         保存
