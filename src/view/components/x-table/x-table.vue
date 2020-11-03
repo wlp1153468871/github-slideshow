@@ -61,7 +61,7 @@
       :page-sizes="[10, 30, 50]"
       :page-size.sync="pageSize"
       :current-page.sync="currentPage"
-      :layout="small ? `prev, pager, next` : 'sizes, prev, pager, next'"
+      :layout="small ? `total, prev, pager, next` : 'total, sizes, prev, pager, next'"
       :total="totalPages"
     >
     </el-pagination>

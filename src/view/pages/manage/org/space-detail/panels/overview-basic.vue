@@ -49,7 +49,7 @@
       </dao-setting-item>
     </dao-setting-section>
     <div slot="footer">
-      <button class="dao-btn blue" :disabled="!isValidForm" @click="save()">
+      <button class="dao-btn blue" :disabled="!isValidForm" @click="save()" v-throttleClick>
         保存
       </button>
     </div>

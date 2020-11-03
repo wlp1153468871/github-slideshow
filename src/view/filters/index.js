@@ -82,6 +82,9 @@ import threshold from './threshold.filter';
 import alarmScope from './alarm-scope.filter';
 import scanOverviewStatus from './resource/scan-overview-status.filter.js';
 import roleFormat from './roleFormat.filter';
+import dateTimeFormat from './date-time-format.filter';
+import markdownFilter from './markdown.filter';
+import date_difference from './date-difference.filter';
 
 const filters = {
   accessModes,
@@ -166,6 +169,9 @@ const filters = {
   alarmScope,
   scanOverviewStatus,
   roleFormat,
+  dateTimeFormat,
+  markdownFilter,
+  date_difference,
 };
 
 Object.keys(filters).forEach(key => {

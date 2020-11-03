@@ -1,10 +1,10 @@
 <template>
   <div>
     <x-table
+      class="role-table"
       :loading="loading"
       :data="tableData"
       :showRefresh="true"
-      :paginate="false"
       @refresh="listRoles"
     >
       <template #operation>
@@ -164,3 +164,8 @@ export default {
   },
 };
 </script>
+<style>
+  .role-table .el-pagination__total{
+    left: 25px !important;
+  }
+</style>

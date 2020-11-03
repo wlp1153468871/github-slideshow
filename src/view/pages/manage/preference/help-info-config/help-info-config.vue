@@ -15,7 +15,7 @@
       </dao-setting-section>
 
       <dao-setting-section>
-        <button class="dao-btn blue" :disabled="loading" @click="onSave">
+        <button class="dao-btn blue" :disabled="loading" @click="onSave" v-throttleClick>
           <dao-spin v-if="loading" color="white"></dao-spin>
           保存
         </button>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { cloneDeep, isEmpty } from 'lodash';
 import SystemService from '@/core/services/system.service';
 
@@ -40,9 +41,15 @@ export default {
     };
   },
   computed: {
+    ...mapState(['simpleInfo']),
     helpURLDictIsEmpty() {
       return isEmpty(this.helpURLDict);
     },
+  },
+  created() {
+    if (!this.$can('platform.settings.assets')) {
+      this.$noty.error('您暂无帮助信息设置权限');
+    }
   },
   methods: {
     onSave() {
@@ -53,6 +60,7 @@ export default {
         .then(() => {
           return SystemService.updateSystemSettings({
             helpURLDict: this.helpURLDict,
+            simpleInfo: this.simpleInfo,
           });
         })
         .then(() => {

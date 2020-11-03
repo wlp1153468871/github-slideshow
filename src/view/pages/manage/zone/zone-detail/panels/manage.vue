@@ -24,7 +24,6 @@
             </svg>
             <span class="text">添加 Broker</span>
           </button>
-          <div v-if="!$can('platform.serviceBroker.create')"></div>
           <div>
             <dao-input v-model="keyword" search placeholder="请输入搜索内容"> </dao-input>
             <button class="dao-btn white refresh-btn" @click="$emit('refresh')">

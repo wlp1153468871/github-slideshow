@@ -40,7 +40,7 @@
 
       <dao-setting-section>
         <dao-setting-item>
-          <div slot="label"><span class="required">*</span>文件名称</div>
+          <div slot="label">文件名称</div>
           <div slot="content">
             <dao-select with-search v-model="formModel.name" placeholder="name">
               <dao-option
@@ -138,9 +138,7 @@ export default {
     },
 
     onConfirm() {
-      if (this.formModel.name) {
-        this.$emit('finish', this.formModel);
-      }
+      this.$emit('finish', this.formModel);
     },
 
     onClose() {
@@ -170,7 +168,7 @@ export default {
     },
 
     valid() {
-      return !this.veeErrors.any() && this.formModel.name;
+      return !this.veeErrors.any();
     },
 
     files() {

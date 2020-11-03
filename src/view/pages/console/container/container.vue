@@ -1,9 +1,12 @@
 <template>
   <div class="layout" :class="{ collapsed: isCollapse, hidden: !isSpaceView }">
-    <global-nav-bar></global-nav-bar>
+    <!-- DX HEADER -->
+    <dx-header :id-token="idToken" @logout="apLogout" v-if="idToken"></dx-header>
+    <!-- ORIGIN -->
+    <global-nav-bar v-else></global-nav-bar>
     <console-side-bar v-show="isSpaceView" @switch-section="switchSpace"> </console-side-bar>
     <template v-if="!isInitTenantView">
-      <router-view class="layout-content"></router-view>
+      <router-view :class="idToken ? 'dx-layout-content' : 'layout-content'"></router-view>
     </template>
     <circle-loading v-else position="space-view"></circle-loading>
   </div>

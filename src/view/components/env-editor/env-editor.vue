@@ -9,6 +9,7 @@
         :ref="'ced-' + index"
         :editable="canEdit"
         :configMaps="configMaps"
+        :isManageView='isManageView'
         @envChange="onEnvChange"
       ></container-env-editor>
       <template v-if="canEdit">
@@ -63,6 +64,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    isManageView: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -80,12 +85,7 @@ export default {
 
   methods: {
     onSave() {
-      const index = this.envs[0].env.findIndex(item => {
-        return !item.name;
-      });
-      if (index < 0) {
-        this.$emit('envUpdate', this.envs);
-      }
+      this.$emit('envUpdate', this.envs);
     },
     onEnvChange() {
       this.changed = true;

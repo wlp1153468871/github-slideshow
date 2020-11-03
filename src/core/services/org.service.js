@@ -19,14 +19,9 @@ class OrgService {
   setLocalOrg(org) {
     return StorageCache.setOrg(org);
   }
-  /**
-   * 根据关键词获取用户列表
-   * @param {Number} page 分页指定页数
-   * @param {Number} pageSize 待获取数据量
-   * @param {String} q 搜索关键词
-   */
-  getOrgs(page, pageSize, q) {
-    return this.api.get('/organizations', { page: page || 1, pageSize: pageSize || 10, q });
+
+  getOrgs() {
+    return this.api.get('/organizations');
   }
 
   getOrg(orgId) {
@@ -98,6 +93,32 @@ class OrgService {
       organization_id: orgId || this.orgId,
       type,
     });
+  }
+
+  /**
+   * 项目组管理员可见的所有应用列表
+   */
+  getSpaceAllAppList(org_id, space_id, status, zoneId, appType) {
+    // console.log(typeof statusId);
+    return this.api.get(`/appstore/organization/${org_id}/space/${space_id}/applications`, {
+      status,
+      zoneId,
+      appType,
+    });
+  }
+
+  /**
+   * 上架应用给一个项目组
+   */
+  OnApplication(organization_id, space_id, app_id) {
+    return this.api.patch(`/appstore/organization/${organization_id}/space/${space_id}/applications/${app_id}/available`);
+  }
+
+  /**
+   * 下架应用给一个项目组
+   */
+  offApplication(organization_id, space_id, app_id) {
+    return this.api.patch(`/appstore/organization/${organization_id}/space/${space_id}/applications/${app_id}/unavailable`);
   }
 }
 

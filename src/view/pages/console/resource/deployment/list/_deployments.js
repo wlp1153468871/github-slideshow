@@ -21,7 +21,6 @@ export default {
         yamlEdit: JSON.parse(create),
       },
       yamlJSON: {},
-      filterMethod: (data, filterKey) => data.metadata.name.toLowerCase().includes(filterKey),
     };
   },
 

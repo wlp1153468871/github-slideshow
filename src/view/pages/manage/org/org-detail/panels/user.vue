@@ -11,7 +11,7 @@
       @confirm-remove-user="confirmRemoveUser"
     >
       <div slot="tool">
-        <div v-if="canCreat" class="dao-btn has-icon white" @click="openAddUserDialog()">
+        <div v-if="canCreat" class="dao-btn has-icon white" @click="openAddUserDialog">
           <svg class="icon">
             <use xlink:href="#icon_plus-circled"></use>
           </svg>
@@ -22,6 +22,7 @@
 
     <!--dialog start -->
     <add-user-dialog
+      v-if="dialogConfigs.addUser.visible"
       :roles="roles"
       :users="availableUsers"
       @add="addUser"
@@ -78,7 +79,7 @@ export default {
     return {
       rows: [],
       users: [],
-      allUsers: [],
+      availableUsers: [],
       selectedUser: {},
       loadings: {
         all: false,
@@ -182,8 +183,8 @@ export default {
     },
 
     loadAllUsers(q) {
-      UserService.getUsers(1, 10, q).then(users => {
-        this.allUsers = users.data;
+      UserService.getUsers(q).then(users => {
+        this.availableUsers = users.data;
       });
     },
 

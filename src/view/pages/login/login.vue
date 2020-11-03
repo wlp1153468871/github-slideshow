@@ -4,7 +4,7 @@
     <div class="section-logo">
       <logo-container :target="'login'" :inverse="true"></logo-container>
     </div>
-    <div class="login-container" :class="{ shake: !loginFail }">
+    <div class="login-container" :class="{ shake: !loginFail }" v-loading="loadings.login">
       <h2 class="title">
         {{ title }}
       </h2>
@@ -78,6 +78,8 @@ import { REFRESH_COUNT } from '@/core/constants/constants';
 import AuthService from '@/core/services/auth.service';
 import loginBackground from '@/assets/images/login-bg.jpg';
 
+import LoadJs from '@/core/lib/loadjs';
+
 export default {
   name: 'Login',
 
@@ -121,7 +123,16 @@ export default {
       ssoToken: this.$route.query.sso_token,
       identityProviderId: this.$route.query.identity_provider_id,
     });
+
     if (this.sso.ssoToken && this.sso.identityProviderId) {
+      // dx
+      this.loadings.login = true;
+      const dxHeaderBaseUrl = this.$route.query.dx_header_url;
+      if (dxHeaderBaseUrl) {
+        AuthService.setIdToken(this.$route.query.id_token);
+        // <script async id="__DX_HEADER__" src="http://gcloud-auth-dev.geniusafc.com/header/DxHeader.umd.min.js">
+        LoadJs(`${dxHeaderBaseUrl}/header/DxHeader.umd.min.js`, '__DX_HEADER__');
+      }
       this.autoLogin();
     }
   },
@@ -138,12 +149,8 @@ export default {
           .then(() => {
             this.loginSuccess();
           })
-          .catch(res => {
-            if (res.data.error_info) {
-              this.$noty.error(res.data.error_info);
-            } else {
-              this.$noty.error('登陆失败');
-            }
+          .catch(() => {
+            this.$noty.error('登陆失败');
             this.loadings.login = false;
           });
       }

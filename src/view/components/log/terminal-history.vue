@@ -99,8 +99,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import { chunk, debounce, get as getValue } from 'lodash';
+import { chunk, debounce, get as getValue, upperFirst } from 'lodash';
 import TerminalHistoryService from '@/core/services/terminal-history.service';
+import NodeService from '@/core/services/node.service';
 import Pagination from '@/core/lib/criteria/pagination';
 
 export default {
@@ -108,9 +109,11 @@ export default {
 
   props: {
     pod: { type: Object, default: () => ({}) },
+    isManageView: { type: Boolean, default: false },
   },
 
   data() {
+    const { podName, namespace, zone: zoneId } = this.$route.params;
     return {
       logOptions: {
         container: '',
@@ -136,6 +139,9 @@ export default {
         },
       },
       loading: true,
+      podName,
+      namespace,
+      zoneId,
     };
   },
 
@@ -161,39 +167,58 @@ export default {
       this.loading = true;
 
       const query = {
-        zone: this.zone.id,
+        zone: this.zone.id || this.zoneId,
         current: currentpage,
         goto,
         ...this.getSearchQuery(),
       };
 
-      TerminalHistoryService.ListTerminalHistories(
-        this.space.id,
-        this.pod.metadata.name,
-        this.logOptions.container,
-        query,
-      )
-        .then(terminalHistories => {
-          const { current, logs } = terminalHistories;
-          this.current = current;
-          if (logs === null) {
-            this.histories = [];
-            this.currentHistories = [];
-          } else {
-            this.histories = logs.map(item => {
-              const { dateTime, podName, user, message }
+      if (this.isManageView) {
+        NodeService.ListTerminalHistories(
+          this.namespace,
+          this.podName,
+          this.logOptions.container,
+          query,
+        )
+          .then(terminalHistories => {
+            this.handleTerminalHistories(terminalHistories);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        TerminalHistoryService.ListTerminalHistories(
+          this.space.id,
+          this.pod.metadata.name,
+          this.logOptions.container,
+          query,
+        )
+          .then(terminalHistories => {
+            this.handleTerminalHistories(terminalHistories);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
+    }, 0.5 * 1e3),
+
+    handleTerminalHistories(terminalHistories) {
+      const { current, logs } = terminalHistories;
+      this.current = current;
+      if (logs === null) {
+        this.histories = [];
+        this.currentHistories = [];
+      } else {
+        this.histories = logs.map(item => {
+          const { dateTime, podName, user, message }
                 = item._source; // eslint-disable-line no-underscore-dangle
 
-              return `dateTime:${dateTime}  podName:${podName}  user:${user}  message: ${message}`;
-            });
-          }
-          this.pagination = new Pagination(this.histories, this.limitHistories, 0);
-          this.currentHistories = this.pagination.gotoPage(0);
-        })
-        .finally(() => {
-          this.loading = false;
+          return `dateTime:${dateTime}  podName:${podName}  user:${user}  message: ${message}`;
         });
-    }, 0.5 * 1e3),
+      }
+      this.pagination = new Pagination(this.histories, this.limitHistories, 0);
+      this.currentHistories = this.pagination.gotoPage(0);
+    },
 
     getSearchQuery() {
       const query = {};

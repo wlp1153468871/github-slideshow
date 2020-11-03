@@ -6,21 +6,22 @@ import { mapState, mapGetters } from 'vuex';
 export default key => {
   return {
     data() {
-      const { name } = this.$route.params;
+      const { name, podName } = this.$route.params;
       return {
         name,
+        podName,
         template: {},
       };
     },
 
     computed: {
       ...mapState(['space', 'zone']),
-      ...mapGetters(['gerResourceForHeader']),
+      ...mapGetters(['getResourceForHeader']),
 
       resource() {
         let resourceList;
         try {
-          resourceList = this.gerResourceForHeader(key, this.name);
+          resourceList = this.getResourceForHeader(key, this.name || this.podName);
         } catch (e) {
           this.$router.push({ name: 'console.dashboard' });
         }
@@ -30,8 +31,10 @@ export default key => {
 
     methods: {
       goBack() {
-        const resource = new Resource(key);
-        this.$router.push(resource.route);
+        if (!this.podName) {
+          const resource = new Resource(key);
+          this.$router.push(resource.route);
+        }
       },
 
       getTemplate() {

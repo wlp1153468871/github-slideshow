@@ -7,7 +7,7 @@
       <!-- <ul class="dao-tab-nav">
         <li class="dao-tab-nav-item">{{ org.name }}</li>
       </ul> -->
-      <ul class="dao-tab-nav dao-tab-nav-tab" v-if="$can('platform.rolePermission.get')">
+      <ul class="dao-tab-nav dao-tab-nav-tab">
         <template v-for="tab in TABS">
           <router-link :key="tab.name" class="dao-tab-nav-item" tag="li" exact :to="tab.to">
             {{ tab.name }}
@@ -16,13 +16,7 @@
       </ul>
       <ul class="dao-tab-nav"></ul>
     </div>
-    <div class="dao-tab__body"
-    v-if="!$can('platform.rolePermission.get')"
-    style="margin-top: 15px;">
-      <img src="@/assets/images/403.png"/>
-    </div>
-    <div v-if="$can('platform.rolePermission.get')"
-    class="dao-tab__body" style="margin-top: 15px;">
+    <div class="dao-tab__body" style="margin-top: 15px;">
       <router-view></router-view>
     </div>
   </div>
@@ -38,7 +32,7 @@ export default {
         { name: '平台角色', to: '/manage/auth/platform' },
         { name: '租户角色', to: '/manage/auth/organization' },
         { name: '项目组角色', to: '/manage/auth/space' },
-        { name: 'Openshfit 角色', to: '/manage/auth/zone.ocp' },
+        { name: 'Openshift 角色', to: '/manage/auth/zone.ocp' },
         { name: 'DCE 角色', to: '/manage/auth/zone.dce' },
         { name: 'Kubernetes 角色', to: '/manage/auth/zone.k8s' },
       ],

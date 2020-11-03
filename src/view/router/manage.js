@@ -1,5 +1,7 @@
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
 import RouteView from '@/view/layout/route-view';
+import NoSideContainer from '@/view/pages/console/form-container/container.vue';
+import ZoneNewApp from '@/view/pages/manage/zone/zone-detail/panels/new-app.vue';
 
 const QuotaField = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/quota/quota-field/quota-field.vue');
@@ -27,12 +29,22 @@ const ZoneList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-list/zone-list.vue');
 const ZoneDetail = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/zone-detail/zone-detail.vue');
+const NodeList = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-list/node-list.vue');
+const NodeDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-detail/node-detail.vue');
+const PodsDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/node/node-detail/pod/detail/pod.vue');
 const AlarmMetricsList = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/alarm/alarm-metrics/alarm-metrics.vue');
 const AuthContainer = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/container.vue');
 const AuthRoles = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/auth/roles.vue');
+const Application = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/application.vue');
+const ApplicationDetail = () =>
+  import(/* webpackChunkName: "management" */ '@/view/pages/manage/application/detail/detail.vue');
 
 // preference
 const HomeSetting = () =>
@@ -41,12 +53,15 @@ const Preference = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/preference/preference.vue');
 const Appearance = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appearance/appearance.vue');
+const AppStore = () =>
+ import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/appstore/appstore.vue');
 const SSO = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/sso/sso.vue');
 const HelpInfoConfig = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/preference/help-info-config/help-info-config.vue');
 const DeployZone = () =>
   import(/* webpackChunkName: "management" */ '@/view/pages/manage/zone/deploy/deploy.vue');
+
 
 export default [
   {
@@ -57,7 +72,7 @@ export default [
       hidden: false,
       icon: '#icon_file-text',
       title: '账号与管理',
-      code: 'platform.organization;platform.user;platform.rolePermission',
+      code: 'platform.organization;platform.user;platform.rolePermission;',
       type: 'submenu',
     },
     children: [
@@ -68,7 +83,7 @@ export default [
         meta: {
           icon: '#icon_users',
           title: '组织管理',
-          code: 'platform.organization',
+          code: 'platform.organization;',
           hidden: false,
         },
         children: [],
@@ -142,8 +157,9 @@ export default [
     meta: {
       icon: '#icon_microsoft',
       title: '全局设置',
-      code: 'platform.serviceInstance;platform.zone;platform.alert',
+      code: 'platform.serviceInstance;platform.zone;platform.alert;platform.applications;platform.node',
       type: 'submenu',
+      // hidden: false,
     },
     children: [
       {
@@ -166,6 +182,36 @@ export default [
           hidden: true,
         },
       },
+      // 应用管理
+      {
+        path: 'application',
+        name: 'manage.application',
+        component: Application,
+        meta: {
+          title: '应用模板管理',
+          icon: '#icon_service',
+          code: 'platform.applications',
+          hidden: false,
+        },
+      },
+      {
+        path: 'application/detail/:id',
+        name: 'application.detail',
+        component: ApplicationDetail,
+        meta: {
+          activeMenu: 'manage.application',
+          hidden: true,
+        },
+      },
+      // {
+      //   path: 'application/:appid/instance/:instanceid',
+      //   name: 'application.instance',
+      //   component: AdminInstance,
+      //   meta: {
+      //     activeMenu: 'manage.application',
+      //     hidden: true,
+      //   },
+      // },
       {
         path: 'zone',
         name: 'manage.zone.list',
@@ -187,6 +233,35 @@ export default [
         },
       },
       {
+        path: 'node',
+        name: 'manage.node.list',
+        component: NodeList,
+        meta: {
+          icon: '#icon_node',
+          title: '节点管理',
+          code: 'platform.node',
+          hidden: false,
+        },
+      },
+      {
+        path: 'zone/:zone/node/:node',
+        name: 'manage.node.detail',
+        component: NodeDetail,
+        meta: {
+          activeMenu: 'manage.node.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'zone/:zone/node/:node/pods/:podName',
+        name: 'manage.node.detail.pods.detail',
+        component: PodsDetail,
+        meta: {
+          activeMenu: 'manage.node.list',
+          hidden: true,
+        },
+      },
+      {
         path: 'alarm-metrics',
         name: 'manage.alarm-metrics.list',
         component: AlarmMetricsList,
@@ -195,6 +270,29 @@ export default [
           title: '告警指标',
           code: 'platform.alert',
           hidden: false,
+        },
+      },
+    ],
+  },
+  // 无左侧导航栏
+  {
+    path: 'zone',
+    redirect: {
+      name: 'manage.zone.newapp',
+    },
+    component: NoSideContainer,
+    meta: {
+      hidden: true,
+    },
+    // ZoneNewApp
+    children: [
+      {
+        path: 'newapp/:id',
+        name: 'manage.zone.newapp',
+        component: ZoneNewApp,
+        meta: {
+          activeMenu: 'manage.zone.list',
+          hidden: true,
         },
       },
     ],
@@ -227,6 +325,16 @@ export default [
         path: 'appearance',
         name: 'manage.preference.appearance',
         component: Appearance,
+        meta: {
+          hidden: true,
+          code: 'platform.settings',
+          activeMenu: 'manage.preference',
+        },
+      },
+      {
+        path: 'appstore',
+        name: 'manage.preference.appstore',
+        component: AppStore,
         meta: {
           hidden: true,
           code: 'platform.settings',

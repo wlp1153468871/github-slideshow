@@ -208,7 +208,7 @@ export default {
 
   props: {
     subCatalogs: { type: Array, default: () => [] },
-    services: [Array, Object],
+    services: { type: Array, default: () => [] },
   },
 
   data() {

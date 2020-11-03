@@ -7,7 +7,7 @@
       :showRefresh="canUpdate"
       small
       :search-placeholder="
-        showSpaceCol ? `搜索 申请人、${spaceDescription}` : '搜索 申请人'
+        showSpaceCol ? `搜索 申请人、${this.orgDescription}、${spaceDescription}` : '搜索 申请人'
       "
       @refresh="onRefresh"
     >

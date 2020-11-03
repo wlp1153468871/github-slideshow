@@ -58,7 +58,7 @@
           <tbody>
             <tr class="log-line" v-for="(log, index) in currentLogs" :key="index">
               <td class="log-line-number" :data-line-number="index + 1"></td>
-              <td class="log-line-text">{{ log }}</td>
+              <td class="log-line-text"><span v-html="log">{{log}}</span></td>
             </tr>
           </tbody>
         </table>
@@ -105,6 +105,7 @@ import { chunk, debounce, get as getValue } from 'lodash';
 import { saveAs } from 'file-saver';
 
 import AppService from '@/core/services/app.service';
+import NodeService from '@/core/services/node.service';
 import Pagination from '@/core/lib/criteria/pagination';
 
 export default {
@@ -112,9 +113,11 @@ export default {
 
   props: {
     pod: { type: Object, default: () => ({}) },
+    isManageView: { type: Boolean, default: false },
   },
 
   data() {
+    const { podName, namespace, zone: zoneId } = this.$route.params;
     return {
       logOptions: {
         container: '',
@@ -140,6 +143,9 @@ export default {
         },
       },
       loading: true,
+      podName,
+      namespace,
+      zoneId,
     };
   },
 
@@ -166,13 +172,29 @@ export default {
   methods: {
     downloadLog() {
       this.loading = true;
-      AppService.downloadLog(this.space.id, this.pod.metadata.name, this.getSearchQuery())
-        .then(res => {
-          saveAs(res, `${this.pod.metadata.name}.log`);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      if (this.isManageView) {
+        NodeService.downloadLog(
+          this.namespace,
+          this.podName,
+          this.logOptions.container,
+          this.zoneId,
+          this.getSearchQuery(),
+        )
+          .then(res => {
+            saveAs(res, `${this.pod.metadata.name}.log`);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        AppService.downloadLog(this.space.id, this.pod.metadata.name, this.getSearchQuery())
+          .then(res => {
+            saveAs(res, `${this.pod.metadata.name}.log`);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     },
     onContainerSelectChange() {
       this.loadPodLogs();
@@ -187,35 +209,64 @@ export default {
         ...this.getSearchQuery(),
       };
 
-      AppService.listPodLogs(
-        this.zone.id,
-        this.space.id,
-        this.pod.metadata.name,
-        this.logOptions.container,
-        query,
-      )
-        .then(podLogs => {
-          const { current, logs } = podLogs;
-
-          this.current = current;
-          if (logs === null) {
-            this.logs = [];
-            this.currentLogs = [];
-          } else {
-            // eslint-disable-next-line no-underscore-dangle
-            this.logs = logs.map(item => item._source.message);
-          }
-          this.pagination = new Pagination(this.logs, this.limitLogs, 0);
-          this.currentLogs = this.pagination.gotoPage(0);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      if (this.isManageView) {
+        NodeService.listPodLogs(
+          this.namespace,
+          this.podName,
+          this.logOptions.container,
+          this.zoneId,
+          query,
+        )
+          .then(podLogs => {
+            this.handleListPodLogs(podLogs);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        AppService.listPodLogs(
+          this.zone.id,
+          this.space.id,
+          this.pod.metadata.name,
+          this.logOptions.container,
+          query,
+        )
+          .then(podLogs => {
+            this.handleListPodLogs(podLogs);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     }, 0.5 * 1e3),
+
+    handleListPodLogs(podLogs) {
+      const { current, logs } = podLogs;
+
+      this.current = current;
+      if (logs === null) {
+        this.logs = [];
+        this.currentLogs = [];
+      } else {
+        this.logs = logs.map(item => {
+          if (item.highlight !== null) {
+            const regex = new RegExp(this.filters.keyword, 'g');
+            // eslint-disable-next-line no-underscore-dangle
+            const replaceStr = item._source.message.replace(regex, `<span class="highlight">${this.filters.keyword}</span>`);
+            console.log(regex, replaceStr);
+            return replaceStr;
+          }
+          // eslint-disable-next-line no-underscore-dangle
+          return item._source.message;
+        });
+      }
+      this.pagination = new Pagination(this.logs, this.limitLogs, 0);
+      this.currentLogs = this.pagination.gotoPage(0);
+    },
 
     getSearchQuery() {
       const query = {
-        zone: this.zone.id,
+        zone: this.zone.id || this.zoneId,
         container_name: this.logOptions.container,
       };
       const { daterange, keyword } = this.filters;
@@ -353,6 +404,9 @@ export default {
         min-width: 0;
         line-height: 20px;
         font-weight: 900;
+      }
+      .highlight {
+        color: #FFD100;
       }
     }
   }

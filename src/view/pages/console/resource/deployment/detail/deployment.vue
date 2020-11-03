@@ -11,14 +11,10 @@
         </template>
 
         <template
+          v-if="$can('deployment.update', 'deployment') || $can('deployment.delete', 'deployment')"
           #action-buttons
         >
-          <dao-dropdown
-          trigger="click"
-          :append-to-body="true"
-          placement="bottom-end"
-          v-if="$can('deployment.update', 'deployment') || $can('deployment.delete', 'deployment')"
-          >
+          <dao-dropdown trigger="click" :append-to-body="true" placement="bottom-end">
             <button class="dao-btn ghost has-icon">
               操作
               <svg class="icon">
@@ -100,15 +96,8 @@
           >
           </events-table>
         </el-tab-pane>
-        <el-tab-pane
-          :label="TABS.HISTORY.label"
-          :name="TABS.HISTORY.name"
-          :lazy="true"
-        >
-          <history-panel
-            ref="historyPanel"
-            :deployment="deployment"
-            @rollback="getDeployment"></history-panel>
+        <el-tab-pane :label="TABS.HISTORY.label" :name="TABS.HISTORY.name" :lazy="true">
+          <history-panel :deployment="deployment"></history-panel>
         </el-tab-pane>
         <el-tab-pane
           :label="TABS.OPERATING_DATA.label"

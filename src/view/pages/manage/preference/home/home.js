@@ -7,6 +7,13 @@ export default {
   components: {
     CatalogPanel,
   },
+  created() {
+    if (this.$can('platform.settings.assets')) {
+      this.getAllService();
+    } else {
+      this.$noty.error('您暂无首页编辑权限');
+    }
+  },
   data() {
     const TABS = {
       CATALOG: '导航条目',
@@ -19,8 +26,8 @@ export default {
   },
   methods: {
     getAllService() {
-      ServiceService.getServices(1, -1).then(services => {
-        this.services = services;
+      ServiceService.getServices().then(services => {
+        this.services = services.data;
       });
     },
   },

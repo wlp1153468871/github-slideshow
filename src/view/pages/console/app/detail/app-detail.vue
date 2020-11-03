@@ -27,10 +27,14 @@
             :instance="instance"
             :events="events"
             :status="instance.status"
-            :monitor="instance.monitor"
             @goto-jobs-tab="gotoJobsTab"
           >
           </overview-panel>
+        </el-tab-pane>
+
+        <!--控制台-->
+        <el-tab-pane :label="TABS.CONSOLE" :name="TABS.CONSOLE">
+          <console :pods="resources.Pod"></console>
         </el-tab-pane>
 
         <!-- 实时日志 -->

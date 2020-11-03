@@ -92,7 +92,6 @@ export default {
         }
         // 包含 `services/`
       } else if (/services\//.test(url)) {
-        console.log(url);
         if (store.getters.spaceId || store.getters.zoneId) {
           config.headers.AuthorizationScope = JSON.stringify({
             space_id: store.getters.spaceId,
@@ -123,6 +122,7 @@ export default {
             organization_id: result[0],
           });
         }
+        // 特殊处理url,请求路径未符合权限约定
       } else if (/quota\/approval\//.test(url)) {
         if (store.getters.orgId) {
           config.headers.AuthorizationScope = JSON.stringify({
@@ -130,7 +130,7 @@ export default {
           });
         }
       } else if (/user\/approvals\//.test(url)) {
-        if (store.getters.spaceId) {
+        if (store.getters.orgId) {
           config.headers.AuthorizationScope = JSON.stringify({
             space_id: store.getters.spaceId,
           });

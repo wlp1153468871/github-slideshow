@@ -284,6 +284,31 @@
           </div>
         </dao-setting-item>
       </dao-setting-section>
+      <dao-setting-section>
+        <dao-setting-item>
+          <div slot="label">是否启用chart仓库</div>
+          <div slot="content">
+            <dao-radio-group>
+              <dao-radio :label="true" v-model="form.registry.enable_chart">是</dao-radio>
+              <dao-radio :label="false" v-model="form.registry.enable_chart">否</dao-radio>
+            </dao-radio-group>
+          </div>
+        </dao-setting-item>
+      </dao-setting-section>
+      <dao-setting-section v-if="showChartRepo">
+        <dao-setting-item>
+          <div slot="label">镜像仓库名称</div>
+          <div slot="content">
+            <dao-input
+              :maxlength="32"
+              message="请输入以字母开头和结尾，由数字，字母，‘-’ 组成的合法字符串。"
+              :status="chartepotatus"
+              v-model="form.registry.chart_repo"
+              placeholder="请输入chart仓库名称">
+            </dao-input>
+          </div>
+        </dao-setting-item>
+      </dao-setting-section>
 
       <template slot="footer">
         <div class="cluster-test">
@@ -389,6 +414,8 @@
 import { pick } from 'lodash';
 import { TEST_STATUS } from '@/core/constants/constants';
 import ZoneService from '@/core/services/zone.service';
+import DaoSettingSection from '../../../../../components/daox/setting-layout/setting-section';
+import DaoSettingItem from '../../../../../components/daox/setting-layout/setting-item';
 
 const REGISTRY_STATUS = {
   UNTEST: 'untest',
@@ -399,7 +426,7 @@ const REGISTRY_STATUS = {
 
 export default {
   name: 'config-panel',
-
+  components: { DaoSettingItem, DaoSettingSection },
   props: {
     value: { type: Object, default: () => ({}) },
     operationLabel: { type: String },
@@ -469,9 +496,24 @@ export default {
       routeValid: null,
       registryStatus: REGISTRY_STATUS.UNTEST,
       registryErrorMessage: '',
+      showChartRepo: false,
     };
   },
 
+  watch: {
+    form: {
+      handler(newVal) {
+        if (newVal.registry.enable_chart) {
+          this.showChartRepo = true;
+        } else {
+          this.showChartRepo = false;
+          this.form.registry.chart_repo = '';
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   computed: {
     form: {
       get() {
@@ -480,6 +522,14 @@ export default {
       set(val) {
         this.$emit('input', val);
       },
+    },
+    chartepotatus() {
+      const reg = /^[a-z]([-a-z0-9]*[a-z0-9])?$/;
+      const chartRepo = this.form.registry.chart_repo;
+      if (chartRepo !== '' && reg.test(chartRepo)) {
+        return '';
+      }
+      return 'error';
     },
   },
 
@@ -630,7 +680,13 @@ export default {
       flex-shrink: 0;
     }
   }
-
+  .dao-radio-group {
+    display: flex;
+    justify-content: flex-start;
+    div {
+      margin-right: 10px;
+    }
+  }
   .success-icon {
     fill: $green;
   }

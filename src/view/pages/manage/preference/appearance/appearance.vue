@@ -20,7 +20,12 @@
             data-vv-as="产品名称"
           >
           </dao-input>
-          <button class="dao-btn blue" :disabled="!isValidForm" @click="updateProduceName">
+          <button
+            class="dao-btn blue"
+            :disabled="!isValidForm"
+            @click="updateProduceName"
+            v-throttleClick
+          >
             <span class="text">保存</span>
           </button>
         </div>
@@ -126,6 +131,7 @@ export default {
   data() {
     return {
       productName: '',
+      productInfo: '',
       loginPicture: [],
       navPicture: [],
       favicon: [],
@@ -154,7 +160,7 @@ export default {
       const newTheme = new ThemeModel(
         this.productName,
         new AppPictureModel(
-          this.theme.appPicture.loginPicture,
+          this.theme.appPicture.navPicture,
           this.theme.appPicture.navPicture,
           this.theme.appPicture.favicon,
         ),

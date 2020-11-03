@@ -51,6 +51,7 @@ export const state = {
   defaultActiveMenu: 'console.dashboard',
   chargingEnable: false,
   helpURLDict: {},
+  simpleInfo: '',
   loadings: {
     initTenantView: false,
     alarmListView: false,
@@ -218,7 +219,7 @@ export const getters = {
     throw new Error(`没有查找到ID为 [${id}] 的Service`);
   },
 
-  gerResourceForHeader: state => (kind, name) => {
+  getResourceForHeader: state => (kind, name) => {
     const resource = getValue(state.apiResource, kind);
     if (resource) {
       let links;
@@ -360,9 +361,10 @@ export const actions = {
   },
 
   logout({ dispatch }) {
-    return AuthService.logout().then(({ logout_url: url }) => {
-      dispatch('clearCache', url);
-    });
+    // return AuthService.logout().then(({ logout_url: url }) => {
+    //   dispatch('clearCache', url);
+    // });
+    dispatch('clearCache');
   },
 
   clearCache({ commit }, url) {
@@ -521,7 +523,7 @@ export const actions = {
   },
 
   initPortal({ dispatch, commit, getters }) {
-    if (getters.pages.some(a => a === 'k8s-root' || a === 'ocp-root' || a === 'dce-root')) {
+    if (getters.pages.some(a => a === 'k8s-root' || a === 'ocp-root')) {
       return Promise.all([dispatch('loadBrokerService'), dispatch('loadAPIResource')]).then(() => {
         commit(types.INIT_TENANT_VIEW_SUCCESS);
       });
@@ -586,6 +588,7 @@ export const actions = {
   loadSystemSettings({ commit }) {
     return SystemService.getSystemSettings().then(param => {
       commit(types.LOAD_SYSTEM_SETTINGS_SUCCESS, { param });
+      commit(types.LOAD_SYSTEM_INFO_SUCCESS, param.simpleInfo);
     });
   },
 
@@ -764,6 +767,11 @@ export const mutations = {
   [types.LOAD_SYSTEM_SETTINGS_SUCCESS](state, { param }) {
     state.helpURLDict = mergeDefaultHelpUrls(getValue(param, 'helpURLDict'));
   },
+
+  [types.LOAD_SYSTEM_INFO_SUCCESS](state, param) {
+    state.simpleInfo = param;
+  },
+
 
   [types.SET_DEFAULT_ACTIVE_MENU](state, menu) {
     state.defaultActiveMenu = menu;

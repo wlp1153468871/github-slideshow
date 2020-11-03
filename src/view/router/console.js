@@ -3,6 +3,13 @@ import store from '@/core/store';
 import NProgress from 'nprogress';
 
 import RouteView from '@/view/layout/route-view';
+// serviceMangement
+import AppStore from '@/view/pages/console/appstore/appstore.vue';
+import AppStoreDetail from '@/view/pages/console/appstore/detail/detail.vue';
+import AppStoreForm from '@/view/pages/console/appstore/app-form/appform.vue';
+import AppStoreYaml from '@/view/pages/console/appstore/app-form/app-yaml/app-yaml.vue';
+import AppStoreInstance from '@/view/pages/console/appstore/instance/instance.vue';
+import AllInstance from '@/view/pages/console/appstore/all-instances/all-instance.vue';
 
 // monitor
 import Monitor from '@/view/pages/console/monitor/monitor.vue';
@@ -24,6 +31,8 @@ import UserList from '@/view/pages/console/user/user-list/user-list.vue';
 import SpaceQuota from '@/view/pages/console/quota/space-quota.vue';
 import AppList from '@/view/pages/console/app/list/app-list.vue';
 import AppDetail from '@/view/pages/console/app/detail/app-detail.vue';
+import NoSideContainer from '@/view/pages/console/form-container/container.vue';
+
 
 // deploy
 import DeployContainer from '@/view/pages/deploy/container/container.vue';
@@ -52,6 +61,14 @@ import ProductCheckout from '@/view/pages/console/product/checkout/checkout.vue'
 import Gateway from '@/view/pages/console/gateway/gateway';
 
 import Dashboard from '@/view/pages/console/dashboard/dashboard.vue';
+// 项目组
+// import Dashboard from '@/view/pages/overview/tenantView/index.vue';
+// 管理员
+// import Dashboard from '@/view/pages/overview/adminView/index.vue';
+// test
+// import Dashboard from '@/view/pages/overview/components/newsStep.vue';
+// import Dashboard from '@/view/pages/overview/components/steps.vue';
+// import Dashboard from '@/view/pages/overview/components/doughDemo.vue';
 import Registry from '@/view/pages/console/registry/registry.vue';
 import RegistryTag from '@/view/pages/console/registry/detail/registryTag.vue';
 
@@ -381,6 +398,97 @@ export default [
       },
     ],
   },
+  // 应用商店
+  {
+    path: 'appstore',
+    name: 'console.appstore',
+    component: RouteView,
+    meta: {
+      title: '服务市场',
+      icon: '#icon_store',
+      code: 'appstore',
+      hidden: false,
+    },
+    children: [
+      {
+        path: 'view',
+        name: 'console.appstore.list',
+        component: AppStore,
+        meta: {
+          title: '服务目录',
+          icon: '#icon_store',
+          code: 'appstoreApplications',
+          hidden: false,
+          public: true,
+        },
+      },
+      {
+        path: 'instance',
+        name: 'console.instance.list',
+        component: AllInstance,
+        meta: {
+          title: '服务实例',
+          icon: '#icon_container',
+          code: 'appstoreAppinstances',
+          hidden: false,
+          public: true,
+        },
+      },
+    ],
+  },
+  // 无左侧导航栏
+  {
+    path: 'appstore',
+    redirect: {
+      name: 'appstore.form',
+    },
+    component: NoSideContainer,
+    meta: {
+      hidden: true,
+    },
+    children: [
+      {
+        path: 'appstore/:appid/form/:version',
+        name: 'appstore.form',
+        component: AppStoreForm,
+        meta: {
+          activeMenu: 'console.instance.list',
+          hidden: true,
+        },
+      },
+      {
+        path: 'appstore/:appid/yamlform/:version',
+        name: 'appstore.yamlform',
+        component: AppStoreYaml,
+        meta: {
+          activeMenu: 'console.instance.list',
+          hidden: true,
+        },
+      },
+    ],
+  },
+
+  {
+    path: 'appstore/detail/:Id',
+    name: 'appstore.detail',
+    component: AppStoreDetail,
+    meta: {
+      activeMenu: 'console.appstore.list',
+      hidden: true,
+      keepAlive: true,
+    },
+  },
+  {
+    path: 'appstore/:appid/instance/:instanceid',
+    name: 'appstore.instance',
+    component: AppStoreInstance,
+    meta: {
+      activeMenu: 'console.instance.list',
+      hidden: true,
+    },
+  },
+
+  // 镜像
   {
     path: 'registry',
     name: 'console.registry',
@@ -717,4 +825,5 @@ export default [
       },
     ],
   },
+
 ];

@@ -185,6 +185,7 @@
       :visible="dialogs.saveFile"
       :pod-template="podTemplate"
       :container="container"
+      :isManageView='isManageView'
       @close="dialogs.saveFile = false"
     >
     </file-save-in-container>
@@ -205,6 +206,7 @@ export default {
     imagesByDockerReference: { type: Object, default: () => ({}) },
     builds: { type: Object, default: () => ({}) },
     detailed: { type: Boolean, default: () => ({}) },
+    isManageView: { type: Boolean, default: false },
   },
 
   components: {
