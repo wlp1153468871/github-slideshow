@@ -144,7 +144,7 @@ export default {
   methods: {
     getPlan(data) {
       this.loadings.init = true;
-      PlanService.getPlan(this.brokerServiceId, data)
+      PlanService.getPlan(this.brokerServiceId, this.space.id, data)
         .then(res => {
           this.plan = cloneDeep(res);
           delete res[PLANKEY.HA];

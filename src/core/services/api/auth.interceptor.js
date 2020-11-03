@@ -89,7 +89,17 @@ export default {
             space_id: store.getters.spaceId,
             zone_id: store.getters.zoneId,
           });
-        }/* 包含`zones/`且不包含`?spaceId` */
+        }
+        // 包含 `services/`
+      } else if (/services\//.test(url)) {
+        console.log(url);
+        if (store.getters.spaceId || store.getters.zoneId) {
+          config.headers.AuthorizationScope = JSON.stringify({
+            space_id: store.getters.spaceId,
+            zone_id: store.getters.zoneId,
+          });
+        }
+        /* 包含`zones/`且不包含`?spaceId` */
       } else if (/zones\//.test(url) && (config.params && !Object.keys(config.params).some(key => key === 'spaceId'))) {
         config.headers.AuthorizationScope = JSON.stringify({
           platform_id: 'dsp',
@@ -113,7 +123,6 @@ export default {
             organization_id: result[0],
           });
         }
-        // 特殊处理url,请求路径未符合权限约定
       } else if (/quota\/approval\//.test(url)) {
         if (store.getters.orgId) {
           config.headers.AuthorizationScope = JSON.stringify({

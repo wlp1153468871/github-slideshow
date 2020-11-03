@@ -136,7 +136,7 @@ export default {
   },
   methods: {
     getPlan(data) {
-      PlanService.getPlan(this.serviceId, data).then(res => {
+      PlanService.getPlan(this.serviceId, this.space.id, data).then(res => {
         Object.entries(res).forEach(([key, value]) => {
           const quota = this.quotaDict[key];
           const { unit } = value;

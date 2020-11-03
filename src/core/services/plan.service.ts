@@ -8,8 +8,8 @@ class BrokerService {
     this.api = api;
   }
 
-  getPlan(serviceId: string, data = {}) {
-    return this.api.post(`/services/${serviceId}/plans_parameters`, data);
+  getPlan(serviceId: string, spaceId: string, data = {}) {
+    return this.api.post(`/services/${serviceId}/plans_parameters?space_id=${spaceId}`, data);
   }
 }
 
