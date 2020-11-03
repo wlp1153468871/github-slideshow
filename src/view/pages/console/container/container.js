@@ -4,31 +4,9 @@ import OrgService from '@/core/services/org.service';
 import SpaceService from '@/core/services/space.service';
 import ZoneService from '@/core/services/zone.service';
 import AuthService from '@/core/services/auth.service';
+import LoadJs from '@/core/lib/loadjs';
 
 let DxHeader = {};
-
-if (window.DxHeader) {
-  ({ DxHeader } = window.DxHeader);
-} else {
-  console.log('DxHeader init……');
-  const headerScript = document.getElementById('__DX_HEADER__');
-  DxHeader = () => new Promise((resolve, rehect) => {
-    // 处理在执行过程中已经加载好的情况
-    if (window.DxHeader) {
-      console.log('dx0:', '已加载完成');
-      resolve(window.DxHeader.DxHeader);
-      return;
-    }
-    headerScript.onload = () => {
-      console.log('dx1:', '加载太慢了');
-      resolve(window.DxHeader.DxHeader);
-    };
-    headerScript.onerror = () => {
-      console.log('dx2:', '加载出错');
-      rehect(window.DxHeader.DxHeader);
-    };
-  });
-}
 
 export default {
   name: 'ConsoleContainer',
@@ -94,6 +72,36 @@ export default {
     idToken() {
       return AuthService.getIdToken();
     },
+  },
+
+  created() {
+    if (AuthService.isDxAuthed()) {
+      const url = AuthService.getDxUrl();
+      LoadJs(`${url}/header/DxHeader.umd.min.js`, '__DX_HEADER__');
+    }
+
+    if (window.DxHeader) {
+      ({ DxHeader } = window.DxHeader);
+    } else {
+      console.log('DxHeader init……');
+      const headerScript = document.getElementById('__DX_HEADER__');
+      DxHeader = () => new Promise((resolve, rehect) => {
+        // 处理在执行过程中已经加载好的情况
+        if (window.DxHeader) {
+          console.log('dx0:', '已加载完成');
+          resolve(window.DxHeader.DxHeader);
+          return;
+        }
+        headerScript.onload = () => {
+          console.log('dx1:', '加载太慢了');
+          resolve(window.DxHeader.DxHeader);
+        };
+        headerScript.onerror = () => {
+          console.log('dx2:', '加载出错');
+          rehect(window.DxHeader.DxHeader);
+        };
+      });
+    }
   },
 
   methods: {
