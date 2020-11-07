@@ -51,42 +51,42 @@
                 </svg>
                 <span>{{ item.meta.title }}</span>
               </template>
-              <template
-                v-if="item.meta.code !== 'resource'"
-                v-for="(menuItem, index) in item.children"
-              >
-                <el-menu-item
-                  :key="index"
-                  :route="{ name: menuItem.name }"
-                  :index="menuItem.name"
-                  v-if="!hiddenMenu(menuItem)"
-                >
-                  <svg class="icon">
-                    <use :xlink:href="menuItem.meta.icon"></use>
-                  </svg>
-                  <span>
-                    <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
-                  </span>
-                </el-menu-item>
+              <template v-if="item.meta.code !== 'resource'">
+                <template
+                  v-for="(menuItem, index) in item.children">
+                  <el-menu-item
+                    :key="index"
+                    :route="{ name: menuItem.name }"
+                    :index="menuItem.name"
+                    v-if="!hiddenMenu(menuItem)">
+                    <svg class="icon">
+                      <use :xlink:href="menuItem.meta.icon"></use>
+                    </svg>
+                    <span>
+                      <overflow-tooltip slot="title" :text="menuItem.meta.title"></overflow-tooltip>
+                    </span>
+                  </el-menu-item>
+                </template>
               </template>
               <!-- 资源 子菜单 -->
-              <template
-                v-if="item.meta.code === 'resource'"
-                v-for="(menuItem, index) in item.children">
-                <el-menu-item
-                  :key="index"
-                  :route="{ name: menuItem.name }"
-                  :index="menuItem.name"
-                  v-if="
-                    !hiddenMenu(menuItem) &&
-                      Object.keys(apiResource || {}).some(a => a === menuItem.meta.resourceName)">
-                  <svg class="icon">
-                    <use :xlink:href="menuItem.meta.icon"></use>
-                  </svg>
-                  <span>
-                    <overflow-tooltip slot="title" :text="menuItem.meta.title"> </overflow-tooltip>
-                  </span>
-                </el-menu-item>
+              <template v-if="item.meta.code === 'resource'">
+                <template
+                  v-for="(menuItem, index) in item.children">
+                  <el-menu-item
+                    :key="index"
+                    :route="{ name: menuItem.name }"
+                    :index="menuItem.name"
+                    v-if="
+                      !hiddenMenu(menuItem) &&
+                        Object.keys(apiResource || {}).some(a => a === menuItem.meta.resourceName)">
+                    <svg class="icon">
+                      <use :xlink:href="menuItem.meta.icon"></use>
+                    </svg>
+                    <span>
+                      <overflow-tooltip slot="title" :text="menuItem.meta.title"></overflow-tooltip>
+                    </span>
+                  </el-menu-item>
+                </template>
               </template>
               <!-- 服务 子菜单 -->
               <template v-for="menu in services">
@@ -278,6 +278,10 @@ export default {
       }
       return res;
     },
+  },
+
+  created() {
+    // console.log(allMenus);
   },
 
   methods: {

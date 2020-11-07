@@ -371,7 +371,7 @@ export default [
     name: 'serviceBroker',
     component: RouteView,
     meta: {
-      title: '服务',
+      title: '服务目录',
       icon: '#icon_service-category',
       code: 'serviceBroker',
       hidden: false,
@@ -404,7 +404,7 @@ export default [
     name: 'console.appstore',
     component: RouteView,
     meta: {
-      title: '服务市场',
+      title: '模板市场',
       icon: '#icon_store',
       code: 'appstore',
       hidden: false,
@@ -415,7 +415,7 @@ export default [
         name: 'console.appstore.list',
         component: AppStore,
         meta: {
-          title: '服务目录',
+          title: '模板目录',
           icon: '#icon_store',
           code: 'appstoreApplications',
           hidden: false,
@@ -427,7 +427,7 @@ export default [
         name: 'console.instance.list',
         component: AllInstance,
         meta: {
-          title: '服务实例',
+          title: '模板实例',
           icon: '#icon_container',
           code: 'appstoreAppinstances',
           hidden: false,

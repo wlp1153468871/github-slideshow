@@ -1,6 +1,6 @@
 <template>
   <div id="service" v-if="$can('platform.applications.view')">
-    <div class="layout-content-header">应用模板管理</div>
+    <div class="layout-content-header">模板管理</div>
     <div class="box">
       <span class="title">可用区：</span>
       <dao-select

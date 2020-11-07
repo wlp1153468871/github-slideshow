@@ -4,7 +4,7 @@
       <div class="img-box">
         <img src="@/assets/images/app-store.png" alt="应用商店" class="img-size" />
       </div>
-      <div class="header-title">服务市场</div>
+      <div class="header-title">模板市场</div>
       <div class="header-desc">{{simpleInfo}}</div>
     </div>
     <div class="dao-view-main" style="margin: 20px;">

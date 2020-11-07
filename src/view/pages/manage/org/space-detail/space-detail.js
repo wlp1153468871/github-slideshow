@@ -35,7 +35,7 @@ export default {
   data() {
     const SIDE_BAR = {
       OVERVIEW: '设置',
-      LIST: '可用chart模板',
+      LIST: '模板管理',
       USER: '用户列表',
       ZONE: '可用区',
       SERVICE: '可用服务',

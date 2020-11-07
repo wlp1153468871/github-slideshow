@@ -188,7 +188,7 @@ export default [
         name: 'manage.application',
         component: Application,
         meta: {
-          title: '应用模板管理',
+          title: '模板管理',
           icon: '#icon_service',
           code: 'platform.applications',
           hidden: false,
