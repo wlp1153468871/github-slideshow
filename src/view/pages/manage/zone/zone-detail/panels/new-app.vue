@@ -29,7 +29,7 @@
               <span class="chartName-rule">*</span>
               chart文件</template>
             <template slot="content">
-              <div class="content-text">支持zip, gzip, tgz, tar格式的压缩文件上传</div>
+              <div class="content-text">支持gzip压缩格式的.tgz文件上传</div>
             </template>
             <template slot="content">
               <el-upload
