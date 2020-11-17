@@ -1,7 +1,6 @@
 <template>
   <div>
     <resource-header :resource="service"></resource-header>
-
     <div class="dao-view-main">
       <div class="dao-view-content">
         <x-table
@@ -24,13 +23,19 @@
                 text="部署应用"
               >
                 <template #icon>
-                  <svg class="icon" :style="{ 'margin-left': loadings.updateByYaml ? '5px' : 0 }">
+                  <svg
+                    class="icon"
+                    :style="{ 'margin-left': loadings.updateByYaml ? '5px' : 0 }"
+                  >
                     <use xlink:href="#icon_plus-circled"></use>
                   </svg>
                 </template>
               </save-button>
 
-              <template #list v-if="!appDeployDisabled">
+              <template
+                #list
+                v-if="!appDeployDisabled"
+              >
                 <dao-dropdown-menu>
                   <dao-dropdown-item @click="toggleYamlDialog">
                     <span>通过 YAML 部署</span>
@@ -42,9 +47,16 @@
               </template>
             </dao-dropdown>
           </template>
-          <el-table-column prop="name" sortable label="实例">
+          <el-table-column
+            prop="name"
+            sortable
+            label="实例"
+          >
             <template slot-scope="{ row: instances }">
-              <a href="javascript:void(0)" @click="gotoDetail(instances)">
+              <a
+                href="javascript:void(0)"
+                @click="gotoDetail(instances)"
+              >
                 {{ instances.name }}
               </a>
             </template>
@@ -59,12 +71,21 @@
               {{ instances.created_at | unix_date }}
             </template>
           </el-table-column>
-          <el-table-column prop="owner" label="创建者" sortable :show-overflow-tooltip="true">
+          <el-table-column
+            prop="owner"
+            label="创建者"
+            sortable
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="{ row: instances }">
               {{ instances.owner.name }}
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="部署状态" sortable>
+          <el-table-column
+            prop="status"
+            label="部署状态"
+            sortable
+          >
             <template slot-scope="{ row: instances }">
               <x-table-status
                 :row="instances"
@@ -74,9 +95,18 @@
               </x-table-status>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="" align="center" header-align="center" width="56">
+          <el-table-column
+            fixed="right"
+            label=""
+            align="center"
+            header-align="center"
+            width="56"
+          >
             <template slot-scope="{ row: instances }">
-              <el-dropdown @command="handleOperate($event, instances)" trigger="click">
+              <el-dropdown
+                @command="handleOperate($event, instances)"
+                trigger="click"
+              >
                 <span>
                   <svg class="icon dropdown-trigger">
                     <use xlink:href="#icon_more"></use>
@@ -89,6 +119,7 @@
                     icon="el-icon-delete"
                     :disabled="disableDelete(instances)"
                     command="delete"
+                    @click="dialogVisible = true"
                   >
                     删除
                   </el-dropdown-item>
@@ -106,6 +137,10 @@
       @close="dialogConfigs.errorInfo.visible = false"
     >
     </error-info-dialog>
+
+    <error-delete-dialog v-if="confirmdelete">
+    </error-delete-dialog>
+
     <edit-yaml-dialog
       ref="yamlEditor"
       :value="resources"
@@ -134,9 +169,16 @@
               >
               </dao-input>
             </template>
-            <template #content-helper v-if="recommendNames.length">
+            <template
+              #content-helper
+              v-if="recommendNames.length"
+            >
               推荐应用名:
-              <a @click.prevent="name = rName" v-for="rName in recommendNames" :key="rName">
+              <a
+                @click.prevent="name = rName"
+                v-for="rName in recommendNames"
+                :key="rName"
+              >
                 {{ rName }}
               </a>
             </template>
@@ -165,10 +207,17 @@
         </dao-setting-layout>
       </template>
       <template #footer>
-        <button class="dao-btn ghost" @click="onCloseYaml">
+        <button
+          class="dao-btn ghost"
+          @click="onCloseYaml"
+        >
           取消
         </button>
-        <button class="dao-btn blue" :disabled="!yamlDeployEnabled" @click="onTryConfirmYaml">
+        <button
+          class="dao-btn blue"
+          :disabled="!yamlDeployEnabled"
+          @click="onTryConfirmYaml"
+        >
           确定
         </button>
       </template>

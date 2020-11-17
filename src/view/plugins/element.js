@@ -39,11 +39,13 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Tag,
+  Dialog,
 } from 'element-ui';
 
 import '../../assets/styles/element-variables.scss';
 
 Vue.use(CheckboxGroup);
+Vue.use(Dialog);
 Vue.use(Checkbox);
 Vue.use(Button);
 Vue.use(Cascader);

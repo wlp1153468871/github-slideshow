@@ -10,6 +10,7 @@ import ErrorInfoMixin from '@/view/mixins/error-info';
 // mixins
 // dialogs
 import ErrorInfoDialog from '@/view/pages/dialogs/instance/error-info';
+import ErrorDeleteDialog from '@/view/pages/dialogs/instance/error-delete';
 
 export default {
   name: 'ApplicationList',
@@ -18,15 +19,16 @@ export default {
 
   components: {
     ErrorInfoDialog,
+    ErrorDeleteDialog
   },
 
-  data() {
+  data () {
     const {
       params: { serviceId },
       query: { brokerServiceId },
     } = this.$route;
-
     return {
+      confirmdelete: false,
       brokerServiceId,
       serviceId,
       INSTANCE_STATUS,
@@ -71,47 +73,47 @@ export default {
     ...mapState(['space', 'zone', 'user']),
     ...mapGetters(['isZoneSyncing', 'getService']),
 
-    service() {
+    service () {
       return {
         ...APPLICATION_CONFIG,
         links: [{ text: APPLICATION_CONFIG.name }],
       };
     },
 
-    brokerService() {
+    brokerService () {
       return this.service.brokerService || {};
     },
 
-    appDeployDisabled() {
+    appDeployDisabled () {
       return this.loadings.instances || this.isZoneSyncing || this.loadings.updateByYaml;
     },
 
-    yamlDeployEnabled() {
+    yamlDeployEnabled () {
       return this.name && this.version && !this.veeErrors.any();
     },
   },
 
-  created() {
+  created () {
     this.loadInstances();
   },
 
   methods: {
-    clearYamlEditor() {
+    clearYamlEditor () {
       this.name = '';
       this.version = '';
       this.recommendNames = [];
       this.resources = {};
     },
-    onCloseYaml() {
+    onCloseYaml () {
       this.clearYamlEditor();
       this.$refs.yamlEditor.onClose();
     },
 
-    onTryConfirmYaml() {
+    onTryConfirmYaml () {
       this.$refs.yamlEditor.tryConfirm();
     },
 
-    onCreateYaml(resources) {
+    onCreateYaml (resources) {
       this.loadings.updateByYaml = true;
 
       ApplicationService.createInstance(
@@ -136,7 +138,7 @@ export default {
           this.loadInstances();
         });
     },
-    checkIsDuplicateName() {
+    checkIsDuplicateName () {
       if (this.veeErrors.has('name')) return;
       // eslint-disable-next-line no-underscore-dangle
       this.getRecommendedName(this.name).then(res => {
@@ -148,14 +150,14 @@ export default {
       });
     },
 
-    getRecommendedName(name) {
+    getRecommendedName (name) {
       return ApplicationService.getRecommendedName(
         this.space.id,
         name, // repository name
       );
     },
 
-    loadInstances() {
+    loadInstances () {
       this.loadings.instances = true;
       ApplicationService.listInstance(this.space.id, this.zone.id)
         .then(list => {
@@ -166,13 +168,13 @@ export default {
         });
     },
 
-    deployApplication() {
+    deployApplication () {
       this.$router.push({
         name: 'deploy.applications',
       });
     },
 
-    gotoDetail(instance) {
+    gotoDetail (instance) {
       if (instance.status === INSTANCE_STATUS.CREATE_PROCESS_REJECTED) {
         this.$noty.error('您的实例创建请求没有审批通过，请联系管理员');
         return;
@@ -188,55 +190,56 @@ export default {
       });
     },
 
-    ensureRemove(instance) {
-      this.$tada
-        .confirm({
-          title: `删除${instance.name}`,
-          text: `您确定要删除${this.service.name}实例 ${instance.name} 吗？`,
-        })
-        .then(ok => {
-          if (ok) {
-            this.removeInstanceFromTenant(instance).then(() => {
-              this.loadInstances();
-            });
-          }
-        });
+    ensureRemove () {
+      this.dialogVisible = true
+      // this.$tada
+      //   .confirm({
+      //     title: `删除${instance.name}`,
+      //     text: `您确定要删除${this.service.name}实例 ${instance.name} 吗？`,
+      //   })
+      //   .then(ok => {
+      //     if (ok) {
+      //       this.removeInstanceFromTenant(instance).then(() => {
+      //         this.loadInstances();
+      //       });
+      //     }
+      //   });
     },
 
-    removeInstanceFromTenant(instance) {
+    removeInstanceFromTenant (instance) {
       return InstanceService.deleteInstance(instance.id).then(deletedInstance => {
         this.applyChange(deletedInstance);
         this.$noty.success(`删除实例 ${instance.name} 成功。`);
       });
     },
 
-    applyChange(newInstance) {
+    applyChange (newInstance) {
       this.rows = this.rows.map(instance => {
         return instance.id === newInstance.id ? newInstance : instance;
       });
     },
 
-    toggleYamlDialog() {
+    toggleYamlDialog () {
       this.dialogConfigs.editYaml.visible = !this.dialogConfigs.editYaml.visible;
     },
 
-    renderStatus(status) {
+    renderStatus (status) {
       return getAppStatus(status, '已经部署');
     },
 
-    handleOperate(command, instance) {
+    handleOperate (command, instance) {
       if (command === 'delete') {
         this.ensureRemove(instance);
       }
     },
 
-    disableDelete(item) {
+    disableDelete (item) {
       return isApprove(item.status);
     },
   },
 
   watch: {
-    $route(to) {
+    $route (to) {
       this.rows = [];
       this.serviceId = to.params.serviceId;
       this.brokerServiceId = to.query.brokerServiceId;
