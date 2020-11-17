@@ -28,7 +28,6 @@ export default {
       query: { brokerServiceId },
     } = this.$route;
     return {
-      confirmdelete: false,
       brokerServiceId,
       serviceId,
       INSTANCE_STATUS,
@@ -191,7 +190,7 @@ export default {
     },
 
     ensureRemove () {
-      this.dialogVisible = true
+      this.visible = true
       // this.$tada
       //   .confirm({
       //     title: `删除${instance.name}`,

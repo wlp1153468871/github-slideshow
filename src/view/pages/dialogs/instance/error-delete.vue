@@ -1,7 +1,8 @@
 <template>
   <el-dialog
     title="提示"
-    :visible.sync="dialogVisible"
+    append-to-body=""
+    :visible.sync="visible"
     width="30%"
     :before-close="handleClose"
   >
@@ -10,10 +11,10 @@
       slot="footer"
       class="dialog-footer"
     >
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="onClose">取 消</el-button>
       <el-button
         type="primary"
-        @click="dialogVisible = false"
+        @click="visible = false"
       >确 定</el-button>
     </span>
   </el-dialog>
@@ -21,10 +22,15 @@
 
 <script>
 export default {
+  name: 'ErrorDeleteDialog',
   data() {
-    return {
-      dialogVisible: false,
-    };
+    return {};
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     handleClose(done) {
@@ -33,6 +39,9 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+    onClose() {
+      this.$emit('update:visible', false);
     },
   },
 };

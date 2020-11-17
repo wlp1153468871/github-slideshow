@@ -119,7 +119,7 @@
                     icon="el-icon-delete"
                     :disabled="disableDelete(instances)"
                     command="delete"
-                    @click="dialogVisible = true"
+                    @click="visible = true"
                   >
                     删除
                   </el-dropdown-item>
@@ -138,7 +138,7 @@
     >
     </error-info-dialog>
 
-    <error-delete-dialog v-if="confirmdelete">
+    <error-delete-dialog :visible.sync="visible">
     </error-delete-dialog>
 
     <edit-yaml-dialog
@@ -226,6 +226,7 @@
 </template>
 
 <script src="./app-list.js"></script>
+
 <style scoped lang="scss">
 #extra-layout .dao-setting-section:last-of-type {
   border-top: 0;
